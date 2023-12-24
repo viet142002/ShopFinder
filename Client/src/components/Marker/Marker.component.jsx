@@ -4,9 +4,9 @@ import { useDispatch } from "react-redux";
 import { setDestination, setShow } from "../../redux/routingSlice";
 
 import { positionConstraints } from "../../utils/locationConstraints";
-function MarkerCus() {
-  console.log("vao");
+import { iconByType } from "../../utils/icon";
 
+function MarkerCus() {
   const dispatch = useDispatch();
 
   const handleOnClick = (item) => {
@@ -16,16 +16,24 @@ function MarkerCus() {
 
   return (
     <>
-      {positionConstraints.map((item, index) => {
+      {positionConstraints.map((location, index) => {
         return (
-          <Marker key={index} position={[item.lat, item.long]}>
+          <Marker
+            key={index}
+            position={[location.lat, location.long]}
+            icon={iconByType[location.info.type] || iconByType["default"]}
+            anchorPoint={[32 / 2, 45]}
+            zIndexOffset={1}
+          >
             <Popup>
               <div>
-                <h2>{item.info.name}</h2>
-                <p>{item.info.address}</p>
-                <p>{item.info.phone}</p>
-                <p>{item.info.rate}</p>
-                <button onClick={() => handleOnClick(item)}>Chỉ đường</button>
+                <h2>{location.info.name}</h2>
+                <p>{location.info.address}</p>
+                <p>{location.info.phone}</p>
+                <p>{location.info.rate}</p>
+                <button onClick={() => handleOnClick(location)}>
+                  Chỉ đường
+                </button>
               </div>
             </Popup>
           </Marker>
