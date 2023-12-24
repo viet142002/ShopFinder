@@ -1,21 +1,19 @@
-let userLatitude;
-let userLongitude;
-
-navigator.geolocation.getCurrentPosition(
-  (position) => {
-    userLatitude = position.coords.latitude;
-    userLongitude = position.coords.longitude;
-  },
-  (error) => {
-    console.error(`Error getting geolocation: ${error.message}`);
-    alert(`Vui lòng bặt vị trí`);
-  },
-);
-
 const userLocation = () => {
+  let lat = 0;
+  let lng = 0;
+  navigator.geolocation.getCurrentPosition(
+    (position) => {
+      lat = position.coords.latitude;
+      lng = position.coords.longitude;
+    },
+    (error) => {
+      console.error(`Error getting geolocation: ${error.message}`);
+      alert(`Vui lòng bặt vị trí`);
+    },
+  );
   return {
-    latitude: userLatitude,
-    longitude: userLongitude,
+    latitude: lat,
+    longitude: lng,
   };
 };
 

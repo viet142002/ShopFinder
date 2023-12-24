@@ -3,6 +3,7 @@
   right: 56px;
   bottom: 90px;
 }
-.leaflet-bottom.leaflet-right .leaflet-control.leaflet-control-attribution {
+.leaflet-bottom.leaflet-right .leaflet-control.leaflet-control-attribution,
+.leaflet-routing-container {
   display: none;
 }

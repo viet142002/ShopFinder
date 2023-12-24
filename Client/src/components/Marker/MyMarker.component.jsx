@@ -1,11 +1,10 @@
 import { Marker } from "react-leaflet";
-
-import usePosition from "../../utils/location";
+import { useSelector } from "react-redux";
 
 function MyMarker() {
-  const position = usePosition();
+  const p = useSelector((state) => state.routing.current);
 
-  return <Marker position={[position.latitude, position.longitude]}></Marker>;
+  return <Marker position={[p.lat, p.lng]}></Marker>;
 }
 
 export default MyMarker;

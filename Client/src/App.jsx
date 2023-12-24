@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 import "./app.scss";
 import DefaultLayout from "./layouts/DefaultLayout";
@@ -8,8 +10,14 @@ import Login from "./pages/Login/LoginPage";
 import Register from "./pages/Register/RegisterPage";
 
 import { routesConstant } from "./routes/routesConstant";
+import { getCurrentLocation } from "./redux/routingSlice";
 
 function App() {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getCurrentLocation());
+  }, []);
   return (
     <BrowserRouter>
       <Routes>
