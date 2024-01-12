@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.input-auth {
+    @apply w-full p-2 outline outline-2 outline-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50;
+}
+
+.ant-btn-icon {
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.blur-siderInfo::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 5px;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        rgb(210, 210, 210) 0%,
+        rgb(255, 255, 255, 0) 100%
+    );
+    z-index: 1;
+}

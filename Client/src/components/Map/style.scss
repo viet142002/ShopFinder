@@ -1,9 +1,7 @@
-.leaflet-control-container {
-  position: absolute;
-  right: 56px;
-  bottom: 90px;
+.leaflet-routing-container-hide .leaflet-routing-collapse-btn {
+    left: 2px !important;
 }
-.leaflet-bottom.leaflet-right .leaflet-control.leaflet-control-attribution,
-.leaflet-routing-container {
-  display: none;
+
+.leaflet-routing-container-hide {
+    padding-top: 0 !important;
 }
