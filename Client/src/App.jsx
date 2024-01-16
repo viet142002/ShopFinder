@@ -5,19 +5,21 @@ import { useEffect } from 'react';
 import DefaultLayout from './layouts/DefaultLayout';
 import HomePage from './pages/Home/HomePage';
 import Profile from './pages/Profile/ProfilePage';
-import Login from './pages/Login/LoginPage';
-import Register from './pages/Register/RegisterPage';
+import Login from './pages/Auth/Login/LoginPage';
+import Register from './pages/Auth/Register/RegisterPage';
+import ProtectRoute from './routes/ProtectRoute';
 
 import { routesConstant } from './routes/routesConstant';
+
 import { getCurrentLocation } from './redux/routingSlice';
 
 function App() {
     const dispatch = useDispatch();
-
     useEffect(() => {
         dispatch(getCurrentLocation());
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
     return (
         <BrowserRouter>
             <Routes>
@@ -30,7 +32,11 @@ function App() {
                     <Route index element={<HomePage />} />
                     <Route
                         path={routesConstant.profile.path}
-                        element={<Profile />}
+                        element={
+                            <ProtectRoute>
+                                <Profile />
+                            </ProtectRoute>
+                        }
                     />
                 </Route>
             </Routes>

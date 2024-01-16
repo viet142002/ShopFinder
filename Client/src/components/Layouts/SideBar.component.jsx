@@ -1,30 +1,38 @@
 import { Menu, Layout } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     UploadOutlined,
     UserOutlined,
-    VideoCameraOutlined
+    VideoCameraOutlined,
+    ShopOutlined
 } from '@ant-design/icons';
 
 const { Sider } = Layout;
 
+import { unsetUser } from '../../redux/userSlice';
+
 function HeaderLayout() {
+    const dispatch = useDispatch();
     const [collapsed, setCollapsed] = useState(true);
 
-    const isLogin = false;
+    const { user, isAuth } = useSelector((state) => state.user);
 
     const navigate = useNavigate();
 
-    const handleClick = (item) => {
-        switch (item.key) {
+    const handleClick = (info) => {
+        switch (info.key) {
             case 'logout':
-                navigate('/');
-                break;
-            case 'login':
+                dispatch(unsetUser());
                 navigate('/login');
                 break;
-
+            case 'login':
+                console.log('login');
+                navigate('/login');
+                break;
+            case 'retailer-manager':
+                break;
             default:
                 break;
         }
@@ -36,6 +44,7 @@ function HeaderLayout() {
             className="bg-opacity-50"
             trigger={null}
             collapsible
+            collapsedWidth={70}
             collapsed={collapsed}
             onMouseEnter={() => setCollapsed(false)}
             onMouseLeave={() => setCollapsed(true)}
@@ -46,12 +55,12 @@ function HeaderLayout() {
                     theme="light"
                     mode="inline"
                     defaultSelectedKeys={['1']}
+                    onClick={handleClick}
                     items={[
                         {
                             key: '1',
                             icon: <UserOutlined />,
-                            label: 'Cửa hàng gần đây',
-                            onClick: () => handleClick({ key: '1' })
+                            label: 'Cửa hàng gần đây'
                         },
                         {
                             key: '2',
@@ -69,16 +78,19 @@ function HeaderLayout() {
                             label: 'Thông báo'
                         },
                         {
-                            key: '5',
-                            icon: <UploadOutlined />,
-                            label: 'Quản lý cửa hàng'
+                            key: 'retailer-manager',
+                            icon: <ShopOutlined />,
+                            label:
+                                user.role === 'retailer'
+                                    ? 'Quản lý'
+                                    : 'Đăng ký bán hàng'
                         }
                     ]}
                 />
                 <Menu
                     theme="light"
                     mode="inline"
-                    defaultSelectedKeys={['1']}
+                    onClick={handleClick}
                     items={[
                         {
                             key: '5',
@@ -91,9 +103,9 @@ function HeaderLayout() {
                             label: 'nav 2'
                         },
                         {
-                            key: isLogin ? 'logout' : 'login',
+                            key: isAuth ? 'logout' : 'login',
                             icon: <UploadOutlined />,
-                            label: isLogin ? 'Đăng xuất' : 'Đăng nhập'
+                            label: isAuth ? 'Đăng xuất' : 'Đăng nhập'
                         }
                     ]}
                 />
