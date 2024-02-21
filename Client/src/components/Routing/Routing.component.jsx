@@ -54,7 +54,11 @@ const Routing = () => {
                 draggableWaypoints: false,
                 fitSelectedRoutes: true,
                 showAlternatives: true,
-                geocoder: L.Control.Geocoder.nominatim()
+                geocoder: L.Control.Geocoder.nominatim({
+                    geocodingQueryParams: {
+                        acceptLanguage: 'vi-VN'
+                    }
+                })
             });
         };
 

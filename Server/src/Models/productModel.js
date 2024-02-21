@@ -10,6 +10,7 @@ const productSchema = new mongoose.Schema({
     },
     discount: {
         type: Number,
+        default: 0,
     },
     description: {
         type: String,
@@ -34,6 +35,11 @@ const productSchema = new mongoose.Schema({
     rating: {
         type: Number,
         default: 0,
+    },
+    status: {
+        type: String,
+        enum: ['draft', 'available', 'unavailable', 'stop'],
+        default: 'draft',
     },
     reviews: [
         {

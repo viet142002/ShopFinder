@@ -1,10 +1,46 @@
+import { useEffect, useState } from 'react';
 import { Marker } from 'react-leaflet';
-import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+
+import { setCurrentLocation } from '../../redux/routingSlice';
 
 function MyMarker() {
-    const p = useSelector((state) => state.routing.current);
+    const [coords, setCoords] = useState({ lat: 0, lng: 0 });
 
-    return <Marker position={[p.lat, p.lng]} zIndexOffset={99999}></Marker>;
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const navigate = navigator.geolocation.watchPosition(
+            (position) => {
+                setCoords({
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                });
+            },
+            (error) => {
+                alert('Error getting location');
+                console.log(error);
+            },
+            {
+                timeout: 10000,
+                enableHighAccuracy: true
+            }
+        );
+        return () => {
+            navigator.geolocation.clearWatch(navigate);
+        };
+    }, []);
+
+    useEffect(() => {
+        dispatch(setCurrentLocation(coords));
+    }, [coords, dispatch]);
+
+    return (
+        <Marker
+            position={[coords.lat, coords.lng]}
+            zIndexOffset={99999}
+        ></Marker>
+    );
 }
 
 export default MyMarker;

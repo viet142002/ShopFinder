@@ -5,21 +5,22 @@ import { setToken, removeToken } from './storage';
 const userSlice = createSlice({
     name: 'user',
     initialState: {
-        user: {
-            role: 'user'
-        },
+        data: {},
         isAuth: false,
         isLoading: false
     },
     reducers: {
         setUser: (state, action) => {
             setToken(action.payload.token);
-            state.user = action.payload.user;
+            state.data = action.payload.user;
             state.isAuth = true;
+        },
+        updateUser: (state, action) => {
+            state.data = { ...state.data, ...action.payload };
         },
         unsetUser: (state) => {
             removeToken();
-            state.user = {};
+            state.data = {};
             state.isAuth = false;
         },
         setIsLoading: (state, action) => {
@@ -28,6 +29,7 @@ const userSlice = createSlice({
     }
 });
 
-export const { setUser, unsetUser, setIsLoading } = userSlice.actions;
+export const { setUser, unsetUser, setIsLoading, updateUser } =
+    userSlice.actions;
 
 export default userSlice.reducer;

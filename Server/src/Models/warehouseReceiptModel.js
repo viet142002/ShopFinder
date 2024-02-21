@@ -6,6 +6,16 @@ const warehouseReceiptSchema = new mongoose.Schema(
             type: String,
             default: '',
         },
+        type: {
+            type: String,
+            enum: ['import', 'export'],
+            required: true,
+        },
+        status: {
+            type: String,
+            enum: ['pending', 'completed'],
+            default: 'pending',
+        },
         products: [
             {
                 product: {

@@ -30,7 +30,7 @@ const authController = {
 
             return res.status(200).json({
                 newUser,
-                token,
+                token: `bearer ${token}`,
                 message: 'Signup successfully',
             });
         } catch (error) {
@@ -62,7 +62,7 @@ const authController = {
 
             return res.status(200).json({
                 user,
-                token,
+                token: `bearer ${token}`,
                 message: 'SignIn successfully',
             });
         } catch (error) {
@@ -77,7 +77,8 @@ const generateToken = user => {
     const token = jwt.sign(
         {
             _id: user._id,
-            role: user.isAdmin,
+            role: user.role,
+            email: user.email,
         },
         process.env.JWT_SECRET,
         {

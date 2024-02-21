@@ -6,6 +6,10 @@ const retailerSchema = new mongoose.Schema({
         required: true,
         unique: [true, 'Retailer name already exists'],
     },
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+    },
     location: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Location',
@@ -26,13 +30,18 @@ const retailerSchema = new mongoose.Schema({
         type: String,
         default: '',
     },
-    email: {
+    description: {
         type: String,
         default: '',
     },
     logo: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Image',
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'approved', 'rejected'],
+        default: 'pending',
     },
 });
 
