@@ -1,18 +1,16 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useEffect, lazy, Suspense } from 'react';
+import { useEffect, Suspense } from 'react';
 
 import DefaultLayout from './layouts/DefaultLayout';
+// import HomePage from './pages/Home/HomePage';
 import Profile from './pages/Profile/ProfilePage';
-
-const Login = lazy(() => import('./pages/Auth/Login/LoginPage'));
-const Register = lazy(() => import('./pages/Auth/Register/RegisterPage'));
-
+import Login from './pages/Auth/Login/LoginPage';
+import Register from './pages/Auth/Register/RegisterPage';
 import RegisterRetailer from './pages/RegisterRetailer/RegisterRetailer';
 import RegisterRetailerPending from './pages/RegisterRetailer/RegisterRetailerPending';
 import ProtectRoute from './routes/ProtectRoute';
 import ManageLayout from './layouts/ManageLayout';
-
 import RequestRetailerPage from './pages/Admin/RequestRetailerPage';
 import DashboardPage from './pages/Admin/DashboardPage';
 import ReportPage from './pages/Admin/ReportPage';

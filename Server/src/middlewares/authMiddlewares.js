@@ -27,7 +27,6 @@ const authMiddlewares = {
             });
         }
     },
-
     authentication: role => (req, res, next) => {
         if (!req.headers.authorization) {
             return res.status(401).json({
