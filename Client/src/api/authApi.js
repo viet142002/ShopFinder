@@ -6,6 +6,7 @@ export const loginApi = async ({ email, password }) => {
             email,
             password
         });
+
         return res.data;
     } catch (error) {
         return error.response.data;

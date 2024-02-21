@@ -1,13 +1,18 @@
-// import clsx from "clsx";
-// import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import 'leaflet/dist/leaflet.css';
+import { useSelector } from 'react-redux';
+// import 'leaflet/dist/leaflet.css';
+
+// import Map from '../../components/Map/Map.component';
+import HeaderMap from '../../components/Layouts/HeaderMap.component';
+import SiderMarkSelect from '../../components/SiderMarkSelect/SiderMarkSelect.component';
 
 function HomePage() {
+    // const p = useSelector((state) => state.routing.current);
     return (
-        <>
-            {/* <h1 className={clsx("p-[20px] text-[35px] font-[700]")}>Home page</h1>
-      <h2 className="m-6 p-10 text-lg">text</h2> */}
-        </>
+        <div className="overflow-hidden absolute top-0 left-0 h-dvh">
+            {/* {p.lat !== 0 ? <Map /> : 'loading'} */}
+            <HeaderMap />
+            <SiderMarkSelect />
+        </div>
     );
 }
 

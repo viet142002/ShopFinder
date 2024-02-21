@@ -7,10 +7,9 @@ import clsx from 'clsx';
 import HeaderInfo from './HeaderInfo/HeaderInfo.component';
 import TabInfo from './TabInfo/TabInfo.component';
 
-function SiderMarkSelect() {
+function SiderMarkSelect({ markSelected }) {
     const [isCollapsed, setIsCollapsed] = useState(false);
 
-    const markSelected = useSelector((state) => state.routing.markSelected);
     const info = useSelector((state) => state.routing.info);
 
     useEffect(() => {

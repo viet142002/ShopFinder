@@ -17,7 +17,7 @@ function RegisterPage() {
         const res = await registerApi(values);
         setSubmitting(false);
         if (res.token) {
-            dispatch(setUser({ user: res.user, token: res.token }));
+            dispatch(setUser({ user: res.newUser, token: res.token }));
             navigate('/');
         }
     };
@@ -119,7 +119,7 @@ function RegisterPage() {
                                         type="submit"
                                         disabled={isSubmitting}
                                     >
-                                        Đăng nhập
+                                        Đăng ký
                                     </button>
                                 </div>
                             </Form>

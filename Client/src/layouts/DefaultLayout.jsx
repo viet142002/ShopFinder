@@ -1,27 +1,30 @@
 import { Outlet } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { Layout } from 'antd';
+import { useSelector } from 'react-redux';
+import 'leaflet/dist/leaflet.css';
 
-import Map from '../components/Map/Map.component';
 import SideBar from '../components/Layouts/SideBar.component';
 import HeaderMap from '../components/Layouts/HeaderMap.component';
+import Map from '../components/Map/Map.component';
 import SiderMarkSelect from '../components/SiderMarkSelect/SiderMarkSelect.component';
 
 const { Content } = Layout;
 
 const DefaultLayout = () => {
-    const p = useSelector((state) => state.routing.current);
+    const p = useSelector((state) => state.routing.fixedLocation);
+    const markSelected = useSelector((state) => state.routing.markSelected);
+
     return (
-        <Layout>
+        <Layout className="h-dvh">
             {/* <HeaderLayout /> */}
             <SideBar />
-            <Content>
-                <div className="relative overflow-hidden">
-                    {p.lat !== 0 ? <Map /> : 'loading'}
-                    <HeaderMap />
-                    <SiderMarkSelect />
-                    <Outlet />
-                </div>
+            <Content className="relative overflow-hidden">
+                <Outlet />
+                {p.lat !== 0 ? <Map /> : 'loading'}
+                <HeaderMap />
+                {markSelected.lng && (
+                    <SiderMarkSelect markSelected={markSelected} />
+                )}
             </Content>
             {/* <FooterLayout /> */}
         </Layout>

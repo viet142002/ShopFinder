@@ -2,24 +2,36 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
+import { useState } from 'react';
+import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import { Button, message } from 'antd';
 
 import style from '../style.module.scss';
 import loginSchema from './validate';
 import { loginApi } from '../../../api/authApi';
 import { setUser } from '../../../redux/userSlice';
+import { catchError } from '../../../utils/expression';
 
 function LoginPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
+    const [isShowPassword, setIsShowPassword] = useState(false);
 
     const handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
         const res = await loginApi(values);
+
+        catchError(res.message, (error) => {
+            message.error(error, 3);
+        });
+
         setSubmitting(false);
         if (res.token) {
             dispatch(setUser({ user: res.user, token: res.token }));
-            navigate(location.state?.from ? location.state.from : '/');
+            if (location.state?.from) navigate(location.state.from);
+            else if (res.user.role === 'admin') navigate('/admin/dashboard');
+            else navigate('/');
         }
     };
 
@@ -41,10 +53,7 @@ function LoginPage() {
                         validationSchema={loginSchema}
                         onSubmit={handleSubmit}
                     >
-                        {({
-                            isSubmitting
-                            /* and other goodies */
-                        }) => (
+                        {({ isSubmitting }) => (
                             <Form className="space-y-6">
                                 <div>
                                     <Field
@@ -59,12 +68,35 @@ function LoginPage() {
                                     />
                                 </div>
                                 <div>
-                                    <Field
-                                        type="password"
-                                        name="password"
-                                        placeholder="Mật khẩu"
-                                        className="input-auth"
-                                    />
+                                    <div className="relative">
+                                        <Field
+                                            type={
+                                                isShowPassword
+                                                    ? 'text'
+                                                    : 'password'
+                                            }
+                                            name="password"
+                                            placeholder="Mật khẩu"
+                                            className="input-auth"
+                                        />
+                                        <Button
+                                            className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white hover:bg-gray-100 transition-all duration-150"
+                                            shape="circle"
+                                            size="small"
+                                            icon={
+                                                isShowPassword ? (
+                                                    <EyeInvisibleOutlined />
+                                                ) : (
+                                                    <EyeOutlined />
+                                                )
+                                            }
+                                            onClick={() =>
+                                                setIsShowPassword(
+                                                    !isShowPassword
+                                                )
+                                            }
+                                        />
+                                    </div>
                                     <ErrorMessage
                                         name="password"
                                         component="small"

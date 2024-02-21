@@ -7,6 +7,7 @@ const routingSlice = createSlice({
     initialState: {
         address: {},
         current: { lat: 0, lng: 0 },
+        fixedLocation: { lat: 0, lng: 0 },
         markSelected: { lat: null, lng: null },
         zoom: 15,
         showRouting: false,
@@ -14,9 +15,12 @@ const routingSlice = createSlice({
         info: {}
     },
     reducers: {
-        setCurrentLocation: (state, action) => {
-            state.current = action.payload.location;
+        setFixedLocation: (state, action) => {
+            state.fixedLocation = action.payload.location;
             state.address = action.payload.address;
+        },
+        setCurrentLocation: (state, action) => {
+            state.current = action.payload;
         },
         setRoute: (state, action) => {
             state.routes = action.payload;
@@ -40,7 +44,7 @@ const routingSlice = createSlice({
     }
 });
 
-const getCurrentPosition = () => {
+const setCurrentPosition = () => {
     return new Promise((resolve, reject) => {
         if (!navigator.geolocation) {
             reject(new Error('Geolocation is not supported by this browser.'));
@@ -52,11 +56,13 @@ const getCurrentPosition = () => {
             .then((permissionStatus) => {
                 if (permissionStatus.state === 'granted') {
                     navigator.geolocation.getCurrentPosition(resolve, reject, {
-                        timeout: 10000
+                        // timeout: 10000,
+                        enableHighAccuracy: true
                     });
                 } else if (permissionStatus.state === 'prompt') {
                     navigator.geolocation.getCurrentPosition(resolve, reject, {
-                        timeout: 10000
+                        // timeout: 10000,
+                        enableHighAccuracy: true
                     });
                 } else {
                     reject(new Error('Geolocation permission denied.'));
@@ -70,16 +76,16 @@ const getCurrentPosition = () => {
 };
 
 // Thunk để lấy vị trí từ Geolocation API
-export const getCurrentLocation = () => async (dispatch) => {
+export const setFirstLocation = () => async (dispatch) => {
     try {
-        const position = await getCurrentPosition();
+        const position = await setCurrentPosition();
         const response = await axios.get(
             `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${position.coords.latitude}&lon=${position.coords.longitude}`
         );
         const addressData = response.data.address;
 
         dispatch(
-            setCurrentLocation({
+            setFixedLocation({
                 location: {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
@@ -96,8 +102,10 @@ export default routingSlice.reducer;
 export const {
     setMarkSelect,
     setShowRouting,
+    setFixedLocation,
     setZoom,
     setCurrentLocation,
     unsetMarkSelect,
-    setRoute
+    setRoute,
+    fixedLocation
 } = routingSlice.actions;

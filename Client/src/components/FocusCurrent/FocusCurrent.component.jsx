@@ -2,26 +2,28 @@ import { useMap } from 'react-leaflet';
 import { useSelector } from 'react-redux';
 import { Button } from 'antd';
 import { AimOutlined } from '@ant-design/icons';
-
 import { useDispatch } from 'react-redux';
-import { getCurrentLocation } from '../../redux/routingSlice';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+
+import { setFirstLocation } from '../../redux/routingSlice';
 
 function FocusCurrent() {
-    const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
     const map = useMap();
-    const p = useSelector((state) => state.routing.current);
+    const dispatch = useDispatch();
+    const p = useSelector((state) => state.routing.fixedLocation);
 
     const handleClick = async () => {
-        dispatch(getCurrentLocation());
+        setIsLoading(true);
+        dispatch(setFirstLocation());
     };
 
     useEffect(() => {
-        if (p) {
-            map.flyTo([p.lat, p.lng], 15);
+        if (p.lat !== 0) {
+            map.flyTo([p.lat, p.lng], 13);
+            setIsLoading(false);
         }
     }, [p, map]);
-
     return (
         <div className="absolute bottom-[92px] right-[13px] z-[99999]">
             <Button
@@ -29,6 +31,7 @@ function FocusCurrent() {
                 size="middle"
                 onClick={() => handleClick()}
                 icon={<AimOutlined />}
+                loading={isLoading}
             />
         </div>
     );

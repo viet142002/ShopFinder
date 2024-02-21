@@ -2,12 +2,15 @@ import { Menu, Layout } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
+
+import { UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
+import { HiOutlineViewfinderCircle } from 'react-icons/hi2';
 import {
-    UploadOutlined,
-    UserOutlined,
-    VideoCameraOutlined,
-    ShopOutlined
-} from '@ant-design/icons';
+    MdOutlineNotifications,
+    MdOutlineStoreMallDirectory,
+    MdOutlineLogout
+} from 'react-icons/md';
+import { TbShoppingCart, TbShoppingCartCopy } from 'react-icons/tb';
 
 const { Sider } = Layout;
 
@@ -17,21 +20,34 @@ function HeaderLayout() {
     const dispatch = useDispatch();
     const [collapsed, setCollapsed] = useState(true);
 
-    const { user, isAuth } = useSelector((state) => state.user);
+    const { data, isAuth } = useSelector((state) => state.user);
 
     const navigate = useNavigate();
 
-    const handleClick = (info) => {
-        switch (info.key) {
+    const handleClick = (item) => {
+        switch (item.key) {
             case 'logout':
                 dispatch(unsetUser());
                 navigate('/login');
                 break;
             case 'login':
-                console.log('login');
                 navigate('/login');
                 break;
             case 'retailer-manager':
+                if (!isAuth) {
+                    navigate('/login');
+                    break;
+                }
+                if (data.role === 'retailer') {
+                    navigate('/retailer/dashboard');
+                    break;
+                }
+                if (data.status === 'pending') {
+                    navigate('/register-retailer-pending');
+                    break;
+                }
+
+                navigate('/register-retailer');
                 break;
             default:
                 break;
@@ -59,31 +75,31 @@ function HeaderLayout() {
                     items={[
                         {
                             key: '1',
-                            icon: <UserOutlined />,
+                            icon: <HiOutlineViewfinderCircle size={18} />,
                             label: 'Cửa hàng gần đây'
                         },
                         {
                             key: '2',
-                            icon: <VideoCameraOutlined />,
+                            icon: <TbShoppingCartCopy size={18} />,
                             label: 'Đơn hàng'
                         },
                         {
                             key: '3',
-                            icon: <UploadOutlined />,
+                            icon: <TbShoppingCart size={18} />,
                             label: 'Giỏ hàng'
                         },
                         {
                             key: '4',
-                            icon: <UploadOutlined />,
+                            icon: <MdOutlineNotifications size={18} />,
                             label: 'Thông báo'
                         },
                         {
                             key: 'retailer-manager',
-                            icon: <ShopOutlined />,
+                            icon: <MdOutlineStoreMallDirectory />,
                             label:
-                                user.role === 'retailer'
-                                    ? 'Quản lý'
-                                    : 'Đăng ký bán hàng'
+                                data.role === 'retailer'
+                                    ? 'Quản lý cửa hàng'
+                                    : 'Đăng ký cửa hàng'
                         }
                     ]}
                 />
@@ -104,7 +120,7 @@ function HeaderLayout() {
                         },
                         {
                             key: isAuth ? 'logout' : 'login',
-                            icon: <UploadOutlined />,
+                            icon: <MdOutlineLogout size={18} />,
                             label: isAuth ? 'Đăng xuất' : 'Đăng nhập'
                         }
                     ]}
