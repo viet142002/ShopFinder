@@ -1,11 +1,11 @@
 // create a new reducer for routingSlide
 import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
+// import axios from 'axios';
 
 const routingSlice = createSlice({
     name: 'routing',
     initialState: {
-        address: {},
+        // address: {},
         current: { lat: 0, lng: 0 },
         fixedLocation: { lat: 0, lng: 0 },
         markSelected: { lat: null, lng: null },
@@ -17,7 +17,7 @@ const routingSlice = createSlice({
     reducers: {
         setFixedLocation: (state, action) => {
             state.fixedLocation = action.payload.location;
-            state.address = action.payload.address;
+            // state.address = action.payload.address;
         },
         setCurrentLocation: (state, action) => {
             state.current = action.payload;
@@ -44,53 +44,25 @@ const routingSlice = createSlice({
     }
 });
 
-const setCurrentPosition = () => {
-    return new Promise((resolve, reject) => {
-        if (!navigator.geolocation) {
-            reject(new Error('Geolocation is not supported by this browser.'));
-            return;
-        }
-
-        navigator.permissions
-            .query({ name: 'geolocation' })
-            .then((permissionStatus) => {
-                if (permissionStatus.state === 'granted') {
-                    navigator.geolocation.getCurrentPosition(resolve, reject, {
-                        // timeout: 10000,
-                        enableHighAccuracy: true
-                    });
-                } else if (permissionStatus.state === 'prompt') {
-                    navigator.geolocation.getCurrentPosition(resolve, reject, {
-                        // timeout: 10000,
-                        enableHighAccuracy: true
-                    });
-                } else {
-                    reject(new Error('Geolocation permission denied.'));
-                }
-            })
-            .catch((error) => {
-                alert('Error getting location');
-                reject(error);
-            });
-    });
-};
+// const setCurrentPosition = () => {
+//     navigator.geolocation.getCurrentPosition((coords) => {
+//         return coords;
+//     });
+// };
 
 // Thunk để lấy vị trí từ Geolocation API
 export const setFirstLocation = () => async (dispatch) => {
     try {
-        const position = await setCurrentPosition();
-        const response = await axios.get(
-            `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${position.coords.latitude}&lon=${position.coords.longitude}`
-        );
-        const addressData = response.data.address;
-
+        const position = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
         dispatch(
             setFixedLocation({
                 location: {
                     lat: position.coords.latitude,
                     lng: position.coords.longitude
-                },
-                address: addressData
+                }
+                // address: addressData
             })
         );
     } catch (error) {

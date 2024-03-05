@@ -8,15 +8,13 @@ const retailerController = {
             const { lat, lng, name, phone, type, description } = req.body;
             const { email } = req.user;
 
-            console.log(req.body);
-
             const user = await User.findOne({ email });
             if (!user) {
                 return res.status(400).json({
                     message: 'Cant find user',
                 });
             }
-            console.log('vao');
+
             user.status = 'pending';
 
             const location = new Location({

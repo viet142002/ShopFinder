@@ -16,8 +16,13 @@ function InputImage({ setNewImages, setDeleteImages, images, ...props }) {
         if (image._id) {
             setDeleteImages((prev) => [...prev, image._id]);
         } else {
-            setNewImages((prev) => prev.filter((_, i) => i !== index));
+            setNewImages((prev) =>
+                Array.from(prev).filter((_, i) => i !== index)
+            );
         }
+        setImagePreview((prev) =>
+            Array.from(prev).filter((_, i) => i !== index)
+        );
     };
 
     useEffect(() => {

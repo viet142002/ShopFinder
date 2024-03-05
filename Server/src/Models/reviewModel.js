@@ -1,9 +1,20 @@
 const mongoose = require('mongoose');
 
-const reviewProductSchema = new mongoose.Schema({
-    user: {
+const reviewSchema = new mongoose.Schema({
+    from: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
+        required: true,
+    },
+    to: {
+        type: mongoose.Schema.Types.ObjectId,
+        refPath: 'toType',
+        discriminatorKey: 'toType',
+        required: true,
+    },
+    toType: {
+        type: String,
+        enum: ['Retailer', 'Product', 'Information_Community'],
         required: true,
     },
     rating: {
@@ -13,6 +24,18 @@ const reviewProductSchema = new mongoose.Schema({
     comment: {
         type: String,
     },
+    images: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Image',
+        },
+    ],
+    reply: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Review',
+        },
+    ],
     likes: [
         {
             type: mongoose.Schema.Types.ObjectId,
@@ -27,4 +50,4 @@ const reviewProductSchema = new mongoose.Schema({
     ],
 });
 
-module.exports = mongoose.model('ReviewProduct', reviewProductSchema);
+module.exports = mongoose.model('Review', reviewSchema);

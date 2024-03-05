@@ -44,8 +44,8 @@ const columns = [
     },
     {
         title: 'Số lượng',
-        dataIndex: 'stock',
-        key: 'stock'
+        dataIndex: 'quantity',
+        key: 'quantity'
     },
     {
         title: 'Trạng thái',

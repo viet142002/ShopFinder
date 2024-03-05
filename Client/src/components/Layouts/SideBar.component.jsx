@@ -8,7 +8,8 @@ import { HiOutlineViewfinderCircle } from 'react-icons/hi2';
 import {
     MdOutlineNotifications,
     MdOutlineStoreMallDirectory,
-    MdOutlineLogout
+    MdOutlineLogout,
+    MdShare
 } from 'react-icons/md';
 import { TbShoppingCart, TbShoppingCartCopy } from 'react-icons/tb';
 
@@ -16,7 +17,7 @@ const { Sider } = Layout;
 
 import { unsetUser } from '../../redux/userSlice';
 
-function HeaderLayout() {
+function HeaderLayout({ ...props }) {
     const dispatch = useDispatch();
     const [collapsed, setCollapsed] = useState(true);
 
@@ -26,12 +27,18 @@ function HeaderLayout() {
 
     const handleClick = (item) => {
         switch (item.key) {
+            case 'home':
+                navigate('/');
+                break;
             case 'logout':
                 dispatch(unsetUser());
                 navigate('/login');
                 break;
             case 'login':
                 navigate('/login');
+                break;
+            case 'share-store':
+                navigate('/share-store');
                 break;
             case 'retailer-manager':
                 if (!isAuth) {
@@ -46,7 +53,6 @@ function HeaderLayout() {
                     navigate('/register-retailer-pending');
                     break;
                 }
-
                 navigate('/register-retailer');
                 break;
             default:
@@ -64,6 +70,7 @@ function HeaderLayout() {
             collapsed={collapsed}
             onMouseEnter={() => setCollapsed(false)}
             onMouseLeave={() => setCollapsed(true)}
+            {...props}
         >
             <div className="demo-logo-vertical" />
             <div className="flex h-full flex-col justify-between">
@@ -74,24 +81,29 @@ function HeaderLayout() {
                     onClick={handleClick}
                     items={[
                         {
-                            key: '1',
+                            key: 'home',
                             icon: <HiOutlineViewfinderCircle size={18} />,
                             label: 'Cửa hàng gần đây'
                         },
                         {
-                            key: '2',
+                            key: 'order',
                             icon: <TbShoppingCartCopy size={18} />,
                             label: 'Đơn hàng'
                         },
                         {
-                            key: '3',
+                            key: 'cart',
                             icon: <TbShoppingCart size={18} />,
                             label: 'Giỏ hàng'
                         },
                         {
-                            key: '4',
+                            key: 'notification',
                             icon: <MdOutlineNotifications size={18} />,
                             label: 'Thông báo'
+                        },
+                        {
+                            key: 'share-store',
+                            icon: <MdShare size={18} />,
+                            label: 'Chia sẻ cửa hàng'
                         },
                         {
                             key: 'retailer-manager',

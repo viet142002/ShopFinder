@@ -4,7 +4,8 @@ const searchSlice = createSlice({
     name: 'search',
     initialState: {
         type: 'all',
-        search: ''
+        search: '',
+        radius: 5
     },
     reducers: {
         setTypeLocation: (state, action) => {
@@ -12,10 +13,20 @@ const searchSlice = createSlice({
         },
         setSearchText: (state, action) => {
             state.search = action.payload;
+        },
+        setRadius: (state, action) => {
+            state.radius = action.payload;
+        },
+        setValues: (state, action) => {
+            return {
+                ...state,
+                ...action.payload
+            };
         }
     }
 });
 
 export default searchSlice.reducer;
 
-export const { setTypeLocation, setSearchText } = searchSlice.actions;
+export const { setTypeLocation, setSearchText, setValues } =
+    searchSlice.actions;

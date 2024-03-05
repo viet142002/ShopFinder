@@ -1,9 +1,10 @@
 import { Layout, Button, Form, Input, InputNumber, Select } from 'antd';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import InputImage from '../../../components/InputImage/InputImage.component';
 import EditorFormat from '../../../components/EditorFormat/EditorFormat';
+import ButtonBack from '../../../components/ActionsButton/ButtonBack.component';
 
 import { typeStatus } from '../../../utils/typeConstraint';
 import {
@@ -29,12 +30,11 @@ const formatForm = (values, images = [], deleteImage = []) => {
 function AddAndEditProduct() {
     const { id } = useParams();
     const isAddMode = !id;
-    const navigate = useNavigate();
     const [newImages, setNewImages] = useState([]);
     const [deleteImages, setDeleteImages] = useState([]);
     const [isChange, setIsChange] = useState(false);
     const [initialValues, setInitialValues] = useState({
-        name: 'hello',
+        name: '',
         price: 0,
         discount: 0,
         status: 'draft',
@@ -97,7 +97,7 @@ function AddAndEditProduct() {
     return (
         <section className="px-8 py-4">
             <Layout.Header className="bg-transparent flex justify-between items-center mb-2">
-                <Button onClick={() => navigate(-1)}>Quay lại</Button>
+                <ButtonBack />
                 <h3 className="text-xl font-semibold">
                     {isAddMode ? 'Thêm sản phẩm' : 'Chỉnh sửa sản phẩm'}
                 </h3>
@@ -123,7 +123,13 @@ function AddAndEditProduct() {
                                     <Form.Item
                                         name="name"
                                         id="name"
-                                        required={true}
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    'Vui lòng nhập tên sản phẩm'
+                                            }
+                                        ]}
                                     >
                                         <Input />
                                     </Form.Item>
@@ -134,6 +140,12 @@ function AddAndEditProduct() {
                                         <InputNumber
                                             className="w-full"
                                             min={0}
+                                            formatter={(value) =>
+                                                `${value}`.replace(
+                                                    /\B(?=(\d{3})+(?!\d))/g,
+                                                    ','
+                                                )
+                                            }
                                         />
                                     </Form.Item>
                                 </div>

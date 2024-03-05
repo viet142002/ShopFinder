@@ -1,87 +1,23 @@
 export const typeLocations = [
     {
-        value: 'restaurant',
-        label: 'Nhà hàng'
-    },
-    {
-        value: 'mini-mart',
-        label: 'Cửa hàng tiện lợi'
-    },
-    {
-        value: 'mart',
-        label: 'Siêu thị'
-    },
-    {
-        value: 'bar',
-        label: 'Quán nhậu'
-    },
-    {
-        value: 'bookstore',
-        label: 'Nhà sách'
-    },
-    {
-        value: 'hotel',
-        label: 'Khách sạn'
-    },
-    {
-        value: 'cafe',
-        label: 'Quán cafe'
-    },
-    {
-        value: 'pharmacy',
-        label: 'Nhà thuốc'
+        value: 'electronics',
+        label: 'Đồ điện tử'
     },
     {
         value: 'furniture',
-        label: 'Nội thất'
+        label: 'Đồ nội thất'
     },
     {
-        value: 'fashion',
-        label: 'Thời trang'
+        value: 'clothes',
+        label: 'Quần áo'
     },
     {
-        value: 'cosmetic',
-        label: 'Mỹ phẩm'
+        value: 'food',
+        label: 'Thực phẩm'
     },
     {
-        value: 'electronic',
-        label: 'Điện tử'
-    },
-    {
-        value: 'jewelry',
-        label: 'Trang sức'
-    },
-    {
-        value: 'shoes',
-        label: 'Giày dép'
-    },
-    {
-        value: 'accessories',
-        label: 'Phụ kiện'
-    },
-    {
-        value: 'sport',
-        label: 'Thể thao'
-    },
-    {
-        value: 'gift',
-        label: 'Quà tặng'
-    },
-    {
-        value: 'toy',
-        label: 'Đồ chơi'
-    },
-    {
-        value: 'stationery',
-        label: 'Văn phòng phẩm'
-    },
-    {
-        value: 'pet',
-        label: 'Thú cưng'
-    },
-    {
-        value: 'flower',
-        label: 'Hoa'
+        value: 'cafe',
+        label: 'Quán cà phê'
     },
     {
         value: 'other',

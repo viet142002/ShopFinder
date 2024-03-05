@@ -11,16 +11,21 @@ const warehouseReceiptSchema = new mongoose.Schema(
             enum: ['import', 'export'],
             required: true,
         },
-        status: {
-            type: String,
-            enum: ['pending', 'completed'],
-            default: 'pending',
-        },
+        orders: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Order',
+            },
+        ],
         products: [
             {
                 product: {
                     type: mongoose.Schema.Types.ObjectId,
                     ref: 'Product',
+                },
+                price_import: {
+                    type: Number,
+                    required: true,
                 },
                 quantity: {
                     type: Number,

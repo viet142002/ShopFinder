@@ -121,6 +121,26 @@ const productController = {
         }
     },
 
+    addQuantity: async products => {
+        try {
+            for (let i = 0; i < products.length; i++) {
+                const product = await Product.findById(
+                    products[i]?._id || products[i].product
+                );
+                product.quantity += products[i].quantity;
+                if (product.quantity < 0) {
+                    product.quantity = 0;
+                    product.status = 'unavailable';
+                } else {
+                    product.status = 'available';
+                }
+                await product.save();
+            }
+        } catch (error) {
+            throw error;
+        }
+    },
+
     getProductById: async (req, res) => {
         try {
             const productId = req.params.id;

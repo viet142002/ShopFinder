@@ -8,10 +8,6 @@ const warehouseReceiptRouter = require('./warehouseReceiptRouter');
 
 router.use('', retailerRouter);
 router.use('/products', authentication('retailer'), productRouter);
-router.use(
-    '/warehouse-receipts',
-    authentication('retailer'),
-    warehouseReceiptRouter
-);
+router.use('/warehouse', authentication('retailer'), warehouseReceiptRouter);
 
 module.exports = router;

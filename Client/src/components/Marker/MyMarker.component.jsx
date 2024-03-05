@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
-import { Marker } from 'react-leaflet';
-import { useDispatch } from 'react-redux';
+import { Marker, Circle } from 'react-leaflet';
+
+import { useDispatch, useSelector } from 'react-redux';
 
 import { setCurrentLocation } from '../../redux/routingSlice';
 
 function MyMarker() {
     const [coords, setCoords] = useState({ lat: 0, lng: 0 });
-
     const dispatch = useDispatch();
+    const radius = useSelector((state) => state.search.radius);
 
     useEffect(() => {
         const navigate = navigator.geolocation.watchPosition(
@@ -22,10 +23,10 @@ function MyMarker() {
                 console.log(error);
             },
             {
-                timeout: 10000,
                 enableHighAccuracy: true
             }
         );
+
         return () => {
             navigator.geolocation.clearWatch(navigate);
         };
@@ -36,10 +37,13 @@ function MyMarker() {
     }, [coords, dispatch]);
 
     return (
-        <Marker
-            position={[coords.lat, coords.lng]}
-            zIndexOffset={99999}
-        ></Marker>
+        <>
+            <Marker
+                position={[coords.lat, coords.lng]}
+                zIndexOffset={99999}
+            ></Marker>
+            <Circle center={[coords.lat, coords.lng]} radius={radius * 1000} />
+        </>
     );
 }
 

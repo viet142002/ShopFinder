@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux';
 import { useEffect, Suspense } from 'react';
 
 import DefaultLayout from './layouts/DefaultLayout';
-// import HomePage from './pages/Home/HomePage';
 import Profile from './pages/Profile/ProfilePage';
 import Login from './pages/Auth/Login/LoginPage';
 import Register from './pages/Auth/Register/RegisterPage';
@@ -17,8 +16,7 @@ import ReportPage from './pages/Admin/ReportPage';
 import NotificationPage from './pages/Admin/NotificationPage';
 
 import DashboardRetailer from './pages/Retailer/DashboardRetailer';
-import ImportProduct from './pages/Retailer/ImportProduct';
-import ExportProduct from './pages/Retailer/ExportProduct';
+import WarehouseManager from './pages/Retailer/WarehouseManager/WarehouseManager';
 import ManageOrder from './pages/Retailer/ManageOrder';
 import ManageOrderDetail from './pages/Retailer/ManageOrderDetail';
 import StatisticRetailer from './pages/Retailer/StatisticRetailer';
@@ -26,6 +24,10 @@ import ManageRetailerProfile from './pages/Retailer/ManageRetailerProfile';
 import ManageProduct from './pages/Retailer/Product/ManageProduct';
 import AddAndEditProduct from './pages/Retailer/Product/AddAndEditProduct';
 import ManagerProductDetail from './pages/Retailer/Product/ManagerProductDetail';
+import ImportWarehouse from './pages/Retailer/WarehouseManager/ImportWarehouse';
+
+import HomePage from './pages/Home/HomePage';
+import ShareStore from './pages/ShareStore/ShareStore';
 
 import { routesConstant } from './routes/routesConstant';
 
@@ -60,6 +62,15 @@ function App() {
                     />
 
                     <Route path="/" element={<DefaultLayout />}>
+                        <Route index element={<HomePage />} />
+                        <Route
+                            path="/share-store"
+                            element={
+                                <ProtectRoute>
+                                    <ShareStore />
+                                </ProtectRoute>
+                            }
+                        />
                         <Route
                             path={routesConstant.profile.path}
                             element={
@@ -118,11 +129,11 @@ function App() {
                         <Route path="product" element={<ManageProduct />} />
                         <Route
                             path="import-product"
-                            element={<ImportProduct />}
+                            element={<WarehouseManager isImport />}
                         />
                         <Route
                             path="export-product"
-                            element={<ExportProduct />}
+                            element={<WarehouseManager isImport={false} />}
                         />
                         <Route path="order" element={<ManageOrder />} />
                         <Route
@@ -148,6 +159,14 @@ function App() {
                         <Route
                             path="product/detail/:id"
                             element={<ManagerProductDetail />}
+                        />
+                        <Route
+                            path="import-product/add-warehouse"
+                            element={<ImportWarehouse />}
+                        />
+                        <Route
+                            path="import-product/:id"
+                            element={<ImportWarehouse />}
                         />
                     </Route>
                 </Routes>

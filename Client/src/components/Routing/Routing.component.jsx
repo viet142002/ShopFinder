@@ -15,12 +15,12 @@ const Routing = () => {
     const routingControl = useRef(null);
 
     const destination = useSelector((state) => state.routing.markSelected);
-    const currentLocation = useSelector((state) => state.routing.current);
+    const fixedLocation = useSelector((state) => state.routing.fixedLocation);
     const showRouting = useSelector((state) => state.routing.showRouting);
 
     useEffect(() => {
         // check if we have all the data we need to show routing
-        if (!currentLocation || !destination || !showRouting) {
+        if (!fixedLocation || !destination || !showRouting) {
             if (!routingControl.current) return;
             map.removeControl(routingControl.current);
             return;
@@ -32,10 +32,68 @@ const Routing = () => {
             }
         };
 
+        L.Routing.Localization['vi'] = {
+            directions: {
+                N: 'bắc',
+                NE: 'đông bắc',
+                E: 'đông',
+                SE: 'đông nam',
+                S: 'nam',
+                SW: 'tây nam',
+                W: 'tây',
+                NW: 'tây bắc',
+                SlightRight: 'rẽ nhẹ sang phải',
+                Right: 'rẽ phải',
+                SharpRight: 'rẽ phải dốc',
+                SlightLeft: 'rẽ nhẹ sang trái',
+                Left: 'rẽ trái',
+                SharpLeft: 'rẽ trái dốc',
+                Uturn: 'quay đầu'
+            },
+            instructions: {
+                // instruction, postfix if the road is named
+                Head: ['Đi thẳng {dir}', ' trên {road}'],
+                Continue: ['Tiếp tục {dir}', ' trên {road}'],
+                TurnAround: ['Quay đầu'],
+                WaypointReached: ['Điểm đến'],
+                Roundabout: ['Rẽ {exitStr} tại vòng xuyến', ' trên {road}'],
+                DestinationReached: ['Đã đến nơi đến'],
+                Fork: ['Tại ngã tư, rẽ {modifier}', ' trên {road}'],
+                Merge: ['Hợp nhất {modifier}', ' trên {road}'],
+                OnRamp: ['Rẽ {modifier} tại đường nối', ' trên {road}'],
+                OffRamp: ['Rẽ {modifier} tại đường thoát', ' trên {road}'],
+                EndOfRoad: ['Rẽ {modifier} tại cuối đường', ' trên {road}'],
+                Onto: 'trên {road}'
+            },
+            formatOrder: function (n) {
+                return n + '.';
+            },
+            ui: {
+                startPlaceholder: 'Bắt đầu',
+                viaPlaceholder: 'Qua {viaNumber}',
+                endPlaceholder: 'Đích'
+            },
+            units: {
+                meters: 'm',
+                kilometers: 'km',
+                yards: 'yd',
+                miles: 'mi',
+                hours: 'giờ',
+                minutes: 'phút',
+                seconds: 'giây'
+            },
+            error: {
+                server: 'Lỗi máy chủ',
+                notFound: 'Không tìm thấy đường đi',
+                forbidden: 'Không được phép truy cập',
+                unknown: 'Lỗi không xác định'
+            }
+        };
         const createNewRoutingControl = () => {
             return L.Routing.control({
+                language: 'vi',
                 waypoints: [
-                    L.latLng(currentLocation.lat, currentLocation.lng),
+                    L.latLng(fixedLocation.lat, fixedLocation.lng),
                     L.latLng(destination.lat, destination.lng)
                 ],
                 lineOptions: {
@@ -70,6 +128,7 @@ const Routing = () => {
                     name: item.name
                 };
             });
+
             const arr = e.routes.map((item) => ({
                 instructions: item.instructions,
                 summary: item.summary,
@@ -87,7 +146,7 @@ const Routing = () => {
         routingControl.current = newRoutingControl;
 
         newRoutingControl.addTo(map);
-    }, [destination, currentLocation, map, dispatch, showRouting]);
+    }, [destination, fixedLocation, map, dispatch, showRouting]);
 
     return null;
 };

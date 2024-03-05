@@ -7,7 +7,7 @@ const imageSchema = new mongoose.Schema({
     },
     name: {
         type: String,
-        default: '',
+        default: 'image',
     },
 });
 

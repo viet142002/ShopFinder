@@ -6,25 +6,24 @@ import { UserOutlined } from '@ant-design/icons';
 import {
     MdOutlineDashboard,
     MdOutlineLogout,
-    MdOutlineNotifications,
     MdOutlineHome
 } from 'react-icons/md';
 import { BsBox } from 'react-icons/bs';
 import { VscGitPullRequestGoToChanges } from 'react-icons/vsc';
-import { CiExport, CiImport } from 'react-icons/ci';
+import { CiImport } from 'react-icons/ci';
 
 import { unsetUser } from '../../redux/userSlice';
 
 const { Sider } = Layout;
-function getItem(label, key, icon, children, type) {
-    return {
-        key,
-        icon,
-        children,
-        label,
-        type
-    };
-}
+// function getItem(label, key, icon, children, type) {
+//     return {
+//         key,
+//         icon,
+//         children,
+//         label,
+//         type
+//     };
+// }
 const items = [
     {
         key: 'dashboard',
@@ -41,10 +40,15 @@ const items = [
         icon: <VscGitPullRequestGoToChanges size={18} />,
         label: 'Đơn hàng'
     },
-    getItem('Quản lý kho', 'sub1', <MdOutlineNotifications size={18} />, [
-        getItem('Nhập kho', 'import-product', <CiImport size={18} />),
-        getItem('Xuất kho', 'export-product', <CiExport size={18} />)
-    ]),
+    {
+        key: 'import-product',
+        icon: <CiImport size={18} />,
+        label: 'Nhập hàng'
+    },
+    // getItem('Quản lý kho', 'sub1', <MdOutlineNotifications size={18} />, [
+    //     getItem('Nhập kho', 'import-product', <CiImport size={18} />),
+    //     getItem('Xuất kho', 'export-product', <CiExport size={18} />)
+    // ]),
     {
         key: 'profile',
         icon: <UserOutlined />,
@@ -71,9 +75,9 @@ function SiderManagerRetailer() {
             case 'import-product':
                 navigate('./import-product');
                 break;
-            case 'export-product':
-                navigate('./export-product');
-                break;
+            // case 'export-product':
+            //     navigate('./export-product');
+            //     break;
             case '6':
                 navigate('/');
                 break;

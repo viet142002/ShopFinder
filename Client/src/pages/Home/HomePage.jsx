@@ -1,18 +1,22 @@
 import { useSelector } from 'react-redux';
-// import 'leaflet/dist/leaflet.css';
+import 'leaflet/dist/leaflet.css';
 
-// import Map from '../../components/Map/Map.component';
+import Map from '../../components/Map/Map.component';
 import HeaderMap from '../../components/Layouts/HeaderMap.component';
 import SiderMarkSelect from '../../components/SiderMarkSelect/SiderMarkSelect.component';
 
 function HomePage() {
-    // const p = useSelector((state) => state.routing.current);
+    const p = useSelector((state) => state.routing.fixedLocation);
+    const markSelected = useSelector((state) => state.routing.markSelected);
+
     return (
-        <div className="overflow-hidden absolute top-0 left-0 h-dvh">
-            {/* {p.lat !== 0 ? <Map /> : 'loading'} */}
+        <>
             <HeaderMap />
-            <SiderMarkSelect />
-        </div>
+            {p.lat !== 0 ? <Map /> : 'loading'}
+            {markSelected.lng && (
+                <SiderMarkSelect markSelected={markSelected} />
+            )}
+        </>
     );
 }
 

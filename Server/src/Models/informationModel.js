@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
-const retailerSchema = new mongoose.Schema({
+const informationSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        unique: [true, 'Retailer name already exists'],
+        unique: [true, 'Store name already exists'],
     },
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -13,10 +13,6 @@ const retailerSchema = new mongoose.Schema({
     location: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Location',
-    },
-    timework: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'TimeWork',
     },
     type: {
         type: String,
@@ -36,15 +32,6 @@ const retailerSchema = new mongoose.Schema({
             ref: 'Image',
         },
     ],
-    logo: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Image',
-    },
-    status: {
-        type: String,
-        enum: ['pending', 'approved', 'rejected'],
-        default: 'pending',
-    },
 });
 
-module.exports = mongoose.model('Retailer', retailerSchema);
+module.exports = mongoose.model('Information_Community', informationSchema);

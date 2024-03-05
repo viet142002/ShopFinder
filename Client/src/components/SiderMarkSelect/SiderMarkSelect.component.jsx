@@ -20,10 +20,10 @@ function SiderMarkSelect({ markSelected }) {
         <section
             className={clsx(
                 'h-full w-[400px] bg-white absolute z-[999] top-0 shadow-2xl transition-all duration-[500ms] blur-siderInfo',
-                isCollapsed || !markSelected.lat ? '-left-[400px]' : 'left-0'
+                isCollapsed || !markSelected?.lat ? '-left-[400px]' : 'left-0'
             )}
         >
-            {markSelected.lat && (
+            {markSelected?.lat && (
                 <>
                     <div className="h-[30%]">
                         <img
