@@ -1,6 +1,6 @@
 import { Input, Space, Form, Select } from 'antd';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { setValues } from '../../redux/searchSlice.js';
 
@@ -8,27 +8,32 @@ import { typeLocations } from '../../utils/typeConstraint.js';
 
 function SearchLocation() {
     const dispatch = useDispatch();
+    const dataSearch = useSelector((state) => state.search);
     const [search, setSearch] = useState('');
 
     useEffect(() => {
         if (search === '') {
+            // dispatch(setValues({ name: '' }));
             return;
         }
-        const fetchData = setTimeout(async () => {
-            try {
-                console.log('fetch data');
-            } catch (err) {
-                console.log(err);
-            }
-        }, 1000);
+        const timeOutId = setTimeout(() => {
+            dispatch(setValues({ name: search }));
+        }, 500);
 
         return () => {
-            clearTimeout(fetchData);
+            clearTimeout(timeOutId);
         };
-    }, [search]);
+    }, [search, dispatch]);
 
     return (
-        <Form size="large" initialValues={{ type: 'all', radius: 5 }}>
+        <Form
+            size="large"
+            initialValues={{
+                search: dataSearch.name,
+                type: 'all',
+                radius: dataSearch.radius
+            }}
+        >
             <Space>
                 <Form.Item name="search">
                     <Input
@@ -37,7 +42,6 @@ function SearchLocation() {
                         placeholder="Tên cửa hàng"
                         onChange={(e) => {
                             setSearch(e.target.value);
-                            dispatch(setValues({ search: e.target.value }));
                         }}
                     />
                 </Form.Item>
@@ -45,7 +49,7 @@ function SearchLocation() {
                     <Input
                         type="number"
                         placeholder="Bán kính"
-                        className="w-20"
+                        className="w-[90px]"
                         suffix="km"
                         onChange={(e) => {
                             dispatch(setValues({ radius: e.target.value }));
@@ -69,14 +73,6 @@ function SearchLocation() {
                         })}
                     </Select>
                 </Form.Item>
-                {/* <Form.Item>
-                        <Button
-                            className="bg-blue-500"
-                            type="primary"
-                            htmlType="submit"
-                            icon={<SearchOutlined />}
-                        />
-                    </Form.Item> */}
             </Space>
         </Form>
     );

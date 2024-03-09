@@ -17,7 +17,7 @@ const columns = [
             return (
                 <img
                     className="rounded-md object-cover"
-                    src={'http://localhost:3001' + images[0].path}
+                    src={import.meta.env.VITE_APP_API_URL + images[0].path}
                     alt="product"
                     width="100"
                 />

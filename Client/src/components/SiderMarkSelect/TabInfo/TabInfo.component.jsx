@@ -2,13 +2,14 @@ import { Tabs } from 'antd';
 
 import Overview from '../Overview/Overview.component';
 import RatingInfo from '../Rating/RatingInfo.component';
+import HTMLRenderer from '../../HTMLRenderer/HTMLRenderer.component';
 
-function TabInfo() {
+function TabInfo({ info }) {
     const items = [
         {
             key: 1,
             label: 'Tổng quan',
-            children: <Overview />
+            children: <Overview info={info} />
         },
         {
             key: 2,
@@ -18,7 +19,9 @@ function TabInfo() {
         {
             key: 3,
             label: 'Giới thiệu',
-            children: <div>Giới thiệu</div>
+            children: (
+                <HTMLRenderer className="mx-10" htmlString={info.description} />
+            )
         }
     ];
 

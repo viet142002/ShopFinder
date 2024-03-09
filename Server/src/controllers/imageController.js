@@ -7,7 +7,7 @@ const imageController = {
             let images = [];
             for (let i = 0; i < files.length; i++) {
                 const image = new Image({
-                    path: '/' + files[i].path.replace(/\\/g, '/'),
+                    path: files[i].path.replace(/\\/g, '/').slice(6),
                     name: files[i].filename,
                 });
 

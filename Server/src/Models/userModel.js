@@ -24,16 +24,17 @@ const userSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        // active: user can normally login
-        // blocked: user can't login
-        // pending: user waiting for admin to approve retailer and allow to login
-        enum: ['active', 'blocked', 'pending'],
+        enum: ['active', 'blocked'],
         default: 'active',
+    },
+    isPendingRetailer: {
+        type: Boolean,
+        default: false,
     },
     role: {
         type: String,
-        enum: ['user', 'admin', 'retailer'],
-        default: 'user',
+        enum: ['customer', 'admin', 'retailer'],
+        default: 'customer',
     },
 });
 

@@ -1,48 +1,50 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Marker, Circle } from 'react-leaflet';
-
 import { useDispatch, useSelector } from 'react-redux';
+import { Spin } from 'antd';
 
 import { setCurrentLocation } from '../../redux/routingSlice';
 
 function MyMarker() {
-    const [coords, setCoords] = useState({ lat: 0, lng: 0 });
     const dispatch = useDispatch();
     const radius = useSelector((state) => state.search.radius);
+    const current = useSelector((state) => state.routing.current);
 
     useEffect(() => {
-        const navigate = navigator.geolocation.watchPosition(
-            (position) => {
-                setCoords({
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                });
-            },
-            (error) => {
-                alert('Error getting location');
-                console.log(error);
-            },
-            {
-                enableHighAccuracy: true
-            }
-        );
+        const getCurrentPosition = () =>
+            navigator.geolocation.watchPosition(
+                (position) => {
+                    if (position.coords.accuracy < 200) {
+                        dispatch(
+                            setCurrentLocation({
+                                lat: position.coords.latitude,
+                                lng: position.coords.longitude
+                            })
+                        );
+                    }
+                },
+                (error) => {
+                    alert('Error getting location');
+                    console.log(error);
+                }
+            );
+        const navigate = getCurrentPosition();
 
         return () => {
             navigator.geolocation.clearWatch(navigate);
         };
-    }, []);
-
-    useEffect(() => {
-        dispatch(setCurrentLocation(coords));
-    }, [coords, dispatch]);
+    }, [dispatch]);
 
     return (
         <>
             <Marker
-                position={[coords.lat, coords.lng]}
+                position={[current.lat, current.lng]}
                 zIndexOffset={99999}
             ></Marker>
-            <Circle center={[coords.lat, coords.lng]} radius={radius * 1000} />
+            <Circle
+                center={[current.lat, current.lng]}
+                radius={radius * 1000}
+            />
         </>
     );
 }

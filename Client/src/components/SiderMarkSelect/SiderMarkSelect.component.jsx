@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
+import { Carousel, Image } from 'antd';
 import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
 
@@ -16,6 +17,7 @@ function SiderMarkSelect({ markSelected }) {
         setIsCollapsed(false);
     }, [markSelected]);
 
+    console.log('info', info);
     return (
         <section
             className={clsx(
@@ -25,16 +27,34 @@ function SiderMarkSelect({ markSelected }) {
         >
             {markSelected?.lat && (
                 <>
-                    <div className="h-[30%]">
-                        <img
-                            className="w-full h-full object-cover"
-                            src={info.image}
-                            alt=""
-                        />
-                    </div>
+                    {/* <div> */}
+                    <Carousel
+                        autoplay
+                        autoplaySpeed={5000}
+                        effect="fade"
+                        dotPosition="bottom"
+                        className="w-full h-[300px] overflow-hidden relative"
+                    >
+                        {info.images.map((image, index) => (
+                            <div
+                                key={index}
+                                className="bg-gray-300 h-[300px] !flex justify-center"
+                            >
+                                <Image
+                                    className="!h-full"
+                                    src={
+                                        import.meta.env.VITE_APP_API_URL +
+                                        image.path
+                                    }
+                                    alt=""
+                                />
+                            </div>
+                        ))}
+                    </Carousel>
+                    {/* </div> */}
 
                     {/* button Collapse */}
-                    <div className="absolute top-[50%] z-[998] left-full">
+                    <div className="hidden md:block absolute top-[50%] z-[998] left-full">
                         <button
                             className="px-1 py-4 bg-white opacity-95 shadow-inner rounded-[0_4px_4px_0]"
                             onClick={() => setIsCollapsed(!isCollapsed)}
@@ -52,8 +72,11 @@ function SiderMarkSelect({ markSelected }) {
                             name={info.name}
                             rate={info.rate}
                             type={info.type}
+                            isCommunity={
+                                info.informationType === 'Information_Community'
+                            }
                         />
-                        <TabInfo />
+                        <TabInfo info={info} />
                     </div>
                 </>
             )}

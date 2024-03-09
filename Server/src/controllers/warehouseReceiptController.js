@@ -41,8 +41,18 @@ const warehouseReceiptController = {
     // Get all warehouse receipts
     async getWarehouseReceipts(req, res) {
         try {
-            const warehouseReceipts = await WarehouseReceipt.find();
-            res.status(200).json({
+            const { _id } = req.user;
+            const warehouseReceipts = await WarehouseReceipt.find({
+                retailer: _id,
+            }).populate({
+                path: 'products.product',
+                select: 'name price images',
+                populate: {
+                    path: 'images',
+                    select: 'path',
+                },
+            });
+            return res.status(200).json({
                 warehouseReceipts,
                 message: 'All warehouse receipts',
             });

@@ -49,7 +49,7 @@ function HeaderLayout({ ...props }) {
                     navigate('/retailer/dashboard');
                     break;
                 }
-                if (data.status === 'pending') {
+                if (data.isPendingRetailer === true) {
                     navigate('/register-retailer-pending');
                     break;
                 }
@@ -77,7 +77,7 @@ function HeaderLayout({ ...props }) {
                 <Menu
                     theme="light"
                     mode="inline"
-                    defaultSelectedKeys={['1']}
+                    defaultSelectedKeys={'home'}
                     onClick={handleClick}
                     items={[
                         {

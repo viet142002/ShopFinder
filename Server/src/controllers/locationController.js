@@ -52,6 +52,19 @@ const locationController = {
     getLocations: async (req, res) => {
         try {
             const { radius, lat, lng, type = 'all', name = '' } = req.query;
+            let typeArray = [
+                'electronics',
+                'furniture',
+                'clothes',
+                'food',
+                'cafe',
+                'other',
+            ];
+            if (type !== 'all' && !typeArray.includes(type)) {
+                return res.status(400).json({
+                    message: 'Invalid type',
+                });
+            }
 
             // Validate input parameters (optional but recommended)
             if (!radius || !lat || !lng) {
@@ -61,40 +74,14 @@ const locationController = {
                 });
             }
 
-            // Build the aggregation pipeline
-            // const pipeline = [
-            //     {
-            //         $geoNear: {
-            //             near: {
-            //                 type: 'Point',
-            //                 coordinates: [parseFloat(lng), parseFloat(lat)],
-            //             },
-            //             distanceField: 'distance',
-            //             spherical: true,
-            //             maxDistance: parseFloat(radius) * 1000,
-            //         },
-            //     },
-            // ];
-
-            // if (!radius) {
-            //     pipeline.pop();
-            // }
-
             // populate information information.images address
-            const locations = await Location.find({
+            // radius in km
+            let locations = await Location.find({
                 loc: {
                     $geoWithin: {
-                        $centerSphere: [
-                            [parseFloat(lng), parseFloat(lat)],
-                            radius,
-                        ],
+                        $centerSphere: [[lng, lat], radius / 6371],
                     },
                 },
-                // type,
-                // 'information.name': {
-                //     $regex: name,
-                //     $options: 'i',
-                // },
             })
                 .populate({
                     path: 'information',
@@ -102,101 +89,30 @@ const locationController = {
                         path: 'images',
                     },
                 })
-                .populate('address');
+                .populate('address')
+                .where('type')
+                .equals(type === 'all' ? { $ne: '' } : type);
 
-            return res.status(200).json({
-                locations,
-                message: radius
-                    ? 'Locations within specified radius retrieved successfully'
-                    : 'Locations retrieved successfully',
-            });
-        } catch (error) {
-            console.error(error); // Log the error for debugging
-            return res.status(500).json({ message: error.message }); // Generic error message
-        }
-    },
-    createTest: async (req, res) => {
-        try {
-            const { lat, lng, address, type, information, informationType } =
-                req.body;
-            if (
-                [
-                    lat,
-                    lng,
-                    address,
-                    type,
-                    information,
-                    informationType,
-                ].includes(undefined)
-            ) {
-                return res
-                    .status(400)
-                    .json({ message: 'Missing required fields' });
-            }
-            console.log(req.body);
-            const location = new Location({
-                loc: {
-                    type: 'Point',
-                    coordinates: [parseFloat(lng), parseFloat(lat)],
-                },
-                // address: new mongoose.Types.ObjectId(address),
-                type,
-                // information: new mongoose.Types.ObjectId(information),
-                // informationType,
-            });
-            await location.save();
-            res.status(201).json({
-                location,
-                message: 'Location created successfully',
-            });
-        } catch (error) {
-            return res.status(500).json({ message: error.message }); // Generic error message
-        }
-    },
-    getNear: async (req, res) => {
-        try {
-            const { radius, lat, lng, type = 'all', name = '' } = req.query;
-
-            if (!radius || !lat || !lng) {
-                return res.status(400).json({
-                    message:
-                        'Missing required parameters: radius, lat, and lng',
+            // filter by name
+            if (name !== '') {
+                locations = locations.filter(location => {
+                    const regex = new RegExp(name, 'i');
+                    if (location.informationType === 'Information_Community') {
+                        return true;
+                    }
+                    return (
+                        location.information.name.match(regex) &&
+                        location.information.status === 'approved'
+                    );
+                });
+            } else {
+                locations = locations.filter(location => {
+                    if (location.informationType === 'Information_Community')
+                        return true;
+                    return location.information.status === 'approved';
                 });
             }
-
-            const pipeline = [
-                {
-                    $where: {
-                        $or: [
-                            { type },
-                            {
-                                'information.name': {
-                                    $regex: name,
-                                    $options: 'i',
-                                },
-                            },
-                        ],
-                    },
-                },
-                {
-                    $geoNear: {
-                        near: {
-                            type: 'Point',
-                            coordinates: [parseFloat(lng), parseFloat(lat)],
-                        },
-                        distanceField: 'distance',
-                        spherical: true,
-                        maxDistance: parseFloat(radius) * 1000,
-                    },
-                },
-            ];
-
-            if (!radius) {
-                pipeline.pop();
-            }
-
-            const locations = await Location.aggregate(pipeline);
-
+            console.log(locations);
             return res.status(200).json({
                 locations,
                 message: radius

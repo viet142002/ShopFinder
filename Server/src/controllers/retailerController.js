@@ -1,12 +1,19 @@
 const Retailer = require('../Models/retailerModel');
 const User = require('../Models/userModel');
-const Location = require('../Models/locationModel');
+
+const imageController = require('./imageController');
+const addressController = require('./addressController');
+const locationController = require('./locationController');
 
 const retailerController = {
     register: async (req, res) => {
         try {
-            const { lat, lng, name, phone, type, description } = req.body;
+            const { location, name, phone, type, description, mode, address } =
+                req.body;
             const { email } = req.user;
+            const images = req.files;
+
+            console.log(req.body);
 
             const user = await User.findOne({ email });
             if (!user) {
@@ -15,24 +22,35 @@ const retailerController = {
                 });
             }
 
-            user.status = 'pending';
+            user.isPendingRetailer = true;
 
-            const location = new Location({
-                lat,
-                lng,
-            });
+            const newImages = await imageController.createImage(images);
+            const newAddress = await addressController.create(
+                JSON.parse(address)
+            );
 
             const newRetailer = new Retailer({
-                location: location._id,
                 user: user._id,
                 name,
                 phone,
                 type,
+                mode,
                 description,
+                images: newImages || [],
+            });
+            const { lat, lng } = JSON.parse(location);
+            const newLocation = await locationController.create({
+                lat,
+                lng,
+                address: newAddress._id,
+                type: type,
+                information: newRetailer,
+                informationType: 'Retailer',
             });
 
+            newRetailer.location = newLocation._id;
+
             await user.save();
-            await location.save();
             await newRetailer.save();
 
             return res.status(200).json({

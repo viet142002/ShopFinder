@@ -36,6 +36,7 @@ const routingSlice = createSlice({
             state.showRouting = false;
         },
         setShowRouting: (state) => {
+            state.fixedLocation = state.current;
             state.showRouting = !state.showRouting;
         },
         setZoom: (state, action) => {
@@ -51,20 +52,42 @@ const routingSlice = createSlice({
 // };
 
 // Thunk để lấy vị trí từ Geolocation API
-export const setFirstLocation = () => async (dispatch) => {
+export const setFirstLocation = () => (dispatch) => {
     try {
-        const position = await new Promise((resolve, reject) => {
-            navigator.geolocation.getCurrentPosition(resolve, reject);
-        });
-        dispatch(
-            setFixedLocation({
-                location: {
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude
-                }
-                // address: addressData
-            })
-        );
+        // get current position if accuracy > 100 then get again use getCurrentPosition
+        const getFirstCurrent = () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (p) => {
+                        console.log(p);
+                        if (p.coords.accuracy < 200) {
+                            dispatch(
+                                setFixedLocation({
+                                    location: {
+                                        lat: p.coords.latitude,
+                                        lng: p.coords.longitude
+                                    }
+                                })
+                            );
+                            dispatch(
+                                setCurrentLocation({
+                                    lat: p.coords.latitude,
+                                    lng: p.coords.longitude
+                                })
+                            );
+                        } else {
+                            getFirstCurrent();
+                        }
+                    },
+                    (error) => console.log(error),
+                    {
+                        enableHighAccuracy: true,
+                        maximumAge: 0
+                    }
+                );
+            }
+        };
+        getFirstCurrent();
     } catch (error) {
         console.error('Error getting current location:', error);
     }

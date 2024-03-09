@@ -12,9 +12,9 @@ const InformationCommunityController = {
             const images = req.files;
             const user = req.user._id;
 
-            console.log({ name, location, address, type, phone, description });
-            console.log(req.files);
-            console.log(JSON.parse(address));
+            // console.log({ name, location, address, type, phone, description });
+            // console.log(req.files);
+            // console.log(JSON.parse(address));
 
             if (
                 ['name', 'location', 'address', 'type', 'description'].some(

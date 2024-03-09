@@ -1,16 +1,31 @@
+import {
+    Form,
+    Input,
+    Button,
+    Col,
+    Row,
+    Space,
+    Select,
+    Layout,
+    Radio,
+    Tooltip
+} from 'antd';
 import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { Form, Layout, Input, Button, Col, Row, Space, Select } from 'antd';
-
-import InputImage from '../../components/InputImage/InputImage.component';
-import EditorFormat from '../../components/EditorFormat/EditorFormat';
-import InputAddress from '../../components/InputAddress/InputAddress.component';
+import { useSelector, useDispatch } from 'react-redux';
+import { QuestionCircleOutlined } from '@ant-design/icons';
 
 import { typeLocations } from '../../utils/typeConstraint';
+import EditorFormat from '../../components/EditorFormat/EditorFormat';
+import InputAddress from '../../components/InputAddress/InputAddress.component';
+import InputImage from '../../components/InputImage/InputImage.component';
 import { shareStore } from '../../api/communityApi';
+import { registerRetailerApi } from '../../api/retailerApi';
 
-const FormatForm = (values, images) => {
+const FormatForm = (values, images, isRegisterRetailer) => {
     const formData = new FormData();
+    if (isRegisterRetailer) {
+        formData.append('mode', values.mode);
+    }
     formData.append('name', values.name);
     formData.append('description', values.description);
     formData.append('type', values.type);
@@ -22,12 +37,13 @@ const FormatForm = (values, images) => {
     return formData;
 };
 
-function ShareStore() {
+function CreateStorePage({ isRegisterRetailer }) {
     const [newImages, setNewImages] = useState([]);
     const [, setDeleteImages] = useState([]);
     const [isCurrentLocation, setIsCurrentLocation] = useState(false);
     const [form] = Form.useForm();
     const fixedLocation = useSelector((state) => state.routing.fixedLocation);
+    const dispatch = useDispatch();
 
     const onFill = () => {
         form.setFieldsValue({
@@ -39,16 +55,33 @@ function ShareStore() {
     };
 
     const onFinish = (values) => {
-        const formData = FormatForm(values, newImages);
-        shareStore(formData).then((data) => {
-            alert(data.message);
-        });
+        if (isRegisterRetailer) {
+            const formData = FormatForm(values, newImages, true);
+            registerRetailerApi(formData).then((data) => {
+                alert(data.message);
+                dispatch({
+                    type: 'user/updateUser',
+                    payload: {
+                        isPendingRetailer: true
+                    }
+                });
+            });
+        } else {
+            const formData = FormatForm(values, newImages);
+            shareStore(formData).then((data) => {
+                alert(data.message);
+            });
+        }
     };
 
     return (
         <Layout className="md:py-2 md:px-4">
             <Layout.Header className="bg-white flex items-center justify-center">
-                <h1 className="text-xl font-bold">Chia sẻ cửa hàng</h1>
+                <h1 className="text-xl font-bold">
+                    {isRegisterRetailer
+                        ? 'Đăng ký bán hàng'
+                        : 'Chia sẻ cửa hàng'}
+                </h1>
             </Layout.Header>
             <Layout.Content className="mt-10">
                 <Form variant="filled" form={form} onFinish={onFinish}>
@@ -149,6 +182,75 @@ function ShareStore() {
                                     </Select>
                                 </Form.Item>
                             </div>
+                            {isRegisterRetailer && (
+                                <div className="flex flex-col gap-2">
+                                    <div className="space-x-2">
+                                        <label htmlFor="mode">
+                                            <span>Chế độ</span>
+                                        </label>
+                                        <Tooltip
+                                            title={
+                                                <table>
+                                                    <tr>
+                                                        <td>Bình thường</td>
+                                                        <td>
+                                                            Quản lý số lượng,
+                                                            bán trực tuyến và
+                                                            tại chổ
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Chỉ phục vụ tại chổ
+                                                        </td>
+                                                        <td>
+                                                            Chỉ phục vụ tại cửa
+                                                            hàng, không quản lý
+                                                            số lượng
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            Không quản lý số
+                                                            lượng
+                                                        </td>
+                                                        <td>
+                                                            Không quản lý số
+                                                            lượng
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            }
+                                            trigger={'click'}
+                                        >
+                                            <QuestionCircleOutlined />
+                                        </Tooltip>
+                                    </div>
+
+                                    <Form.Item
+                                        name="mode"
+                                        rules={[
+                                            {
+                                                required: true,
+                                                message:
+                                                    'Vui lòng chọn loại cửa hàng'
+                                            }
+                                        ]}
+                                    >
+                                        <Radio.Group>
+                                            <Radio.Button value="normal">
+                                                Bình thường
+                                            </Radio.Button>
+                                            <Radio.Button value="only-pickup">
+                                                Chỉ phục vụ tại chổ
+                                            </Radio.Button>
+                                            <Radio.Button value="not-quantity">
+                                                Không quản lý số lượng
+                                            </Radio.Button>
+                                        </Radio.Group>
+                                    </Form.Item>
+                                </div>
+                            )}
                             <div className="flex flex-col gap-2">
                                 <label htmlFor="description">Mô tả</label>
                                 <Form.Item
@@ -193,4 +295,4 @@ function ShareStore() {
     );
 }
 
-export default ShareStore;
+export default CreateStorePage;

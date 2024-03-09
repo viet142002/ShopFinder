@@ -12,7 +12,7 @@ import { getLocations } from '../../api/locationApi';
 function MarkerCus() {
     const [locations, setLocations] = useState([]);
     const dispatch = useDispatch();
-    const fixedLocation = useSelector((state) => state.routing.fixedLocation);
+    const current = useSelector((state) => state.routing.current);
     const { radius, type, name } = useSelector((state) => state.search);
 
     const handleOnClick = (item) => {
@@ -22,25 +22,26 @@ function MarkerCus() {
                     lat: item.loc.coordinates[1],
                     lng: item.loc.coordinates[0]
                 },
-                info: item.information
+                info: {
+                    ...item.information,
+                    informationType: item.informationType,
+                    address: item.address
+                }
             })
         );
     };
 
     useEffect(() => {
         getLocations({
-            lat: fixedLocation.lat,
-            lng: fixedLocation.lng,
+            lat: current.lat,
+            lng: current.lng,
             radius: radius,
             type: type,
             name: name
         }).then((data) => {
-            console.log(data);
             setLocations(data.locations);
         });
-    }, [fixedLocation, radius, type, name]);
-
-    console.log(locations);
+    }, [current.lat, current.lng, radius, type, name]);
 
     return (
         <>

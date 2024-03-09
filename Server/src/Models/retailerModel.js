@@ -10,13 +10,14 @@ const retailerSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
+    mode: {
+        type: String,
+        enum: ['normal', 'only-pickup', 'not-quantity'],
+        default: 'normal',
+    },
     location: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Location',
-    },
-    timework: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'TimeWork',
     },
     type: {
         type: String,

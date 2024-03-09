@@ -1,4 +1,4 @@
-import { Carousel } from 'antd';
+import { Carousel, Image } from 'antd';
 import { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 
@@ -30,7 +30,9 @@ function InputImage({ setNewImages, setDeleteImages, images, ...props }) {
             setImagePreview((prev) =>
                 [...prev].concat(
                     images.map((image) => ({
-                        path: `http://localhost:3001${image.path}`,
+                        path: `${import.meta.env.VITE_APP_API_URL}${
+                            image.path
+                        }`,
                         name: image.name,
                         _id: image._id
                     }))
@@ -69,12 +71,11 @@ function InputImage({ setNewImages, setDeleteImages, images, ...props }) {
                 )}
                 <Carousel autoplay>
                     {imagePreview.map((image, index) => (
-                        <div key={index} className="relative">
-                            <img
-                                src={image.path}
-                                alt="product"
-                                className="rounded-md w-full h-64 object-cover"
-                            />
+                        <div
+                            key={index}
+                            className="relative bg-gray-300 !flex justify-center"
+                        >
+                            <Image className="!h-64" src={image.path} alt="" />
                             <button
                                 type="button"
                                 className="absolute top-2 right-2 bg-white p-1 rounded-full"

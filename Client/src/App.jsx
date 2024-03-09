@@ -1,12 +1,11 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useEffect, Suspense } from 'react';
+import { useEffect } from 'react';
 
 import DefaultLayout from './layouts/DefaultLayout';
 import Profile from './pages/Profile/ProfilePage';
 import Login from './pages/Auth/Login/LoginPage';
 import Register from './pages/Auth/Register/RegisterPage';
-import RegisterRetailer from './pages/RegisterRetailer/RegisterRetailer';
 import RegisterRetailerPending from './pages/RegisterRetailer/RegisterRetailerPending';
 import ProtectRoute from './routes/ProtectRoute';
 import ManageLayout from './layouts/ManageLayout';
@@ -27,10 +26,9 @@ import ManagerProductDetail from './pages/Retailer/Product/ManagerProductDetail'
 import ImportWarehouse from './pages/Retailer/WarehouseManager/ImportWarehouse';
 
 import HomePage from './pages/Home/HomePage';
-import ShareStore from './pages/ShareStore/ShareStore';
+import CreateStore from './pages/CreateStore/CreateStore';
 
 import { routesConstant } from './routes/routesConstant';
-
 import { setFirstLocation } from './redux/routingSlice';
 
 function App() {
@@ -42,135 +40,113 @@ function App() {
 
     return (
         <BrowserRouter>
-            <Suspense fallback={<div>Loading...</div>}>
-                <Routes>
+            <Routes>
+                <Route path={routesConstant.login.path} element={<Login />} />
+                <Route
+                    path={routesConstant.register.path}
+                    element={<Register />}
+                />
+
+                <Route path="/" element={<DefaultLayout />}>
+                    <Route index element={<HomePage />} />
                     <Route
-                        path={routesConstant.login.path}
-                        element={<Login />}
-                    />
-                    <Route
-                        path={routesConstant.register.path}
-                        element={<Register />}
+                        path="/share-store"
+                        element={
+                            <ProtectRoute>
+                                <CreateStore />
+                            </ProtectRoute>
+                        }
                     />
                     <Route
                         path={routesConstant.registerRetailer.path}
                         element={
                             <ProtectRoute>
-                                <RegisterRetailer />
+                                <CreateStore isRegisterRetailer />
                             </ProtectRoute>
                         }
                     />
-
-                    <Route path="/" element={<DefaultLayout />}>
-                        <Route index element={<HomePage />} />
-                        <Route
-                            path="/share-store"
-                            element={
-                                <ProtectRoute>
-                                    <ShareStore />
-                                </ProtectRoute>
-                            }
-                        />
-                        <Route
-                            path={routesConstant.profile.path}
-                            element={
-                                <ProtectRoute>
-                                    <Profile />
-                                </ProtectRoute>
-                            }
-                        />
-                        <Route
-                            path={routesConstant.registerRetailerPending.path}
-                            element={
-                                <ProtectRoute>
+                    <Route
+                        path={routesConstant.profile.path}
+                        element={
+                            <ProtectRoute>
+                                <Profile />
+                            </ProtectRoute>
+                        }
+                    />
+                    <Route
+                        path={routesConstant.registerRetailerPending.path}
+                        element={
+                            <ProtectRoute>
+                                <HomePage>
                                     <RegisterRetailerPending />
-                                </ProtectRoute>
-                            }
-                        />
-                    </Route>
-
-                    <Route
-                        path="/admin"
-                        element={
-                            <ProtectRoute access="admin">
-                                <ManageLayout />
+                                </HomePage>
                             </ProtectRoute>
                         }
-                    >
-                        <Route
-                            index
-                            path="dashboard"
-                            element={<DashboardPage />}
-                        />
-                        <Route
-                            path="request"
-                            element={<RequestRetailerPage />}
-                        />
-                        <Route path="report" element={<ReportPage />} />
-                        <Route
-                            path="notification"
-                            element={<NotificationPage />}
-                        />
-                    </Route>
+                    />
+                </Route>
 
+                <Route
+                    path="/admin"
+                    element={
+                        <ProtectRoute access="admin">
+                            <ManageLayout />
+                        </ProtectRoute>
+                    }
+                >
+                    <Route index path="dashboard" element={<DashboardPage />} />
+                    <Route path="request" element={<RequestRetailerPage />} />
+                    <Route path="report" element={<ReportPage />} />
+                    <Route path="notification" element={<NotificationPage />} />
+                </Route>
+
+                <Route
+                    path="/retailer"
+                    element={
+                        <ProtectRoute access="retailer">
+                            <ManageLayout role="retailer" />
+                        </ProtectRoute>
+                    }
+                >
                     <Route
-                        path="/retailer"
-                        element={
-                            <ProtectRoute access="retailer">
-                                <ManageLayout role="retailer" />
-                            </ProtectRoute>
-                        }
-                    >
-                        <Route
-                            index
-                            path="dashboard"
-                            element={<DashboardRetailer />}
-                        />
-                        <Route path="product" element={<ManageProduct />} />
-                        <Route
-                            path="import-product"
-                            element={<WarehouseManager isImport />}
-                        />
-                        <Route
-                            path="export-product"
-                            element={<WarehouseManager isImport={false} />}
-                        />
-                        <Route path="order" element={<ManageOrder />} />
-                        <Route
-                            path="order/:id"
-                            element={<ManageOrderDetail />}
-                        />
-                        <Route
-                            path="statistic"
-                            element={<StatisticRetailer />}
-                        />
-                        <Route
-                            path="profile"
-                            element={<ManageRetailerProfile />}
-                        />
-                        <Route
-                            path="product/add-product"
-                            element={<AddAndEditProduct />}
-                        />
-                        <Route
-                            path="product/edit-product/:id"
-                            element={<AddAndEditProduct />}
-                        />
-                        <Route
-                            path="product/detail/:id"
-                            element={<ManagerProductDetail />}
-                        />
-                        <Route
-                            path="import-product/add-warehouse"
-                            element={<ImportWarehouse />}
-                        />
-                        <Route
-                            path="import-product/:id"
-                            element={<ImportWarehouse />}
-                        />
-                    </Route>
-                </Routes>
-            </Suspense>
+                        index
+                        path="dashboard"
+                        element={<DashboardRetailer />}
+                    />
+                    <Route path="product" element={<ManageProduct />} />
+                    <Route
+                        path="import-product"
+                        element={<WarehouseManager isImport />}
+                    />
+                    <Route
+                        path="export-product"
+                        element={<WarehouseManager isImport={false} />}
+                    />
+                    <Route path="order" element={<ManageOrder />} />
+                    <Route path="order/:id" element={<ManageOrderDetail />} />
+                    <Route path="statistic" element={<StatisticRetailer />} />
+                    <Route path="profile" element={<ManageRetailerProfile />} />
+                    <Route
+                        path="product/add-product"
+                        element={<AddAndEditProduct />}
+                    />
+                    <Route
+                        path="product/edit-product/:id"
+                        element={<AddAndEditProduct />}
+                    />
+                    <Route
+                        path="product/detail/:id"
+                        element={<ManagerProductDetail />}
+                    />
+                    <Route
+                        path="import-product/add-warehouse"
+                        element={<ImportWarehouse />}
+                    />
+                    <Route
+                        path="import-product/:id"
+                        element={<ImportWarehouse />}
+                    />
+                </Route>
+            </Routes>
         </BrowserRouter>
     );
 }

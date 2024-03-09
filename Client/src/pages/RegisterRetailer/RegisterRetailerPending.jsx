@@ -3,6 +3,8 @@ import { Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 import { getInfoMyRetailerApi } from '../../api/retailerApi';
+import HTMLRenderer from '../../components/HTMLRenderer/HTMLRenderer.component';
+import { typeLocations } from '../../utils/typeConstraint';
 
 function RegisterRetailerPending() {
     const navigate = useNavigate();
@@ -13,7 +15,7 @@ function RegisterRetailerPending() {
     useEffect(() => {
         const getInfo = async () => {
             const res = await getInfoMyRetailerApi();
-            console.log(res);
+
             if (res.message === 'Get info retailer successfully')
                 setInfo(res.retailer);
         };
@@ -30,8 +32,11 @@ function RegisterRetailerPending() {
                 onOk={() => {
                     navigate('/');
                 }}
+                onCancel={() => {
+                    navigate('/');
+                }}
                 open={open}
-                width={1000}
+                className="md:w-1/2"
             >
                 {info.name && (
                     <>
@@ -42,14 +47,10 @@ function RegisterRetailerPending() {
                                   ? 'Đơn của bạn đã bị từ chối!'
                                   : 'Đơn của bạn đã được chấp nhận!'}
                         </h1>
-                        <h3 className="text-xl font-bold mb-4">
-                            Vui lòng đăng nhập lại để vào giao diện quản lý cửa
-                            hàng
-                        </h3>
-                        <h2 className="text-xl font-semibold mb-4">
+                        <h2 className="text-xl font-semibold mb-4 mt-4">
                             Thông tin
                         </h2>
-                        <ul>
+                        <ul className="space-y-2">
                             <li className="pl-8">
                                 <span className="font-medium mr-2">
                                     Tên của hàng:
@@ -58,17 +59,25 @@ function RegisterRetailerPending() {
                             </li>
                             <li className="pl-8">
                                 <span className="font-medium mr-2">Loại:</span>
-                                {info.type}
+                                {
+                                    typeLocations.find(
+                                        (item) => item.value === info.type
+                                    ).label
+                                }
                             </li>
                             <li className="pl-8">
                                 <span className="font-medium mr-2">Mô tả:</span>
-                                {info.description}
+                                <HTMLRenderer
+                                    htmlString={info.description}
+                                    className="ml-2 bg-gray-100 p-2 rounded-md"
+                                />
                             </li>
                             <li className="pl-8">
                                 <span className="font-medium mr-2">
                                     Toạ độ:
                                 </span>
-                                {info.location.lat}, {info.location.lng}
+                                {info.location.loc.coordinates[1]},{' '}
+                                {info.location.loc.coordinates[0]}
                             </li>
                         </ul>
                     </>
