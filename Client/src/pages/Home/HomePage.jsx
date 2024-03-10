@@ -16,9 +16,9 @@ function HomePage({ children }) {
             {p.lat !== 0 ? (
                 <Map />
             ) : (
-                <div className="absolute h-20 w-20 left-1/2 top-1/2 -translate-x-1/2  bg-red-300">
+                <div className="absolute h-20 w-full left-1/2 top-1/2 -translate-x-1/2">
                     <Spin
-                        tip="Đang tải..."
+                        tip="Đang lấy vị trí..."
                         size="large"
                         style={{
                             margin: '0px'

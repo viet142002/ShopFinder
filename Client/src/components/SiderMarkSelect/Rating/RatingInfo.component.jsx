@@ -1,4 +1,6 @@
-import { Rate, Row, Col } from 'antd';
+// TODO: 'FEAT': 'Create fetch rating data from server'
+
+import { Rate, Row, Col, Divider } from 'antd';
 
 import ModalRating from './ModalRating/ModalRating.component';
 
@@ -6,7 +8,7 @@ function RatingInfo() {
     const items = [80, 10, 5, 5, 0];
     return (
         <>
-            <div className="border-b-[1px] border-gray-200">
+            <div className="space-y-2">
                 <Row className="px-siderInfo">
                     <Col span={15}>
                         {items.map((item, index) => (
@@ -38,10 +40,11 @@ function RatingInfo() {
                     </Col>
                 </Row>
 
-                <div className="flex justify-center my-3">
+                <div className="flex justify-center">
                     <ModalRating />
                 </div>
             </div>
+            <Divider style={{ margin: '16px 0px' }} />
         </>
     );
 }

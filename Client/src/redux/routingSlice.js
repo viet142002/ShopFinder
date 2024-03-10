@@ -79,11 +79,7 @@ export const setFirstLocation = () => (dispatch) => {
                             getFirstCurrent();
                         }
                     },
-                    (error) => console.log(error),
-                    {
-                        enableHighAccuracy: true,
-                        maximumAge: 0
-                    }
+                    (error) => console.log(error)
                 );
             }
         };
