@@ -17,7 +17,7 @@ const { Sider } = Layout;
 
 import { unsetUser } from '../../redux/userSlice';
 
-function HeaderLayout({ ...props }) {
+function SideBar({ ...props }) {
     const dispatch = useDispatch();
     const [collapsed, setCollapsed] = useState(true);
 
@@ -142,4 +142,4 @@ function HeaderLayout({ ...props }) {
     );
 }
 
-export default HeaderLayout;
+export default SideBar;
