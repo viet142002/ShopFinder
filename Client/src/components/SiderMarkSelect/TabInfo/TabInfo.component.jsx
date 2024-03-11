@@ -14,7 +14,7 @@ function TabInfo({ info }) {
         {
             key: 2,
             label: 'Đánh giá',
-            children: <RatingInfo />
+            children: <RatingInfo info={info} />
         },
         {
             key: 3,

@@ -4,24 +4,33 @@ import { Button, Modal, Avatar, Form, Input, Rate } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+
+import { addRateApi } from '../../../../api/RateApi';
 
 import UploadImage from '../../../UploadImage/UploadImage.component';
 
 const formatForm = (values) => {
-    const { rate, comment, images } = values;
+    console.log(values);
+    const { rate, comment, images, to, toType } = values;
     const formData = new FormData();
+
     formData.append('rate', rate);
     formData.append('comment', comment);
+    formData.append('to', to);
+    formData.append('toType', toType);
     images.forEach((image) => {
+        console.log(image.originFileObj);
         formData.append('images', image.originFileObj);
     });
     return formData;
 };
 
-function ModalRating() {
+function ModalRating({ setRates }) {
+    const navigate = useNavigate();
     const [form] = Form.useForm();
     const info = useSelector((state) => state.routing.info);
-    const user = useSelector((state) => state.user.data);
+    const { data: user, isAuth } = useSelector((state) => state.user);
     const [open, setOpen] = useState(false);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [fileList, setFileList] = useState([]);
@@ -29,9 +38,19 @@ function ModalRating() {
     const handleOk = () => {
         setConfirmLoading(true);
         form.validateFields()
-            .then((values) => {
-                const formData = formatForm({ ...values, images: fileList });
-                console.log(values);
+            .then(async (values) => {
+                const formData = formatForm({
+                    ...values,
+                    images: fileList,
+                    to: info._id,
+                    toType: info.informationType
+                });
+                const resData = await addRateApi(formData);
+
+                setRates((prev) => [
+                    { ...resData.newRate, from: user },
+                    ...prev
+                ]);
                 form.resetFields();
                 setFileList([]);
                 setConfirmLoading(false);
@@ -49,9 +68,17 @@ function ModalRating() {
         setFileList([]);
         setOpen(false);
     };
+
+    const handleOpenModal = () => {
+        if (!isAuth) {
+            navigate('/login');
+            return;
+        }
+        setOpen(true);
+    };
     return (
         <>
-            <Button onClick={() => setOpen(true)}>Đánh giá</Button>
+            <Button onClick={() => handleOpenModal()}>Đánh giá</Button>
             <Modal
                 title={info.name}
                 centered
@@ -91,10 +118,7 @@ function ModalRating() {
                                     }
                                 ]}
                             >
-                                <Rate
-                                    allowHalf
-                                    className="md:text-3xl text-xl"
-                                />
+                                <Rate className="md:text-3xl text-xl" />
                             </Form.Item>
                         </div>
                         <Form.Item
@@ -111,7 +135,7 @@ function ModalRating() {
                                 placeholder="Nhập bình luận của bạn"
                             ></Input.TextArea>
                         </Form.Item>
-                        <Form.Item name="images">
+                        <Form.Item>
                             <UploadImage
                                 fileList={fileList}
                                 setFileList={setFileList}

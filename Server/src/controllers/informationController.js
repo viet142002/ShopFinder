@@ -1,20 +1,16 @@
-const Information_Community = require('../Models/informationModel');
+const Information = require('../Models/informationModel');
 
 const addressController = require('./addressController');
 const locationController = require('./locationController');
 const imageController = require('./imageController');
 
-const InformationCommunityController = {
+const InformationController = {
     async create(req, res) {
         try {
             const { name, location, address, type, phone, description } =
                 req.body;
             const images = req.files;
             const user = req.user._id;
-
-            // console.log({ name, location, address, type, phone, description });
-            // console.log(req.files);
-            // console.log(JSON.parse(address));
 
             if (
                 ['name', 'location', 'address', 'type', 'description'].some(
@@ -37,7 +33,7 @@ const InformationCommunityController = {
                 JSON.parse(address)
             );
 
-            const information = new Information_Community({
+            const information = new Information({
                 name,
                 user,
                 type,
@@ -53,7 +49,7 @@ const InformationCommunityController = {
                 address: newAddress._id,
                 type: type,
                 information: information._id,
-                informationType: 'Information_Community',
+                informationType: 'Information',
             });
 
             information.location = newLocation._id;
@@ -69,4 +65,4 @@ const InformationCommunityController = {
     },
 };
 
-module.exports = InformationCommunityController;
+module.exports = InformationController;

@@ -34,4 +34,4 @@ const informationSchema = new mongoose.Schema({
     ],
 });
 
-module.exports = mongoose.model('Information_Community', informationSchema);
+module.exports = mongoose.model('Information', informationSchema);

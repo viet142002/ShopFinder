@@ -1,10 +1,12 @@
 // TODO: 'FEAT': 'Create fetch rating data from server'
-
+import { memo, useState } from 'react';
 import { Rate, Row, Col, Divider } from 'antd';
 
 import ModalRating from './ModalRating/ModalRating.component';
+import DisplayRates from '../../DisplayRate/DisplayRate.component';
 
-function RatingInfo() {
+const RatingInfo = memo(function RatingInfo({ info }) {
+    const [rates, setRates] = useState([]);
     const items = [80, 10, 5, 5, 0];
     return (
         <>
@@ -41,12 +43,13 @@ function RatingInfo() {
                 </Row>
 
                 <div className="flex justify-center">
-                    <ModalRating />
+                    <ModalRating setRates={setRates} />
                 </div>
             </div>
             <Divider style={{ margin: '16px 0px' }} />
+            <DisplayRates id={info._id} rates={rates} setRates={setRates} />
         </>
     );
-}
+});
 
 export default RatingInfo;

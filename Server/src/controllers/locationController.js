@@ -97,7 +97,7 @@ const locationController = {
             if (name !== '') {
                 locations = locations.filter(location => {
                     const regex = new RegExp(name, 'i');
-                    if (location.informationType === 'Information_Community') {
+                    if (location.informationType === 'Information') {
                         return true;
                     }
                     return (
@@ -107,12 +107,11 @@ const locationController = {
                 });
             } else {
                 locations = locations.filter(location => {
-                    if (location.informationType === 'Information_Community')
-                        return true;
+                    if (location.informationType === 'Information') return true;
                     return location.information.status === 'approved';
                 });
             }
-            console.log(locations);
+            // console.log(locations);
             return res.status(200).json({
                 locations,
                 message: radius

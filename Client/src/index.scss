@@ -28,6 +28,11 @@
     z-index: 1;
 }
 
+* {
+    scroll-behavior: smooth;
+    scrollbar-gutter: stable 0px;
+}
+
 *::-webkit-scrollbar-button {
     display: none;
 }
