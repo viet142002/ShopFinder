@@ -5,11 +5,21 @@ const mongoose = require('mongoose');
 const rateController = {
     getRates: async (req, res) => {
         try {
-            const { to, limit = 20, skip = 0 } = req.query;
-            const formatTo = new mongoose.Types.ObjectId(to);
+            const { to, limit = 20, skip = 0, userId } = req.query;
+            // const formatTo = new mongoose.Types.ObjectId(to);
+
+            let myRate = null;
+            if (userId) {
+                myRate = await Rate.findOne({
+                    from: userId,
+                    to: to,
+                })
+                    .populate('images reply')
+                    .populate('from', 'firstname lastname avatar');
+            }
 
             const rates = await Rate.find({
-                to: formatTo,
+                to: to,
             })
                 .populate('from', 'firstname lastname avatar')
                 .populate('images reply')
@@ -19,6 +29,7 @@ const rateController = {
 
             return res.status(200).json({
                 rates,
+                myRate,
                 message: 'Get rates successfully',
             });
         } catch (error) {
@@ -135,6 +146,61 @@ const rateController = {
 
             return res.status(200).json({
                 message: 'Rating deleted successfully',
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message,
+            });
+        }
+    },
+    getCountRates: async (req, res) => {
+        try {
+            const { to } = req.query;
+
+            const oneStar = await Rate.countDocuments({
+                to: to,
+                rate: 1,
+            });
+
+            const twoStar = await Rate.countDocuments({
+                to: to,
+                rate: 2,
+            });
+
+            const threeStar = await Rate.countDocuments({
+                to: to,
+                rate: 3,
+            });
+
+            const fourStar = await Rate.countDocuments({
+                to: to,
+                rate: 4,
+            });
+
+            const fiveStar = await Rate.countDocuments({
+                to: to,
+                rate: 5,
+            });
+
+            const total = oneStar + twoStar + threeStar + fourStar + fiveStar;
+            const overage =
+                total === 0
+                    ? 0
+                    : ((oneStar +
+                          twoStar * 2 +
+                          threeStar * 3 +
+                          fourStar * 4 +
+                          fiveStar * 5) /
+                          total) |
+                      0;
+
+            return res.status(200).json({
+                star: {
+                    values: [fiveStar, fourStar, threeStar, twoStar, oneStar],
+                    total,
+                    overage,
+                },
+                message: 'Get count rates successfully',
             });
         } catch (error) {
             return res.status(500).json({

@@ -9,29 +9,31 @@ import { setNewRates } from '../../redux/ratingSlice';
 
 function DisplayRates({ id }) {
     const dispatch = useDispatch();
-    const rates = useSelector((state) => state.rating.rates);
+    const { _id } = useSelector((state) => state.user.data);
+    const { rates, myRate } = useSelector((state) => state.rating);
 
     useEffect(() => {
-        getRatesApi({ to: id }).then((data) => {
-            dispatch(setNewRates(data.rates));
+        getRatesApi({ to: id, userId: _id }).then((data) => {
+            dispatch(setNewRates({ rates: data.rates, myRate: data.myRate }));
         });
-    }, [id, dispatch]);
+    }, [id, dispatch, _id]);
 
     return (
         <section>
             <div className="space-y-2 mb-2">
-                {rates.length !== 0 ? (
-                    rates?.map((rate, index) => (
-                        <div key={rate._id}>
-                            {index !== 0 && <Divider />}
-                            <CardRate {...rate} />
-                        </div>
-                    ))
-                ) : (
-                    <p className="text-lg md:mx-10 mx-2">
-                        Hãy là người đầu tiên cho ý kiến về địa điểm này!
-                    </p>
-                )}
+                {myRate && <CardRate {...myRate} />}
+                {rates?.length !== 0
+                    ? rates?.map((rate, index) => (
+                          <div key={rate._id}>
+                              {index !== 0 && <Divider />}
+                              <CardRate {...rate} />
+                          </div>
+                      ))
+                    : !myRate && (
+                          <p className="text-lg md:mx-10 mx-2">
+                              Hãy là người đầu tiên cho ý kiến về địa điểm này!
+                          </p>
+                      )}
             </div>
         </section>
     );

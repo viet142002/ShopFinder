@@ -29,7 +29,7 @@ function ModalRating() {
     const [form] = Form.useForm();
     const info = useSelector((state) => state.routing.info);
     const { data: user } = useSelector((state) => state.user);
-    const { showModal } = useSelector((state) => state.rating);
+    const { showModal, myRate } = useSelector((state) => state.rating);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [fileList, setFileList] = useState([]);
 
@@ -99,18 +99,18 @@ function ModalRating() {
         setFileList([]);
         dispatch({
             type: 'rating/setShowModal',
-            payload: { isShow: false, rate: null }
+            payload: { isShow: false, isEdit: false }
         });
     };
 
     useEffect(() => {
-        if (showModal.rate && showModal.isShow) {
+        if (myRate && showModal.isShow) {
             form.setFieldsValue({
-                rate: showModal.rate.rate,
-                comment: showModal.rate.comment
+                rate: myRate.rate,
+                comment: myRate.comment
             });
             setFileList(
-                showModal.rate.images.map((item) => ({
+                myRate.images.map((item) => ({
                     _id: item._id,
                     uid: item._id,
                     name: item.name,
@@ -119,7 +119,7 @@ function ModalRating() {
                 }))
             );
         }
-    }, [showModal, form]);
+    }, [showModal, form, myRate]);
 
     return (
         <>

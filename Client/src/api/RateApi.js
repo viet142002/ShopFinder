@@ -1,12 +1,26 @@
 import api from './instantApi';
 
-export const getRatesApi = async ({ to, skip }) => {
+export const getRatesApi = async ({ to, skip, userId }) => {
     try {
         const res = await api.get('rates', {
             params: {
+                userId,
                 to,
                 limit: 20,
                 skip: skip || 0
+            }
+        });
+        return res.data;
+    } catch (error) {
+        throw error.response.data;
+    }
+};
+
+export const getCountStarRatesApi = async (to) => {
+    try {
+        const res = await api.get('rates/count-star', {
+            params: {
+                to
             }
         });
         return res.data;

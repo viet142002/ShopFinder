@@ -52,11 +52,9 @@ function CardRate(rate) {
 
     const handleDelete = () => {
         try {
-            deleteRateApi(rate._id).then((data) => {
-                console.log('🚀 ~ deleteRateApi ~ data:', data);
+            deleteRateApi(rate._id).then(() => {
                 dispatch({
-                    type: 'rating/deleteRate',
-                    payload: rate._id
+                    type: 'rating/deleteRate'
                 });
                 setConfirmDelete(false);
             });
@@ -126,13 +124,6 @@ function CardRate(rate) {
                 title="Xác nhận"
                 open={confirmDelete}
                 centered
-                onOk={() => {
-                    dispatch({
-                        type: 'rating/deleteRate',
-                        payload: rate._id
-                    });
-                    setConfirmDelete(false);
-                }}
                 onCancel={() => setConfirmDelete(false)}
                 footer={[
                     <Button
