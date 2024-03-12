@@ -38,30 +38,18 @@ const rateSchema = new mongoose.Schema(
                 ref: 'Rate',
             },
         ],
-        likes: {
-            count: {
-                type: Number,
-                default: 0,
+        likes: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
             },
-            users: [
-                {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'User',
-                },
-            ],
-        },
-        dislikes: {
-            count: {
-                type: Number,
-                default: 0,
+        ],
+        dislikes: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
             },
-            users: [
-                {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'User',
-                },
-            ],
-        },
+        ],
     },
     {
         timestamps: true,

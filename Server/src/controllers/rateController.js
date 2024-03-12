@@ -208,6 +208,67 @@ const rateController = {
             });
         }
     },
+    likeRate: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const userId = req.user._id;
+
+            const rate = await Rate.findById(id);
+            // only like or dislike
+            if (rate.likes.includes(userId)) {
+                rate.likes = rate.likes.filter(
+                    like => like?.toString() !== userId.toString()
+                );
+            } else {
+                rate.likes.push(userId);
+                rate.dislikes = rate.dislikes.filter(
+                    dislike => dislike?.toString() !== userId.toString()
+                );
+            }
+            await rate.save();
+
+            return res.status(200).json({
+                likes: rate.likes,
+                dislikes: rate.dislikes,
+                message: 'Like rate successfully',
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message,
+            });
+        }
+    },
+    dislikeRate: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const userId = req.user._id;
+
+            const rate = await Rate.findById(id);
+
+            if (rate.dislikes.includes(userId)) {
+                rate.dislikes = rate.dislikes.filter(
+                    dislike => dislike?.toString() !== userId.toString()
+                );
+            } else {
+                rate.dislikes.push(userId);
+                rate.likes = rate.likes.filter(
+                    like => like?.toString() !== userId.toString()
+                );
+            }
+
+            await rate.save();
+
+            return res.status(200).json({
+                dislikes: rate.dislikes,
+                likes: rate.likes,
+                message: 'Dislike rate successfully',
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message,
+            });
+        }
+    },
 };
 
 module.exports = rateController;

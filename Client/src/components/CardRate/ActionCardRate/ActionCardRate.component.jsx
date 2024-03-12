@@ -1,37 +1,83 @@
-import { LikeOutlined } from '@ant-design/icons';
+import {
+    LikeOutlined,
+    DislikeOutlined,
+    LikeFilled,
+    DislikeFilled
+} from '@ant-design/icons';
 import { Button } from 'antd';
+import { memo } from 'react';
+import { useDispatch } from 'react-redux';
 
-function ActionCardRate({ likes, dislikes, _id }) {
+import { likeRateApi, dislikeRateApi } from '../../../api/RateApi';
+
+const ActionCardRate = memo(function ActionCardRate({
+    likes,
+    dislikes,
+    _id,
+    userId
+}) {
+    const dispatch = useDispatch();
+
     const handleLike = () => {
-        console.log('like', _id);
+        likeRateApi(_id).then((data) => {
+            dispatch({
+                type: 'rating/emotionalRate',
+                payload: {
+                    _id: _id,
+                    likes: data.likes,
+                    dislikes: data.dislikes
+                }
+            });
+        });
     };
     const handleDislike = () => {
-        console.log('dislike', _id);
+        dislikeRateApi(_id).then((data) => {
+            dispatch({
+                type: 'rating/emotionalRate',
+                payload: {
+                    _id: _id,
+                    likes: data.likes,
+                    dislikes: data.dislikes
+                }
+            });
+        });
     };
     return (
         <>
             <div className="flex gap-2">
-                <div>
+                <div className="flex items-center">
                     <Button
-                        icon={<LikeOutlined />}
+                        icon={
+                            likes.includes(userId) ? (
+                                <LikeFilled />
+                            ) : (
+                                <LikeOutlined />
+                            )
+                        }
                         shape="circle"
                         onClick={handleLike}
                         className="border-none"
                     />
-                    <span>{likes?.count}</span>
+                    <span>{likes?.length}</span>
                 </div>
-                <div>
+                <div className="flex items-center">
                     <Button
-                        icon={<LikeOutlined />}
+                        icon={
+                            dislikes.includes(userId) ? (
+                                <DislikeFilled />
+                            ) : (
+                                <DislikeOutlined />
+                            )
+                        }
                         shape="circle"
                         className="border-none"
                         onClick={handleDislike}
                     />
-                    <span>{dislikes?.count}</span>
+                    <span>{dislikes?.length}</span>
                 </div>
             </div>
         </>
     );
-}
+});
 
 export default ActionCardRate;

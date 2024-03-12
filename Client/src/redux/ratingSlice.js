@@ -57,6 +57,19 @@ const ratingSlice = createSlice({
         deleteRate: (state) => {
             state.myRate = null;
         },
+        emotionalRate: (state, action) => {
+            if (state.myRate?._id === action.payload._id) {
+                state.myRate.likes = action.payload.likes;
+                state.myRate.dislikes = action.payload.dislikes;
+                return;
+            }
+            const index = state.rates.findIndex(
+                (rate) => rate._id === action.payload._id
+            );
+            state.rates[index].likes = action.payload.likes;
+            state.rates[index].dislikes = action.payload.dislikes;
+        },
+
         // set show modal
         setShowModal: (state, action) => {
             state.showModal = {
@@ -69,5 +82,11 @@ const ratingSlice = createSlice({
 
 export default ratingSlice.reducer;
 
-export const { setNewRates, setShowModal, setNewRate, updateRate, deleteRate } =
-    ratingSlice.actions;
+export const {
+    setNewRates,
+    setShowModal,
+    setNewRate,
+    updateRate,
+    deleteRate,
+    emotionalRate
+} = ratingSlice.actions;

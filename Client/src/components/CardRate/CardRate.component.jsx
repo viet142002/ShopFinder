@@ -114,6 +114,7 @@ function CardRate(rate) {
                     likes={rate.likes}
                     dislikes={rate.dislikes}
                     _id={rate._id}
+                    userId={user._id}
                 />
                 <span className="ml-auto text-sm">
                     {new Date(rate.createdAt).toLocaleDateString()}

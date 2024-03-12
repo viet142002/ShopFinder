@@ -55,6 +55,24 @@ export const updateRateApi = async ({ id, values }) => {
     }
 };
 
+export const likeRateApi = async (id) => {
+    try {
+        const res = await api.put(`rates/like/${id}`);
+        return res.data;
+    } catch (error) {
+        throw error.response.data;
+    }
+};
+
+export const dislikeRateApi = async (id) => {
+    try {
+        const res = await api.put(`rates/dislike/${id}`);
+        return res.data;
+    } catch (error) {
+        throw error.response.data;
+    }
+};
+
 export const deleteRateApi = async (id) => {
     try {
         const res = await api.delete(`rates/${id}`);

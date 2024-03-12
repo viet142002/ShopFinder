@@ -46,9 +46,13 @@ const RatingInfo = memo(function RatingInfo({ info }) {
                                     <div
                                         className="bg-yellow-500 h-full rounded-md"
                                         style={{
-                                            width: `${
-                                                (item / stars.total) * 100
-                                            }%`
+                                            width:
+                                                item !== 0
+                                                    ? `${
+                                                          (item / stars.total) *
+                                                          100
+                                                      }%`
+                                                    : '0%'
                                         }}
                                     ></div>
                                 </div>
