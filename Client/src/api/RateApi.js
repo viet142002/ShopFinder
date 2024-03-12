@@ -16,14 +16,6 @@ export const getRatesApi = async ({ to, skip }) => {
 };
 
 export const addRateApi = async (values) => {
-    console.log(
-        values.get('images'),
-        values.get('rate'),
-        values.get('comment'),
-        values.get('to'),
-        values.get('toType')
-    );
-
     try {
         const res = await api.post(`rates`, values, {
             headers: {

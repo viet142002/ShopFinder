@@ -1,21 +1,26 @@
-import { useState } from 'react';
 import { Modal } from 'antd';
-function PrimaryModal() {
-    const [open, setOpen] = useState(false);
+function PrimaryModal({
+    title = 'Modal',
+    centered = true,
+    open = false,
+    onOk = () => {},
+    onCancel = () => {},
+    width = 1000,
+    footer = null,
+    children
+}) {
     return (
         <>
             <Modal
-                title="Modal 1000px width"
-                centered
+                title={title}
+                centered={centered}
                 open={open}
-                onOk={() => setOpen(false)}
-                onCancel={() => setOpen(false)}
-                width={1000}
-                footer={null}
+                onOk={onOk}
+                onCancel={onCancel}
+                width={width}
+                footer={footer}
             >
-                <p>some contents...</p>
-                <p>some contents...</p>
-                <p>some contents...</p>
+                {children}
             </Modal>
         </>
     );

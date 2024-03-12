@@ -23,9 +23,14 @@ const imageController = {
         }
     },
 
-    deleteImage: async name => {
-        await Image.findOneAndDelete({ name });
-        deleteLocalImage(name);
+    deleteImages: async ids => {
+        for (let i = 0; i < ids.length; i++) {
+            console.log(ids[i]);
+            const image = await Image.findByIdAndDelete(ids[i]);
+            if (image) {
+                deleteLocalImage(image.name);
+            }
+        }
         return;
     },
 };

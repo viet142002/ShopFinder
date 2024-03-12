@@ -38,6 +38,7 @@ const productController = {
 
     updateProduct: async (req, res) => {
         try {
+            // deleteImages is array of image id
             const {
                 name,
                 price,
@@ -68,9 +69,7 @@ const productController = {
             }
 
             if (deleteImages) {
-                for (let i = 0; i < deleteImages.length; i++) {
-                    await imageController.deleteImage(deleteImages[i]);
-                }
+                await imageController.deleteImages(deleteImages);
             }
 
             if (files) {

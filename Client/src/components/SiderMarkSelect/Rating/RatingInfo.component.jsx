@@ -1,13 +1,27 @@
 // TODO: 'FEAT': 'Create fetch rating data from server'
 import { memo, useState } from 'react';
-import { Rate, Row, Col, Divider } from 'antd';
+import { Rate, Row, Col, Divider, Button } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
-import ModalRating from './ModalRating/ModalRating.component';
+import ModalRating from '../../ModalRating/ModalRating.component';
 import DisplayRates from '../../DisplayRate/DisplayRate.component';
 
 const RatingInfo = memo(function RatingInfo({ info }) {
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const { isAuth } = useSelector((state) => state.user);
     const [rates, setRates] = useState([]);
     const items = [80, 10, 5, 5, 0];
+
+    const handleOpenModal = () => {
+        if (!isAuth) {
+            navigate('/login');
+            return;
+        }
+        dispatch({ type: 'rating/setShowModal', payload: { isShow: true } });
+    };
+
     return (
         <>
             <div className="space-y-2">
@@ -43,11 +57,14 @@ const RatingInfo = memo(function RatingInfo({ info }) {
                 </Row>
 
                 <div className="flex justify-center">
-                    <ModalRating setRates={setRates} />
+                    <Button onClick={handleOpenModal} htmlType="button">
+                        Đánh giá
+                    </Button>
                 </div>
             </div>
             <Divider style={{ margin: '16px 0px' }} />
             <DisplayRates id={info._id} rates={rates} setRates={setRates} />
+            <ModalRating />
         </>
     );
 });

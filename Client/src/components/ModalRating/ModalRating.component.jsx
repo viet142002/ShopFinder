@@ -1,18 +1,15 @@
-// TODO: Create modal rating
-
 import { Button, Modal, Avatar, Form, Input, Rate } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import { useState } from 'react';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { addRateApi } from '../../../../api/RateApi';
+import { setNewRate, updateRate } from '../../redux/ratingSlice';
+import { addRateApi, updateRateApi } from '../../api/RateApi';
 
-import UploadImage from '../../../UploadImage/UploadImage.component';
+import UploadImage from '../UploadImage/UploadImage.component';
 
 const formatForm = (values) => {
-    console.log(values);
-    const { rate, comment, images, to, toType } = values;
+    const { rate, comment, images, to, toType, deleteImages } = values;
     const formData = new FormData();
 
     formData.append('rate', rate);
@@ -20,18 +17,19 @@ const formatForm = (values) => {
     formData.append('to', to);
     formData.append('toType', toType);
     images.forEach((image) => {
-        console.log(image.originFileObj);
-        formData.append('images', image.originFileObj);
+        if (image.originFileObj) formData.append('images', image.originFileObj);
     });
+    formData.append('deleteImages', JSON.stringify(deleteImages));
     return formData;
 };
 
-function ModalRating({ setRates }) {
-    const navigate = useNavigate();
+function ModalRating() {
+    // const navigate = useNavigate();
+    const dispatch = useDispatch();
     const [form] = Form.useForm();
     const info = useSelector((state) => state.routing.info);
-    const { data: user, isAuth } = useSelector((state) => state.user);
-    const [open, setOpen] = useState(false);
+    const { data: user } = useSelector((state) => state.user);
+    const { showModal } = useSelector((state) => state.rating);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [fileList, setFileList] = useState([]);
 
@@ -39,22 +37,55 @@ function ModalRating({ setRates }) {
         setConfirmLoading(true);
         form.validateFields()
             .then(async (values) => {
+                let deleteImages = [];
+                if (showModal.rate) {
+                    // get images  from rate.images not in fileList
+                    deleteImages = showModal.rate.images
+                        .filter(
+                            (image) =>
+                                !fileList.find((file) => file._id === image._id)
+                        )
+                        .map((image) => image._id);
+                }
                 const formData = formatForm({
                     ...values,
                     images: fileList,
                     to: info._id,
-                    toType: info.informationType
+                    toType: info.informationType,
+                    deleteImages: deleteImages
                 });
-                const resData = await addRateApi(formData);
 
-                setRates((prev) => [
-                    { ...resData.newRate, from: user },
-                    ...prev
-                ]);
+                if (showModal.rate) {
+                    updateRateApi({
+                        id: showModal.rate._id,
+                        values: formData
+                    }).then((data) => {
+                        console.log(data.rateUpdate);
+                        dispatch(
+                            updateRate({ ...data.rateUpdate, from: user })
+                        );
+                    });
+                } else {
+                    addRateApi(formData).then((data) => {
+                        dispatch(
+                            setNewRate({
+                                ...data.newRate,
+                                from: {
+                                    _id: user._id,
+                                    firstname: user.firstname,
+                                    lastname: user.lastname
+                                }
+                            })
+                        );
+                    });
+                }
                 form.resetFields();
                 setFileList([]);
                 setConfirmLoading(false);
-                setOpen(false);
+                dispatch({
+                    type: 'rating/setShowModal',
+                    payload: { isShow: false, rate: null }
+                });
             })
             .catch((info) => {
                 setConfirmLoading(false);
@@ -66,23 +97,36 @@ function ModalRating({ setRates }) {
         setConfirmLoading(false);
         form.resetFields();
         setFileList([]);
-        setOpen(false);
+        dispatch({
+            type: 'rating/setShowModal',
+            payload: { isShow: false, rate: null }
+        });
     };
 
-    const handleOpenModal = () => {
-        if (!isAuth) {
-            navigate('/login');
-            return;
+    useEffect(() => {
+        if (showModal.rate && showModal.isShow) {
+            form.setFieldsValue({
+                rate: showModal.rate.rate,
+                comment: showModal.rate.comment
+            });
+            setFileList(
+                showModal.rate.images.map((item) => ({
+                    _id: item._id,
+                    uid: item._id,
+                    name: item.name,
+                    status: 'done',
+                    thumbUrl: `${import.meta.env.VITE_APP_API_URL}${item.path}`
+                }))
+            );
         }
-        setOpen(true);
-    };
+    }, [showModal, form]);
+
     return (
         <>
-            <Button onClick={() => handleOpenModal()}>Đánh giá</Button>
             <Modal
                 title={info.name}
                 centered
-                open={open}
+                open={showModal.isShow}
                 onOk={handleOk}
                 onCancel={handleCancel}
                 footer={[
@@ -107,6 +151,7 @@ function ModalRating({ setRates }) {
                             {user.firstname} {user.lastname}
                         </span>
                     </div>
+
                     <Form variant="filled" form={form}>
                         <div className="flex justify-center">
                             <Form.Item

@@ -75,7 +75,11 @@ function InputImage({ setNewImages, setDeleteImages, images, ...props }) {
                             key={index}
                             className="relative bg-gray-300 !flex justify-center"
                         >
-                            <Image className="!h-64" src={image.path} alt="" />
+                            <Image
+                                className="!h-64 object-cover"
+                                src={image.path}
+                                alt=""
+                            />
                             <button
                                 type="button"
                                 className="absolute top-2 right-2 bg-white p-1 rounded-full"

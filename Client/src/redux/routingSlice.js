@@ -26,6 +26,7 @@ const routingSlice = createSlice({
             state.routes = action.payload;
         },
         setMarkSelect: (state, action) => {
+            console.log('setMarkSelect', action.payload);
             state.markSelected = action.payload.markSelected;
             state.info = action.payload.info;
         },
