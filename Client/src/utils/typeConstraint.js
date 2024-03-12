@@ -49,3 +49,34 @@ export const typeStatus = [
         color: 'red'
     }
 ];
+
+export const typeReport = [
+    {
+        value: 'spam',
+        label: 'Spam'
+    },
+    {
+        value: 'fake',
+        label: 'Hàng giả'
+    },
+    {
+        value: 'violence',
+        label: 'Bạo lực'
+    },
+    {
+        value: 'harassment',
+        label: 'Quấy rối'
+    },
+    {
+        value: 'hate-speech',
+        label: 'Nói xấu'
+    },
+    {
+        value: 'wrong-information',
+        label: 'Thông tin sai lệch'
+    },
+    {
+        value: 'other',
+        label: 'Khác'
+    }
+];

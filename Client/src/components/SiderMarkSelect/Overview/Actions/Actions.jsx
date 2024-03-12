@@ -8,7 +8,8 @@ import {
     HeartOutlined,
     CloseOutlined,
     HeartFilled,
-    EditOutlined
+    EditOutlined,
+    WarningOutlined
 } from '@ant-design/icons';
 import { MdOutlineDirections } from 'react-icons/md';
 import clsx from 'clsx';
@@ -18,9 +19,12 @@ import {
     setShowRouting
 } from '../../../../redux/routingSlice';
 
+import ModalReport from '../../../ModalReport/ModalReport.component';
+
 function Actions({ info }) {
     const dispatch = useDispatch();
     const [favorite, setFavorite] = useState(false);
+    const [openReport, setOpenReport] = useState(false);
     const showRouting = useSelector((state) => state.routing.showRouting);
     const { _id } = useSelector((state) => state.user.data);
 
@@ -35,6 +39,7 @@ function Actions({ info }) {
     const handleFavorite = () => {
         setFavorite(!favorite);
     };
+
     return (
         <>
             <div className="flex justify-between px-siderInfo mb-[16px]">
@@ -61,11 +66,18 @@ function Actions({ info }) {
                     icon={favorite ? <HeartFilled /> : <HeartOutlined />}
                     onClick={() => handleFavorite()}
                 />
-                {_id === info.user && (
+                {_id === info.user ? (
                     <Button
                         size="large"
                         shape="circle"
                         icon={<EditOutlined />}
+                    />
+                ) : (
+                    <Button
+                        size="large"
+                        shape="circle"
+                        icon={<WarningOutlined />}
+                        onClick={() => setOpenReport(true)}
                     />
                 )}
                 <Button
@@ -76,6 +88,13 @@ function Actions({ info }) {
                 />
             </div>
             <Divider className="my-[16px]" />
+
+            <ModalReport
+                open={openReport}
+                handleCancel={() => setOpenReport(false)}
+                toId={info._id}
+                toType={info.informationType}
+            />
         </>
     );
 }

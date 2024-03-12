@@ -5,6 +5,7 @@ import { MoreOutlined } from '@ant-design/icons';
 
 import ActionCardRate from './ActionCardRate/ActionCardRate.component';
 import DisplayImagesRate from './DisplayImagesRate/DisplayImages.component';
+import ModalReport from '../ModalReport/ModalReport.component';
 
 import { deleteRateApi } from '../../api/RateApi';
 
@@ -31,6 +32,7 @@ function CardRate(rate) {
     const user = useSelector((state) => state.user.data);
     const isMyRate = user._id === rate?.from?._id;
     const [confirmDelete, setConfirmDelete] = useState(false);
+    const [openReport, setOpenReport] = useState(false);
 
     const handleClick = ({ key }) => {
         if (key === 'edit') {
@@ -45,7 +47,7 @@ function CardRate(rate) {
             return;
         }
         if (key === 'report') {
-            console.log('report');
+            setOpenReport(true);
             return;
         }
     };
@@ -147,6 +149,13 @@ function CardRate(rate) {
             >
                 <p>Bạn có chắc chắn muốn xóa đánh giá này?</p>
             </Modal>
+
+            <ModalReport
+                toId={rate._id}
+                toType="Rate"
+                open={openReport}
+                handleCancel={() => setOpenReport(false)}
+            />
         </section>
     );
 }
