@@ -3,11 +3,13 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
 import DefaultLayout from './layouts/DefaultLayout';
-import Profile from './pages/Profile/ProfilePage';
+import Profile from './pages/user/Profile/ProfilePage';
 import Login from './pages/Auth/Login/LoginPage';
 import Register from './pages/Auth/Register/RegisterPage';
+
 import RegisterRetailerPending from './pages/RegisterRetailer/RegisterRetailerPending';
 import ProtectRoute from './routes/ProtectRoute';
+
 import ManageLayout from './layouts/ManageLayout';
 import RequestRetailerPage from './pages/Admin/RequestRetailerPage';
 import DashboardPage from './pages/Admin/DashboardPage';

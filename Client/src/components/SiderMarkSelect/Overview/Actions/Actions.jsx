@@ -1,17 +1,12 @@
-// TODO: 'FEAT': 'Create feat favorite mark and show products'
-
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Divider } from 'antd';
 import {
-    CaretUpOutlined,
-    HeartOutlined,
     CloseOutlined,
-    HeartFilled,
     EditOutlined,
     WarningOutlined
 } from '@ant-design/icons';
-import { MdOutlineDirections } from 'react-icons/md';
+import { MdOutlineDirections, MdOutlineShoppingBag } from 'react-icons/md';
 import clsx from 'clsx';
 
 import {
@@ -23,7 +18,6 @@ import ModalReport from '../../../ModalReport/ModalReport.component';
 
 function Actions({ info }) {
     const dispatch = useDispatch();
-    const [favorite, setFavorite] = useState(false);
     const [openReport, setOpenReport] = useState(false);
     const showRouting = useSelector((state) => state.routing.showRouting);
     const { _id } = useSelector((state) => state.user.data);
@@ -34,10 +28,6 @@ function Actions({ info }) {
 
     const handleShowRouting = () => {
         dispatch(setShowRouting(true));
-    };
-
-    const handleFavorite = () => {
-        setFavorite(!favorite);
     };
 
     return (
@@ -54,18 +44,13 @@ function Actions({ info }) {
                     onClick={() => handleShowRouting()}
                     icon={<MdOutlineDirections size={20} />}
                 />
+
                 <Button
                     size="large"
                     shape="circle"
-                    icon={<CaretUpOutlined />}
+                    icon={<MdOutlineShoppingBag size={20} />}
                 />
-                <Button
-                    size="large"
-                    shape="circle"
-                    className="text-red-500"
-                    icon={favorite ? <HeartFilled /> : <HeartOutlined />}
-                    onClick={() => handleFavorite()}
-                />
+
                 {_id === info.user ? (
                     <Button
                         size="large"
@@ -80,6 +65,7 @@ function Actions({ info }) {
                         onClick={() => setOpenReport(true)}
                     />
                 )}
+
                 <Button
                     size="large"
                     shape="circle"

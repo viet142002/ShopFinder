@@ -1,9 +1,7 @@
-import { Menu, Layout } from 'antd';
+import { Menu, Layout, Avatar } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-
-import { UserOutlined, VideoCameraOutlined } from '@ant-design/icons';
 import { HiOutlineViewfinderCircle } from 'react-icons/hi2';
 import {
     MdOutlineNotifications,
@@ -11,13 +9,25 @@ import {
     MdOutlineLogout,
     MdShare
 } from 'react-icons/md';
-import { TbShoppingCart, TbShoppingCartCopy } from 'react-icons/tb';
+import { TbShoppingCart } from 'react-icons/tb';
+import { useLocation } from 'react-router-dom';
 
 const { Sider } = Layout;
 
 import { unsetUser } from '../../redux/userSlice';
 
+function getItem(label, key, icon, children, type) {
+    return {
+        key,
+        icon,
+        children,
+        label,
+        type
+    };
+}
+
 function SideBar({ ...props }) {
+    const { pathname } = useLocation();
     const dispatch = useDispatch();
     const [collapsed, setCollapsed] = useState(true);
 
@@ -26,6 +36,7 @@ function SideBar({ ...props }) {
     const navigate = useNavigate();
 
     const handleClick = (item) => {
+        console.log(item);
         switch (item.key) {
             case 'home':
                 navigate('/');
@@ -36,6 +47,9 @@ function SideBar({ ...props }) {
                 break;
             case 'login':
                 navigate('/login');
+                break;
+            case 'profile':
+                navigate('/profile');
                 break;
             case 'share-store':
                 navigate('/share-store');
@@ -59,7 +73,6 @@ function SideBar({ ...props }) {
                 break;
         }
     };
-
     return (
         <Sider
             theme="light"
@@ -77,18 +90,13 @@ function SideBar({ ...props }) {
                 <Menu
                     theme="light"
                     mode="inline"
-                    defaultSelectedKeys={'home'}
+                    selectedKeys={pathname.split('/')[1] || 'home'}
                     onClick={handleClick}
                     items={[
                         {
                             key: 'home',
                             icon: <HiOutlineViewfinderCircle size={18} />,
                             label: 'Cửa hàng gần đây'
-                        },
-                        {
-                            key: 'order',
-                            icon: <TbShoppingCartCopy size={18} />,
-                            label: 'Đơn hàng'
                         },
                         {
                             key: 'cart',
@@ -117,24 +125,33 @@ function SideBar({ ...props }) {
                 />
                 <Menu
                     theme="light"
-                    mode="inline"
+                    mode="vertical"
+                    selectedKeys={pathname.split('/')[1]}
                     onClick={handleClick}
+                    subMenuOpenDelay={0.15}
                     items={[
-                        {
-                            key: '5',
-                            icon: <UserOutlined />,
-                            label: 'nav 1'
-                        },
-                        {
-                            key: '6',
-                            icon: <VideoCameraOutlined />,
-                            label: 'nav 2'
-                        },
-                        {
-                            key: isAuth ? 'logout' : 'login',
-                            icon: <MdOutlineLogout size={18} />,
-                            label: isAuth ? 'Đăng xuất' : 'Đăng nhập'
-                        }
+                        isAuth ? (
+                            getItem(
+                                'Hồ sơ',
+                                'profiles',
+                                <Avatar
+                                    className="flex-shrink-0 -translate-x-[calc(50%-10px)]"
+                                    size={35}
+                                    src={
+                                        import.meta.env.VITE_APP_API_URL +
+                                        (data.avatar
+                                            ? data.avatar
+                                            : '/images/avatar-default.png')
+                                    }
+                                />,
+                                [
+                                    getItem('Thông tin cá nhân', 'profile'),
+                                    getItem('Đơn hàng của bạn', 'order')
+                                ]
+                            )
+                        ) : (
+                            <MdOutlineLogout size={18} />
+                        )
                     ]}
                 />
             </div>

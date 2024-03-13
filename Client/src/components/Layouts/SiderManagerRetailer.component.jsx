@@ -15,15 +15,6 @@ import { CiImport } from 'react-icons/ci';
 import { unsetUser } from '../../redux/userSlice';
 
 const { Sider } = Layout;
-// function getItem(label, key, icon, children, type) {
-//     return {
-//         key,
-//         icon,
-//         children,
-//         label,
-//         type
-//     };
-// }
 const items = [
     {
         key: 'dashboard',
@@ -45,10 +36,6 @@ const items = [
         icon: <CiImport size={18} />,
         label: 'Nhập hàng'
     },
-    // getItem('Quản lý kho', 'sub1', <MdOutlineNotifications size={18} />, [
-    //     getItem('Nhập kho', 'import-product', <CiImport size={18} />),
-    //     getItem('Xuất kho', 'export-product', <CiExport size={18} />)
-    // ]),
     {
         key: 'profile',
         icon: <UserOutlined />,
@@ -75,9 +62,6 @@ function SiderManagerRetailer() {
             case 'import-product':
                 navigate('./import-product');
                 break;
-            // case 'export-product':
-            //     navigate('./export-product');
-            //     break;
             case '6':
                 navigate('/');
                 break;

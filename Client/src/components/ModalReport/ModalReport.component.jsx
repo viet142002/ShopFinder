@@ -6,9 +6,7 @@ import { createReportApi } from '../../api/reportApi';
 
 const ModalReport = ({ open, handleCancel, toId, toType }) => {
     const onFinish = (values) => {
-        console.log(values, toId, toType);
         createReportApi({ ...values, to: toId, toType }).then((data) => {
-            console.log(data);
             handleCancel();
         });
     };

@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Form, Input, Button, Col, Row, Space, Select } from 'antd';
 
+import './formCrateInfoStyle.scss';
+
 import { typeLocations } from '../../utils/typeConstraint';
 import EditorFormat from '../EditorFormat/EditorFormat';
 import InputAddress from '../InputAddress/InputAddress.component';
@@ -50,7 +52,7 @@ function FormCreateInfo() {
                     <Col
                         md={10}
                         span={20}
-                        className="md:bg-white rounded-md p-2"
+                        className="rounded-md p-2 md:bg-white"
                     >
                         <div className="flex flex-col gap-2">
                             <label htmlFor="name">Tên cửa hàng</label>
@@ -67,7 +69,7 @@ function FormCreateInfo() {
                                 <Input />
                             </Form.Item>
                         </div>
-                        <div className="flex flex-col gap-2">
+                        <div className="space-info flex flex-col gap-2">
                             <label htmlFor="lat">Toạ độ</label>
                             <Space
                                 align="baseline"
@@ -158,7 +160,7 @@ function FormCreateInfo() {
                         </div>
                     </Col>
                     <Col md={8} span={20}>
-                        <div className="flex flex-col gap-2 md:bg-white md:p-2 rounded-md">
+                        <div className="flex flex-col gap-2 rounded-md md:bg-white md:p-2">
                             <label htmlFor="image">Hình ảnh</label>
                             <InputImage
                                 setDeleteImages={setDeleteImages}

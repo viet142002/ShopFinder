@@ -21,6 +21,8 @@ import InputImage from '../../components/InputImage/InputImage.component';
 import { shareStore } from '../../api/communityApi';
 import { registerRetailerApi } from '../../api/retailerApi';
 
+import './createStore.scss';
+
 const FormatForm = (values, images, isRegisterRetailer) => {
     const formData = new FormData();
     if (isRegisterRetailer) {
@@ -75,8 +77,8 @@ function CreateStorePage({ isRegisterRetailer }) {
     };
 
     return (
-        <Layout className="md:py-2 md:px-4">
-            <Layout.Header className="bg-white flex items-center justify-center">
+        <Layout className="md:px-4 md:py-2">
+            <Layout.Header className="flex items-center justify-center bg-white">
                 <h1 className="text-xl font-bold">
                     {isRegisterRetailer
                         ? 'Đăng ký bán hàng'
@@ -89,7 +91,7 @@ function CreateStorePage({ isRegisterRetailer }) {
                         <Col
                             md={10}
                             span={20}
-                            className="md:bg-white rounded-md p-2"
+                            className="rounded-md p-2 md:bg-white"
                         >
                             <div className="flex flex-col gap-2">
                                 <label htmlFor="name">Tên cửa hàng</label>
@@ -107,7 +109,7 @@ function CreateStorePage({ isRegisterRetailer }) {
                                     <Input />
                                 </Form.Item>
                             </div>
-                            <div className="flex flex-col gap-2">
+                            <div className="create-store flex flex-col gap-2">
                                 <label htmlFor="lat">Toạ độ</label>
                                 <Space
                                     align="baseline"
@@ -129,6 +131,9 @@ function CreateStorePage({ isRegisterRetailer }) {
                                                 }
                                             ]
                                         }
+                                        style={{
+                                            marginBottom: '10px'
+                                        }}
                                     >
                                         <Input disabled={isCurrentLocation} />
                                     </Form.Item>
@@ -142,11 +147,14 @@ function CreateStorePage({ isRegisterRetailer }) {
                                                     'Vui lòng không bỏ trống'
                                             }
                                         ]}
+                                        style={{
+                                            marginBottom: '10px'
+                                        }}
                                     >
                                         <Input disabled={isCurrentLocation} />
                                     </Form.Item>
                                     <Button
-                                        className="bg-orange-200"
+                                        className="flex-shrink-0 bg-orange-200"
                                         htmlType="button"
                                         onClick={() => {
                                             setIsCurrentLocation(
@@ -271,7 +279,7 @@ function CreateStorePage({ isRegisterRetailer }) {
                             </div>
                         </Col>
                         <Col md={8} span={20}>
-                            <div className="flex flex-col gap-2 md:bg-white md:p-2 rounded-md">
+                            <div className="flex flex-col gap-2 rounded-md md:bg-white md:p-2">
                                 <label htmlFor="image">Hình ảnh</label>
                                 <InputImage
                                     setDeleteImages={setDeleteImages}

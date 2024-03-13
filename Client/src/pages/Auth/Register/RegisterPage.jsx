@@ -51,10 +51,10 @@ function RegisterPage() {
                                             className="input-auth"
                                             type="text"
                                             placeholder="Nguyễn Văn"
-                                            name="firstname"
+                                            name="lastname"
                                         />
                                         <ErrorMessage
-                                            name="firstname"
+                                            name="lastname"
                                             component="small"
                                         />
                                     </div>
@@ -63,10 +63,10 @@ function RegisterPage() {
                                             className="input-auth"
                                             type="text"
                                             placeholder="A"
-                                            name="lastname"
+                                            name="firstname"
                                         />
                                         <ErrorMessage
-                                            name="lastname"
+                                            name="firstname"
                                             component="small"
                                         />
                                     </div>
