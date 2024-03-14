@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 import { Marker, Circle } from 'react-leaflet';
 import { useDispatch, useSelector } from 'react-redux';
-import { Spin } from 'antd';
+import { useSearchParams } from 'react-router-dom';
 
 import { setCurrentLocation } from '../../redux/routingSlice';
 
 function MyMarker() {
     const dispatch = useDispatch();
-    const radius = useSelector((state) => state.search.radius);
+    const [searchParams] = useSearchParams();
     const current = useSelector((state) => state.routing.current);
 
     useEffect(() => {
@@ -43,7 +43,11 @@ function MyMarker() {
             ></Marker>
             <Circle
                 center={[current.lat, current.lng]}
-                radius={radius * 1000}
+                radius={
+                    searchParams.get('radius')
+                        ? searchParams.get('radius') * 1000
+                        : 5000
+                }
             />
         </>
     );

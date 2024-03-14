@@ -98,7 +98,7 @@ const locationController = {
                 locations = locations.filter(location => {
                     const regex = new RegExp(name, 'i');
                     if (location.informationType === 'Information') {
-                        return true;
+                        return location.information.name.match(regex);
                     }
                     return (
                         location.information.name.match(regex) &&

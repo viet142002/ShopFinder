@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Marker, Tooltip } from 'react-leaflet';
 import { useDispatch, useSelector } from 'react-redux';
+import { useSearchParams } from 'react-router-dom';
 
 import { setMarkSelect } from '../../redux/routingSlice';
 
-// import { positionConstraints } from '../../utils/locationConstraints';
 import { iconByType } from '../../utils/icon';
 
 import { getLocations } from '../../api/locationApi';
 
 function MarkerCus() {
+    const [searchParams] = useSearchParams();
+
     const [locations, setLocations] = useState([]);
     const dispatch = useDispatch();
     const current = useSelector((state) => state.routing.current);
-    const { radius, type, name } = useSelector((state) => state.search);
 
     const handleOnClick = (item) => {
         dispatch(
@@ -32,16 +33,22 @@ function MarkerCus() {
     };
 
     useEffect(() => {
-        getLocations({
-            lat: current.lat,
-            lng: current.lng,
-            radius: radius,
-            type: type,
-            name: name
-        }).then((data) => {
-            setLocations(data.locations);
-        });
-    }, [current.lat, current.lng, radius, type, name]);
+        const timeout = setTimeout(() => {
+            getLocations({
+                lat: current.lat,
+                lng: current.lng,
+                radius: searchParams.get('radius') || 5,
+                type: searchParams.get('type') || 'all',
+                name: searchParams.get('name') || ''
+            }).then((data) => {
+                setLocations(data.locations);
+            });
+        }, 500);
+
+        return () => {
+            clearTimeout(timeout);
+        };
+    }, [current, searchParams]);
 
     return (
         <>
