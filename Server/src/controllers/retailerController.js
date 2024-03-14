@@ -13,8 +13,6 @@ const retailerController = {
             const { email } = req.user;
             const images = req.files;
 
-            console.log(req.body);
-
             const user = await User.findOne({ email });
             if (!user) {
                 return res.status(400).json({
@@ -161,8 +159,8 @@ const retailerController = {
                 });
             }
             retailer.status = 'approved';
-            user.status = 'active';
             user.role = 'retailer';
+            user.isPendingRetailer = false;
 
             await user.save();
             await retailer.save();

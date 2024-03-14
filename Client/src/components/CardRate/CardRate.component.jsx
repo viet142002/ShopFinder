@@ -160,4 +160,28 @@ function CardRate(rate) {
     );
 }
 
+CardRate.SkeletonLoadingCardRate = function SkeletonLoadingCardRate() {
+    return (
+        <div className="mx-2 animate-pulse space-y-2 md:mx-10">
+            <div className="flex items-center gap-2">
+                <div className="h-8 w-8 rounded-full bg-gray-300"></div>
+                <div className="flex-1 space-y-2">
+                    <div className="h-4 w-[70%] rounded-md bg-gray-300"></div>
+                    <div className="h-4 w-[60%] rounded-md bg-gray-300"></div>
+                </div>
+            </div>
+            <div className="space-y-1">
+                <div className="h-4 w-full rounded-md bg-gray-300"></div>
+                <div className="h-4 w-full rounded-md bg-gray-300"></div>
+                <div className="h-4 w-full rounded-md bg-gray-300"></div>
+            </div>
+            <div className="flex">
+                <div className="h-4 w-[10%] rounded-md bg-gray-300"></div>
+                <div className="ml-2 h-4 w-[10%] rounded-md bg-gray-300"></div>
+                <div className="ml-auto h-4 w-[30%] rounded-md bg-gray-300"></div>
+            </div>
+        </div>
+    );
+};
+
 export default CardRate;

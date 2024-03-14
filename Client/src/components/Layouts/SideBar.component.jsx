@@ -35,8 +35,38 @@ function SideBar({ ...props }) {
 
     const navigate = useNavigate();
 
+    const menuItemsUpper = [
+        {
+            key: 'home',
+            icon: <HiOutlineViewfinderCircle size={18} />,
+            label: 'Cửa hàng gần đây'
+        },
+        {
+            key: 'cart',
+            icon: <TbShoppingCart size={18} />,
+            label: 'Giỏ hàng'
+        },
+        {
+            key: 'notification',
+            icon: <MdOutlineNotifications size={18} />,
+            label: 'Thông báo'
+        },
+        {
+            key: 'share-store',
+            icon: <MdShare size={18} />,
+            label: 'Chia sẻ cửa hàng'
+        },
+        {
+            key: 'retailer-manager',
+            icon: <MdOutlineStoreMallDirectory />,
+            label:
+                data.role === 'retailer'
+                    ? 'Quản lý cửa hàng'
+                    : 'Đăng ký cửa hàng'
+        }
+    ];
+
     const handleClick = (item) => {
-        console.log(item);
         switch (item.key) {
             case 'home':
                 navigate('/');
@@ -93,36 +123,7 @@ function SideBar({ ...props }) {
                     mode="inline"
                     selectedKeys={pathname.split('/')[1] || 'home'}
                     onClick={handleClick}
-                    items={[
-                        {
-                            key: 'home',
-                            icon: <HiOutlineViewfinderCircle size={18} />,
-                            label: 'Cửa hàng gần đây'
-                        },
-                        {
-                            key: 'cart',
-                            icon: <TbShoppingCart size={18} />,
-                            label: 'Giỏ hàng'
-                        },
-                        {
-                            key: 'notification',
-                            icon: <MdOutlineNotifications size={18} />,
-                            label: 'Thông báo'
-                        },
-                        {
-                            key: 'share-store',
-                            icon: <MdShare size={18} />,
-                            label: 'Chia sẻ cửa hàng'
-                        },
-                        {
-                            key: 'retailer-manager',
-                            icon: <MdOutlineStoreMallDirectory />,
-                            label:
-                                data.role === 'retailer'
-                                    ? 'Quản lý cửa hàng'
-                                    : 'Đăng ký cửa hàng'
-                        }
-                    ]}
+                    items={menuItemsUpper}
                 />
                 <Menu
                     theme="light"
@@ -147,7 +148,8 @@ function SideBar({ ...props }) {
                                 />,
                                 [
                                     getItem('Thông tin cá nhân', 'profile'),
-                                    getItem('Đơn hàng của bạn', 'order')
+                                    getItem('Đơn hàng của bạn', 'order'),
+                                    getItem('Đăng xuất', 'logout')
                                 ]
                             )
                         ) : (

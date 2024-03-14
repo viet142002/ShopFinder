@@ -21,6 +21,10 @@ const error = (content) => {
  */
 const translateSuccess = (msg) => {
     switch (msg) {
+        case 'Signup successfully':
+            return 'Đăng ký thành công';
+        case 'SignIn successfully':
+            return 'Đăng nhập thành công';
         case 'Profile updated successfully':
             return 'Cập nhật thông tin thành công';
         default:

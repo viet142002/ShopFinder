@@ -6,7 +6,6 @@ const rateController = {
     getRates: async (req, res) => {
         try {
             const { to, limit = 20, skip = 0, userId } = req.query;
-            // const formatTo = new mongoose.Types.ObjectId(to);
 
             let myRate = null;
             if (userId) {
@@ -15,11 +14,18 @@ const rateController = {
                     to: to,
                 })
                     .populate('images reply')
-                    .populate('from', 'firstname lastname avatar');
+                    .populate({
+                        path: 'from',
+                        select: 'firstname lastname avatar',
+                        populate: {
+                            path: 'avatar',
+                        },
+                    });
             }
-
+            // get rates minus myRate
             const rates = await Rate.find({
                 to: to,
+                from: { $ne: userId },
             })
                 .populate({
                     path: 'from',

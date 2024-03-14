@@ -15,35 +15,12 @@ const ratingSlice = createSlice({
         // set rates and myRate is first request
         setNewRates: (state, action) => {
             state.myRate = action.payload.myRate;
-            const index = action.payload.rates?.findIndex(
-                (rate) => rate._id === action.payload.myRate?._id
-            );
-            if (index !== -1) {
-                state.isFiltered = true;
-                action.payload.rates.splice(index, 1);
-                state.rates = [...action.payload.rates];
-            } else {
-                state.rates = action.payload.rates;
-            }
+            state.rates = action.payload.rates;
         },
         // set rates is continue request
         setContinueRates: (state, action) => {
-            if (state.isFiltered) {
-                state.rates = [...state.rates, ...action.payload.rate];
-            } else {
-                const index = state.rates.findIndex(
-                    (rate) => rate._id === action.payload.myRate._id
-                );
-                if (index !== -1) {
-                    state.isFiltered = true;
-                    state.rates = [
-                        ...state.rates,
-                        ...action.rates.splice(index, 1)
-                    ];
-                } else {
-                    state.rates = [...state.rates, ...action.rates];
-                }
-            }
+            state.rates = [...state.rates, ...action.payload.rate];
+            state.myRate = [...state.myRate, ...action.payload.myRate];
         },
         // set new rate
         setNewRate: (state, action) => {

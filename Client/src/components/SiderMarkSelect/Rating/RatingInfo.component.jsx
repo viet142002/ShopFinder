@@ -1,6 +1,5 @@
-// TODO: 'FEAT': 'Create fetch rating data from server'
 import { memo, useEffect, useState } from 'react';
-import { Rate, Row, Col, Divider, Button } from 'antd';
+import { Rate, Row, Col, Divider, Button, Skeleton } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -17,7 +16,8 @@ const RatingInfo = memo(function RatingInfo({ info }) {
     const [stars, setStars] = useState({
         values: [0, 0, 0, 0, 0],
         total: 0,
-        overage: 0
+        overage: 0,
+        isLoading: true
     });
 
     const handleOpenModal = () => {
@@ -29,51 +29,77 @@ const RatingInfo = memo(function RatingInfo({ info }) {
     };
 
     useEffect(() => {
-        getCountStarRatesApi(info._id).then((data) => {
-            setStars(data.star);
-        });
+        setStars((prev) => ({ ...prev, isLoading: true }));
+        getCountStarRatesApi(info._id)
+            .then((data) => {
+                setStars({
+                    values: data.star.values,
+                    total: data.star.total,
+                    overage: data.star.overage,
+                    isLoading: false
+                });
+            })
+            .catch(() => {
+                setStars({
+                    isLoading: false
+                });
+            });
     }, [info._id]);
 
     return (
         <>
             <div className="space-y-2">
                 <Row className="px-siderInfo">
-                    <Col span={15}>
-                        {stars.values.map((item, index) => (
-                            <div className="flex items-center" key={index}>
-                                <span className="pr-2">{5 - index}</span>
-                                <div className="bg-gray-200 w-full h-[8px] rounded-md">
+                    {stars.isLoading ? (
+                        <Skeleton active />
+                    ) : (
+                        <>
+                            <Col span={15}>
+                                {stars.values.map((item, index) => (
                                     <div
-                                        className="bg-yellow-500 h-full rounded-md"
-                                        style={{
-                                            width:
-                                                item !== 0
-                                                    ? `${
-                                                          (item / stars.total) *
-                                                          100
-                                                      }%`
-                                                    : '0%'
-                                        }}
-                                    ></div>
-                                </div>
-                            </div>
-                        ))}
-                    </Col>
+                                        className="flex items-center"
+                                        key={index}
+                                    >
+                                        <span className="pr-2">
+                                            {5 - index}
+                                        </span>
+                                        <div className="h-[8px] w-full rounded-md bg-gray-200">
+                                            <div
+                                                className="h-full rounded-md bg-yellow-500"
+                                                style={{
+                                                    width:
+                                                        item !== 0
+                                                            ? `${
+                                                                  (item /
+                                                                      stars.total) *
+                                                                  100
+                                                              }%`
+                                                            : '0%'
+                                                }}
+                                            ></div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </Col>
 
-                    <Col span={8} offset={1}>
-                        <h2 className="text-6xl text-center mb-2">
-                            {stars.overage}
-                        </h2>
-                        <div className="flex justify-center">
-                            <Rate
-                                className="text-sm"
-                                value={stars.overage}
-                                allowHalf
-                                disabled={true}
-                            />
-                        </div>
-                        <p className="text-center">{stars.total} đánh giá</p>
-                    </Col>
+                            <Col span={8} offset={1}>
+                                <h2 className="mb-2 text-center text-6xl">
+                                    {stars.overage}
+                                </h2>
+                                <div className="flex justify-center">
+                                    <Rate
+                                        className="text-sm"
+                                        value={stars.overage}
+                                        allowHalf
+                                        disabled={true}
+                                    />
+                                </div>
+                                <p className="text-center">
+                                    {stars.total} đánh giá
+                                </p>
+                            </Col>
+                        </>
+                    )}
                 </Row>
 
                 {!myRate && (
