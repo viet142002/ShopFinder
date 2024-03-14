@@ -21,7 +21,13 @@ const rateController = {
             const rates = await Rate.find({
                 to: to,
             })
-                .populate('from', 'firstname lastname avatar')
+                .populate({
+                    path: 'from',
+                    select: 'firstname lastname avatar',
+                    populate: {
+                        path: 'avatar',
+                    },
+                })
                 .populate('images reply')
                 .limit(parseInt(limit))
                 .skip(parseInt(skip))

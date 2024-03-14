@@ -4,13 +4,13 @@ import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
 import { useState } from 'react';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-import { Button, message } from 'antd';
+import { Button } from 'antd';
 
 import style from '../style.module.scss';
 import loginSchema from './validate';
 import { loginApi } from '../../../api/authApi';
 import { setUser } from '../../../redux/userSlice';
-import { catchError } from '../../../utils/expression';
+import { handleFetch } from '../../../utils/expression';
 
 function LoginPage() {
     const dispatch = useDispatch();
@@ -20,11 +20,7 @@ function LoginPage() {
 
     const handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
-        const res = await loginApi(values);
-
-        catchError(res.message, (error) => {
-            message.error(error, 3);
-        });
+        const res = await handleFetch(() => loginApi(values));
 
         setSubmitting(false);
         if (res.token) {
@@ -44,7 +40,7 @@ function LoginPage() {
                 )}
             >
                 <div className={clsx(style['slider-thumb'])}></div>
-                <section className="z-10 w-[50%] bg-white bg-opacity-[0.8] p-16">
+                <section className="z-10 w-[90%] bg-white bg-opacity-[0.8] p-16 md:w-[50%]">
                     <h1 className="mb-10 text-center text-2xl font-bold">
                         Đăng nhập
                     </h1>
@@ -80,7 +76,7 @@ function LoginPage() {
                                             className="input-auth"
                                         />
                                         <Button
-                                            className="absolute top-1/2 right-2 transform -translate-y-1/2 bg-white hover:bg-gray-100 transition-all duration-150"
+                                            className="absolute right-2 top-1/2 -translate-y-1/2 transform bg-white transition-all duration-150 hover:bg-gray-100"
                                             shape="circle"
                                             size="small"
                                             icon={

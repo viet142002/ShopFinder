@@ -66,15 +66,15 @@ function CardRate(rate) {
     };
 
     return (
-        <section className="space-y-2 card-rate">
-            <div className="md:mx-10 mx-2">
+        <section className="card-rate space-y-2">
+            <div className="mx-2 md:mx-10">
                 <div className="flex items-center gap-2">
                     <Avatar
                         size={38}
                         src={
                             import.meta.env.VITE_APP_API_URL +
-                            (rate.avatar
-                                ? rate.avatar
+                            (rate?.from?.avatar
+                                ? rate.from.avatar?.path
                                 : '/images/avatar-default.png')
                         }
                     />
@@ -111,7 +111,7 @@ function CardRate(rate) {
 
             <DisplayImagesRate images={rate.images} />
 
-            <div className="flex items-center mx-10">
+            <div className="mx-10 flex items-center">
                 <ActionCardRate
                     likes={rate.likes}
                     dislikes={rate.dislikes}

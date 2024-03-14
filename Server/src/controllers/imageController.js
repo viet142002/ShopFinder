@@ -2,6 +2,20 @@ const Image = require('../models/imageModel');
 const fs = require('fs');
 
 const imageController = {
+    createSingle: async file => {
+        try {
+            const image = new Image({
+                path: file.path.replace(/\\/g, '/').slice(6),
+                name: file.filename,
+            });
+
+            await image.save();
+            return image;
+        } catch (error) {
+            deleteLocalImage(file.filename);
+            throw error;
+        }
+    },
     createImage: async files => {
         try {
             let images = [];
@@ -30,6 +44,14 @@ const imageController = {
             if (image) {
                 deleteLocalImage(image.name);
             }
+        }
+        return;
+    },
+
+    delete: async id => {
+        const image = await Image.findByIdAndDelete(id);
+        if (image) {
+            deleteLocalImage(image.name);
         }
         return;
     },

@@ -20,8 +20,13 @@ function DisplayRates({ id }) {
 
     return (
         <section>
-            <div className="space-y-2 mb-2">
-                {myRate && <CardRate {...myRate} />}
+            <div className="mb-2 space-y-2">
+                {myRate && (
+                    <>
+                        <CardRate {...myRate} />
+                        <Divider />
+                    </>
+                )}
                 {rates?.length !== 0
                     ? rates?.map((rate, index) => (
                           <div key={rate._id}>
@@ -30,7 +35,7 @@ function DisplayRates({ id }) {
                           </div>
                       ))
                     : !myRate && (
-                          <p className="text-lg md:mx-10 mx-2">
+                          <p className="mx-2 text-lg md:mx-10">
                               Hãy là người đầu tiên cho ý kiến về địa điểm này!
                           </p>
                       )}

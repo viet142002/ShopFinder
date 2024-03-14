@@ -1,6 +1,9 @@
 const jwt = require('jsonwebtoken');
 
 const authMiddlewares = {
+    /**
+     * Middleware to check if user is authorized
+     */
     authorization: (req, res, next) => {
         if (!req.headers.authorization) {
             return res.status(401).json({
@@ -27,6 +30,15 @@ const authMiddlewares = {
             });
         }
     },
+
+    /**
+     * Middleware to check if user is authorized and has the right role
+     * @param {String} role - The role to check
+     * @returns {Function} - The middleware function
+     * @example
+     * To check if user is an admin
+     * router.put('/profile', authorization('admin'), userController.updateProfile);
+     */
     authentication: role => (req, res, next) => {
         if (!req.headers.authorization) {
             return res.status(401).json({

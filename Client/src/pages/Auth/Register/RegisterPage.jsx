@@ -7,6 +7,7 @@ import style from '../style.module.scss';
 import registerSchema from './validate';
 import { registerApi } from '../../../api/authApi';
 import { setUser } from '../../../redux/userSlice';
+import { handleFetch } from '../../../utils/expression';
 
 function RegisterPage() {
     const dispatch = useDispatch();
@@ -14,7 +15,8 @@ function RegisterPage() {
 
     const handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
-        const res = await registerApi(values);
+        const res = await handleFetch(() => registerApi(values));
+
         setSubmitting(false);
         if (res.token) {
             dispatch(setUser({ user: res.newUser, token: res.token }));
@@ -31,12 +33,18 @@ function RegisterPage() {
                 )}
             >
                 <div className={clsx(style['slider-thumb'])}></div>
-                <section className="z-10 w-[50%] bg-white bg-opacity-[0.8] p-10">
+                <section className="z-10 w-[90%] bg-white bg-opacity-[0.8] p-10 md:w-[50%]">
                     <h1 className="mb-10 text-center text-2xl font-bold">
                         Đăng ký
                     </h1>
                     <Formik
-                        initialValues={{ email: '', password: '' }}
+                        initialValues={{
+                            email: '',
+                            password: '',
+                            confirm_password: '',
+                            firstname: '',
+                            lastname: ''
+                        }}
                         validationSchema={registerSchema}
                         onSubmit={handleSubmit}
                     >
@@ -99,7 +107,7 @@ function RegisterPage() {
                                     <Field
                                         type="password"
                                         name="confirm_password"
-                                        placeholder="Mật khẩu"
+                                        placeholder="Nhập lại mật khẩu"
                                         className="input-auth"
                                     />
                                     <ErrorMessage

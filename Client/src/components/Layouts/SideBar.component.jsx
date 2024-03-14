@@ -73,6 +73,7 @@ function SideBar({ ...props }) {
                 break;
         }
     };
+
     return (
         <Sider
             theme="light"
@@ -140,7 +141,7 @@ function SideBar({ ...props }) {
                                     src={
                                         import.meta.env.VITE_APP_API_URL +
                                         (data.avatar
-                                            ? data.avatar
+                                            ? data.avatar.path
                                             : '/images/avatar-default.png')
                                     }
                                 />,
