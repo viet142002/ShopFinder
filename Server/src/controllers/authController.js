@@ -44,7 +44,16 @@ const authController = {
             const { email, password } = req.body;
             console.log(req.body);
 
-            const user = await User.findOne({ email });
+            const user = await User.findOne({ email })
+                .populate({
+                    path: 'avatar',
+                    select: 'path name',
+                })
+                .populate({
+                    path: 'address',
+                    select: 'province district ward more',
+                });
+
             if (!user) {
                 return res.status(400).json({
                     message: 'Email does not exist',
@@ -59,6 +68,8 @@ const authController = {
             }
 
             const token = generateToken(user);
+
+            delete user._doc.password;
 
             return res.status(200).json({
                 user,
