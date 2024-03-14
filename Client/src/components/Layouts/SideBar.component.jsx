@@ -5,11 +5,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { HiOutlineViewfinderCircle } from 'react-icons/hi2';
 import {
     MdOutlineNotifications,
-    MdOutlineStoreMallDirectory,
-    MdOutlineLogout,
-    MdShare
+    MdOutlineStoreMallDirectory
 } from 'react-icons/md';
-import { TbShoppingCart } from 'react-icons/tb';
+import {
+    LoginOutlined,
+    ShareAltOutlined,
+    ShoppingCartOutlined
+} from '@ant-design/icons';
 import { useLocation } from 'react-router-dom';
 
 const { Sider } = Layout;
@@ -43,7 +45,7 @@ function SideBar({ ...props }) {
         },
         {
             key: 'cart',
-            icon: <TbShoppingCart size={18} />,
+            icon: <ShoppingCartOutlined />,
             label: 'Giỏ hàng'
         },
         {
@@ -53,7 +55,7 @@ function SideBar({ ...props }) {
         },
         {
             key: 'share-store',
-            icon: <MdShare size={18} />,
+            icon: <ShareAltOutlined />,
             label: 'Chia sẻ cửa hàng'
         },
         {
@@ -132,29 +134,31 @@ function SideBar({ ...props }) {
                     onClick={handleClick}
                     subMenuOpenDelay={0.15}
                     items={[
-                        isAuth ? (
-                            getItem(
-                                'Hồ sơ',
-                                'profiles',
-                                <Avatar
-                                    className="flex-shrink-0 -translate-x-[calc(50%-10px)]"
-                                    size={35}
-                                    src={
-                                        import.meta.env.VITE_APP_API_URL +
-                                        (data.avatar
-                                            ? data.avatar.path
-                                            : '/images/avatar-default.png')
-                                    }
-                                />,
-                                [
-                                    getItem('Thông tin cá nhân', 'profile'),
-                                    getItem('Đơn hàng của bạn', 'order'),
-                                    getItem('Đăng xuất', 'logout')
-                                ]
-                            )
-                        ) : (
-                            <MdOutlineLogout size={18} />
-                        )
+                        isAuth
+                            ? getItem(
+                                  'Hồ sơ',
+                                  'profiles',
+                                  <Avatar
+                                      className="flex-shrink-0 -translate-x-[calc(50%-10px)]"
+                                      size={35}
+                                      src={
+                                          import.meta.env.VITE_APP_API_URL +
+                                          (data.avatar
+                                              ? data.avatar.path
+                                              : '/images/avatar-default.png')
+                                      }
+                                  />,
+                                  [
+                                      getItem('Thông tin cá nhân', 'profile'),
+                                      getItem('Đơn hàng của bạn', 'order'),
+                                      getItem('Đăng xuất', 'logout')
+                                  ]
+                              )
+                            : {
+                                  key: 'login',
+                                  icon: <LoginOutlined />,
+                                  label: 'Đăng nhập'
+                              }
                     ]}
                 />
             </div>
