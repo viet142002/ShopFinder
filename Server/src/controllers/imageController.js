@@ -26,7 +26,7 @@ const imageController = {
                 });
 
                 await image.save();
-                images.push(image._id);
+                images.push(image);
             }
             return images;
         } catch (error) {

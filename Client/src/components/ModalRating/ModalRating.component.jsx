@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { setNewRate, updateRate } from '../../redux/ratingSlice';
 import { addRateApi, updateRateApi } from '../../api/RateApi';
+import { handleFetch } from '../../utils/expression';
 
 import UploadImage from '../UploadImage/UploadImage.component';
 
@@ -24,7 +25,6 @@ const formatForm = (values) => {
 };
 
 function ModalRating() {
-    // const navigate = useNavigate();
     const dispatch = useDispatch();
     const [form] = Form.useForm();
     const info = useSelector((state) => state.routing.info);
@@ -38,9 +38,9 @@ function ModalRating() {
         form.validateFields()
             .then(async (values) => {
                 let deleteImages = [];
-                if (showModal.rate) {
+                if (myRate?.images) {
                     // get images  from rate.images not in fileList
-                    deleteImages = showModal.rate.images
+                    deleteImages = myRate.images
                         .filter(
                             (image) =>
                                 !fileList.find((file) => file._id === image._id)
@@ -55,29 +55,42 @@ function ModalRating() {
                     deleteImages: deleteImages
                 });
 
-                if (showModal.rate) {
-                    updateRateApi({
-                        id: showModal.rate._id,
-                        values: formData
-                    }).then((data) => {
-                        console.log(data.rateUpdate);
+                if (showModal.isEdit) {
+                    const data = await handleFetch(() =>
+                        updateRateApi({
+                            id: myRate._id,
+                            values: formData
+                        })
+                    );
+                    if (data) {
                         dispatch(
-                            updateRate({ ...data.rateUpdate, from: user })
+                            updateRate({
+                                ...data.rateUpdate,
+                                from: {
+                                    _id: user._id,
+                                    firstname: user.firstname,
+                                    lastname: user.lastname,
+                                    avatar: user.avatar
+                                }
+                            })
                         );
-                    });
+                    }
                 } else {
-                    addRateApi(formData).then((data) => {
+                    const data = await handleFetch(() => addRateApi(formData));
+
+                    if (data) {
                         dispatch(
                             setNewRate({
                                 ...data.newRate,
                                 from: {
                                     _id: user._id,
                                     firstname: user.firstname,
-                                    lastname: user.lastname
+                                    lastname: user.lastname,
+                                    avatar: user.avatar
                                 }
                             })
                         );
-                    });
+                    }
                 }
                 form.resetFields();
                 setFileList([]);
@@ -140,7 +153,7 @@ function ModalRating() {
                         loading={confirmLoading}
                         onClick={handleOk}
                     >
-                        Bình luận
+                        {showModal.isEdit ? 'Cập nhật' : 'Bình luận'}
                     </Button>
                 ]}
             >
@@ -163,7 +176,7 @@ function ModalRating() {
                                     }
                                 ]}
                             >
-                                <Rate className="md:text-3xl text-xl" />
+                                <Rate className="text-xl md:text-3xl" />
                             </Form.Item>
                         </div>
                         <Form.Item
@@ -176,7 +189,7 @@ function ModalRating() {
                             ]}
                         >
                             <Input.TextArea
-                                className="w-full h-32 p-2 mt-2 border-2 border-gray-300 rounded-md"
+                                className="mt-2 h-32 w-full rounded-md border-2 border-gray-300 p-2"
                                 placeholder="Nhập bình luận của bạn"
                             ></Input.TextArea>
                         </Form.Item>

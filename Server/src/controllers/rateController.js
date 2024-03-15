@@ -89,8 +89,20 @@ const rateController = {
             const { rate, comment, deleteImages: original } = req.body;
             const images = req.files;
             const deleteImages = original ? JSON.parse(original) : [];
+            console.log('🚀 ~ updateRate: ~ deleteImages:', deleteImages);
+
+            if (!rate && !comment && !images && deleteImages.length === 0) {
+                return res.status(400).json({
+                    message: 'No changes detected',
+                });
+            }
 
             const rateUpdate = await Rate.findById(id);
+            if (!rateUpdate) {
+                return res.status(404).json({
+                    message: 'Rating not found',
+                });
+            }
 
             if (rateUpdate.from.toString() !== req.user._id.toString()) {
                 return res.status(403).json({

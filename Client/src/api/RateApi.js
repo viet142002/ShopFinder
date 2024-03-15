@@ -29,30 +29,20 @@ export const getCountStarRatesApi = async (to) => {
     }
 };
 
-export const addRateApi = async (values) => {
-    try {
-        const res = await api.post(`rates`, values, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
-        return res.data;
-    } catch (error) {
-        throw error.response.data;
-    }
+export const addRateApi = (values) => {
+    return api.post(`rates`, values, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
 };
 
 export const updateRateApi = async ({ id, values }) => {
-    try {
-        const res = await api.put(`rates/${id}`, values, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
-        return res.data;
-    } catch (error) {
-        throw error.response.data;
-    }
+    return api.put(`rates/${id}`, values, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
 };
 
 export const likeRateApi = async (id) => {
@@ -74,10 +64,5 @@ export const dislikeRateApi = async (id) => {
 };
 
 export const deleteRateApi = async (id) => {
-    try {
-        const res = await api.delete(`rates/${id}`);
-        return res.data;
-    } catch (error) {
-        throw error.response.data;
-    }
+    return api.delete(`rates/${id}`);
 };

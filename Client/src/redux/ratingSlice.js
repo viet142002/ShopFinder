@@ -7,7 +7,7 @@ const ratingSlice = createSlice({
         myRate: null,
         showModal: {
             isShow: false,
-            rate: null
+            isEdit: null
         },
         isFiltered: false
     },

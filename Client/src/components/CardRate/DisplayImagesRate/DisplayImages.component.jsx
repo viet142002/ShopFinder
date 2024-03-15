@@ -7,8 +7,8 @@ function DisplayImagesRate({ images }) {
         <>
             {images.length > 0 && (
                 <div className="flex flex-wrap">
-                    {images.slice(0, 3).map((item) => (
-                        <div key={item._id} className="w-1/2 flex-auto">
+                    {images.slice(0, 3).map((item, index) => (
+                        <div key={index} className="w-1/2 flex-auto">
                             <Image
                                 src={
                                     import.meta.env.VITE_APP_API_URL + item.path
@@ -20,7 +20,7 @@ function DisplayImagesRate({ images }) {
                         </div>
                     ))}
                     {images.length === 3 && (
-                        <div key={images[3]._id} className="w-1/2 flex-auto">
+                        <div className="w-1/2 flex-auto">
                             <Image
                                 src={
                                     import.meta.env.VITE_APP_API_URL +
@@ -35,12 +35,12 @@ function DisplayImagesRate({ images }) {
                     {images.length > 3 && !isShowMoreImages ? (
                         <div className="w-1/2 flex-auto">
                             <div
-                                className="aspect-square object-cover relative flex justify-center items-center cursor-pointer w-full"
+                                className="relative flex aspect-square w-full cursor-pointer items-center justify-center object-cover"
                                 style={{ height: '100%' }}
                                 onClick={() => setIsShowMoreImages(true)}
                             >
                                 <div
-                                    className="absolute inset-0 bg-opacity-50 flex items-center justify-center brightness-[.25]"
+                                    className="absolute inset-0 flex items-center justify-center bg-opacity-50 brightness-[.25]"
                                     style={{
                                         backgroundImage: `url(${
                                             import.meta.env.VITE_APP_API_URL +
@@ -48,14 +48,14 @@ function DisplayImagesRate({ images }) {
                                         })`
                                     }}
                                 ></div>
-                                <p className="text-white text-2xl z-10">
+                                <p className="z-10 text-2xl text-white">
                                     +{images.length - 3}
                                 </p>
                             </div>
                         </div>
                     ) : (
-                        images.slice(3, images.length).map((item) => (
-                            <div key={item._id} className="w-1/2 flex-auto">
+                        images.slice(3, images.length).map((item, index) => (
+                            <div key={index} className="w-1/2 flex-auto">
                                 <Image
                                     src={
                                         import.meta.env.VITE_APP_API_URL +

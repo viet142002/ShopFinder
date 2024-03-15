@@ -8,6 +8,7 @@ import DisplayImagesRate from './DisplayImagesRate/DisplayImages.component';
 import ModalReport from '../ModalReport/ModalReport.component';
 
 import { deleteRateApi } from '../../api/RateApi';
+import { handleFetch } from '../../utils/expression';
 
 const items1 = [
     {
@@ -38,7 +39,7 @@ function CardRate(rate) {
         if (key === 'edit') {
             dispatch({
                 type: 'rating/setShowModal',
-                payload: { isShow: true, rate: rate }
+                payload: { isShow: true, isEdit: true }
             });
             return;
         }
@@ -52,16 +53,13 @@ function CardRate(rate) {
         }
     };
 
-    const handleDelete = () => {
-        try {
-            deleteRateApi(rate._id).then(() => {
-                dispatch({
-                    type: 'rating/deleteRate'
-                });
-                setConfirmDelete(false);
+    const handleDelete = async () => {
+        const data = await handleFetch(() => deleteRateApi(rate._id));
+        if (data) {
+            dispatch({
+                type: 'rating/deleteRate'
             });
-        } catch (error) {
-            console.log(error);
+            setConfirmDelete(false);
         }
     };
 
