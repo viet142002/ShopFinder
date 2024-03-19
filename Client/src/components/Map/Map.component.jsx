@@ -19,7 +19,7 @@ function Map() {
             <MapContainer
                 center={[p.lat, p.lng]}
                 zoom={13}
-                className="h-screen w-full"
+                className="h-svh w-full"
                 zoomControl={false}
             >
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />

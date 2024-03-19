@@ -20,7 +20,9 @@ const retailerController = {
                 });
             }
 
-            user.isPendingRetailer = true;
+            user.pendingRetailer = {
+                status: 'pending',
+            };
 
             const newImages = await imageController.createImage(images);
             const newAddress = await addressController.create(
@@ -28,7 +30,7 @@ const retailerController = {
             );
 
             const newRetailer = new Retailer({
-                user: user._id,
+                owner: user._id,
                 name,
                 phone,
                 type,
@@ -47,6 +49,7 @@ const retailerController = {
             });
 
             newRetailer.location = newLocation._id;
+            user.pendingRetailer.retailer = newRetailer._id;
 
             await user.save();
             await newRetailer.save();
@@ -64,7 +67,7 @@ const retailerController = {
     infoMyRetailer: async (req, res) => {
         try {
             const retailer = await Retailer.findOne({
-                user: req.user._id,
+                owner: req.user._id,
             }).populate('location');
             if (!retailer) {
                 return res.status(400).json({
@@ -82,8 +85,10 @@ const retailerController = {
             });
         }
     },
-    getRetailer: async (req, res) => {
+
+    getRetailerDetailRetailer: async (req, res) => {
         try {
+            const retailer = await Retailer.findById(req.params.id);
             const retailers = await Retailer.find().populate('location');
             if (!retailers) {
                 return res.status(400).json({
@@ -101,6 +106,7 @@ const retailerController = {
             });
         }
     },
+
     getRetailerById: async (req, res) => {
         try {
             const retailer = await Retailer.findById(req.params.id).populate(
@@ -122,10 +128,21 @@ const retailerController = {
             });
         }
     },
+
     // Gets all pending requests
     getRequestsRetailer: async (req, res) => {
         try {
-            const requests = await Retailer.find().populate('location');
+            let { status = 'all' } = req.query;
+            if (status === 'all') {
+                status = ['pending', 'approved', 'rejected'];
+            } else {
+                status = [status];
+            }
+
+            const requests = await Retailer.find({
+                status: { $in: status },
+            }).populate('location owner');
+
             if (!requests) {
                 return res.status(400).json({
                     message: 'Cant find requests',
@@ -152,7 +169,7 @@ const retailerController = {
                     message: 'Cant find retailer',
                 });
             }
-            const user = await User.findById(retailer.user);
+            const user = await User.findById(retailer.owner);
             if (!user) {
                 return res.status(400).json({
                     message: 'Cant find user',
@@ -160,7 +177,11 @@ const retailerController = {
             }
             retailer.status = 'approved';
             user.role = 'retailer';
-            user.isPendingRetailer = false;
+
+            user.pendingRetailer = {
+                retailer: retailer._id,
+                status: 'approved',
+            };
 
             await user.save();
             await retailer.save();
@@ -185,10 +206,16 @@ const retailerController = {
                     message: 'Cant find retailer',
                 });
             }
+            const user = await User.findById(retailer.owner);
 
             retailer.status = 'rejected';
+            user.pendingRetailer = {
+                retailer: retailer._id,
+                status: 'rejected',
+            };
 
             await retailer.save();
+            await user.save();
 
             return res.status(200).json({
                 retailer,

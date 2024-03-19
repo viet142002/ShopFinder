@@ -199,34 +199,39 @@ function CreateStorePage({ isRegisterRetailer }) {
                                         <Tooltip
                                             title={
                                                 <table>
-                                                    <tr>
-                                                        <td>Bình thường</td>
-                                                        <td>
-                                                            Quản lý số lượng,
-                                                            bán trực tuyến và
-                                                            tại chổ
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            Chỉ phục vụ tại chổ
-                                                        </td>
-                                                        <td>
-                                                            Chỉ phục vụ tại cửa
-                                                            hàng, không quản lý
-                                                            số lượng
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            Không quản lý số
-                                                            lượng
-                                                        </td>
-                                                        <td>
-                                                            Không quản lý số
-                                                            lượng
-                                                        </td>
-                                                    </tr>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Bình thường</td>
+                                                            <td>
+                                                                Quản lý số
+                                                                lượng, bán trực
+                                                                tuyến và tại
+                                                                chổ.
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                Chỉ phục vụ tại
+                                                                chổ
+                                                            </td>
+                                                            <td>
+                                                                Chỉ phục vụ tại
+                                                                cửa hàng, không
+                                                                quản lý số
+                                                                lượng.
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                Không quản lý số
+                                                                lượng
+                                                            </td>
+                                                            <td>
+                                                                Chỉ không quản
+                                                                lý số lượng.
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
                                                 </table>
                                             }
                                             trigger={'click'}

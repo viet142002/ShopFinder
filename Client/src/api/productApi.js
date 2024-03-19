@@ -1,53 +1,46 @@
 import api from './instantApi';
 
-export const getProductsApi = async (search) => {
-    try {
-        const res = await api.get('retailer/products', {
-            params: {
-                search,
-                limit: 100
-            }
-        });
-        return res.data;
-    } catch (error) {
-        throw error.response.data;
-    }
+/**
+ *
+ * @param {String} storeId
+ * @returns {Promise} { products, total }
+ * Get products in store by storeId
+ * products: Array of products
+ * total: Number of products
+ */
+export const getProductsFromDistributor = ({
+    search = '',
+    distributor,
+    status = ['available', 'only-display', 'not-quantity'],
+    limit = 30
+}) => {
+    return api.get(`products/${distributor}`, {
+        params: {
+            search,
+            status,
+            limit
+        }
+    });
 };
 
 export const createProductApi = async (data) => {
-    try {
-        const res = await api.post('retailer/products', data, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
-        return res.data;
-    } catch (error) {
-        console.log(error.response.data);
-        throw error.response.data;
-    }
+    return api.post('retailer/products', data, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
 };
 
 export const updateProductByIdApi = async (id, data) => {
-    try {
-        const res = await api.put(`retailer/products/${id}`, data, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
-        return res.data;
-    } catch (error) {
-        return error.response.data;
-    }
+    return api.put(`retailer/products/${id}`, data, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
 };
 
 export const getProductByIdApi = async (id) => {
-    try {
-        const res = await api.get(`retailer/products/${id}`);
-        return res.data;
-    } catch (error) {
-        return error.response.data;
-    }
+    return api.get(`retailer/products/${id}`);
 };
 
 export const deleteProductByIdApi = async (id) => {

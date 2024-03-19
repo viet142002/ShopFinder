@@ -14,18 +14,17 @@ function SiderMarkSelect({ markSelected }) {
         setIsCollapsed(false);
     }, [markSelected]);
 
-    console.log('info', info);
     return (
         <section
             className={clsx(
-                'h-full w-[400px] bg-white absolute z-[999] top-0 shadow-2xl transition-[left] duration-[500ms] blur-siderInfo',
+                'blur-siderInfo absolute top-0 z-[999] h-full w-[400px] bg-white shadow-2xl transition-[left] duration-[500ms]',
                 isCollapsed || !markSelected?.lat ? '-left-[400px]' : 'left-0'
             )}
         >
             {/* button Collapse */}
-            <div className="hidden md:block absolute top-[50%] z-[998] left-full">
+            <div className="absolute left-full top-[50%] z-[998] hidden md:block">
                 <button
-                    className="px-1 py-4 bg-white opacity-95 shadow-inner rounded-[0_4px_4px_0]"
+                    className="rounded-[0_4px_4px_0] bg-white px-1 py-4 opacity-95 shadow-inner"
                     onClick={() => setIsCollapsed(!isCollapsed)}
                 >
                     {isCollapsed ? (

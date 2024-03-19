@@ -6,10 +6,13 @@ const retailerSchema = new mongoose.Schema({
         required: true,
         unique: [true, 'Retailer name already exists'],
     },
-    user: {
+    owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
+    // normal: normal mode manage quantity, sell online and offline
+    // only-pickup: not manage quantity, not sell online, only pickup
+    // not-quantity: not manage quantity, sell online and offline
     mode: {
         type: String,
         enum: ['normal', 'only-pickup', 'not-quantity'],

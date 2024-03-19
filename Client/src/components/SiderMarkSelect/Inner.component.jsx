@@ -13,12 +13,12 @@ const Inner = memo(function Inner({ info }) {
                     autoplaySpeed={5000}
                     effect="fade"
                     dotPosition="bottom"
-                    className="w-full h-[300px] overflow-hidden relative"
+                    className="relative h-[300px] w-full overflow-hidden"
                 >
                     {info.images.map((image, index) => (
                         <div
                             key={index}
-                            className="bg-gray-300 h-[300px] !flex justify-center"
+                            className="!flex h-[300px] justify-center bg-gray-300"
                         >
                             <Image
                                 className="!h-full"
@@ -37,9 +37,7 @@ const Inner = memo(function Inner({ info }) {
                         name={info.name}
                         rate={info.rate}
                         type={info.type}
-                        isCommunity={
-                            info.informationType === 'Information_Community'
-                        }
+                        informationType={info.informationType}
                     />
                     <TabInfo info={info} />
                 </div>

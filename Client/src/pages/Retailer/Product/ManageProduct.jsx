@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Table, Layout, Tag, Button, Input, Tooltip } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useParams } from 'react-router-dom';
+import CardProduct from '../../../components/CardProduct/CardProduct.component';
 
 import { MdAdd } from 'react-icons/md';
 
-import { getProductsApi } from '../../../api/productApi';
+import { getProductsFromDistributor } from '../../../api/productApi';
 import { typeStatus } from '../../../utils/typeConstraint';
 
 const columns = [
@@ -66,33 +67,35 @@ const columns = [
 ];
 
 function ManageProduct() {
-    const [products, setProducts] = useState([]);
+    const [data, setData] = useState({
+        products: [],
+        total: 0,
+        page: 1
+    });
+    const { id } = useParams();
     const navigate = useNavigate();
 
     const onSearch = (value) => {
-        fetchProducts(value);
+        fetchProducts({ search: value, distributor: id, status: 'all' });
     };
 
-    const fetchProducts = async (value) => {
-        try {
-            const data = await getProductsApi(value);
-            setProducts(data);
-        } catch (error) {
-            alert(error.message);
-        }
+    const fetchProducts = async (values) => {
+        await getProductsFromDistributor(values).then((res) =>
+            setData(res.data)
+        );
     };
+
     useEffect(() => {
-        fetchProducts();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        fetchProducts({ distributor: id, status: 'all' });
+    }, [id]);
 
     return (
-        <section className="p-5 space-y-2">
-            <Layout.Header className="bg-white flex justify-between items-center space-x-2">
+        <section className="space-y-2 p-5">
+            <Layout.Header className="flex items-center justify-between space-x-2 bg-white p-2">
                 <Tooltip title="Thêm sản phẩm">
                     <Button
                         type="primary"
-                        className="bg-blue-500 flex items-center"
+                        className="flex items-center bg-blue-500"
                         icon={<MdAdd size={18} />}
                         onClick={() => {
                             navigate('./add-product');
@@ -111,13 +114,24 @@ function ManageProduct() {
                 />
             </Layout.Header>
             <Layout.Content>
-                <Table columns={columns} dataSource={products} rowKey="_id" />
+                <Table
+                    className="hidden md:block"
+                    columns={columns}
+                    dataSource={data.products}
+                    rowKey="_id"
+                />
+
+                <div className="grid grid-cols-2 gap-2 md:hidden">
+                    {data.products.map((product, index) => (
+                        <CardProduct product={product} key={index} />
+                    ))}
+                </div>
             </Layout.Content>
             <Layout.Footer className="flex justify-end">
                 <Button
                     type="primary"
                     icon={<DownloadOutlined />}
-                    className="bg-blue-500 flex items-center"
+                    className="flex items-center bg-blue-500"
                 >
                     Xuất file
                 </Button>

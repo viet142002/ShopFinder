@@ -10,7 +10,7 @@ function ManageLayout({ role = 'admin' }) {
     return (
         <Layout hasSider>
             {role === 'retailer' ? <SiderManageRetailer /> : <SiderManage />}
-            <Content className="ml-[200px] min-h-svh">
+            <Content className="min-h-svh md:ml-[200px]">
                 <Outlet />
             </Content>
         </Layout>

@@ -10,12 +10,7 @@ export const getRetailerApi = async () => {
 };
 
 export const getInfoMyRetailerApi = async () => {
-    try {
-        const res = await api.get('/retailer/infoMyRetailer');
-        return res.data;
-    } catch (error) {
-        return error.response.message;
-    }
+    return api.get('/retailer/infoMyRetailer');
 };
 
 export const getRetailerByIdApi = async (id) => {

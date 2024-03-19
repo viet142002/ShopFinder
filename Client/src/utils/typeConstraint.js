@@ -47,6 +47,16 @@ export const typeStatus = [
         value: 'stop',
         label: 'Ngừng kinh doanh',
         color: 'red'
+    },
+    {
+        value: 'not-quantity',
+        label: 'Luôn có sẵn',
+        color: 'green'
+    },
+    {
+        value: 'only-display',
+        label: 'Chỉ hiển thị',
+        color: 'blue'
     }
 ];
 

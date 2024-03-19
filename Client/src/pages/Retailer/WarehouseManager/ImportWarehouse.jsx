@@ -1,11 +1,21 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { Layout, Form, Input, Button, Image, Row, Col, Table } from 'antd';
+import {
+    Layout,
+    Form,
+    Input,
+    InputNumber,
+    Button,
+    Image,
+    Row,
+    Col,
+    Table
+} from 'antd';
 
 import ButtonBack from '../../../components/ActionsButton/ButtonBack.component';
 import EditorFormat from '../../../components/EditorFormat/EditorFormat';
 
-import { getProductsApi } from '../../../api/productApi';
+import { getProductsFromDistributor } from '../../../api/productApi';
 import { createWarehouseApi, getWarehouseApi } from '../../../api/warehouseApi';
 
 function ImportWarehouse() {
@@ -13,8 +23,8 @@ function ImportWarehouse() {
     const [inOutProducts, setInOutProducts] = useState([]);
     const [search, setSearch] = useState('');
     const [createdAt, setCreatedAt] = useState('');
-    const { id } = useParams();
-    const isAddMode = !id;
+    const { idImport, id: idRetailer } = useParams();
+    const isAddMode = !idImport;
 
     const handleAdd = (record) => {
         setInOutProducts((prev) => {
@@ -134,18 +144,19 @@ function ImportWarehouse() {
             dataIndex: 'price_import',
             key: 'price_import',
             render: (_, record) => {
-                console.log(record);
                 return (
-                    <Input
-                        type="number"
+                    <InputNumber
                         defaultValue={record.price}
-                        onChange={(e) =>
+                        min={0}
+                        formatter={(value) =>
+                            `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                        }
+                        onChange={(value) =>
                             handleAmount(record, {
                                 field: 'price_import',
-                                value: e.target.value
+                                value: value
                             })
                         }
-                        size="middle"
                         className="w-28"
                     />
                 );
@@ -157,13 +168,15 @@ function ImportWarehouse() {
             key: 'amount',
             values: 0,
             render: (_, record) => (
-                <Input
-                    type="number"
+                <InputNumber
+                    formatter={(value) =>
+                        `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                    }
                     defaultValue={1}
-                    onChange={(e) =>
+                    onChange={(value) =>
                         handleAmount(record, {
                             field: 'amount',
-                            value: e.target.value
+                            value: value
                         })
                     }
                     size="middle"
@@ -241,11 +254,15 @@ function ImportWarehouse() {
 
     useEffect(() => {
         if (isAddMode) {
-            getProductsApi(search).then((res) => {
-                setResultSearch(res);
+            getProductsFromDistributor({
+                search,
+                distributor: idRetailer,
+                status: 'all'
+            }).then((res) => {
+                setResultSearch(res.data.products);
             });
         } else {
-            getWarehouseApi(id).then((res) => {
+            getWarehouseApi(idImport).then((res) => {
                 setCreatedAt(res.warehouseReceipt.createdAt);
                 setInOutProducts(() =>
                     res.warehouseReceipt.products.map((item) => {
@@ -258,12 +275,12 @@ function ImportWarehouse() {
                 );
             });
         }
-    }, [isAddMode, id, search]);
+    }, [isAddMode, idImport, search, idRetailer]);
 
     return (
-        <section className="py-2 px-4 space-y-2">
+        <section className="space-y-2 px-4 py-2">
             <ButtonBack />
-            <Layout.Header className="bg-white flex items-center justify-center">
+            <Layout.Header className="flex items-center justify-center bg-white">
                 <div className="p-3">
                     <h1 className="text-2xl font-semibold">
                         {isAddMode ? 'Tạo phiếu nhập' : 'Thông tin phiếu nhập'}
@@ -291,7 +308,7 @@ function ImportWarehouse() {
                         span={24}
                         className="bg-white"
                     >
-                        <h2 className="text-lg font-semibold text-center p-2">
+                        <h2 className="p-2 text-center text-lg font-semibold">
                             Sản phẩm được nhập
                         </h2>
                         <Form layout="vertical" onFinish={handleSave}>
@@ -329,7 +346,7 @@ function ImportWarehouse() {
                                     <EditorFormat />
                                 ) : (
                                     <div
-                                        className="border p-2 bg-gray-50"
+                                        className="border bg-gray-50 p-2"
                                         dangerouslySetInnerHTML={{
                                             __html:
                                                 inOutProducts.note ||

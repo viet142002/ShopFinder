@@ -91,14 +91,24 @@ function SideBar({ ...props }) {
                     navigate('/login');
                     break;
                 }
-                if (data.role === 'retailer') {
-                    navigate('/retailer/dashboard');
-                    break;
-                }
-                if (data.isPendingRetailer === true) {
+                if (data.pendingRetailer.status === 'pending') {
                     navigate('/register-retailer-pending');
                     break;
                 }
+                if (data.pendingRetailer.status === 'rejected') {
+                    navigate(`/register-retailer-pending`);
+                    break;
+                }
+                if (
+                    data.role === 'retailer' &&
+                    data.pendingRetailer.status === 'approved'
+                ) {
+                    navigate(
+                        `/retailer/${data.pendingRetailer.retailer}/dashboard`
+                    );
+                    break;
+                }
+
                 navigate('/register-retailer');
                 break;
             default:

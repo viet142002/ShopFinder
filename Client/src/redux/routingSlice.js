@@ -1,6 +1,6 @@
 // create a new reducer for routingSlide
 import { createSlice } from '@reduxjs/toolkit';
-// import axios from 'axios';
+import axios from 'axios';
 
 const routingSlice = createSlice({
     name: 'routing',
@@ -46,15 +46,37 @@ const routingSlice = createSlice({
     }
 });
 
-// const setCurrentPosition = () => {
-//     navigator.geolocation.getCurrentPosition((coords) => {
-//         return coords;
-//     });
-// };
-
 // Thunk để lấy vị trí từ Geolocation API
 export const setFirstLocation = () => (dispatch) => {
     try {
+        // check if geolocation is supported
+        if (!navigator.geolocation) {
+            alert('Geolocation is not supported by your browser');
+            return;
+        }
+        if (navigator.permissions) {
+            navigator.permissions
+                .query({ name: 'geolocation' })
+                .then((permissionStatus) => {
+                    console.log(permissionStatus.state);
+                    if (permissionStatus.state === 'granted') {
+                        getFirstCurrent();
+                    } else if (permissionStatus.state === 'prompt') {
+                        getFirstCurrent();
+                    } else if (permissionStatus.state === 'denied') {
+                        alert('Please allow location access');
+                    }
+                    permissionStatus.onchange = () => {
+                        if (permissionStatus.state === 'granted') {
+                            getFirstCurrent();
+                        } else if (permissionStatus.state === 'prompt') {
+                            getFirstCurrent();
+                        } else if (permissionStatus.state === 'denied') {
+                            alert('Please allow location access');
+                        }
+                    };
+                });
+        }
         // get current position if accuracy > 100 then get again use getCurrentPosition
         const getFirstCurrent = () => {
             if (navigator.geolocation) {

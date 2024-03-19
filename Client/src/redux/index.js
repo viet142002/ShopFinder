@@ -14,6 +14,7 @@ import storage from 'redux-persist/lib/storage';
 import routingReducer from './routingSlice';
 import userReducer from './userSlice';
 import ratingReducer from './ratingSlice';
+import retailerReducer from './retailerSlice';
 
 const persistConfig = {
     key: 'root',
@@ -24,7 +25,8 @@ const persistConfig = {
 const rootReducer = combineSlices({
     routing: routingReducer,
     user: userReducer,
-    rating: ratingReducer
+    rating: ratingReducer,
+    retailer: retailerReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -1,6 +1,7 @@
+import { useEffect } from 'react';
 import { Layout, Menu } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { UserOutlined } from '@ant-design/icons';
 import {
@@ -11,6 +12,8 @@ import {
 import { BsBox } from 'react-icons/bs';
 import { VscGitPullRequestGoToChanges } from 'react-icons/vsc';
 import { CiImport } from 'react-icons/ci';
+
+import { getInfoMyRetailerApi } from '../../api/retailerApi';
 
 import { unsetUser } from '../../redux/userSlice';
 
@@ -43,10 +46,61 @@ const items = [
     }
 ];
 
+const itemsNotQuantity = [
+    {
+        key: 'dashboard',
+        icon: <MdOutlineDashboard size={18} />,
+        label: 'Tổng quan'
+    },
+    {
+        key: 'product',
+        icon: <BsBox size={18} />,
+        label: 'Sản phẩm'
+    },
+    {
+        key: 'order',
+        icon: <VscGitPullRequestGoToChanges size={18} />,
+        label: 'Đơn hàng'
+    },
+    {
+        key: 'profile',
+        icon: <UserOutlined />,
+        label: 'Thông tin cửa hàng'
+    }
+];
+
+const itemsOnlyPickup = [
+    {
+        key: 'dashboard',
+        icon: <MdOutlineDashboard size={18} />,
+        label: 'Tổng quan'
+    },
+    {
+        key: 'product',
+        icon: <BsBox size={18} />,
+        label: 'Sản phẩm'
+    },
+    {
+        key: 'profile',
+        icon: <UserOutlined />,
+        label: 'Thông tin cửa hàng'
+    }
+];
+
 function SiderManagerRetailer() {
+    const retailer = useSelector((state) => state.retailer.data);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
+
+    useEffect(() => {
+        getInfoMyRetailerApi().then((res) => {
+            dispatch({
+                type: 'retailer/setRetailer',
+                payload: res.data.retailer
+            });
+        });
+    }, [dispatch]);
 
     const handleClick = (item) => {
         switch (item.key) {
@@ -80,6 +134,7 @@ function SiderManagerRetailer() {
     return (
         <>
             <Sider
+                className="hidden md:block"
                 theme="light"
                 style={{
                     overflow: 'auto',
@@ -90,17 +145,23 @@ function SiderManagerRetailer() {
                     bottom: 0
                 }}
             >
-                <div className="h-full flex flex-col justify-between">
+                <div className="flex h-full flex-col justify-between">
                     <Menu
                         mode="inline"
                         defaultSelectedKeys={['dashboard']}
                         selectedKeys={
                             location.pathname === '/retailer'
                                 ? ['dashboard']
-                                : [location.pathname.split('/')[2]]
+                                : [location.pathname.split('/')[3]]
                         }
                         onClick={(e) => handleClick(e)}
-                        items={items}
+                        items={
+                            retailer.mode === 'normal'
+                                ? items
+                                : retailer.mode === 'only-pickup'
+                                  ? itemsOnlyPickup
+                                  : itemsNotQuantity
+                        }
                     />
                     <Menu
                         mode="inline"

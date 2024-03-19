@@ -8,6 +8,7 @@ import {
 } from '@ant-design/icons';
 import { MdOutlineDirections, MdOutlineShoppingBag } from 'react-icons/md';
 import clsx from 'clsx';
+import { useNavigate } from 'react-router-dom';
 
 import {
     unsetMarkSelect,
@@ -18,6 +19,7 @@ import ModalReport from '../../../ModalReport/ModalReport.component';
 
 function Actions({ info }) {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [openReport, setOpenReport] = useState(false);
     const showRouting = useSelector((state) => state.routing.showRouting);
     const { _id } = useSelector((state) => state.user.data);
@@ -32,7 +34,7 @@ function Actions({ info }) {
 
     return (
         <>
-            <div className="flex justify-between px-siderInfo mb-[16px]">
+            <div className="mb-[16px] flex justify-between px-siderInfo">
                 <Button
                     type="primary"
                     className={clsx(
@@ -49,9 +51,10 @@ function Actions({ info }) {
                     size="large"
                     shape="circle"
                     icon={<MdOutlineShoppingBag size={20} />}
+                    onClick={() => navigate(`/store/${info._id}`)}
                 />
 
-                {_id === info.user ? (
+                {_id === info.user || _id === info.owner ? (
                     <Button
                         size="large"
                         shape="circle"

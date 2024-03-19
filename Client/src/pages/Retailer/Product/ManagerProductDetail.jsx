@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Layout, Space, Carousel, Tag } from 'antd';
+import { Button, Layout, Space, Carousel, Tag, Image } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import CommentProduct from '../../../components/Comments/CommentProduct.component';
@@ -9,48 +9,51 @@ import { typeStatus } from '../../../utils/typeConstraint';
 import ButtonBack from '../../../components/ActionsButton/ButtonBack.component';
 
 function ManagerProductDetail() {
-    const { id } = useParams();
+    const { idProduct } = useParams();
     const navigate = useNavigate();
     const [product, setProduct] = useState(null);
 
     useEffect(() => {
-        const fetchProduct = async () => {
-            const data = await getProductByIdApi(id);
-            setProduct(data);
-        };
-        fetchProduct();
-    }, [id]);
+        getProductByIdApi(idProduct).then((res) => setProduct(res.data));
+    }, [idProduct]);
 
     return (
         <section className="px-8 py-4">
             <ButtonBack />
-            <Layout.Header className="bg-transparent flex justify-between items-center mb-2">
+            <Layout.Header className="mb-2 flex items-center justify-between bg-transparent">
                 <h1 className="text-xl font-semibold">Chi tiết sản phẩm</h1>
             </Layout.Header>
             <Layout.Content className="grid grid-cols-3 gap-4">
-                <section className="bg-white col-span-2 p-2">
-                    <h2 className="text-xl font-bold mb-2">
+                <section className="col-span-2 bg-white p-2">
+                    <h2 className="mb-2 text-xl font-bold">
                         Thông tin sản phẩm
                     </h2>
                     <div className="grid grid-cols-2 gap-4">
                         <Carousel autoplay>
                             {product?.images.map((image, index) => (
-                                <img
+                                <div
                                     key={index}
-                                    src={'http://localhost:3001' + image.path}
-                                    alt="product"
-                                    loading="lazy"
-                                    className="object-cover rounded-md"
-                                />
+                                    className="!flex justify-center bg-gray-300"
+                                >
+                                    <Image
+                                        className="!h-64 object-cover"
+                                        src={
+                                            import.meta.env.VITE_APP_API_URL +
+                                            image.path
+                                        }
+                                        alt=""
+                                        loading="lazy"
+                                    />
+                                </div>
                             ))}
                         </Carousel>
                         <div className="space-y-3">
-                            <h3 className="font-semibold text-lg">
+                            <h3 className="text-lg font-semibold">
                                 {product?.name}
                             </h3>
                             <small>{product?._id}</small>
                             <div
-                                className="text-sm mt-2 bg-gray-100 p-2 rounded-md"
+                                className="mt-2 rounded-md bg-gray-100 p-2 text-sm"
                                 dangerouslySetInnerHTML={{
                                     __html: product?.description
                                 }}
@@ -112,14 +115,14 @@ function ManagerProductDetail() {
                     <div className="">
                         <Button
                             onClick={() =>
-                                navigate(`/retailer/product/edit-product/${id}`)
+                                navigate(`./../../edit-product/${idProduct}`)
                             }
                         >
                             Chỉnh sửa
                         </Button>
                     </div>
                 </section>
-                <section className="bg-white col-span-1 p-2">
+                <section className="col-span-1 bg-white p-2">
                     <CommentProduct />
                 </section>
             </Layout.Content>

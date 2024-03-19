@@ -10,16 +10,15 @@ function RegisterRetailerPending() {
     const navigate = useNavigate();
     // eslint-disable-next-line no-unused-vars
     const [open, setOpen] = useState(true);
-    const [info, setInfo] = useState({});
+    const [infoRegisterRetailer, setInfoRegisterRetailer] = useState({});
 
     useEffect(() => {
-        const getInfo = async () => {
-            const res = await getInfoMyRetailerApi();
-
-            if (res.message === 'Get info retailer successfully')
-                setInfo(res.retailer);
+        const getData = async () => {
+            getInfoMyRetailerApi().then((res) => {
+                setInfoRegisterRetailer(res.data.retailer);
+            });
         };
-        getInfo();
+        getData();
     }, []);
     return (
         <>
@@ -38,46 +37,62 @@ function RegisterRetailerPending() {
                 open={open}
                 className="md:w-1/2"
             >
-                {info.name && (
+                {infoRegisterRetailer.name && (
                     <>
-                        <h1 className="text-2xl font-bold text-center">
-                            {info.status === 'pending'
+                        <h1 className="text-center text-2xl font-bold">
+                            {infoRegisterRetailer.status === 'pending'
                                 ? 'Đơn của bạn đang chờ xét duyệt!'
-                                : info.status === 'rejected'
+                                : infoRegisterRetailer.status === 'rejected'
                                   ? 'Đơn của bạn đã bị từ chối!'
                                   : 'Đơn của bạn đã được chấp nhận!'}
                         </h1>
-                        <h2 className="text-xl font-semibold mb-4 mt-4">
+                        {infoRegisterRetailer.status === 'approved' && (
+                            <h2 className="mb-4 mt-4 text-lg font-semibold">
+                                Vui lòng đăng nhập lại để vào trang quản lý!
+                            </h2>
+                        )}
+                        <h2 className="mb-4 mt-4 text-xl font-semibold">
                             Thông tin
                         </h2>
                         <ul className="space-y-2">
                             <li className="pl-8">
-                                <span className="font-medium mr-2">
+                                <span className="mr-2 font-medium">
                                     Tên của hàng:
                                 </span>
-                                {info.name}
+                                {infoRegisterRetailer.name}
                             </li>
                             <li className="pl-8">
-                                <span className="font-medium mr-2">Loại:</span>
+                                <span className="mr-2 font-medium">Loại:</span>
                                 {
                                     typeLocations.find(
-                                        (item) => item.value === info.type
+                                        (item) =>
+                                            item.value ===
+                                            infoRegisterRetailer.type
                                     ).label
                                 }
                             </li>
                             <li className="pl-8">
-                                <span className="font-medium mr-2">Mô tả:</span>
+                                <span className="mr-2 font-medium">Mô tả:</span>
                                 <HTMLRenderer
-                                    htmlString={info.description}
-                                    className="ml-2 bg-gray-100 p-2 rounded-md"
+                                    htmlString={
+                                        infoRegisterRetailer.description
+                                    }
+                                    className="ml-2 rounded-md bg-gray-100 p-2"
                                 />
                             </li>
                             <li className="pl-8">
-                                <span className="font-medium mr-2">
+                                <span className="mr-2 font-medium">
                                     Toạ độ:
                                 </span>
-                                {info.location.loc.coordinates[1]},{' '}
-                                {info.location.loc.coordinates[0]}
+                                {
+                                    infoRegisterRetailer.location.loc
+                                        .coordinates[1]
+                                }
+                                ,{' '}
+                                {
+                                    infoRegisterRetailer.location.loc
+                                        .coordinates[0]
+                                }
                             </li>
                         </ul>
                     </>
