@@ -1,6 +1,6 @@
 # Logs
 locations.txt
-.env*
+.env.*
 logs
 *.log
 npm-debug.log*
