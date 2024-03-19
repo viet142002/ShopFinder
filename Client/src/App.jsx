@@ -2,13 +2,16 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
+import ProtectRoute from './routes/ProtectRoute';
+
 import DefaultLayout from './layouts/DefaultLayout';
 import Profile from './pages/user/Profile/ProfilePage';
 import Login from './pages/Auth/Login/LoginPage';
 import Register from './pages/Auth/Register/RegisterPage';
-
 import RegisterRetailerPending from './pages/RegisterRetailer/RegisterRetailerPending';
-import ProtectRoute from './routes/ProtectRoute';
+import HomePage from './pages/Home/HomePage';
+import ProductsPage from './pages/User/Products/ProductsPage';
+import ProductPage from './pages/User/Product/ProductPage';
 
 import ManageLayout from './layouts/ManageLayout';
 import RequestRetailerPage from './pages/Admin/RequestRetailerPage';
@@ -27,7 +30,6 @@ import AddAndEditProduct from './pages/Retailer/Product/AddAndEditProduct';
 import ManagerProductDetail from './pages/Retailer/Product/ManagerProductDetail';
 import ImportWarehouse from './pages/Retailer/WarehouseManager/ImportWarehouse';
 
-import HomePage from './pages/Home/HomePage';
 import CreateStore from './pages/CreateStore/CreateStore';
 
 import { routesConstant } from './routes/routesConstant';
@@ -85,6 +87,11 @@ function App() {
                             </ProtectRoute>
                         }
                     />
+                    <Route path="/store/:id" element={<ProductsPage />} />
+                    <Route
+                        path="/store/:id/:idProduct"
+                        element={<ProductPage />}
+                    />
                 </Route>
 
                 <Route
@@ -102,7 +109,7 @@ function App() {
                 </Route>
 
                 <Route
-                    path="/retailer"
+                    path="/retailer/:id"
                     element={
                         <ProtectRoute access="retailer">
                             <ManageLayout role="retailer" />
@@ -119,10 +126,6 @@ function App() {
                         path="import-product"
                         element={<WarehouseManager isImport />}
                     />
-                    <Route
-                        path="export-product"
-                        element={<WarehouseManager isImport={false} />}
-                    />
                     <Route path="order" element={<ManageOrder />} />
                     <Route path="order/:id" element={<ManageOrderDetail />} />
                     <Route path="statistic" element={<StatisticRetailer />} />
@@ -132,11 +135,11 @@ function App() {
                         element={<AddAndEditProduct />}
                     />
                     <Route
-                        path="product/edit-product/:id"
+                        path="product/edit-product/:idProduct"
                         element={<AddAndEditProduct />}
                     />
                     <Route
-                        path="product/detail/:id"
+                        path="product/detail/:idProduct"
                         element={<ManagerProductDetail />}
                     />
                     <Route
@@ -144,7 +147,7 @@ function App() {
                         element={<ImportWarehouse />}
                     />
                     <Route
-                        path="import-product/:id"
+                        path="import-product/:idImport"
                         element={<ImportWarehouse />}
                     />
                 </Route>

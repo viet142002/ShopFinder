@@ -1,25 +1,64 @@
 const Product = require('../Models/productModel');
+const Retailer = require('../Models/retailerModel');
 
 const imageController = require('./imageController');
 
 const productController = {
+    // create product by retailer
     createProduct: async (req, res) => {
         try {
-            const { name, price, description, discount, category, status } =
-                req.body;
+            const { name, price, description, discount = 0 } = req.body;
+            let status = 'draft';
             const files = req.files;
-            const retailer = req.user._id;
+
+            if (!name || !price || !description) {
+                return res.status(400).json({
+                    message: 'Missing required fields',
+                });
+            }
+
+            if (price < 0) {
+                return res.status(400).json({
+                    message: 'Invalid price',
+                });
+            }
+
+            if (discount < 0 || discount > 100) {
+                return res.status(400).json({
+                    message: 'Invalid discount',
+                });
+            }
+
+            if (files.length < 1) {
+                return res.status(400).json({
+                    message: 'Missing images',
+                });
+            }
+
+            const distributor = await Retailer.findOne({ owner: req.user._id });
+
+            if (!distributor || distributor.status !== 'approved') {
+                return res.status(403).json({
+                    message: 'Permission denied',
+                });
+            }
+
+            if (distributor.mode === 'only-pickup') {
+                status = 'only-display';
+            }
+
+            if (distributor.mode === 'not-quantity') {
+                status = 'not-quantity';
+            }
 
             const images = await imageController.createImage(files);
 
             const newProduct = new Product({
                 status,
-                retailer,
-                category,
+                distributor,
                 discount,
                 name,
                 price,
-                description,
                 images,
             });
 
@@ -35,21 +74,69 @@ const productController = {
             });
         }
     },
-
-    updateProduct: async (req, res) => {
+    // create product by user share product
+    createProductByUser: async (req, res) => {
         try {
-            // deleteImages is array of image id
-            const {
+            // distributor is information id
+            const { name, price, description, distributor } = req.body;
+            const files = req.files;
+            const user = req.user._id;
+
+            if (!name || !price || !category) {
+                return res.status(400).json({
+                    message: 'Missing required fields',
+                });
+            }
+
+            if (price < 0) {
+                return res.status(400).json({
+                    message: 'Invalid price',
+                });
+            }
+
+            if (files.length < 1) {
+                return res.status(400).json({
+                    message: 'Missing images',
+                });
+            }
+
+            const images = await imageController.createImage(files);
+
+            const newProduct = new Product({
+                status: 'only-display',
+                distributor,
+                distributorType: 'Information',
                 name,
                 price,
                 description,
-                discount,
-                category,
-                status,
-                deleteImages,
-            } = req.body;
+                images,
+                userCreate: user,
+            });
+
+            await newProduct.save();
+
+            return res.status(200).json({
+                newProduct,
+                message: 'Product created successfully',
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message,
+            });
+        }
+    },
+    // update detail product by retailer
+    updateProduct: async (req, res) => {
+        try {
+            // deleteImages is array of image id
+            let { name, price, description, discount, status, deleteImages } =
+                req.body;
             const files = req.files;
-            const retailer = req.user._id;
+            if (typeof deleteImages === 'string') {
+                deleteImages = [deleteImages];
+            }
+            const retailer = await Retailer.findOne({ owner: req.user._id });
+
             const productId = req.params.id;
 
             const product = await Product.findById(productId)
@@ -62,7 +149,61 @@ const productController = {
                 });
             }
 
-            if (product.retailer.toString() !== retailer.toString()) {
+            if (product.distributor.toString() !== retailer._id.toString()) {
+                return res.status(403).json({
+                    message: 'Permission denied',
+                });
+            }
+
+            console.log('🚀 ~ updateProduct: ~ deleteImages:', deleteImages);
+            if (deleteImages) {
+                await imageController.deleteImages(deleteImages);
+            }
+
+            if (files) {
+                const newImages = await imageController.createImage(files);
+                product.images = product.images.concat(newImages);
+            }
+            if (name) product.name = name;
+            if (price) product.price = price;
+            if (description) product.description = description;
+            if (discount) product.discount = discount;
+            if (status) product.status = status;
+
+            await product.save();
+
+            return res.status(200).json({
+                message: 'Product updated successfully',
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message,
+            });
+        }
+    },
+    // update detail product by user share product
+    updateProductByUser: async (req, res) => {
+        try {
+            // deleteImages is array of image id
+            let { name, price, description, deleteImages } = req.body;
+            const files = req.files;
+            if (typeof deleteImages === 'string') {
+                deleteImages = [deleteImages];
+            }
+            const user = req.user._id;
+            const productId = req.params.id;
+
+            const product = await Product.findById(productId)
+                .populate('images')
+                .exec();
+
+            if (!product) {
+                return res.status(404).json({
+                    message: 'Product not found',
+                });
+            }
+
+            if (product.userCreate.toString() !== user.toString()) {
                 return res.status(403).json({
                     message: 'Permission denied',
                 });
@@ -80,9 +221,6 @@ const productController = {
             product.name = name;
             product.price = price;
             product.description = description;
-            product.discount = discount;
-            product.category = category;
-            product.status = status;
 
             const updatedProduct = await product.save();
 
@@ -97,46 +235,78 @@ const productController = {
         }
     },
 
-    getProducts: async (req, res) => {
+    getProductsFromDistributor: async (req, res) => {
         try {
+            let status = req.query.status || [
+                'available',
+                'only-display',
+                'not-quantity',
+            ];
+            if (status === 'all') {
+                status = [
+                    'draft',
+                    'available',
+                    'only-display',
+                    'not-quantity',
+                    'unavailable',
+                    'stop',
+                ];
+            }
+            if (typeof status === 'string') {
+                status = [status];
+            }
+
             const search = req.query.search || '';
             const limit = parseInt(req.query.limit) || 10;
             const page = parseInt(req.query.page) || 1;
+            // distributor is retailer id or information id
+            const distributor = req.params.id;
+
+            console.log(req.query);
+
+            if (limit < 1 || page < 1) {
+                return res.status(400).json({
+                    message: 'Invalid limit or page',
+                });
+            }
+
+            if (search.length > 100) {
+                return res.status(400).json({
+                    message: 'Search too long',
+                });
+            }
+
+            if (!distributor) {
+                return res.status(400).json({
+                    message: 'Invalid distributor',
+                });
+            }
 
             const products = await Product.find({
                 name: { $regex: search, $options: 'i' },
+                status: { $in: status },
+                distributor,
             })
                 .populate('images')
-                .populate('retailer')
                 .limit(limit)
                 .skip(limit * (page - 1))
-                .exec();
+                .select('name price images status _id');
 
-            return res.status(200).json(products);
+            const total = await Product.countDocuments({
+                name: { $regex: search, $options: 'i' },
+                distributor,
+                // status: { $in: status },
+            });
+
+            return res.status(200).json({
+                products,
+                total,
+                page,
+            });
         } catch (error) {
             return res.status(500).json({
                 message: error.message,
             });
-        }
-    },
-
-    addQuantity: async products => {
-        try {
-            for (let i = 0; i < products.length; i++) {
-                const product = await Product.findById(
-                    products[i]?._id || products[i].product
-                );
-                product.quantity += products[i].quantity;
-                if (product.quantity < 0) {
-                    product.quantity = 0;
-                    product.status = 'unavailable';
-                } else {
-                    product.status = 'available';
-                }
-                await product.save();
-            }
-        } catch (error) {
-            throw error;
         }
     },
 
@@ -145,7 +315,7 @@ const productController = {
             const productId = req.params.id;
             const product = await Product.findById(productId)
                 .populate('images')
-                .populate('retailer')
+                .populate('distributor')
                 .exec();
 
             if (!product) {
@@ -203,6 +373,54 @@ const productController = {
             return res.status(500).json({
                 message: error.message,
             });
+        }
+    },
+
+    deleteProductByAdmin: async (req, res) => {
+        try {
+            const productId = req.params.id;
+
+            const product = await Product.findById.populate('images').exec();
+
+            if (!product) {
+                return res.status(404).json({
+                    message: 'Product not found',
+                });
+            }
+
+            for (let i = 0; i < product.images.length; i++) {
+                await imageController.deleteImage(product.images[i].name);
+            }
+
+            await product.remove();
+
+            return res.status(200).json({
+                message: 'Product deleted successfully',
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message,
+            });
+        }
+    },
+
+    addQuantity: async products => {
+        try {
+            for (let i = 0; i < products.length; i++) {
+                const product = await Product.findById(
+                    products[i]?._id || products[i].product
+                );
+                product.quantity += products[i].quantity;
+                if (product.quantity < 0) {
+                    product.quantity = 0;
+                    product.status = 'unavailable';
+                } else {
+                    product.status = 'available';
+                }
+                await product.save();
+            }
+        } catch (error) {
+            throw error;
         }
     },
 };

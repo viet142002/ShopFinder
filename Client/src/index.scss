@@ -55,3 +55,21 @@
     display: flex !important;
     align-items: center;
 }
+
+.ant-card-meta-title {
+    text-overflow: ellipsis !important;
+    overflow-wrap: break-word !important;
+    white-space: wrap !important;
+    font-size: 14px !important;
+    line-height: normal !important;
+}
+
+.ant-card-body {
+    padding: .5rem !important;
+
+    @screen md {
+        padding: 1rem !important;
+    }
+
+   
+}
