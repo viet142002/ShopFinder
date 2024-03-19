@@ -7,7 +7,7 @@ import { setNewRates } from '../../redux/ratingSlice';
 
 import CardRate from '../CardRate/CardRate.component';
 
-function DisplayRates({ id }) {
+function DisplayRates({ id: locationId, productId }) {
     const dispatch = useDispatch();
     const { _id } = useSelector((state) => state.user.data);
     const { rates, myRate } = useSelector((state) => state.rating);
@@ -15,17 +15,30 @@ function DisplayRates({ id }) {
 
     useEffect(() => {
         setIsLoading(true);
-        getRatesApi({ to: id, userId: _id })
-            .then((data) => {
-                dispatch(
-                    setNewRates({ rates: data.rates, myRate: data.myRate })
-                );
-                setIsLoading(false);
-            })
-            .catch(() => {
-                setIsLoading(false);
-            });
-    }, [id, dispatch, _id]);
+        if (locationId) {
+            getRatesApi({ to: locationId, userId: _id })
+                .then((data) => {
+                    dispatch(
+                        setNewRates({ rates: data.rates, myRate: data.myRate })
+                    );
+                    setIsLoading(false);
+                })
+                .catch(() => {
+                    setIsLoading(false);
+                });
+        } else {
+            getRatesApi({ to: productId, userId: _id })
+                .then((data) => {
+                    dispatch(
+                        setNewRates({ rates: data.rates, myRate: data.myRate })
+                    );
+                    setIsLoading(false);
+                })
+                .catch(() => {
+                    setIsLoading(false);
+                });
+        }
+    }, [locationId, dispatch, _id, productId]);
 
     return (
         <section>
@@ -53,8 +66,9 @@ function DisplayRates({ id }) {
                               ))
                             : !myRate && (
                                   <p className="mx-2 text-lg md:mx-10">
-                                      Hãy là người đầu tiên cho ý kiến về địa
-                                      điểm này!
+                                      {locationId
+                                          ? 'Hãy là người đầu tiên cho ý kiến về địa điểm này!'
+                                          : 'Hãy là người đầu tiên cho ý kiến về sản phẩm này!'}
                                   </p>
                               )}
                     </>

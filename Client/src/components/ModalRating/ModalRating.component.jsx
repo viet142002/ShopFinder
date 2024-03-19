@@ -24,10 +24,9 @@ const formatForm = (values) => {
     return formData;
 };
 
-function ModalRating() {
+function ModalRating({ title, to, toType }) {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
-    const info = useSelector((state) => state.routing.info);
     const { data: user } = useSelector((state) => state.user);
     const { showModal, myRate } = useSelector((state) => state.rating);
     const [confirmLoading, setConfirmLoading] = useState(false);
@@ -50,8 +49,8 @@ function ModalRating() {
                 const formData = formatForm({
                     ...values,
                     images: fileList,
-                    to: info._id,
-                    toType: info.informationType,
+                    to: to,
+                    toType: toType,
                     deleteImages: deleteImages
                 });
 
@@ -62,6 +61,7 @@ function ModalRating() {
                             values: formData
                         })
                     );
+
                     if (data) {
                         dispatch(
                             updateRate({
@@ -137,7 +137,7 @@ function ModalRating() {
     return (
         <>
             <Modal
-                title={info.name}
+                title={title}
                 centered
                 open={showModal.isShow}
                 onOk={handleOk}

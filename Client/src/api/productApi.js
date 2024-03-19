@@ -23,6 +23,10 @@ export const getProductsFromDistributor = ({
     });
 };
 
+export const getDistributorByProductIdApi = async (id) => {
+    return api.get(`products/distributor/${id}`);
+};
+
 export const createProductApi = async (data) => {
     return api.post('retailer/products', data, {
         headers: {

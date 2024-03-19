@@ -1,5 +1,7 @@
 const Retailer = require('../Models/retailerModel');
 const User = require('../Models/userModel');
+const Rate = require('../Models/rateModel');
+const Product = require('../Models/productModel');
 
 const imageController = require('./imageController');
 const addressController = require('./addressController');
@@ -64,6 +66,7 @@ const retailerController = {
             });
         }
     },
+
     infoMyRetailer: async (req, res) => {
         try {
             const retailer = await Retailer.findOne({
@@ -99,28 +102,6 @@ const retailerController = {
             return res.status(200).json({
                 retailers,
                 message: 'Get retailers successfully',
-            });
-        } catch (error) {
-            return res.status(500).json({
-                message: error.message,
-            });
-        }
-    },
-
-    getRetailerById: async (req, res) => {
-        try {
-            const retailer = await Retailer.findById(req.params.id).populate(
-                'location'
-            );
-            if (!retailer) {
-                return res.status(400).json({
-                    message: 'Cant find retailer',
-                });
-            }
-
-            return res.status(200).json({
-                retailer,
-                message: 'Get retailer successfully',
             });
         } catch (error) {
             return res.status(500).json({

@@ -1,5 +1,7 @@
 const Product = require('../Models/productModel');
 const Retailer = require('../Models/retailerModel');
+const Information = require('../Models/informationModel');
+const Rate = require('../Models/rateModel');
 
 const imageController = require('./imageController');
 
@@ -302,6 +304,57 @@ const productController = {
                 products,
                 total,
                 page,
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message,
+            });
+        }
+    },
+
+    getDistributorByProductId: async (req, res) => {
+        try {
+            const product = await Product.findById(req.params.id);
+            console.log(req.params.id, product);
+            let distributor = null;
+
+            if (!product) {
+                return res.status(404).json({
+                    message: 'Product not found',
+                });
+            }
+
+            if (product.distributorType === 'Retailer') {
+                distributor = await Retailer.findById(
+                    product.distributor
+                ).populate('location logo');
+            } else {
+                distributor = await Information.findById(
+                    product.distributor
+                ).populate('location logo');
+            }
+
+            const rateDistributor = await Rate.find({
+                to: distributor._id,
+            });
+
+            const averageRate =
+                rateDistributor.reduce((sum, rate) => sum + rate.rate, 0) /
+                rateDistributor.length;
+
+            const totalProduct = await Product.countDocuments({
+                distributor: distributor._id,
+                status: {
+                    $in: ['available', 'only-display', 'not-quantity'],
+                },
+            });
+
+            return res.status(200).json({
+                distributor,
+                averageRate: averageRate || 0,
+                totalProduct: totalProduct || 0,
+                totalRate: rateDistributor.length || 0,
+                message: 'Get distributor successfully',
             });
         } catch (error) {
             return res.status(500).json({

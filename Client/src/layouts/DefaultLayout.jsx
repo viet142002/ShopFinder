@@ -9,8 +9,8 @@ const { Content } = Layout;
 const DefaultLayout = () => {
     return (
         <Layout className="h-dvh">
-            <SideBar className="hidden md:block z-[9999] overflow-hidden" />
-            <Content className="relative overflow-auto">
+            <SideBar className="z-[9999] hidden overflow-hidden md:block" />
+            <Content className="relative overflow-y-auto overflow-x-hidden">
                 <Outlet />
             </Content>
         </Layout>
