@@ -27,6 +27,7 @@ const authController = {
             const token = generateToken(newUser);
 
             await newUser.save();
+            await newUser.populate('avatar address pendingRetailer');
 
             return res.status(200).json({
                 newUser,
@@ -41,6 +42,7 @@ const authController = {
     },
     signIn: () => async (req, res) => {
         try {
+            console.log('signIn');
             const { email, password } = req.body;
             console.log(req.body);
 
@@ -52,7 +54,8 @@ const authController = {
                 .populate({
                     path: 'address',
                     select: 'province district ward more',
-                });
+                })
+                .populate('pendingRetailer');
 
             if (!user) {
                 return res.status(400).json({

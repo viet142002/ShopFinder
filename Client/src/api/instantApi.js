@@ -18,10 +18,11 @@ instantApi.interceptors.response.use(
         return response;
     },
     (error) => {
-        console.log(error);
+        console.error('🚀 ~ error:', error.response);
         if (error.response.status === 401) {
+            alert('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại!!!');
             localStorage.removeItem('token');
-            window.location.href = '/login';
+            window.location.href = `/login?redirect=${window.location.pathname}`;
         }
         return Promise.reject(error);
     }

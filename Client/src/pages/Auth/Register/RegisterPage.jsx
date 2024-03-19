@@ -1,5 +1,5 @@
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
 
@@ -12,15 +12,25 @@ import { handleFetch } from '../../../utils/expression';
 function RegisterPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const redirect = searchParams.get('redirect');
 
     const handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
         const res = await handleFetch(() => registerApi(values));
-
         setSubmitting(false);
         if (res.token) {
             dispatch(setUser({ user: res.newUser, token: res.token }));
-            navigate('/');
+            if (redirect) {
+                if (
+                    redirect.split('/').includes('admin') ||
+                    redirect.split('/').includes('retailer')
+                ) {
+                    return navigate('/');
+                }
+                return navigate(redirect);
+            }
+            return navigate('/');
         }
     };
 
@@ -118,7 +128,15 @@ function RegisterPage() {
                                 <div>
                                     <p className="text-center">
                                         Bạn chưa có tài khoản?{' '}
-                                        <Link to={'/login'}>Đăng nhập</Link>
+                                        <Link
+                                            to={
+                                                redirect
+                                                    ? `/login?redirect=${redirect}`
+                                                    : '/login'
+                                            }
+                                        >
+                                            Đăng nhập
+                                        </Link>
                                     </p>
                                 </div>
                                 <div className="flex justify-center">

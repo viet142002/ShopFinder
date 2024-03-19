@@ -7,7 +7,19 @@ const userController = {
         try {
             const { firstname, lastname, address, phone } = req.body;
             const avatar = req?.file?.filename || null;
-            console.log(req.body);
+
+            if (!firstname && !lastname && !address && !phone && !avatar)
+                return res.status(400).json({ message: 'No changes detected' });
+            if (phone && !/^\d{10}$/.test(phone))
+                return res
+                    .status(400)
+                    .json({ message: 'Invalid phone number' });
+            if (
+                (!JSON.parse(address).province && !JSON.parse(address).district,
+                !JSON.parse(address).ward)
+            ) {
+                return res.status(400).json({ message: 'Invalid address' });
+            }
 
             const user = await User.findById(req.user._id)
                 .select('-password')

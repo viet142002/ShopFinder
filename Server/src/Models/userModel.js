@@ -27,9 +27,16 @@ const userSchema = new mongoose.Schema({
         enum: ['active', 'blocked'],
         default: 'active',
     },
-    isPendingRetailer: {
-        type: Boolean,
-        default: false,
+    pendingRetailer: {
+        retailer: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Retailer',
+        },
+        status: {
+            type: String,
+            enum: ['not-register', 'pending', 'rejected', 'approved'],
+            default: 'not-register',
+        },
     },
     address: {
         type: mongoose.Schema.Types.ObjectId,

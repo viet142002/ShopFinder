@@ -1,4 +1,4 @@
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import { useDispatch } from 'react-redux';
 import clsx from 'clsx';
@@ -15,19 +15,36 @@ import { handleFetch } from '../../../utils/expression';
 function LoginPage() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const location = useLocation();
+    const [searchParams] = useSearchParams();
     const [isShowPassword, setIsShowPassword] = useState(false);
+    const redirect = searchParams.get('redirect');
 
     const handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
-        const res = await handleFetch(() => loginApi(values));
+        const data = await handleFetch(() => loginApi(values));
 
         setSubmitting(false);
-        if (res.token) {
-            dispatch(setUser({ user: res.user, token: res.token }));
-            if (location.state?.from) navigate(location.state.from);
-            else if (res.user.role === 'admin') navigate('/admin/dashboard');
-            else navigate('/');
+        if (data) {
+            dispatch(setUser({ user: data.user, token: data.token }));
+
+            if (redirect) {
+                if (
+                    redirect.split('/').includes('admin') &&
+                    data.user.role === 'admin'
+                ) {
+                    return navigate(redirect);
+                }
+                if (
+                    redirect.split('/').includes('retailer') &&
+                    data.user.role === 'retailer'
+                ) {
+                    return navigate(redirect);
+                }
+                return navigate('/');
+            }
+
+            if (data.user.role === 'admin') return navigate('/admin/dashboard');
+            return navigate('/');
         }
     };
 
@@ -35,12 +52,12 @@ function LoginPage() {
         <>
             <div
                 className={clsx(
-                    'flex min-h-screen items-center justify-center',
+                    'flex h-svh items-center justify-center',
                     style['container-auth']
                 )}
             >
                 <div className={clsx(style['slider-thumb'])}></div>
-                <section className="z-10 w-[90%] bg-white bg-opacity-[0.8] p-16 md:w-[50%]">
+                <section className="z-10 w-[90%] bg-white bg-opacity-[0.8] p-16 md:h-auto md:w-[50%]">
                     <h1 className="mb-10 text-center text-2xl font-bold">
                         Đăng nhập
                     </h1>
@@ -101,7 +118,15 @@ function LoginPage() {
                                 <div>
                                     <p className="text-center">
                                         Bạn chưa có tài khoản?{' '}
-                                        <Link to={'/register'}>Đăng ký</Link>
+                                        <Link
+                                            to={
+                                                redirect
+                                                    ? `/register?redirect=${redirect}`
+                                                    : '/register'
+                                            }
+                                        >
+                                            Đăng ký
+                                        </Link>
                                     </p>
                                 </div>
                                 <div className="flex justify-center">

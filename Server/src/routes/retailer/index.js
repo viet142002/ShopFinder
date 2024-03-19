@@ -6,7 +6,7 @@ const retailerRouter = require('./retailerRouter');
 const productRouter = require('./productRouter');
 const warehouseReceiptRouter = require('./warehouseReceiptRouter');
 
-router.use('', retailerRouter);
+router.use('/', retailerRouter);
 router.use('/products', authentication('retailer'), productRouter);
 router.use('/warehouse', authentication('retailer'), warehouseReceiptRouter);
 
