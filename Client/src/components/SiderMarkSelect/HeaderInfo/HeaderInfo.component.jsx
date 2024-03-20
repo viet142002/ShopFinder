@@ -13,7 +13,7 @@ function HeaderInfo({ name, rate, type, informationType }) {
                 )}
             </h2>
             <p>{rate}</p>
-            <p>{typeLocations.find((item) => item.value === type).label}</p>
+            <p>{typeLocations.find((item) => item.value === type)?.label}</p>
         </div>
     );
 }

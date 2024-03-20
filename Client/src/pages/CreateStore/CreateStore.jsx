@@ -20,6 +20,7 @@ import InputAddress from '../../components/InputAddress/InputAddress.component';
 import InputImage from '../../components/InputImage/InputImage.component';
 import { shareStore } from '../../api/communityApi';
 import { registerRetailerApi } from '../../api/retailerApi';
+import { handleFetch } from '../../utils/expression';
 
 import './createStore.scss';
 
@@ -59,20 +60,21 @@ function CreateStorePage({ isRegisterRetailer }) {
     const onFinish = (values) => {
         if (isRegisterRetailer) {
             const formData = FormatForm(values, newImages, true);
-            registerRetailerApi(formData).then((data) => {
-                alert(data.message);
+            const data = handleFetch(() => registerRetailerApi(formData));
+
+            if (data)
                 dispatch({
                     type: 'user/updateUser',
                     payload: {
-                        isPendingRetailer: true
+                        pendingRetailer: {
+                            retailer: data.newRetailer,
+                            status: 'pending'
+                        }
                     }
                 });
-            });
         } else {
             const formData = FormatForm(values, newImages);
-            shareStore(formData).then((data) => {
-                alert(data.message);
-            });
+            handleFetch(() => shareStore(formData));
         }
     };
 
@@ -216,19 +218,7 @@ function CreateStorePage({ isRegisterRetailer }) {
                                                             </td>
                                                             <td>
                                                                 Chỉ phục vụ tại
-                                                                cửa hàng, không
-                                                                quản lý số
-                                                                lượng.
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td>
-                                                                Không quản lý số
-                                                                lượng
-                                                            </td>
-                                                            <td>
-                                                                Chỉ không quản
-                                                                lý số lượng.
+                                                                cửa hàng.
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -256,9 +246,6 @@ function CreateStorePage({ isRegisterRetailer }) {
                                             </Radio.Button>
                                             <Radio.Button value="only-pickup">
                                                 Chỉ phục vụ tại chổ
-                                            </Radio.Button>
-                                            <Radio.Button value="not-quantity">
-                                                Không quản lý số lượng
                                             </Radio.Button>
                                         </Radio.Group>
                                     </Form.Item>

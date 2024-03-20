@@ -18,16 +18,11 @@ export const getRetailerByIdApi = async (id) => {
 };
 
 export const registerRetailerApi = async (values) => {
-    try {
-        const res = await api.post('/retailer/register', values, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-        });
-        return res.data;
-    } catch (error) {
-        return error.response.message;
-    }
+    return api.post('/retailer/register', values, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
 };
 
 export const getRequestsRetailerApi = async () => {

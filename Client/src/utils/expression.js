@@ -37,6 +37,12 @@ const translateSuccess = (msg) => {
             return 'Tạo sản phẩm thành công';
         case 'Product updated successfully':
             return 'Cập nhật sản phẩm thành công';
+        case 'Product deleted successfully':
+            return 'Xóa sản phẩm thành công';
+        case 'Register retailer successfully':
+            return 'Đăng ký cửa hàng thành công';
+        case 'Share location successfully':
+            return 'Chia sẻ vị trí thành công';
         default:
             break;
     }
@@ -100,7 +106,6 @@ const handleFetch = async (callback) => {
         if (res?.data?.message) success(translateSuccess(res.data.message));
         data = res.data;
     } catch (err) {
-        alert(JSON.stringify(err));
         if (err.response?.data?.message)
             error(translateError(err.response.data.message));
         data = null;

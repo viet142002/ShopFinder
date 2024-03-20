@@ -53,18 +53,10 @@ const productSchema = new mongoose.Schema({
             ref: 'Rate',
         },
     ],
-    // only-display for product is share by user
-    // not-quantity for product not manage quantity
+    // only-display for product is share by user or retailer
     status: {
         type: String,
-        enum: [
-            'draft',
-            'available',
-            'sold-out',
-            'stop',
-            'only-display',
-            'not-quantity',
-        ],
+        enum: ['draft', 'available', 'sold-out', 'stop', 'only-display'],
         default: 'draft',
     },
     reviews: [

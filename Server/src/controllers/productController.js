@@ -49,15 +49,13 @@ const productController = {
                 status = 'only-display';
             }
 
-            if (distributor.mode === 'not-quantity') {
-                status = 'not-quantity';
-            }
-
             const images = await imageController.createImage(files);
 
             const newProduct = new Product({
                 status,
                 distributor,
+                distributorType: 'Retailer',
+                description,
                 discount,
                 name,
                 price,
@@ -183,6 +181,7 @@ const productController = {
             });
         }
     },
+
     // update detail product by user share product
     updateProductByUser: async (req, res) => {
         try {
@@ -239,17 +238,13 @@ const productController = {
 
     getProductsFromDistributor: async (req, res) => {
         try {
-            let status = req.query.status || [
-                'available',
-                'only-display',
-                'not-quantity',
-            ];
+            let status = req.query.status || ['available', 'only-display'];
             if (status === 'all') {
                 status = [
                     'draft',
                     'available',
                     'only-display',
-                    'not-quantity',
+
                     'unavailable',
                     'stop',
                 ];
@@ -263,8 +258,6 @@ const productController = {
             const page = parseInt(req.query.page) || 1;
             // distributor is retailer id or information id
             const distributor = req.params.id;
-
-            console.log(req.query);
 
             if (limit < 1 || page < 1) {
                 return res.status(400).json({
@@ -315,7 +308,6 @@ const productController = {
     getDistributorByProductId: async (req, res) => {
         try {
             const product = await Product.findById(req.params.id);
-            console.log(req.params.id, product);
             let distributor = null;
 
             if (!product) {
@@ -345,7 +337,7 @@ const productController = {
             const totalProduct = await Product.countDocuments({
                 distributor: distributor._id,
                 status: {
-                    $in: ['available', 'only-display', 'not-quantity'],
+                    $in: ['available', 'only-display'],
                 },
             });
 

@@ -44,7 +44,7 @@ export const updateProductByIdApi = async (id, data) => {
 };
 
 export const getProductByIdApi = async (id) => {
-    return api.get(`retailer/products/${id}`);
+    return api.get(`products/detail/${id}`);
 };
 
 export const deleteProductByIdApi = async (id) => {

@@ -25,29 +25,28 @@ export default defineConfig({
                     {
                         src: '/vite.svg',
                         sizes: '32x32',
-                        // type: 'image/png'
                         type: 'image/svg+xml'
                     },
                     {
-                        src: '/android-chrome-192x192.png',
+                        src: '/logo.jpg',
                         sizes: '192x192',
-                        type: 'image/png'
+                        type: 'image/jpg'
                     },
                     {
-                        src: '/android-chrome-512x512.png',
+                        src: '/logo.jpg',
                         sizes: '512x512',
-                        type: 'image/png'
+                        type: 'image/jpg'
                     },
                     {
-                        src: '/apple-touch-icon.png',
+                        src: '/logo.jpg',
                         sizes: '180x180',
-                        type: 'image/png',
+                        type: 'image/jpg',
                         purpose: 'apple touch icon'
                     },
                     {
-                        src: '/maskable_icon.png',
+                        src: '/logo.jpg',
                         sizes: '225x225',
-                        type: 'image/png',
+                        type: 'image/jpg',
                         purpose: 'any maskable'
                     }
                 ]

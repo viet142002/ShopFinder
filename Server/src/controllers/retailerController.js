@@ -58,7 +58,7 @@ const retailerController = {
 
             return res.status(200).json({
                 newRetailer,
-                message: 'Signup successfully',
+                message: 'Register retailer successfully',
             });
         } catch (error) {
             return res.status(500).json({

@@ -16,16 +16,14 @@ export const typeLocations = [
         label: 'Thực phẩm'
     },
     {
-        value: 'cafe',
-        label: 'Quán cà phê'
+        value: 'beverage',
+        label: 'Quán nước'
     },
     {
         value: 'other',
         label: 'Khác'
     }
 ];
-
-export const typeProducts = [{}];
 
 export const typeStatus = [
     {
@@ -47,11 +45,6 @@ export const typeStatus = [
         value: 'stop',
         label: 'Ngừng kinh doanh',
         color: 'red'
-    },
-    {
-        value: 'not-quantity',
-        label: 'Luôn có sẵn',
-        color: 'green'
     },
     {
         value: 'only-display',

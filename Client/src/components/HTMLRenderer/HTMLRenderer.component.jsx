@@ -1,22 +1,20 @@
 function HTMLRenderer({ htmlString, className }) {
-    if (htmlString.includes('ul')) {
-        className += '';
-    }
-    if (htmlString.includes('ol')) {
-        className += '';
-    }
-    if (htmlString.includes('li')) {
-        // find all index of li tag and add class
-        let index = 0;
-        let i = -1;
-        while ((i = htmlString.indexOf('<li>', i + 1)) >= 0) {
-            index = i;
-            htmlString =
-                htmlString.slice(0, index) +
-                '<li class="ml-4">' +
-                htmlString.slice(index + 4);
-        }
-    }
+    // custom class for h1, h2, h3, h4, h5, h6 tags in htmlString
+    htmlString = htmlString.replace(/<h1/g, '<h1 class="text-2xl font-bold"');
+    htmlString = htmlString.replace(/<h2/g, '<h2 class="text-1xl font-bold"');
+    htmlString = htmlString.replace(/<h3/g, '<h3 class="text-xl font-bold"');
+    htmlString = htmlString.replace(/<h4/g, '<h4 class="text-lg font-bold"');
+    htmlString = htmlString.replace(
+        /<h5/g,
+        '<h5 class="text-lg font-semibold"'
+    );
+    htmlString = htmlString.replace(/<h6/g, '<h6 class="text-base font-bold"');
+
+    // custom class for ul, ol, li tags in htmlString
+    htmlString = htmlString.replace(/<ul/g, '<ul class="list-disc"');
+    htmlString = htmlString.replace(/<ol/g, '<ol class="list-decimal"');
+    htmlString = htmlString.replace(/<li/g, '<li class="mb-1 ml-4"');
+
     return (
         <div
             className={className}

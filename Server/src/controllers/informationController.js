@@ -57,7 +57,97 @@ const InformationController = {
 
             res.status(201).json({
                 information,
-                message: 'Information created successfully',
+                message: 'Share location successfully',
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    async update(req, res) {
+        try {
+            const { id } = req.params;
+            const { name, location, address, type, phone, description } =
+                req.body;
+            const images = req.files;
+
+            const information = await Information.findById(id);
+
+            if (!information) {
+                return res
+                    .status(404)
+                    .json({ message: 'Information not found' });
+            }
+
+            if (images.length > 0) {
+                const newImages = await imageController.createImage(images);
+                await imageController.deleteImage(information.images);
+                information.images = newImages;
+            }
+
+            if (address) {
+                const newAddress = await addressController.create(
+                    JSON.parse(address)
+                );
+                await addressController.delete(information.address);
+                information.address = newAddress._id;
+            }
+
+            if (location) {
+                const { lat, lng } = JSON.parse(location);
+                const newLocation = await locationController.update(
+                    information.location,
+                    {
+                        lat,
+                        lng,
+                    }
+                );
+                information.location = newLocation._id;
+            }
+
+            if (name) {
+                information.name = name;
+            }
+
+            if (type) {
+                information.type = type;
+            }
+
+            if (phone) {
+                information.phone = phone;
+            }
+
+            if (description) {
+                information.description = description;
+            }
+
+            await information.save();
+
+            res.status(200).json({
+                information,
+                message: 'Information updated successfully',
+            });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async delete(req, res) {
+        try {
+            const { id } = req.params;
+            const information = await Information.findByIdAndDelete(id);
+
+            if (!information) {
+                return res
+                    .status(404)
+                    .json({ message: 'Information not found' });
+            }
+
+            await locationController.delete(information.location._id);
+            await imageController.deleteImages(information.images);
+
+            res.status(200).json({
+                information,
+                message: 'Information deleted successfully',
             });
         } catch (error) {
             res.status(500).json({ message: error.message });

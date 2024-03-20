@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { getInfoMyRetailerApi } from '../../api/retailerApi';
 import HTMLRenderer from '../../components/HTMLRenderer/HTMLRenderer.component';
 import { typeLocations } from '../../utils/typeConstraint';
 
 function RegisterRetailerPending() {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    // eslint-disable-next-line no-unused-vars
-    const [open, setOpen] = useState(true);
     const [infoRegisterRetailer, setInfoRegisterRetailer] = useState({});
 
     useEffect(() => {
@@ -20,6 +20,19 @@ function RegisterRetailerPending() {
         };
         getData();
     }, []);
+
+    if (infoRegisterRetailer.status === 'approved') {
+        dispatch({
+            type: 'user/updateUser',
+            payload: {
+                pendingRetailer: {
+                    retailer: infoRegisterRetailer._id,
+                    status: 'approved'
+                }
+            }
+        });
+        navigate(`retailer/${infoRegisterRetailer._id}`);
+    }
     return (
         <>
             <Modal
@@ -34,7 +47,7 @@ function RegisterRetailerPending() {
                 onCancel={() => {
                     navigate('/');
                 }}
-                open={open}
+                open={true}
                 className="md:w-1/2"
             >
                 {infoRegisterRetailer.name && (
@@ -73,12 +86,13 @@ function RegisterRetailerPending() {
                             </li>
                             <li className="pl-8">
                                 <span className="mr-2 font-medium">Mô tả:</span>
-                                <HTMLRenderer
-                                    htmlString={
-                                        infoRegisterRetailer.description
-                                    }
-                                    className="ml-2 rounded-md bg-gray-100 p-2"
-                                />
+                                <div className="ml-2 rounded-md bg-gray-100 p-2">
+                                    <HTMLRenderer
+                                        htmlString={
+                                            infoRegisterRetailer.description
+                                        }
+                                    />
+                                </div>
                             </li>
                             <li className="pl-8">
                                 <span className="mr-2 font-medium">

@@ -19,6 +19,14 @@ const locationSchema = new mongoose.Schema({
     },
     type: {
         type: String,
+        enum: [
+            'food',
+            'furniture',
+            'clothing',
+            'electronics',
+            'beverage',
+            'other',
+        ],
         required: true,
     },
     information: {
@@ -29,7 +37,7 @@ const locationSchema = new mongoose.Schema({
     },
     informationType: {
         type: String,
-        enum: ['Retailer', 'Information_Community'],
+        enum: ['Retailer', 'Information'],
         required: true,
     },
 });
