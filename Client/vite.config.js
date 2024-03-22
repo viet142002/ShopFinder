@@ -9,18 +9,18 @@ export default defineConfig({
         react(),
         // mkcert(),
         VitePWA({
-            registerType: 'autoUpdate',
+            injectRegister: 'auto',
             includeAssets: ['manifest.json'],
             manifest: {
-                name: 'My React PWA',
-                short_name: 'ReactPWA',
+                name: 'Shop Finder',
+                short_name: 'ShopFinder',
                 description:
-                    'My Progressive Web App built with Vite and React.',
+                    'ShopFinder is a web app that helps you find the best shops in your area.',
                 start_url: '.',
                 display: 'standalone',
                 theme_color: '#000000',
                 background_color: '#ffffff',
-                orientation: 'portrait',
+                orientation: 'portrait-primary',
                 icons: [
                     {
                         src: '/vite.svg',
