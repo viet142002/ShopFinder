@@ -71,9 +71,12 @@ function ProfilePage() {
                                     src={
                                         newAvatar
                                             ? URL.createObjectURL(newAvatar)
-                                            : import.meta.env.VITE_APP_API_URL +
-                                              (user?.avatar?.path ||
-                                                  '/images/avatar-default.png')
+                                            : user?.avatar?.path
+                                              ? import.meta.env
+                                                    .VITE_APP_API_URL +
+                                                user.avatar.path
+                                              : import.meta.env
+                                                    .VITE_APP_AVATAR_DEFAULT
                                     }
                                     alt="avatar"
                                 />

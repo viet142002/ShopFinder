@@ -79,6 +79,7 @@ function ManageProduct() {
         fetchProducts({ search: value, distributor: id, status: 'all' });
     };
 
+    console.log('🚀 ~ ManageProduct ~ data:', data);
     const fetchProducts = async (values) => {
         await getProductsFromDistributor(values).then((res) =>
             setData(res.data)

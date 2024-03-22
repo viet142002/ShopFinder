@@ -1,15 +1,16 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
-import { Carousel, Image, Button, InputNumber } from 'antd';
+import { Carousel, Image, Button, InputNumber, Form } from 'antd';
 
 import { getProductByIdApi } from '../../api/productApi';
+import { addToCartApi } from '../../api/cartApi';
+import { handleFetch } from '../../utils/expression';
 
 import HTMLRenderer from '../../components/HTMLRenderer/HTMLRenderer.component';
 
 function DetailProduct() {
     const { idProduct } = useParams();
     const [product, setProduct] = useState({});
-    console.log('🚀 ~ DetailProduct ~ product:', product);
     const [loading, setLoading] = useState(true);
     const quantityRef = useRef();
 
@@ -20,6 +21,15 @@ function DetailProduct() {
 
     const handleDecrease = () => {
         if (quantityRef.current.value > 1) quantityRef.current.value--;
+    };
+
+    const handleAddToCart = () => {
+        const data = {
+            productId: idProduct,
+            quantity: quantityRef.current.value
+        };
+
+        handleFetch(() => addToCartApi(data));
     };
 
     useEffect(() => {
@@ -126,6 +136,7 @@ function DetailProduct() {
                                 <Button
                                     type="primary"
                                     className="flex-1 bg-blue-500"
+                                    onClick={handleAddToCart}
                                 >
                                     Thêm vào giỏ
                                 </Button>

@@ -285,7 +285,7 @@ const productController = {
                 .populate('images')
                 .limit(limit)
                 .skip(limit * (page - 1))
-                .select('name price images status _id');
+                .select('name price images status _id quantity discount');
 
             const total = await Product.countDocuments({
                 name: { $regex: search, $options: 'i' },

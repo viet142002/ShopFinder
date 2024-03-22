@@ -70,10 +70,10 @@ function CardRate(rate) {
                     <Avatar
                         size={38}
                         src={
-                            import.meta.env.VITE_APP_API_URL +
-                            (rate?.from?.avatar
-                                ? rate.from.avatar?.path
-                                : '/images/avatar-default.png')
+                            rate?.from?.avatar
+                                ? import.meta.env.VITE_APP_API_URL +
+                                  rate.from.avatar?.path
+                                : import.meta.env.VITE_APP_AVATAR_DEFAULT
                         }
                     />
                     <div>

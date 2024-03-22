@@ -111,6 +111,9 @@ function SideBar({ ...props }) {
 
                 navigate('/register-retailer');
                 break;
+            case 'cart':
+                navigate('/cart');
+                break;
             default:
                 break;
         }
@@ -152,10 +155,12 @@ function SideBar({ ...props }) {
                                       className="flex-shrink-0 -translate-x-[calc(50%-10px)]"
                                       size={35}
                                       src={
-                                          import.meta.env.VITE_APP_API_URL +
-                                          (data.avatar
-                                              ? data.avatar.path
-                                              : '/images/avatar-default.png')
+                                          data.avatar
+                                              ? import.meta.env
+                                                    .VITE_APP_API_URL +
+                                                data.avatar.path
+                                              : import.meta.env
+                                                    .VITE_APP_AVATAR_DEFAULT
                                       }
                                   />,
                                   [

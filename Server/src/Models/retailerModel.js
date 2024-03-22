@@ -42,6 +42,7 @@ const retailerSchema = new mongoose.Schema({
     logo: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Image',
+        default: '65fd4951f687ef962765aa4a',
     },
     status: {
         type: String,

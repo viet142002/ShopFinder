@@ -1,10 +1,5 @@
 import { Icon } from 'leaflet';
 
-// import bookStore from '../assets/icons/book.png';
-// import shoe from '../assets/icons/shoe.png';
-// import jewelry from '../assets/icons/jewelry.png';
-// import shopping from '../assets/icons/shopping.png';
-
 import restaurant from '../assets/icons/restaurant.png';
 import cafe from '../assets/icons/cafe.png';
 import Clothing from '../assets/icons/clothing.png';
@@ -45,7 +40,7 @@ const iconDefault = new Icon({
 
 const iconByType = {
     food: iconRestaurant,
-    cafe: iconCafe,
+    beverage: iconCafe,
     clothing: iconClothing,
     electronics: iconElectronics,
     furniture: iconFurniture,

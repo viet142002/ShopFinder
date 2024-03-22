@@ -12,6 +12,7 @@ import RegisterRetailerPending from './pages/RegisterRetailer/RegisterRetailerPe
 import HomePage from './pages/Home/HomePage';
 import ProductsPage from './pages/User/Products/ProductsPage';
 import ProductPage from './pages/User/Product/ProductPage';
+import CartPage from './pages/User/Cart/CartPage';
 
 import ManageLayout from './layouts/ManageLayout';
 import RequestRetailerPage from './pages/Admin/RequestRetailerPage';
@@ -53,6 +54,14 @@ function App() {
 
                 <Route path="/" element={<DefaultLayout />}>
                     <Route index element={<HomePage />} />
+                    <Route
+                        path="/cart"
+                        element={
+                            <ProtectRoute>
+                                <CartPage />
+                            </ProtectRoute>
+                        }
+                    />
                     <Route
                         path="/share-store"
                         element={

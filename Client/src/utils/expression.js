@@ -43,8 +43,10 @@ const translateSuccess = (msg) => {
             return 'Đăng ký cửa hàng thành công';
         case 'Share location successfully':
             return 'Chia sẻ vị trí thành công';
+        case 'Added to cart':
+            return 'Sản phẩm đã được thêm vào giỏ hàng';
         default:
-            break;
+            return 'Thành công';
     }
 };
 /**
@@ -82,8 +84,12 @@ const translateError = (msg) => {
             return 'Giảm giá không hợp lệ';
         case 'Missing images':
             return 'Vui lòng thêm hình ảnh';
+        case 'Product not found':
+            return 'Sản phẩm không tồn tại';
+        case 'Not enough product':
+            return 'Không đủ sản phẩm';
         default:
-            break;
+            return 'Có lỗi xảy ra';
     }
 };
 

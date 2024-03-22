@@ -21,8 +21,12 @@ import { createWarehouseApi, getWarehouseApi } from '../../../api/warehouseApi';
 function ImportWarehouse() {
     const [resultSearch, setResultSearch] = useState([]);
     const [inOutProducts, setInOutProducts] = useState([]);
+
     const [search, setSearch] = useState('');
-    const [createdAt, setCreatedAt] = useState('');
+    const [infoWarehouse, setInfoWarehouse] = useState({
+        createdAt: '',
+        note: ''
+    });
     const { idImport, id: idRetailer } = useParams();
     const isAddMode = !idImport;
 
@@ -263,7 +267,10 @@ function ImportWarehouse() {
             });
         } else {
             getWarehouseApi(idImport).then((res) => {
-                setCreatedAt(res.warehouseReceipt.createdAt);
+                setInfoWarehouse({
+                    createdAt: res.warehouseReceipt.createdAt,
+                    note: res.warehouseReceipt.note
+                });
                 setInOutProducts(() =>
                     res.warehouseReceipt.products.map((item) => {
                         return {
@@ -349,7 +356,7 @@ function ImportWarehouse() {
                                         className="border bg-gray-50 p-2"
                                         dangerouslySetInnerHTML={{
                                             __html:
-                                                inOutProducts.note ||
+                                                infoWarehouse.note ||
                                                 'Không có ghi chú'
                                         }}
                                     />
@@ -371,7 +378,7 @@ function ImportWarehouse() {
                                         Ngày lặp phiếu:{' '}
                                         <span className="font-medium">
                                             {new Date(
-                                                createdAt
+                                                infoWarehouse.createdAt
                                             ).toLocaleDateString()}
                                         </span>
                                     </p>

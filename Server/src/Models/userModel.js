@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema({
     avatar: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Image',
+        default: '65fd48caf687ef962765aa49',
     },
     status: {
         type: String,
