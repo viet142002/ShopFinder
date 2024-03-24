@@ -1,30 +1,10 @@
-/*
-    cart: [
-        {
-            distributor: {}
-            items: [
-                {
-                    product: {}
-                    quantity: {}
-                }
-            ]
-        }
-    ]
-*/
+import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import { Button } from 'antd';
-function CartTotal({ cart }) {
-    const totalPrice = useMemo(() => {
-        return cart.reduce((acc, item) => {
-            console.log('tính lại');
-            return (
-                acc +
-                item.items.reduce((acc, prod) => {
-                    return acc + prod.product.price * prod.quantity;
-                }, 0)
-            );
-        }, 0);
-    }, [cart]);
+
+import { calculatePrice } from '../../utils/calculatePrice';
+function CartTotal({ cart, checked }) {
+    const totalPrice = useMemo(() => calculatePrice(cart), [cart]);
 
     return (
         <div>
@@ -38,9 +18,30 @@ function CartTotal({ cart }) {
                     })}
                 </span>
             </h3>
-            <Button type="primary" className="bg-blue-500">
-                Thanh toán
-            </Button>
+            <div className="mx-auto mt-4 w-fit">
+                <Link
+                    to="/checkout"
+                    state={{
+                        cart: cart.map((item) => {
+                            return {
+                                distributor: item.distributor,
+                                items: item.items.filter((prod) =>
+                                    checked.includes(prod.product._id)
+                                )
+                            };
+                        }),
+                        totalPrice
+                    }}
+                >
+                    <Button
+                        type="primary"
+                        className="bg-blue-500"
+                        disabled={checked.length === 0}
+                    >
+                        Thanh toán
+                    </Button>
+                </Link>
+            </div>
         </div>
     );
 }

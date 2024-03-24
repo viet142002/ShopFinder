@@ -1,5 +1,6 @@
 const Cart = require('../Models/cartModel');
 const Product = require('../Models/productModel');
+const Location = require('../Models/locationModel');
 
 const cartController = {
     addToCart: async (req, res) => {
@@ -49,10 +50,11 @@ const cartController = {
             const cart = await Cart.findOne({ user }).populate({
                 path: 'items.product',
                 populate: {
-                    path: 'distributor images',
-                    select: 'name _id path',
+                    path: 'images distributor',
+                    select: 'name _id path location',
                 },
             });
+
             // sort items by same distributor and info distributor in array
             const sortedCart = cart.items.reduce((result, item) => {
                 const distributor = item.product.distributor;
@@ -69,6 +71,14 @@ const cartController = {
 
             // convert object sortedCart to array
             const cartArray = Object.values(sortedCart);
+
+            // get location of distributor
+            for (let i = 0; i < cartArray.length; i++) {
+                const location = await Location.findById(
+                    cartArray[i].distributor.location
+                );
+                cartArray[i].distributor.location = location;
+            }
 
             return res.status(200).json(cartArray);
         } catch (err) {

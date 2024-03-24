@@ -8,19 +8,22 @@ import CartTotal from '../../../components/CartTotal/CartTotal.component';
 
 function CartPage() {
     const [cart, setCart] = useState([]);
+    console.log('🚀 ~ CartPage ~ cart:', cart);
+    const [checked, setChecked] = useState([]);
     useEffect(() => {
         getCartApi().then((res) => {
             setCart(res.data);
         });
     }, []);
     return (
-        <>
+        <main className="mx-2 md:mx-0">
             <div className="mx-auto mt-10 grid gap-4 md:w-[80%] md:grid-cols-6">
-                <section className="col-span-4 p-2 shadow-lg">
+                <section className="p-2 shadow-lg md:col-span-4">
                     {cart.length > 0 ? (
                         cart.map((item) => {
                             return (
                                 <CartItem
+                                    setChecked={setChecked}
                                     key={item.distributor._id}
                                     item={item}
                                     setCart={setCart}
@@ -33,13 +36,13 @@ function CartPage() {
                         </div>
                     )}
                 </section>
-                <section className="col-span-2 ">
+                <section className="md:col-span-2">
                     <div className="p-2 shadow-lg">
-                        <CartTotal cart={cart} />
+                        <CartTotal cart={cart} checked={checked} />
                     </div>
                 </section>
             </div>
-        </>
+        </main>
     );
 }
 
