@@ -1,19 +1,53 @@
 const Retailer = require('../Models/retailerModel');
 const User = require('../Models/userModel');
-const Rate = require('../Models/rateModel');
-const Product = require('../Models/productModel');
 
 const imageController = require('./imageController');
 const addressController = require('./addressController');
 const locationController = require('./locationController');
+const priceShippingController = require('./priceShippingController');
 
 const retailerController = {
     register: async (req, res) => {
         try {
-            const { location, name, phone, type, description, mode, address } =
-                req.body;
+            const {
+                location,
+                name,
+                phone,
+                type,
+                description,
+                mode,
+                address,
+                price,
+                to,
+                from,
+            } = req.body;
             const { email } = req.user;
             const images = req.files;
+
+            if (
+                [
+                    location,
+                    name,
+                    phone,
+                    type,
+                    description,
+                    mode,
+                    address,
+                    price,
+                    to,
+                    from,
+                ].includes(undefined)
+            ) {
+                return res.status(400).json({
+                    message: 'Missing required fields',
+                });
+            }
+
+            if (!images || images.length === 0) {
+                return res.status(400).json({
+                    message: 'Missing images',
+                });
+            }
 
             const user = await User.findOne({ email });
             if (!user) {
@@ -40,6 +74,15 @@ const retailerController = {
                 description,
                 images: newImages || [],
             });
+
+            const newPriceShipping = await priceShippingController.create({
+                retailer: newRetailer._id,
+                price,
+                to,
+                from,
+            });
+            newRetailer.priceShipping = newPriceShipping._id;
+
             const { lat, lng } = JSON.parse(location);
             const newLocation = await locationController.create({
                 lat,
@@ -71,7 +114,15 @@ const retailerController = {
         try {
             const retailer = await Retailer.findOne({
                 owner: req.user._id,
-            }).populate('location');
+            })
+                .populate({
+                    path: 'location',
+                    populate: {
+                        path: 'address',
+                    },
+                })
+                .populate('images logo');
+
             if (!retailer) {
                 return res.status(400).json({
                     message: 'Cant find retailer',
@@ -92,15 +143,14 @@ const retailerController = {
     getRetailerDetailRetailer: async (req, res) => {
         try {
             const retailer = await Retailer.findById(req.params.id);
-            const retailers = await Retailer.find().populate('location');
-            if (!retailers) {
+            if (!retailer) {
                 return res.status(400).json({
                     message: 'Cant find retailer',
                 });
             }
 
             return res.status(200).json({
-                retailers,
+                retailer,
                 message: 'Get retailers successfully',
             });
         } catch (error) {

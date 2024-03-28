@@ -25,7 +25,7 @@ function CardInformationRetailer() {
                     src={
                         data.distributor?.logo
                             ? `${import.meta.env.VITE_APP_API_URL}${
-                                  data.distributor.logo
+                                  data.distributor.logo.path
                               }`
                             : `${
                                   import.meta.env.VITE_APP_LOGO_RETAILER_DEFAULT
