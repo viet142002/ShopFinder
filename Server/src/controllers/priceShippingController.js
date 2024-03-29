@@ -84,6 +84,30 @@ const priceShippingController = {
             res.status(500).json({ message: 'Internal server error' });
         }
     },
+
+    getOne: async (req, res) => {
+        try {
+            const { distance } = req.query;
+
+            console.log(distance);
+            const priceShipping = await PriceShipping.findOne({
+                retailer: req.params.id,
+                'range.to': { $gte: distance },
+                'range.from': { $lte: distance },
+            }).populate('retailer', 'name');
+
+            if (!priceShipping) {
+                return res
+                    .status(404)
+                    .json({ message: 'Price shipping not found' });
+            }
+
+            res.status(200).json(priceShipping);
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    },
 };
 
 module.exports = priceShippingController;
