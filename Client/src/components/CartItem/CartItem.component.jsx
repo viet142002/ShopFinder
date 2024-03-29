@@ -3,7 +3,7 @@ import { Button, Image, Checkbox } from 'antd';
 
 import { DeleteOutlined } from '@ant-design/icons';
 
-import InputQuantity from '../InputQuantity/InputQuantity.component';
+import InputQuantity from '../Input/InputQuantity/InputQuantity.component';
 
 import { updateCartApi, removeFromCartApi } from '../../api/cartApi';
 

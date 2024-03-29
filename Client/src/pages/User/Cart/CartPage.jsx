@@ -8,7 +8,6 @@ import CartTotal from '../../../components/CartTotal/CartTotal.component';
 
 function CartPage() {
     const [cart, setCart] = useState([]);
-    console.log('🚀 ~ CartPage ~ cart:', cart);
     const [checked, setChecked] = useState([]);
     useEffect(() => {
         getCartApi().then((res) => {

@@ -22,14 +22,16 @@ function CartTotal({ cart, checked }) {
                 <Link
                     to="/checkout"
                     state={{
-                        cart: cart.map((item) => {
-                            return {
-                                distributor: item.distributor,
-                                items: item.items.filter((prod) =>
-                                    checked.includes(prod.product._id)
-                                )
-                            };
-                        }),
+                        cart: cart
+                            .map((item) => {
+                                return {
+                                    distributor: item.distributor,
+                                    items: item.items.filter((prod) =>
+                                        checked.includes(prod.product._id)
+                                    )
+                                };
+                            })
+                            .filter((item) => item.items.length > 0),
                         totalPrice
                     }}
                 >

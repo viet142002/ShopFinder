@@ -1,6 +1,8 @@
 import { Card } from 'antd';
 import { Link } from 'react-router-dom';
 
+import { formatPrice } from '../../utils/formatPrice';
+
 function CardProduct({ product }) {
     return (
         <Link to={`./${product._id}`}>
@@ -22,7 +24,7 @@ function CardProduct({ product }) {
                     title={product.name}
                     description={
                         <span className="text-lg font-bold">
-                            {product.price.toLocaleString()}đ
+                            {formatPrice(product.price)}
                         </span>
                     }
                 />
