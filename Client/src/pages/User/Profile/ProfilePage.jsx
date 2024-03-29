@@ -6,7 +6,7 @@ import { MdCameraAlt } from 'react-icons/md';
 
 import './profileStyle.scss';
 
-import InputAddress from '../../../components/InputAddress/InputAddress.component';
+import InputAddress from '../../../components/Input/InputAddress/InputAddress.component';
 import { handleFetch } from '../../../utils/expression';
 
 import { updateUser } from '../../../api/userApi';

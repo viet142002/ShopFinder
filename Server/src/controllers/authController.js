@@ -93,6 +93,7 @@ const generateToken = user => {
             _id: user._id,
             role: user.role,
             email: user.email,
+            retailer: user?.pendingRetailer?.retailer || '',
         },
         process.env.JWT_SECRET,
         {
