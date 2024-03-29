@@ -13,12 +13,14 @@ import HomePage from './pages/Home/HomePage';
 import ProductsPage from './pages/User/Products/ProductsPage';
 import ProductPage from './pages/User/Product/ProductPage';
 import CartPage from './pages/User/Cart/CartPage';
+import CheckoutPage from './pages/User/Checkout/CheckoutPage';
+import NotificationPage from './pages/User/Notification/NotificationPage';
 
 import ManageLayout from './layouts/ManageLayout';
 import RequestRetailerPage from './pages/Admin/RequestRetailerPage';
 import DashboardPage from './pages/Admin/DashboardPage';
 import ReportPage from './pages/Admin/ReportPage';
-import NotificationPage from './pages/Admin/NotificationPage';
+// import NotificationPage from './pages/Admin/NotificationPage';
 
 import DashboardRetailer from './pages/Retailer/DashboardRetailer';
 import WarehouseManager from './pages/Retailer/WarehouseManager/WarehouseManager';
@@ -68,6 +70,22 @@ function App() {
                             <ProtectRoute>
                                 <CreateStore />
                             </ProtectRoute>
+                        }
+                    />
+                    <Route
+                        path="/checkout"
+                        element={
+                            <ProtectRoute>
+                                <CheckoutPage />
+                            </ProtectRoute>
+                        }
+                    />
+                    <Route
+                        path="/notification"
+                        element={
+                            // <ProtectRoute>
+                            <NotificationPage />
+                            // </ProtectRoute>
                         }
                     />
                     <Route

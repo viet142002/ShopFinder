@@ -5,7 +5,7 @@ import { MoreOutlined } from '@ant-design/icons';
 
 import ActionCardRate from './ActionCardRate/ActionCardRate.component';
 import DisplayImagesRate from './DisplayImagesRate/DisplayImages.component';
-import ModalReport from '../ModalReport/ModalReport.component';
+import ModalReport from '../Modal/ModalReport/ModalReport.component';
 
 import { deleteRateApi } from '../../api/RateApi';
 import { handleFetch } from '../../utils/expression';

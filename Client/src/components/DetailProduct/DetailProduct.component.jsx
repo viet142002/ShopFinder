@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
-import { Carousel, Image, Button, InputNumber, Form } from 'antd';
+import { Carousel, Image, Button, InputNumber } from 'antd';
 
 import { getProductByIdApi } from '../../api/productApi';
 import { addToCartApi } from '../../api/cartApi';

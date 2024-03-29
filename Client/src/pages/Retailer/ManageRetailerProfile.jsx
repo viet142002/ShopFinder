@@ -24,7 +24,9 @@ function ManageRetailerProfile() {
                     </div>
                     <div className="-order-1 space-y-2 overflow-hidden md:order-1 md:col-span-2">
                         <MyCarousel images={retailer.images} />
-                        <PriceShip retailerId={retailer._id} />
+                        {retailer.mode === 'normal' && (
+                            <PriceShip retailerId={retailer._id} />
+                        )}
                     </div>
                 </section>
             )}

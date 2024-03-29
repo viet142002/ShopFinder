@@ -3,9 +3,9 @@ import { useParams } from 'react-router-dom';
 import DetailProduct from '../../../components/DetailProduct/DetailProduct.component';
 import CardInformationRetailer from '../../../components/CardInformationRetailer/CardInformationRetailer.component';
 import DisplayRate from '../../../components/DisplayRate/DisplayRate.component';
-import ModalRating from '../../../components/ModalRating/ModalRating.component';
-import RateTotal from '../../../components/RateTotal/RateTotal.component';
-import Rating from '../../../components/Rating/Rating.component';
+import ModalRating from '../../../components/Modal/ModalRating/ModalRating.component';
+import RateTotal from '../../../components/Rate/RateTotal/RateTotal.component';
+import Rating from '../../../components/Rate/Rating/Rating.component';
 
 function ProductPage() {
     const { idProduct } = useParams();

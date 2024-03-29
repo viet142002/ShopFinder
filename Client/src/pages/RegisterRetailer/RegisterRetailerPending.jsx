@@ -21,17 +21,21 @@ function RegisterRetailerPending() {
         getData();
     }, []);
 
-    if (infoRegisterRetailer.status === 'approved') {
-        dispatch({
-            type: 'user/updateUser',
-            payload: {
-                pendingRetailer: {
-                    retailer: infoRegisterRetailer._id,
-                    status: 'approved'
+    useEffect(() => {
+        if (infoRegisterRetailer.status === 'approved')
+            dispatch({
+                type: 'user/updateUser',
+                payload: {
+                    pendingRetailer: {
+                        retailer: infoRegisterRetailer._id,
+                        status: 'approved'
+                    }
                 }
-            }
-        });
-        navigate(`retailer/${infoRegisterRetailer._id}`);
+            });
+    }, [infoRegisterRetailer.status, dispatch, infoRegisterRetailer._id]);
+
+    if (infoRegisterRetailer.status === 'approved') {
+        navigate(`/retailer/${infoRegisterRetailer._id}`);
     }
     return (
         <>

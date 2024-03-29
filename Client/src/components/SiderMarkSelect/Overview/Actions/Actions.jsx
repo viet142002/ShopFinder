@@ -15,7 +15,7 @@ import {
     setShowRouting
 } from '../../../../redux/routingSlice';
 
-import ModalReport from '../../../ModalReport/ModalReport.component';
+import ModalReport from '../../../Modal/ModalReport/ModalReport.component';
 
 function Actions({ info }) {
     const dispatch = useDispatch();

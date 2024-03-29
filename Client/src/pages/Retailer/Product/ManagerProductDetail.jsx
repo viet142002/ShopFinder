@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Button, Layout, Space, Carousel, Tag, Image } from 'antd';
+import { Button, Layout, Space, Tag } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import CommentProduct from '../../../components/Comments/CommentProduct.component';
@@ -7,6 +7,7 @@ import CommentProduct from '../../../components/Comments/CommentProduct.componen
 import { getProductByIdApi } from '../../../api/productApi';
 import { typeStatus } from '../../../utils/typeConstraint';
 import ButtonBack from '../../../components/ActionsButton/ButtonBack.component';
+import MyCarousel from '../../../components/Carousel/Carousel.component';
 
 function ManagerProductDetail() {
     const { idProduct } = useParams();
@@ -29,24 +30,7 @@ function ManagerProductDetail() {
                         Thông tin sản phẩm
                     </h2>
                     <div className="grid grid-cols-2 gap-4">
-                        <Carousel autoplay>
-                            {product?.images.map((image, index) => (
-                                <div
-                                    key={index}
-                                    className="!flex justify-center bg-gray-300"
-                                >
-                                    <Image
-                                        className="!h-64 object-cover"
-                                        src={
-                                            import.meta.env.VITE_APP_API_URL +
-                                            image.path
-                                        }
-                                        alt=""
-                                        loading="lazy"
-                                    />
-                                </div>
-                            ))}
-                        </Carousel>
+                        <MyCarousel images={product?.images} />
                         <div className="space-y-3">
                             <h3 className="text-lg font-semibold">
                                 {product?.name}

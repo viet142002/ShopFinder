@@ -4,25 +4,23 @@ import {
     Button,
     Col,
     Row,
-    Space,
     Select,
     Layout,
     Radio,
     Tooltip
 } from 'antd';
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
 import { typeLocations } from '../../utils/typeConstraint';
 import EditorFormat from '../../components/EditorFormat/EditorFormat';
-import InputAddress from '../../components/InputAddress/InputAddress.component';
-import InputImage from '../../components/InputImage/InputImage.component';
+import InputAddress from '../../components/Input/InputAddress/InputAddress.component';
+import InputImage from '../../components/Input/InputImage/InputImage.component';
 import { shareStore } from '../../api/communityApi';
 import { registerRetailerApi } from '../../api/retailerApi';
 import { handleFetch } from '../../utils/expression';
-
-import './createStore.scss';
+import InputLocation from '../../components/Input/InputLocation/InputLocation.component';
 
 const FormatForm = (values, images, isRegisterRetailer) => {
     const formData = new FormData();
@@ -43,16 +41,16 @@ const FormatForm = (values, images, isRegisterRetailer) => {
 function CreateStorePage({ isRegisterRetailer }) {
     const [newImages, setNewImages] = useState([]);
     const [, setDeleteImages] = useState([]);
-    const [isCurrentLocation, setIsCurrentLocation] = useState(false);
+
     const [form] = Form.useForm();
-    const fixedLocation = useSelector((state) => state.routing.fixedLocation);
+
     const dispatch = useDispatch();
 
-    const onFill = () => {
+    const onFill = (p) => {
         form.setFieldsValue({
             location: {
-                lat: fixedLocation.lat,
-                lng: fixedLocation.lng
+                lat: p.lat,
+                lng: p.lng
             }
         });
     };
@@ -111,65 +109,26 @@ function CreateStorePage({ isRegisterRetailer }) {
                                     <Input />
                                 </Form.Item>
                             </div>
-                            <div className="create-store flex flex-col gap-2">
-                                <label htmlFor="lat">Toạ độ</label>
-                                <Space
-                                    align="baseline"
-                                    wrap
-                                    style={{
-                                        width: '100%'
-                                    }}
-                                >
-                                    <Form.Item
-                                        name={['location', 'lat']}
-                                        id="lat"
-                                        className="m-0"
-                                        rules={
-                                            !isCurrentLocation && [
-                                                {
-                                                    required: true,
-                                                    message:
-                                                        'Vui lòng không bỏ trống'
-                                                }
-                                            ]
-                                        }
-                                        style={{
-                                            marginBottom: '10px'
-                                        }}
-                                    >
-                                        <Input disabled={isCurrentLocation} />
-                                    </Form.Item>
-                                    <Form.Item
-                                        name={['location', 'lng']}
-                                        id="lng"
-                                        rules={[
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="phone">Số điện thoại</label>
+                                <Form.Item
+                                    name="phone"
+                                    id="phone"
+                                    rules={
+                                        isRegisterRetailer && [
                                             {
                                                 required: true,
                                                 message:
-                                                    'Vui lòng không bỏ trống'
+                                                    'Vui lòng nhập số điện thoại cửa hàng'
                                             }
-                                        ]}
-                                        style={{
-                                            marginBottom: '10px'
-                                        }}
-                                    >
-                                        <Input disabled={isCurrentLocation} />
-                                    </Form.Item>
-                                    <Button
-                                        className="flex-shrink-0 bg-orange-200"
-                                        htmlType="button"
-                                        onClick={() => {
-                                            setIsCurrentLocation(
-                                                !isCurrentLocation
-                                            );
-                                            onFill();
-                                        }}
-                                    >
-                                        {isCurrentLocation
-                                            ? 'Thủ công'
-                                            : 'Tự đông'}
-                                    </Button>
-                                </Space>
+                                        ]
+                                    }
+                                >
+                                    <Input type="number" />
+                                </Form.Item>
+                            </div>
+                            <div className="create-store flex flex-col gap-2">
+                                <InputLocation onFill={onFill} label="Toạ độ" />
                             </div>
                             <div className="flex flex-col gap-2">
                                 <label htmlFor="type">Loại cửa hàng</label>

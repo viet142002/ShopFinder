@@ -114,6 +114,9 @@ function SideBar({ ...props }) {
             case 'cart':
                 navigate('/cart');
                 break;
+            case 'notification':
+                navigate('/notification');
+                break;
             default:
                 break;
         }

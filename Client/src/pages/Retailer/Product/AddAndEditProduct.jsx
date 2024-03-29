@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import InputImage from '../../../components/InputImage/InputImage.component';
+import InputImage from '../../../components/Input/InputImage/InputImage.component';
 import EditorFormat from '../../../components/EditorFormat/EditorFormat';
 import ButtonBack from '../../../components/ActionsButton/ButtonBack.component';
 
