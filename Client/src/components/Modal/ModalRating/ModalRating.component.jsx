@@ -3,11 +3,11 @@ import { UserOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setNewRate, updateRate } from '../../redux/ratingSlice';
-import { addRateApi, updateRateApi } from '../../api/RateApi';
-import { handleFetch } from '../../utils/expression';
+import { setNewRate, updateRate } from '../../../redux/ratingSlice';
+import { addRateApi, updateRateApi } from '../../../api/RateApi';
+import { handleFetch } from '../../../utils/expression';
 
-import UploadImage from '../UploadImage/UploadImage.component';
+import UploadImage from '../../UploadImage/UploadImage.component';
 
 const formatForm = (values) => {
     const { rate, comment, images, to, toType, deleteImages } = values;

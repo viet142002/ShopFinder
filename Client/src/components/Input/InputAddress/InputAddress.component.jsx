@@ -1,6 +1,6 @@
 import { Form, Input, Select, Space } from 'antd';
 
-import { getProvinces, getDistricts, getWards } from '../../api/addressApi';
+import { getProvinces, getDistricts, getWards } from '../../../api/addressApi';
 import { useEffect, useState } from 'react';
 
 import './inputAddressStyle.scss';

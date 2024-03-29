@@ -1,19 +1,19 @@
 import { Modal, Form, Input, Button, Space, Select } from 'antd';
 
-import { typeReport } from '../../utils/typeConstraint';
+import { typeReport } from '../../../utils/typeConstraint';
 
-import { createReportApi } from '../../api/reportApi';
+import { createReportApi } from '../../../api/reportApi';
 
 const ModalReport = ({ open, handleCancel, toId, toType }) => {
     const onFinish = (values) => {
-        createReportApi({ ...values, to: toId, toType }).then((data) => {
+        createReportApi({ ...values, to: toId, toType }).then(() => {
             handleCancel();
         });
     };
     return (
         <Modal
             centered
-            title={<h2 className="text-center md:text-xl text-lg">Báo cáo</h2>}
+            title={<h2 className="text-center text-lg md:text-xl">Báo cáo</h2>}
             open={open}
             onCancel={handleCancel}
             footer={null}

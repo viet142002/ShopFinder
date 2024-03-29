@@ -1,10 +1,10 @@
 import { memo } from 'react';
 import { Row, Divider } from 'antd';
 
-import ModalRating from '../../ModalRating/ModalRating.component';
+import ModalRating from '../../Modal/ModalRating/ModalRating.component';
 import DisplayRates from '../../DisplayRate/DisplayRate.component';
-import RateTotal from '../../RateTotal/RateTotal.component';
-import Rating from '../../Rating/Rating.component';
+import RateTotal from '../../Rate/RateTotal/RateTotal.component';
+import Rating from '../../Rate/Rating/Rating.component';
 
 const RatingInfo = memo(function RatingInfo({ info }) {
     return (

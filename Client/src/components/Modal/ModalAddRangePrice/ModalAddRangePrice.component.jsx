@@ -59,7 +59,7 @@ function ModalAddRangePrice({
                             }
                         ]}
                     >
-                        <InputNumber className="w-full" min={0} max={100} />
+                        <InputNumber className="w-full" min={0} max={1000} />
                     </Form.Item>
                     <span className="mx-2">-</span>
                     <Form.Item
@@ -72,7 +72,7 @@ function ModalAddRangePrice({
                             }
                         ]}
                     >
-                        <InputNumber className="w-full" min={0} max={100} />
+                        <InputNumber className="w-full" min={0} max={1000} />
                     </Form.Item>
                 </div>
 

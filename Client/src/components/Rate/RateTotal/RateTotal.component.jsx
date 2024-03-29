@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Col, Rate, Skeleton } from 'antd';
 
-import { getCountStarRatesApi } from '../../api/RateApi';
+import { getCountStarRatesApi } from '../../../api/RateApi';
 
 function RateTotal({ locationId, productId }) {
     const [stars, setStars] = useState({
