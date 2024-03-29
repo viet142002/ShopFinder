@@ -1,7 +1,11 @@
 import api from './instantApi';
 
-export const getPriceShipById = async (retailerId) => {
-    return api.get(`/retailer/price-ship/${retailerId}`);
+export const getPriceShipById = async (retailerId, distance) => {
+    return api.get(`/price-shipping/${retailerId}`, {
+        params: {
+            distance
+        }
+    });
 };
 
 export const addPriceShip = async (data) => {
