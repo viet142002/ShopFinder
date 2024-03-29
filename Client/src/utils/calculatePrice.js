@@ -41,3 +41,7 @@ export function calculateTotalQuantity(data) {
 
     return total;
 }
+
+export function calculatePriceFromTwoLocation(shippingPrice, price) {
+    return shippingPrice + price;
+}
