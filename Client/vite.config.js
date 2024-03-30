@@ -58,5 +58,13 @@ export default defineConfig({
     },
     build: {
         outDir: 'build'
+    },
+    resolve: {
+        alias: {
+            '@': '/src',
+            '@components': '/src/components',
+            '@pages': '/src/pages',
+            '@api': '/src/api'
+        }
     }
 });
