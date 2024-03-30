@@ -64,7 +64,8 @@ export default defineConfig({
             '@': '/src',
             '@components': '/src/components',
             '@pages': '/src/pages',
-            '@api': '/src/api'
+            '@api': '/src/api',
+            '@utils': '/src/utils'
         }
     }
 });
