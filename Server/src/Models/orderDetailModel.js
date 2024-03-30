@@ -26,3 +26,5 @@ const orderDetailSchema = new mongoose.Schema(
 );
 
 const OrderDetail = mongoose.model('OrderDetail', orderDetailSchema);
+
+module.exports = OrderDetail;

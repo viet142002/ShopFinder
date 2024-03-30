@@ -1,4 +1,4 @@
-import { Form, Input, Button } from 'antd';
+import { Form, Input, Button, Select } from 'antd';
 import { useState } from 'react';
 import { EditOutlined } from '@ant-design/icons';
 
@@ -47,6 +47,16 @@ function FormCheckout({ address, onFill }) {
                 ]}
             >
                 <Input placeholder="Số điện thoại" type="number" />
+            </Form.Item>
+            <Form.Item name="paymentMethod">
+                <Select>
+                    <Select.Option value="COD">
+                        Thanh toán khi nhận hàng
+                    </Select.Option>
+                    <Select.Option value="VNPay">
+                        Thanh toán qua VNPay
+                    </Select.Option>
+                </Select>
             </Form.Item>
 
             <InputLocation onFill={onFill} label="Toạ độ" />

@@ -1,16 +1,14 @@
 import { Button } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import MiniCartItem from '../CartItem/MiniCartItem.component';
 import { calculateDistance } from '../../utils/calculateDistance';
 import { getPriceShipById } from '../../api/priceShippingApi';
 
-function CardTotal({ state, location }) {
-    const [priceSipping, setPriceShipping] = useState([]);
-    console.log('🚀 ~ CardTotal ~ priceSipping:', priceSipping);
-
+function CardTotal({ state, location, priceSipping, setPriceShipping }) {
     useEffect(() => {
         if (location.lat === 0 && location.lng === 0) return;
+        setPriceShipping([]);
         for (let i = 0; i < state.cart.length; i++) {
             const distance = calculateDistance(
                 {
@@ -22,13 +20,13 @@ function CardTotal({ state, location }) {
                     lng: state.cart[i].distributor.location.loc.coordinates[0]
                 }
             ).toFixed(2);
-            console.log(distance);
             getPriceShipById(state.cart[i].distributor._id, distance).then(
                 (res) => {
                     setPriceShipping((prev) => [...prev, res.data]);
                 }
             );
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location, state.cart]);
     return (
         <>

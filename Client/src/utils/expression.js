@@ -45,6 +45,8 @@ const translateSuccess = (msg) => {
             return 'Chia sẻ vị trí thành công';
         case 'Added to cart':
             return 'Sản phẩm đã được thêm vào giỏ hàng';
+        case 'Order created':
+            return 'Đặt hàng thành công';
         default:
             return 'Thành công';
     }
@@ -104,20 +106,17 @@ const translateError = (msg) => {
  * const data = await handleFetch(() => axios.get('/user'));
  */
 const handleFetch = async (callback) => {
-    let data = null;
-
     try {
         const res = await callback();
         console.log('success');
         if (res?.data?.message) success(translateSuccess(res.data.message));
-        data = res.data;
-    } catch (err) {
-        if (err.response?.data?.message)
-            error(translateError(err.response.data.message));
-        data = null;
-    }
 
-    return data;
+        return res.data;
+    } catch (err) {
+        if (err?.response?.data?.message)
+            error(translateError(err.response.data.message));
+        return null;
+    }
 };
 
 export { handleFetch };

@@ -1,30 +1,35 @@
 import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { Form } from 'antd';
 
-import FormCheckout from '../../../components/Checkout/FormCheckout.component';
-import CardTotal from '../../../components/Checkout/CardTotal.component';
+import FormCheckout from '@components/Checkout/FormCheckout.component';
+import CardTotal from '@components/Checkout/CardTotal.component';
+
+import { handleFetch } from '@utils/expression';
+import { createOrder } from '@api/orderApi';
 
 function CheckoutPage() {
+    const navigate = useNavigate();
     const [form] = Form.useForm();
+    const [priceSipping, setPriceShipping] = useState([]);
     const [location, setLocation] = useState({ lat: 0, lng: 0 });
     const { state } = useLocation();
     const user = useSelector((state) => state.user.data);
 
     const onFinish = (values) => {
-        const products = [];
-        state.cart.forEach((item) => {
-            if (!item.items.length) return;
-            item.items.forEach((prod) => {
-                products.push({
-                    productId: prod.product._id,
-                    quantity: prod.quantity,
-                    discount: prod.product.discount
-                });
-            });
-        });
-        console.log({ ...values, products });
+        const data = handleFetch(() =>
+            createOrder({
+                ...values,
+                orderItems: state.cart,
+                itemsPrice: state.totalPrice,
+                shippingPrice: priceSipping
+            })
+        );
+        if (data) {
+            console.log(data);
+            return navigate('/');
+        }
     };
 
     const onFill = (p) => {
@@ -57,7 +62,8 @@ function CheckoutPage() {
                 lastname: user?.lastname,
                 firstname: user?.firstname,
                 phone: user?.phone,
-                address: user?.address
+                address: user?.address,
+                paymentMethod: 'COD'
             }}
             layout="vertical"
             requiredMark={false}
@@ -69,7 +75,12 @@ function CheckoutPage() {
                 </div>
             </section>
             <section className="md:col-span-2">
-                <CardTotal state={state} location={location} />
+                <CardTotal
+                    state={state}
+                    location={location}
+                    priceSipping={priceSipping}
+                    setPriceShipping={setPriceShipping}
+                />
             </section>
         </Form>
     );

@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 
 const orderSchema = new mongoose.Schema(
     {
+        phone: { type: String, required: true },
+        fullName: { type: String, required: true },
         orderItems: [
             {
                 type: mongoose.Schema.Types.ObjectId,
@@ -24,7 +26,16 @@ const orderSchema = new mongoose.Schema(
             required: true,
         },
         itemsPrice: { type: Number, required: true },
-        shippingPrice: { type: Number, required: true },
+        shippingPrice: [
+            {
+                retailer: {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: 'Retailer',
+                    required: true,
+                },
+                price: { type: Number, required: true },
+            },
+        ],
         // total price is the sum of itemsPrice, shippingPrice, and taxPrice
         totalPrice: { type: Number, required: true },
         user: {
@@ -39,3 +50,5 @@ const orderSchema = new mongoose.Schema(
 );
 
 const Order = mongoose.model('Order', orderSchema);
+
+module.exports = Order;
