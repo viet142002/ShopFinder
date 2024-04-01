@@ -108,7 +108,6 @@ function SideBar({ ...props }) {
                     );
                     break;
                 }
-
                 navigate('/register-retailer');
                 break;
             case 'cart':
@@ -117,6 +116,8 @@ function SideBar({ ...props }) {
             case 'notification':
                 navigate('/notification');
                 break;
+            case 'order':
+                return navigate('/order');
             default:
                 break;
         }

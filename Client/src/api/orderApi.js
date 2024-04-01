@@ -16,14 +16,32 @@ export const getOrders = async ({
     });
 };
 
-export const getOrder = async (id) => {
+export const getOrderById = async (id) => {
     return api.get(`/orders/${id}`);
 };
 
-export const updateOrder = async (id, data) => {
-    return api.put(`/orders/${id}`, data);
+export const updateStatusOrder = async (id, status) => {
+    return api.patch(`/orders/${id}`, {
+        status
+    });
 };
 
 export const createOrder = async (data) => {
     return api.post('/orders', data);
+};
+
+export const getOrdersByDistributor = async ({
+    page = 1,
+    limit = 10,
+    sort = '-createdAt',
+    status = 'all'
+}) => {
+    return api.get('/retailer/orders', {
+        params: {
+            page: page,
+            limit: limit,
+            sort: sort,
+            status: status
+        }
+    });
 };

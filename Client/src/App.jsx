@@ -15,6 +15,8 @@ import ProductPage from './pages/User/Product/ProductPage';
 import CartPage from './pages/User/Cart/CartPage';
 import CheckoutPage from './pages/User/Checkout/CheckoutPage';
 import NotificationPage from './pages/User/Notification/NotificationPage';
+import OrderPage from '@pages/User/Orders/OrderPage';
+import OrderDetailPage from '@pages/User/Orders/OrderDetailPage';
 
 import ManageLayout from './layouts/ManageLayout';
 import RequestRetailerPage from './pages/Admin/RequestRetailerPage';
@@ -34,8 +36,8 @@ import ManagerProductDetail from './pages/Retailer/Product/ManagerProductDetail'
 import ImportWarehouse from './pages/Retailer/WarehouseManager/ImportWarehouse';
 
 import CreateStore from './pages/CreateStore/CreateStore';
-
 import { routesConstant } from './routes/routesConstant';
+
 import { setFirstLocation } from './redux/routingSlice';
 
 function App() {
@@ -61,6 +63,22 @@ function App() {
                         element={
                             <ProtectRoute>
                                 <CartPage />
+                            </ProtectRoute>
+                        }
+                    />
+                    <Route
+                        path="/order"
+                        element={
+                            <ProtectRoute>
+                                <OrderPage />
+                            </ProtectRoute>
+                        }
+                    />
+                    <Route
+                        path="/order/:orderId"
+                        element={
+                            <ProtectRoute>
+                                <OrderDetailPage />
                             </ProtectRoute>
                         }
                     />
@@ -154,7 +172,10 @@ function App() {
                         element={<WarehouseManager isImport />}
                     />
                     <Route path="order" element={<ManageOrder />} />
-                    <Route path="order/:id" element={<ManageOrderDetail />} />
+                    <Route
+                        path="order/:orderId"
+                        element={<ManageOrderDetail />}
+                    />
                     <Route path="statistic" element={<StatisticRetailer />} />
                     <Route path="profile" element={<ManageRetailerProfile />} />
                     <Route

@@ -1,7 +1,21 @@
 import { useState, useEffect } from 'react';
-import { Table, Layout, Tag, Button, Input, Tooltip } from 'antd';
+import {
+    Table,
+    Layout,
+    Tag,
+    Button,
+    Input,
+    Tooltip,
+    Select,
+    Space
+} from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
-import { useNavigate, Link, useParams } from 'react-router-dom';
+import {
+    useNavigate,
+    Link,
+    useParams,
+    useSearchParams
+} from 'react-router-dom';
 import CardProduct from '../../../components/CardProduct/CardProduct.component';
 
 import { MdAdd } from 'react-icons/md';
@@ -72,22 +86,25 @@ function ManageProduct() {
         total: 0,
         page: 1
     });
+    const [searchParams, setSearchParams] = useSearchParams();
     const { id } = useParams();
     const navigate = useNavigate();
 
-    const onSearch = (value) => {
-        fetchProducts({ search: value, distributor: id, status: 'all' });
-    };
-
-    const fetchProducts = async (values) => {
-        await getProductsFromDistributor(values).then((res) =>
-            setData(res.data)
-        );
+    const handleChange = (item, value) => {
+        console.log(item, value);
+        setSearchParams((prev) => {
+            prev.set(item, value);
+            return prev;
+        });
     };
 
     useEffect(() => {
-        fetchProducts({ distributor: id, status: 'all' });
-    }, [id]);
+        getProductsFromDistributor({
+            distributor: id,
+            status: searchParams.get('status') || 'all',
+            search: searchParams.get('search') || ''
+        }).then((res) => setData(res.data));
+    }, [id, searchParams]);
 
     return (
         <section className="space-y-2 p-5">
@@ -104,14 +121,32 @@ function ManageProduct() {
                         Thêm
                     </Button>
                 </Tooltip>
-                <Input.Search
-                    placeholder="Tên sản phẩm..."
-                    allowClear
-                    onSearch={onSearch}
-                    style={{
-                        width: 200
-                    }}
-                />
+                <Space.Compact>
+                    <Select
+                        onChange={(value) => handleChange('status', value)}
+                        name="status"
+                        defaultValue={searchParams.get('status') || 'all'}
+                    >
+                        <Select.Option value="all">Tất cả</Select.Option>
+                        <Select.Option value="draft">Nháp</Select.Option>
+                        <Select.Option value="available">Có sẵn</Select.Option>
+                        <Select.Option value="sold-out">Hết hàng</Select.Option>
+                        <Select.Option value="stop">
+                            Ngừng kinh doanh
+                        </Select.Option>
+                        <Select.Option value="only-display">
+                            Chỉ hiển thị
+                        </Select.Option>
+                    </Select>
+                    <Input.Search
+                        placeholder="Tên sản phẩm..."
+                        allowClear
+                        onSearch={(value) => handleChange('search', value)}
+                        style={{
+                            width: 200
+                        }}
+                    />
+                </Space.Compact>
             </Layout.Header>
             <Layout.Content>
                 <Table

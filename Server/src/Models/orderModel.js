@@ -7,7 +7,7 @@ const orderSchema = new mongoose.Schema(
         orderItems: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'DetailOrder',
+                ref: 'OrderDetail',
                 required: true,
             },
         ],
@@ -26,16 +26,7 @@ const orderSchema = new mongoose.Schema(
             required: true,
         },
         itemsPrice: { type: Number, required: true },
-        shippingPrice: [
-            {
-                retailer: {
-                    type: mongoose.Schema.Types.ObjectId,
-                    ref: 'Retailer',
-                    required: true,
-                },
-                price: { type: Number, required: true },
-            },
-        ],
+        shippingPrice: { type: Number, required: true },
         // total price is the sum of itemsPrice, shippingPrice, and taxPrice
         totalPrice: { type: Number, required: true },
         user: {
@@ -43,6 +34,19 @@ const orderSchema = new mongoose.Schema(
             ref: 'User',
             required: true,
         },
+        distributor: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Retailer',
+            required: true,
+        },
+        status: {
+            type: String,
+            enum: ['pending', 'shipping', 'success', 'cancelled'],
+            default: 'pending',
+            required: true,
+        },
+        note: { type: String, default: '' },
+        deliveredAt: { type: Date },
     },
     {
         timestamps: true,

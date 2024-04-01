@@ -72,6 +72,8 @@ const translateError = (msg) => {
             return 'Số điện thoại không hợp lệ';
         case 'Invalid address':
             return 'Địa chỉ không hợp lệ';
+        case 'Invalid status':
+            return 'Trạng thái không hợp lệ';
         case 'No changes detected':
             return 'Không có thay đổi nào được phát hiện';
         case 'Permission denied':
@@ -108,7 +110,6 @@ const translateError = (msg) => {
 const handleFetch = async (callback) => {
     try {
         const res = await callback();
-        console.log('success');
         if (res?.data?.message) success(translateSuccess(res.data.message));
 
         return res.data;

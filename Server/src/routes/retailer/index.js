@@ -6,10 +6,12 @@ const retailerRouter = require('./retailerRouter');
 const productRouter = require('./productRouter');
 const warehouseReceiptRouter = require('./warehouseReceiptRouter');
 const priceShippingRouter = require('./priceShippingRouter');
+const orderRouter = require('./orderRouter');
 
 router.use('/', retailerRouter);
 router.use('/products', authentication('retailer'), productRouter);
 router.use('/warehouse', authentication('retailer'), warehouseReceiptRouter);
 router.use('/price-ship', authentication('retailer'), priceShippingRouter);
+router.use('/orders', authentication('retailer'), orderRouter);
 
 module.exports = router;

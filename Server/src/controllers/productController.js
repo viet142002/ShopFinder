@@ -132,6 +132,13 @@ const productController = {
             let { name, price, description, discount, status, deleteImages } =
                 req.body;
             const files = req.files;
+
+            if (!['available', 'stop'].includes(status)) {
+                return res.status(400).json({
+                    message: 'Invalid status',
+                });
+            }
+
             if (typeof deleteImages === 'string') {
                 deleteImages = [deleteImages];
             }
@@ -155,7 +162,6 @@ const productController = {
                 });
             }
 
-            console.log('🚀 ~ updateProduct: ~ deleteImages:', deleteImages);
             if (deleteImages) {
                 await imageController.deleteImages(deleteImages);
             }
@@ -244,8 +250,7 @@ const productController = {
                     'draft',
                     'available',
                     'only-display',
-
-                    'unavailable',
+                    'sold-out',
                     'stop',
                 ];
             }
@@ -449,19 +454,53 @@ const productController = {
         }
     },
 
+    /**
+     * @param {Array} products
+     * @returns {Promise<void>}
+     * @description Add quantity of products
+     */
     addQuantity: async products => {
         try {
             for (let i = 0; i < products.length; i++) {
                 const product = await Product.findById(
                     products[i]?._id || products[i].product
                 );
-                product.quantity += products[i].quantity;
-                if (product.quantity < 0) {
-                    product.quantity = 0;
-                    product.status = 'unavailable';
-                } else {
-                    product.status = 'available';
+
+                if (products[i].quantity < 0) {
+                    throw new Error('Invalid quantity');
                 }
+                product.quantity += products[i].quantity;
+
+                product.status = 'available';
+
+                await product.save();
+            }
+        } catch (error) {
+            throw error;
+        }
+    },
+
+    /**
+     * @param {Array} products
+     * @returns {Promise<void>}
+     * @description Subtract quantity of products
+     */
+    subtractQuantity: async products => {
+        try {
+            for (let i = 0; i < products.length; i++) {
+                const product = await Product.findById(
+                    products[i]?._id || products[i].product
+                );
+                if (product.quantity < products[i].quantity) {
+                    throw new Error('Not enough quantity');
+                }
+
+                product.quantity -= products[i].quantity;
+
+                if (product.quantity === 0) {
+                    product.status = 'sold-out';
+                }
+
                 await product.save();
             }
         } catch (error) {

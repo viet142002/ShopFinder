@@ -26,8 +26,7 @@ function CardTotal({ state, location, priceSipping, setPriceShipping }) {
                 }
             );
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [location, state.cart]);
+    }, [location, state.cart, setPriceShipping]);
     return (
         <>
             <div className="space-y-2 rounded-lg bg-white p-2 shadow-lg">

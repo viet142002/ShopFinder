@@ -37,7 +37,7 @@ export const typeStatus = [
         color: 'green'
     },
     {
-        value: 'unavailable',
+        value: 'sold-out',
         label: 'Hết hàng',
         color: 'red'
     },
@@ -50,6 +50,29 @@ export const typeStatus = [
         value: 'only-display',
         label: 'Chỉ hiển thị',
         color: 'blue'
+    }
+];
+
+export const typeOrderStatus = [
+    {
+        value: 'pending',
+        label: 'Chờ xác nhận',
+        color: 'gray'
+    },
+    {
+        value: 'shipping',
+        label: 'Đang giao hàng',
+        color: 'blue'
+    },
+    {
+        value: 'success',
+        label: 'Đã nhận hàng',
+        color: 'yellow'
+    },
+    {
+        value: 'cancelled',
+        label: 'Đã hủy',
+        color: 'red'
     }
 ];
 

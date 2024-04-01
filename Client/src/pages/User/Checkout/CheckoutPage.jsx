@@ -17,17 +17,38 @@ function CheckoutPage() {
     const { state } = useLocation();
     const user = useSelector((state) => state.user.data);
 
-    const onFinish = (values) => {
-        const data = handleFetch(() =>
+    const onFinish = async (values) => {
+        const items = state.cart.map((item) => {
+            return {
+                distributor: item.distributor._id,
+                items: item.items.map((prod) => {
+                    return {
+                        productId: prod.product._id,
+                        quantity: prod.quantity,
+                        discount: prod.product.discount,
+                        price:
+                            prod.product.price *
+                            prod.quantity *
+                            (1 - prod.product.discount / 100)
+                    };
+                }),
+                shippingPrice: priceSipping.find(
+                    (p) => p.retailer._id === item.distributor._id
+                ).price
+            };
+        });
+
+        console.log({
+            ...values,
+            orderItems: items
+        });
+        const data = await handleFetch(() =>
             createOrder({
                 ...values,
-                orderItems: state.cart,
-                itemsPrice: state.totalPrice,
-                shippingPrice: priceSipping
+                orderItems: items
             })
         );
         if (data) {
-            console.log(data);
             return navigate('/');
         }
     };

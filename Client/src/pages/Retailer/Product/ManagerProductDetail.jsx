@@ -11,8 +11,10 @@ import MyCarousel from '../../../components/Carousel/Carousel.component';
 
 function ManagerProductDetail() {
     const { idProduct } = useParams();
+    console.log('🚀 ~ ManagerProductDetail ~ idProduct:', idProduct);
     const navigate = useNavigate();
     const [product, setProduct] = useState(null);
+    console.log('🚀 ~ ManagerProductDetail ~ product:', product);
 
     useEffect(() => {
         getProductByIdApi(idProduct).then((res) => setProduct(res.data));
@@ -25,87 +27,93 @@ function ManagerProductDetail() {
                 <h1 className="text-xl font-semibold">Chi tiết sản phẩm</h1>
             </Layout.Header>
             <Layout.Content className="grid grid-cols-3 gap-4">
-                <section className="col-span-2 bg-white p-2">
-                    <h2 className="mb-2 text-xl font-bold">
-                        Thông tin sản phẩm
-                    </h2>
-                    <div className="grid grid-cols-2 gap-4">
-                        <MyCarousel images={product?.images} />
-                        <div className="space-y-3">
-                            <h3 className="text-lg font-semibold">
-                                {product?.name}
-                            </h3>
-                            <small>{product?._id}</small>
-                            <div
-                                className="mt-2 rounded-md bg-gray-100 p-2 text-sm"
-                                dangerouslySetInnerHTML={{
-                                    __html: product?.description
-                                }}
-                            />
-                            <Space>
-                                <p>
-                                    <span>Giá: </span>
-                                    <span className="font-semibold">
-                                        {product?.price.toLocaleString(
-                                            'it-IT',
-                                            {
-                                                style: 'currency',
-                                                currency: 'VND'
-                                            }
-                                        )}
-                                    </span>
-                                </p>
-                                <p>
-                                    <span>Giảm giá: </span>
-                                    <span className="font-semibold">
-                                        {product?.discount}%
-                                    </span>
-                                </p>
-                            </Space>
+                {product && (
+                    <section className="col-span-2 bg-white p-2">
+                        <h2 className="mb-2 text-xl font-bold">
+                            Thông tin sản phẩm
+                        </h2>
+                        <div className="grid grid-cols-2 gap-4">
+                            <MyCarousel images={product?.images} />
+                            <div className="space-y-3">
+                                <h3 className="text-lg font-semibold">
+                                    {product?.name}
+                                </h3>
+                                <small>{product?._id}</small>
+                                <div
+                                    className="mt-2 rounded-md bg-gray-100 p-2 text-sm"
+                                    dangerouslySetInnerHTML={{
+                                        __html: product?.description
+                                    }}
+                                />
+                                <Space>
+                                    <p>
+                                        <span>Giá: </span>
+                                        <span className="font-semibold">
+                                            {product?.price.toLocaleString(
+                                                'it-IT',
+                                                {
+                                                    style: 'currency',
+                                                    currency: 'VND'
+                                                }
+                                            )}
+                                        </span>
+                                    </p>
+                                    <p>
+                                        <span>Giảm giá: </span>
+                                        <span className="font-semibold">
+                                            {product?.discount}%
+                                        </span>
+                                    </p>
+                                </Space>
 
-                            <p>
-                                <span>Danh mục: </span>
+                                <p>
+                                    <span>Danh mục: </span>
+                                    <span className="font-semibold">
+                                        {product?.category}
+                                    </span>
+                                </p>
+                                <p></p>
+                                <span>Trạng thái: </span>
                                 <span className="font-semibold">
-                                    {product?.category}
+                                    <Tag
+                                        color={
+                                            typeStatus.find(
+                                                (status) =>
+                                                    status.value ===
+                                                    product?.status
+                                            )?.color
+                                        }
+                                    >
+                                        {
+                                            typeStatus.find(
+                                                (status) =>
+                                                    status.value ===
+                                                    product?.status
+                                            )?.label
+                                        }
+                                    </Tag>
                                 </span>
-                            </p>
-                            <p></p>
-                            <span>Trạng thái: </span>
-                            <span className="font-semibold">
-                                <Tag
-                                    color={
-                                        typeStatus.find(
-                                            (status) =>
-                                                status.value === product?.status
-                                        )?.color
-                                    }
-                                >
-                                    {
-                                        typeStatus.find(
-                                            (status) =>
-                                                status.value === product?.status
-                                        )?.label
-                                    }
-                                </Tag>
-                            </span>
-                            <p>
-                                <span>Số lượng: </span>
-                                <span className="font-semibold">
-                                    {product?.quantity}
-                                </span>
-                            </p>
+                                <p>
+                                    <span>Số lượng: </span>
+                                    <span className="font-semibold">
+                                        {product?.quantity}
+                                    </span>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div className="">
-                        <Button
-                            onClick={() =>
-                                navigate(`./../../edit-product/${idProduct}`)
-                            }
-                        >
-                            Chỉnh sửa
-                        </Button>
-                    </div>
-                </section>
+                        <div className="">
+                            <Button
+                                onClick={() =>
+                                    navigate(
+                                        `./../../edit-product/${idProduct}`
+                                    )
+                                }
+                            >
+                                Chỉnh sửa
+                            </Button>
+                        </div>
+                    </section>
+                )}
                 <section className="col-span-1 bg-white p-2">
                     <CommentProduct />
                 </section>
