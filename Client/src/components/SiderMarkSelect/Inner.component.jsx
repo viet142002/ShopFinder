@@ -7,7 +7,7 @@ import TabInfo from './TabInfo/TabInfo.component';
 const Inner = memo(function Inner({ info }) {
     return (
         <>
-            <div className="overflow-auto md:h-screen">
+            <div className="scroll-smooth md:h-svh">
                 <Carousel
                     autoplay
                     autoplaySpeed={5000}
@@ -31,7 +31,6 @@ const Inner = memo(function Inner({ info }) {
                         </div>
                     ))}
                 </Carousel>
-
                 <div>
                     <HeaderInfo
                         name={info.name}

@@ -33,7 +33,7 @@
     height: 100%;
 }
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
     *::-webkit-scrollbar-track {
         background-color: transparent;
     }
@@ -49,6 +49,16 @@
         background-color: gray;
         border-radius: 4px;
     }
+} */
+
+.ant-image-preview-mask {
+    z-index: 9999999 !important;
+}
+.ant-image-preview-wrap {
+    z-index: 9999999 !important;
+}
+.ant-image-preview-close {
+    z-index: 99999991 !important;
 }
 
 .ant-menu-submenu-title {
@@ -65,11 +75,9 @@
 }
 
 .ant-card-body {
-    padding: .5rem !important;
+    padding: 0.5rem !important;
 
     @screen md {
         padding: 1rem !important;
     }
-
-   
 }

@@ -29,7 +29,7 @@ function Actions({ info }) {
     };
 
     const handleShowRouting = () => {
-        dispatch(setShowRouting(true));
+        dispatch(setShowRouting());
     };
 
     return (
