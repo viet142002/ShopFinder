@@ -1,14 +1,17 @@
 import { Button, Flex } from 'antd';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
+import { useReactToPrint } from 'react-to-print';
 
 import OrderDetailContent from '@components/Order/OrderDetailContent/OrderDetailContent.component';
 import { getOrderById, updateStatusOrder } from '@api/orderApi';
+import PrintBill from '@components/PrintBill';
 
 function ManageOrderDetail() {
     const { orderId } = useParams();
     const [order, setOrder] = useState();
-    // console.log('🚀 ~ ManageOrderDetail ~ order:', order);
+    console.log('🚀 ~ ManageOrderDetail ~ order:', order);
+    const printRef = useRef();
 
     useEffect(() => {
         getOrderById(orderId).then((response) => {
@@ -24,6 +27,10 @@ function ManageOrderDetail() {
             });
         });
     };
+
+    const handlePrint = useReactToPrint({
+        content: () => printRef.current
+    });
     return (
         <>
             {order && (
@@ -45,7 +52,30 @@ function ManageOrderDetail() {
                             </Button>
                         </Flex>
                     )}
+                    {(order.status === 'shipping' ||
+                        order.status === 'success') && (
+                        <div className="flex justify-end">
+                            <Button
+                                type="primary"
+                                className="bg-blue-500"
+                                onClick={handlePrint}
+                            >
+                                In Hoá đơn
+                            </Button>
+                        </div>
+                    )}
                 </OrderDetailContent>
+            )}
+
+            {order && (
+                <div className="hidden">
+                    <PrintBill
+                        // printRef={printRef}
+                        ref={printRef}
+                        bill={{ ...order, orderItems: '' }}
+                        products={order.orderItems}
+                    />
+                </div>
             )}
         </>
     );

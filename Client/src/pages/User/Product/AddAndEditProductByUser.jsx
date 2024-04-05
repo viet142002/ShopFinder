@@ -1,17 +1,14 @@
-import { Layout, Form } from 'antd';
+import { Form, Layout } from 'antd';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
-import ButtonBack from '../../../components/ActionsButton/ButtonBack.component';
-
+import { handleFetch } from '@utils/expression';
 import {
-    createProductApi,
-    updateProductByIdApi,
-    getProductByIdApi
-} from '../../../api/productApi';
+    createProductByUserApi,
+    getProductByIdApi,
+    updateProductByIdApi
+} from '@api/productApi';
 
-import { handleFetch } from '../../../utils/expression';
 import FormProduct from '@components/Form/FormProduct.component';
 
 const formatForm = (values, images = [], deleteImages = []) => {
@@ -32,8 +29,8 @@ const formatForm = (values, images = [], deleteImages = []) => {
     return formData;
 };
 
-function AddAndEditProduct() {
-    const { productId } = useParams();
+function AddAndEditProductByUser() {
+    const { productId, id } = useParams();
     const isAddMode = !productId;
     const [newImages, setNewImages] = useState([]);
     const [deleteImages, setDeleteImages] = useState([]);
@@ -47,11 +44,20 @@ function AddAndEditProduct() {
         images: []
     });
     const [form] = Form.useForm();
-    const retailer = useSelector((state) => state.retailer.data);
 
     const AddProduct = async (values) => {
-        const formData = formatForm(values, newImages, deleteImages);
-        await handleFetch(() => createProductApi(formData));
+        const formData = formatForm(
+            {
+                ...values,
+                distributor: id
+            },
+            newImages,
+            deleteImages
+        );
+        formData.forEach((value, key) => {
+            console.log(key, value);
+        });
+        await handleFetch(() => createProductByUserApi(formData));
     };
 
     const EditProduct = async (values) => {
@@ -77,13 +83,12 @@ function AddAndEditProduct() {
     }, [form, productId, isAddMode]);
 
     return (
-        <section className="py-4 md:px-8">
-            <Layout.Header className="mb-2 flex items-center justify-center bg-transparent">
-                <h3 className="text-xl font-semibold">
+        <main>
+            <Layout.Header className="flex items-center justify-center bg-transparent">
+                <h1 className="text-center text-xl font-medium">
                     {isAddMode ? 'Thêm sản phẩm' : 'Chỉnh sửa sản phẩm'}
-                </h3>
+                </h1>
             </Layout.Header>
-
             <Form
                 form={form}
                 variant="filled"
@@ -98,11 +103,11 @@ function AddAndEditProduct() {
                     imageBefore={initialValues.images}
                     setNewImages={setNewImages}
                     setDeleteImages={setDeleteImages}
-                    retailer={retailer}
+                    // createdByUser
                 />
             </Form>
-        </section>
+        </main>
     );
 }
 
-export default AddAndEditProduct;
+export default AddAndEditProductByUser;

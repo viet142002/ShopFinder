@@ -9,7 +9,7 @@ import { handleFetch } from '../../utils/expression';
 import HTMLRenderer from '../../components/HTMLRenderer/HTMLRenderer.component';
 
 function DetailProduct() {
-    const { idProduct } = useParams();
+    const { productId } = useParams();
     const [product, setProduct] = useState({});
     const [loading, setLoading] = useState(true);
     const quantityRef = useRef();
@@ -25,7 +25,7 @@ function DetailProduct() {
 
     const handleAddToCart = () => {
         const data = {
-            productId: idProduct,
+            productId: productId,
             quantity: quantityRef.current.value
         };
 
@@ -33,14 +33,14 @@ function DetailProduct() {
     };
 
     useEffect(() => {
-        getProductByIdApi(idProduct)
+        getProductByIdApi(productId)
             .then((res) => {
                 setProduct(res.data);
             })
             .finally(() => {
                 setLoading(false);
             });
-    }, [idProduct]);
+    }, [productId]);
 
     return (
         <>

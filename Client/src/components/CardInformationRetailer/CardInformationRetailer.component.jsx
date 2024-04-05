@@ -6,16 +6,15 @@ import { useParams } from 'react-router-dom';
 import { getDistributorByProductIdApi } from '../../api/productApi';
 
 function CardInformationRetailer() {
-    const { idProduct } = useParams();
+    const { productId } = useParams();
     const [data, setData] = useState({});
+    console.log('🚀 ~ CardInformationRetailer ~ data:', data);
 
     useEffect(() => {
-        getDistributorByProductIdApi(idProduct).then((res) => {
+        getDistributorByProductIdApi(productId).then((res) => {
             setData(res.data);
         });
-    }, [idProduct]);
-
-    console.log(data);
+    }, [productId]);
 
     return (
         <section className="flex flex-wrap gap-4 rounded-md bg-gray-200 p-2">

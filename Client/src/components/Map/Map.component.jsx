@@ -18,7 +18,7 @@ function Map() {
         <>
             <MapContainer
                 center={[p.lat, p.lng]}
-                zoom={13}
+                zoom={100}
                 className="h-svh w-full"
                 zoomControl={false}
             >

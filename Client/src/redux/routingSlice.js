@@ -1,6 +1,5 @@
 // create a new reducer for routingSlide
 import { createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
 
 const routingSlice = createSlice({
     name: 'routing',
@@ -9,7 +8,7 @@ const routingSlice = createSlice({
         current: { lat: 0, lng: 0 },
         fixedLocation: { lat: 0, lng: 0 },
         markSelected: { lat: null, lng: null },
-        zoom: 15,
+        zoom: 10,
         showRouting: false,
         routes: [],
         info: {}
@@ -82,7 +81,6 @@ export const setFirstLocation = () => (dispatch) => {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(
                     (p) => {
-                        console.log(p);
                         if (p.coords.accuracy < 200) {
                             dispatch(
                                 setFixedLocation({

@@ -8,7 +8,7 @@ export const typeLocations = [
         label: 'Đồ nội thất'
     },
     {
-        value: 'clothes',
+        value: 'clothing',
         label: 'Quần áo'
     },
     {

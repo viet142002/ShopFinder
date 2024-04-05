@@ -10,14 +10,14 @@ function SearchLocation() {
     const [searchParams, setSearchParams] = useSearchParams({
         name: '',
         type: 'all',
-        radius: 5
+        radius: 2
     });
 
     useEffect(() => {
         form.setFieldsValue({
             search: searchParams.get('name') || '',
             type: searchParams.get('type') || 'all',
-            radius: searchParams.get('radius') || 5
+            radius: searchParams.get('radius') || 2
         });
     }, [searchParams, form]);
 
@@ -28,7 +28,7 @@ function SearchLocation() {
             initialValues={{
                 search: searchParams.get('name') || '',
                 type: searchParams.get('type') || 'all',
-                radius: searchParams.get('radius') || 5
+                radius: searchParams.get('radius') || 2
             }}
         >
             <Space>

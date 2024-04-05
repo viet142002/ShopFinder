@@ -8,31 +8,30 @@ import { getProductByIdApi } from '../../../api/productApi';
 import { typeStatus } from '../../../utils/typeConstraint';
 import ButtonBack from '../../../components/ActionsButton/ButtonBack.component';
 import MyCarousel from '../../../components/Carousel/Carousel.component';
+import DisplayRates from '@components/DisplayRate/DisplayRate.component';
 
 function ManagerProductDetail() {
-    const { idProduct } = useParams();
-    console.log('🚀 ~ ManagerProductDetail ~ idProduct:', idProduct);
+    const { productId } = useParams();
     const navigate = useNavigate();
     const [product, setProduct] = useState(null);
-    console.log('🚀 ~ ManagerProductDetail ~ product:', product);
 
     useEffect(() => {
-        getProductByIdApi(idProduct).then((res) => setProduct(res.data));
-    }, [idProduct]);
+        getProductByIdApi(productId).then((res) => setProduct(res.data));
+    }, [productId]);
 
     return (
-        <section className="px-8 py-4">
+        <section className="py-4 md:px-8">
             <ButtonBack />
             <Layout.Header className="mb-2 flex items-center justify-between bg-transparent">
                 <h1 className="text-xl font-semibold">Chi tiết sản phẩm</h1>
             </Layout.Header>
-            <Layout.Content className="grid grid-cols-3 gap-4">
+            <Layout.Content className="grid gap-4 md:grid-cols-3">
                 {product && (
-                    <section className="col-span-2 bg-white p-2">
+                    <section className="bg-white p-2 md:col-span-2">
                         <h2 className="mb-2 text-xl font-bold">
                             Thông tin sản phẩm
                         </h2>
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid gap-4 md:grid-cols-2">
                             <MyCarousel images={product?.images} />
                             <div className="space-y-3">
                                 <h3 className="text-lg font-semibold">
@@ -105,7 +104,7 @@ function ManagerProductDetail() {
                             <Button
                                 onClick={() =>
                                     navigate(
-                                        `./../../edit-product/${idProduct}`
+                                        `./../../edit-product/${productId}`
                                     )
                                 }
                             >
@@ -114,8 +113,11 @@ function ManagerProductDetail() {
                         </div>
                     </section>
                 )}
-                <section className="col-span-1 bg-white p-2">
-                    <CommentProduct />
+                <section className="md:col-span-1">
+                    {/* <CommentProduct /> */}
+                    <div className="bg-white p-2">
+                        <DisplayRates productId={productId} />
+                    </div>
                 </section>
             </Layout.Content>
         </section>

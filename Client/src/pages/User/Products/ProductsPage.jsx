@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { Layout } from 'antd';
+import { useParams, useLocation, Link } from 'react-router-dom';
+import { Layout, Button } from 'antd';
 
-import { getProductsFromDistributor } from '../../../api/productApi';
-import CardProduct from '../../../components/CardProduct/CardProduct.component';
+import { getProductsFromDistributor } from '@api/productApi';
+import CardProduct from '@components/CardProduct/CardProduct.component';
 
 function ProductsPage() {
+    const { state } = useLocation();
     const { id } = useParams();
     const [data, setData] = useState({
         products: [],
@@ -13,6 +14,7 @@ function ProductsPage() {
         page: 1,
         isLoading: true
     });
+
     useEffect(() => {
         getProductsFromDistributor({ distributor: id })
             .then((res) => {
@@ -38,6 +40,17 @@ function ProductsPage() {
                     Danh sách sản phẩm của cửa hàng
                 </h1>
             </Layout.Header>
+
+            {state?.type === 'Information' && (
+                <div className="">
+                    <Link to={'./add-product'}>
+                        <Button type="primary" className="bg-blue-500">
+                            Đóng góp
+                        </Button>
+                    </Link>
+                </div>
+            )}
+
             {data.isLoading ? (
                 <h1>Loading...</h1>
             ) : data.products && data.products.length > 0 ? (

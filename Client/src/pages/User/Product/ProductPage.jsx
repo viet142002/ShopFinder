@@ -1,14 +1,14 @@
 import { useParams } from 'react-router-dom';
 
-import DetailProduct from '../../../components/DetailProduct/DetailProduct.component';
-import CardInformationRetailer from '../../../components/CardInformationRetailer/CardInformationRetailer.component';
-import DisplayRate from '../../../components/DisplayRate/DisplayRate.component';
-import ModalRating from '../../../components/Modal/ModalRating/ModalRating.component';
-import RateTotal from '../../../components/Rate/RateTotal/RateTotal.component';
-import Rating from '../../../components/Rate/Rating/Rating.component';
+import DetailProduct from '@components/DetailProduct/DetailProduct.component';
+import CardInformationRetailer from '@components/CardInformationRetailer/CardInformationRetailer.component';
+import DisplayRate from '@components/DisplayRate/DisplayRate.component';
+import ModalRating from '@components/Modal/ModalRating/ModalRating.component';
+import RateTotal from '@components/Rate/RateTotal/RateTotal.component';
+import Rating from '@components/Rate/Rating/Rating.component';
 
 function ProductPage() {
-    const { idProduct } = useParams();
+    const { productId } = useParams();
 
     return (
         <>
@@ -18,19 +18,19 @@ function ProductPage() {
 
                 <div className="space-y-4">
                     <div className="flex">
-                        <RateTotal productId={idProduct} />
+                        <RateTotal productId={productId} />
                     </div>
                     <Rating />
                     <div className="space-y-2">
                         <h2 className="text-lg font-medium">
                             Bình luận sản phẩm
                         </h2>
-                        <DisplayRate productId={idProduct} />
+                        <DisplayRate productId={productId} />
                     </div>
                 </div>
             </div>
 
-            <ModalRating title={'Đánh giá'} to={idProduct} toType="Product" />
+            <ModalRating title={'Đánh giá'} to={productId} toType="Product" />
         </>
     );
 }

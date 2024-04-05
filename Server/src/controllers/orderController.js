@@ -121,7 +121,17 @@ const orderController = {
                         },
                     },
                 })
-                .populate('distributor', 'name')
+                .populate({
+                    path: 'distributor',
+                    select: 'name location',
+                    populate: {
+                        path: 'location',
+                        select: 'address',
+                        populate: {
+                            path: 'address',
+                        },
+                    },
+                })
                 .populate('shippingAddress');
 
             return res.status(200).json(order);

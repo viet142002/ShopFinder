@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {
     Layout,
@@ -18,9 +18,13 @@ import EditorFormat from '../../../components/EditorFormat/EditorFormat';
 import { getProductsFromDistributor } from '../../../api/productApi';
 import { createWarehouseApi, getWarehouseApi } from '../../../api/warehouseApi';
 
+import { handleFetch } from '@utils/expression';
+
 function ImportWarehouse() {
     const [resultSearch, setResultSearch] = useState([]);
     const [inOutProducts, setInOutProducts] = useState([]);
+
+    const navigate = useNavigate();
 
     const [search, setSearch] = useState('');
     const [infoWarehouse, setInfoWarehouse] = useState({
@@ -72,10 +76,11 @@ function ImportWarehouse() {
             type: 'import',
             products
         };
-
-        createWarehouseApi(data).then((res) => {
-            console.log(res);
-        });
+        const res = handleFetch(() => createWarehouseApi(data));
+        if (res) {
+            setInOutProducts([]);
+            navigate('../import-product');
+        }
     };
 
     const colsImport = [

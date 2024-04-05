@@ -5,7 +5,7 @@ import { formatPrice } from '../../utils/formatPrice';
 
 function CardProduct({ product }) {
     return (
-        <Link to={`./${product._id}`}>
+        <Link to={`./detail/${product._id}`}>
             <Card
                 hoverable
                 className="h-full w-full"

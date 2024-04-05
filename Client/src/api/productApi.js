@@ -55,3 +55,7 @@ export const deleteProductByIdApi = async (id) => {
         return error.response.data;
     }
 };
+
+export const createProductByUserApi = async (data) => {
+    return api.post('products', data);
+};

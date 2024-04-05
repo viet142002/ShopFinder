@@ -39,6 +39,7 @@ import CreateStore from './pages/CreateStore/CreateStore';
 import { routesConstant } from './routes/routesConstant';
 
 import { setFirstLocation } from './redux/routingSlice';
+import AddAndEditProductByUser from '@pages/User/Product/AddAndEditProductByUser';
 
 function App() {
     const dispatch = useDispatch();
@@ -134,7 +135,23 @@ function App() {
                     />
                     <Route path="/store/:id" element={<ProductsPage />} />
                     <Route
-                        path="/store/:id/:idProduct"
+                        path="/store/:id/edit-product/:productId"
+                        element={
+                            <ProtectRoute>
+                                <AddAndEditProductByUser />
+                            </ProtectRoute>
+                        }
+                    />
+                    <Route
+                        path="/store/:id/add-product"
+                        element={
+                            <ProtectRoute>
+                                <AddAndEditProductByUser />
+                            </ProtectRoute>
+                        }
+                    />
+                    <Route
+                        path="/store/:id/detail/:productId"
                         element={<ProductPage />}
                     />
                 </Route>
@@ -183,11 +200,11 @@ function App() {
                         element={<AddAndEditProduct />}
                     />
                     <Route
-                        path="product/edit-product/:idProduct"
+                        path="product/edit-product/:productId"
                         element={<AddAndEditProduct />}
                     />
                     <Route
-                        path="product/detail/:idProduct"
+                        path="product/detail/:productId"
                         element={<ManagerProductDetail />}
                     />
                     <Route

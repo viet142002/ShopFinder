@@ -46,7 +46,7 @@ function MyMarker() {
                 radius={
                     searchParams.get('radius')
                         ? searchParams.get('radius') * 1000
-                        : 5000
+                        : 2000
                 }
             />
         </>

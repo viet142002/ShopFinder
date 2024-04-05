@@ -47,6 +47,8 @@ const translateSuccess = (msg) => {
             return 'Sản phẩm đã được thêm vào giỏ hàng';
         case 'Order created':
             return 'Đặt hàng thành công';
+        case 'Warehouse receipt created successfully':
+            return 'Tạo phiếu nhập kho thành công';
         default:
             return 'Thành công';
     }

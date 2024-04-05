@@ -51,7 +51,13 @@ function Actions({ info }) {
                     size="large"
                     shape="circle"
                     icon={<MdOutlineShoppingBag size={20} />}
-                    onClick={() => navigate(`/store/${info._id}`)}
+                    onClick={() =>
+                        navigate(`/store/${info._id}`, {
+                            state: {
+                                type: info.informationType
+                            }
+                        })
+                    }
                 />
 
                 {_id === info.user || _id === info.owner ? (

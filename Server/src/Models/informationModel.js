@@ -26,6 +26,11 @@ const informationSchema = new mongoose.Schema({
         type: String,
         default: '',
     },
+    logo: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Image',
+        default: '65fd4951f687ef962765aa4a',
+    },
     images: [
         {
             type: mongoose.Schema.Types.ObjectId,

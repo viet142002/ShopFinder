@@ -23,3 +23,7 @@ export const updatePriceShip = async (id, data) => {
 export const getPriceShip = async () => {
     return api.get('/retailer/price-ship');
 };
+
+export const getPriceShipByRetailerId = async (retailerId) => {
+    return api.get(`/price-shipping/retailer/${retailerId}`);
+};

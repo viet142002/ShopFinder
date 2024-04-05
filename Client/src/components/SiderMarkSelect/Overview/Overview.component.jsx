@@ -1,7 +1,9 @@
 import { MdOutlineLocationOn, MdOutlineShareLocation } from 'react-icons/md';
+import { Divider } from 'antd';
 import { useSelector } from 'react-redux';
 
 import Actions from './Actions/Actions';
+import ShippingPrice from './ShippingPrice';
 
 function OverviewInfo({ info }) {
     const p = useSelector((state) => state.routing.markSelected);
@@ -26,6 +28,10 @@ function OverviewInfo({ info }) {
                         {p.lat}, {p.lng}
                     </p>
                 </div>
+            </div>
+            <Divider className="my-[16px]" />
+            <div className="mx-10">
+                <ShippingPrice retailerId={info._id} />
             </div>
         </>
     );

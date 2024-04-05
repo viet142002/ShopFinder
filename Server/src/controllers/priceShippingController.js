@@ -41,6 +41,29 @@ const priceShippingController = {
         }
     },
 
+    getByRetailerId: async (req, res) => {
+        try {
+            console.log('price ', req.params.id);
+            const priceShipping = await PriceShipping.find({
+                retailer: req.params.id,
+            });
+
+            if (!priceShipping) {
+                return res
+                    .status(404)
+                    .json({ message: 'Price shipping not found' });
+            }
+
+            res.status(200).json({
+                priceShipping,
+                message: 'Price shipping retrieved successfully',
+            });
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: 'Internal server error' });
+        }
+    },
+
     update: async (req, res) => {
         try {
             const { price, to, from } = req.body;
@@ -89,7 +112,6 @@ const priceShippingController = {
         try {
             const { distance } = req.query;
 
-            console.log(distance);
             const priceShipping = await PriceShipping.findOne({
                 retailer: req.params.id,
                 'range.to': { $gte: distance },

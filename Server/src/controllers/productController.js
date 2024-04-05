@@ -79,10 +79,11 @@ const productController = {
         try {
             // distributor is information id
             const { name, price, description, distributor } = req.body;
+
             const files = req.files;
             const user = req.user._id;
 
-            if (!name || !price || !category) {
+            if (!name || !price) {
                 return res.status(400).json({
                     message: 'Missing required fields',
                 });
@@ -192,7 +193,7 @@ const productController = {
     updateProductByUser: async (req, res) => {
         try {
             // deleteImages is array of image id
-            let { name, price, description, deleteImages } = req.body;
+            let { name, price, description, deleteImages, discount } = req.body;
             const files = req.files;
             if (typeof deleteImages === 'string') {
                 deleteImages = [deleteImages];
@@ -225,9 +226,10 @@ const productController = {
                 product.images = product.images.concat(newImages);
             }
 
-            product.name = name;
-            product.price = price;
-            product.description = description;
+            if (name) product.name = name;
+            if (price) product.price = price;
+            if (description) product.description = description;
+            if (discount) product.discount = discount;
 
             const updatedProduct = await product.save();
 
@@ -310,6 +312,14 @@ const productController = {
         }
     },
 
+    /*
+     * @returns {Promise} { distributor, averageRate, totalProduct, totalRate }
+     * Get distributor by product id
+     * distributor: Distributor of product
+     * averageRate: Average rate of distributor
+     * totalProduct: Total product of distributor
+     * totalRate: Total rate of distributor
+     * */
     getDistributorByProductId: async (req, res) => {
         try {
             const product = await Product.findById(req.params.id);
@@ -413,6 +423,47 @@ const productController = {
             for (let i = 0; i < product.images.length; i++) {
                 await imageController.deleteImage(product.images[i].name);
             }
+
+            await product.remove();
+
+            return res.status(200).json({
+                message: 'Product deleted successfully',
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message,
+            });
+        }
+    },
+
+    /*
+     * @returns {Promise} { message }
+     * Delete product by user
+     * */
+    deleteProductByUser: async (req, res) => {
+        try {
+            const productId = req.params.id;
+            const user = req.user._id;
+
+            const product = await Product.findByIdAndDelete(productId).populate(
+                'images'
+            );
+
+            if (!product) {
+                return res.status(404).json({
+                    message: 'Product not found',
+                });
+            }
+
+            if (product.userCreate.toString() !== user.toString()) {
+                return res.status(403).json({
+                    message: 'Permission denied',
+                });
+            }
+
+            await imageController.deleteImages(
+                product.images.map(image => image._id)
+            );
 
             await product.remove();
 

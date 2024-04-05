@@ -16,6 +16,15 @@ const imageController = {
             throw error;
         }
     },
+
+    /*
+     * @param {Array} files
+     * @returns {Promise}
+     * Create images
+     * Return array of images
+     * If error, delete all images
+     * and throw error
+     * */
     createImage: async files => {
         try {
             let images = [];
@@ -37,6 +46,11 @@ const imageController = {
         }
     },
 
+    /*
+     * @param {Array} ids
+     * @returns {Promise}
+     * Delete images by ids
+     */
     deleteImages: async ids => {
         for (let i = 0; i < ids.length; i++) {
             const image = await Image.findByIdAndDelete(ids[i]);

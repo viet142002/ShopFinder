@@ -25,6 +25,7 @@ import { typeStatus } from '../../../utils/typeConstraint';
 
 const columns = [
     {
+        width: 150,
         title: 'Ảnh sản phẩm',
         dataIndex: 'images',
         key: 'images',
@@ -34,7 +35,6 @@ const columns = [
                     className="rounded-md object-cover"
                     src={import.meta.env.VITE_APP_API_URL + images[0].path}
                     alt="product"
-                    width="100"
                 />
             );
         }
@@ -108,21 +108,34 @@ function ManageProduct() {
 
     return (
         <section className="space-y-2 p-5">
-            <Layout.Header className="flex items-center justify-between space-x-2 bg-white p-2">
+            <Layout.Header className="flex items-center justify-between space-x-2 bg-transparent p-0">
                 <Tooltip title="Thêm sản phẩm">
-                    <Button
-                        type="primary"
-                        className="flex items-center bg-blue-500"
-                        icon={<MdAdd size={18} />}
-                        onClick={() => {
-                            navigate('./add-product');
-                        }}
-                    >
-                        Thêm
-                    </Button>
+                    <div className="hidden items-center md:flex">
+                        <Button
+                            type="primary"
+                            className="flex items-center bg-blue-500"
+                            icon={<MdAdd size={18} />}
+                            onClick={() => {
+                                navigate('./add-product');
+                            }}
+                        >
+                            Thêm
+                        </Button>
+                    </div>
+                    <div className="flex items-center md:hidden">
+                        <Button
+                            type="primary"
+                            className="bg-blue-500"
+                            icon={<MdAdd size={18} />}
+                            onClick={() => {
+                                navigate('./add-product');
+                            }}
+                        />
+                    </div>
                 </Tooltip>
                 <Space.Compact>
                     <Select
+                        className="w-24 md:w-auto"
                         onChange={(value) => handleChange('status', value)}
                         name="status"
                         defaultValue={searchParams.get('status') || 'all'}
