@@ -33,6 +33,7 @@ function MarkerCus() {
     };
 
     useEffect(() => {
+        console.log('current ', current);
         const timeout = setTimeout(() => {
             getLocations({
                 lat: current.lat,
@@ -48,7 +49,7 @@ function MarkerCus() {
         return () => {
             clearTimeout(timeout);
         };
-    }, [current, searchParams]);
+    }, [current.lat, current.lng, searchParams]);
 
     return (
         <>

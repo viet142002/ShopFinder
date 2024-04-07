@@ -1,6 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
+
+import socket from './socket';
+// import './utils/notificationPWA';
 
 import ProtectRoute from './routes/ProtectRoute';
 
@@ -43,8 +46,19 @@ import AddAndEditProductByUser from '@pages/User/Product/AddAndEditProductByUser
 
 function App() {
     const dispatch = useDispatch();
+    const user = useSelector((state) => state.user.data);
+
     useEffect(() => {
         dispatch(setFirstLocation());
+        socket.on('connect', () => {});
+        socket.on('disconnect', () => {});
+        if (user) {
+            socket.emit('join', user);
+        }
+        return () => {
+            socket.off('connect');
+            socket.off('disconnect');
+        };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

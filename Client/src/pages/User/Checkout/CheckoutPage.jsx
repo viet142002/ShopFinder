@@ -8,6 +8,7 @@ import CardTotal from '@components/Checkout/CardTotal.component';
 
 import { handleFetch } from '@utils/expression';
 import { createOrder } from '@api/orderApi';
+import socket from '../../../socket';
 
 function CheckoutPage() {
     const navigate = useNavigate();
@@ -38,10 +39,6 @@ function CheckoutPage() {
             };
         });
 
-        console.log({
-            ...values,
-            orderItems: items
-        });
         const data = await handleFetch(() =>
             createOrder({
                 ...values,
@@ -49,6 +46,13 @@ function CheckoutPage() {
             })
         );
         if (data) {
+            data.orders.forEach((order) => {
+                socket.emit('order', {
+                    receiverId: order?.distributor,
+                    order
+                });
+            });
+
             return navigate('/');
         }
     };

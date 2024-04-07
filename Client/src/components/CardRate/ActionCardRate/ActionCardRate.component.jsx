@@ -6,9 +6,11 @@ import {
 } from '@ant-design/icons';
 import { Button } from 'antd';
 import { memo } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { likeRateApi, dislikeRateApi } from '../../../api/RateApi';
+
+import socket from '../../../socket';
 
 const ActionCardRate = memo(function ActionCardRate({
     likes,
@@ -17,15 +19,32 @@ const ActionCardRate = memo(function ActionCardRate({
     userId
 }) {
     const dispatch = useDispatch();
+    const { firstname, lastname, avatar } = useSelector(
+        (state) => state.user.data
+    );
 
     const handleLike = () => {
         likeRateApi(_id).then((data) => {
+            if (data.messageSocket) {
+                socket.emit('notification', {
+                    receiverId: data.rate.from._id,
+                    _id: data.rate._id,
+                    message: data.messageSocket,
+                    type: 'RATE',
+                    fromUser: {
+                        avatar: avatar,
+                        firstname: firstname,
+                        lastname: lastname
+                    },
+                    createdAt: new Date()
+                });
+            }
             dispatch({
                 type: 'rating/emotionalRate',
                 payload: {
                     _id: _id,
-                    likes: data.likes,
-                    dislikes: data.dislikes
+                    likes: data.rate.likes,
+                    dislikes: data.rate.dislikes
                 }
             });
         });

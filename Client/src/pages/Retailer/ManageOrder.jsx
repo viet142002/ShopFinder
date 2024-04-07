@@ -9,6 +9,8 @@ import { typeOrderStatus } from '@utils/typeConstraint';
 import { formatPrice } from '@utils/formatPrice';
 import FilterOrder from '@components/Order/FilterOrder/FilterOrder.component';
 
+import socket from '../../socket';
+
 const columns = [
     {
         title: 'Order ID',
@@ -68,6 +70,22 @@ function ManageOrder() {
             setOrders(response.data);
         });
     }, [searchParams]);
+
+    useEffect(() => {
+        socket.on('order', (data) => {
+            if (
+                ['all', 'pending'].includes(searchParams.get('status')) ||
+                !searchParams.get('status')
+            ) {
+                setOrders((prev) => [data.order, ...prev]);
+            }
+        });
+
+        return () => {
+            socket.off('order');
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>

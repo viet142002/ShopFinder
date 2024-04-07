@@ -4,7 +4,6 @@ const priceShippingController = {
     add: async (req, res) => {
         try {
             const { price, to, from } = req.body;
-            console.table(req.body);
 
             const { retailer } = req.user;
             if (!retailer) {
@@ -43,7 +42,6 @@ const priceShippingController = {
 
     getByRetailerId: async (req, res) => {
         try {
-            console.log('price ', req.params.id);
             const priceShipping = await PriceShipping.find({
                 retailer: req.params.id,
             });

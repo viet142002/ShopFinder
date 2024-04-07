@@ -9,7 +9,7 @@ export default defineConfig({
         react(),
         // mkcert(),
         VitePWA({
-            injectRegister: 'auto',
+            injectRegister: 'autoUpdate',
             includeAssets: ['manifest.json'],
             manifest: {
                 name: 'Shop Finder',
@@ -50,6 +50,9 @@ export default defineConfig({
                         purpose: 'any maskable'
                     }
                 ]
+            },
+            workbox: {
+                globPatterns: ['**/*.{jsx,js,css,html,ico,png,svg}']
             }
         })
     ],

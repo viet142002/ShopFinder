@@ -1,5 +1,5 @@
-import { Menu, Layout, Avatar } from 'antd';
-import { useState } from 'react';
+import { Menu, Layout, Avatar, Badge } from 'antd';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { HiOutlineViewfinderCircle } from 'react-icons/hi2';
@@ -17,6 +17,12 @@ import { useLocation } from 'react-router-dom';
 const { Sider } = Layout;
 
 import { unsetUser } from '../../redux/userSlice';
+import { setNotifications, setOneNotify } from '../../redux/notificationSlice';
+import { getNotifications } from '@api/notificationApi';
+
+import { notification } from '@utils/notification';
+
+import socket from '../../socket';
 
 function getItem(label, key, icon, children, type) {
     return {
@@ -34,6 +40,7 @@ function SideBar({ ...props }) {
     const [collapsed, setCollapsed] = useState(true);
 
     const { data, isAuth } = useSelector((state) => state.user);
+    const { countNotRead } = useSelector((state) => state.notification);
 
     const navigate = useNavigate();
 
@@ -50,7 +57,20 @@ function SideBar({ ...props }) {
         },
         {
             key: 'notification',
-            icon: <MdOutlineNotifications size={18} />,
+            icon: (
+                <Badge
+                    count={countNotRead}
+                    size="small"
+                    overflowCount={99}
+                    style={{
+                        backgroundColor: 'transparent',
+                        color: 'black',
+                        boxShadow: 'none'
+                    }}
+                >
+                    <MdOutlineNotifications size={18} />
+                </Badge>
+            ),
             label: 'Thông báo'
         },
         {
@@ -123,6 +143,29 @@ function SideBar({ ...props }) {
         }
     };
 
+    useEffect(() => {
+        getNotifications({ toUser: data._id }).then((res) => {
+            dispatch(setNotifications(res.data));
+        });
+        socket.on('notification', (data) => {
+            const { avatar, firstname, lastname } = data.fromUser;
+            if (data.type === 'ORDER') {
+                notification({
+                    icon: avatar,
+                    body: data.message,
+                    title: 'Thông báo mới'
+                });
+            } else {
+                notification({
+                    icon: avatar,
+                    body: `${firstname} ${lastname} ${data.message}`,
+                    title: 'Thông báo mới'
+                });
+            }
+            dispatch(setOneNotify(data));
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
     return (
         <Sider
             theme="light"

@@ -7,6 +7,8 @@ import OrderDetailContent from '@components/Order/OrderDetailContent/OrderDetail
 import { getOrderById, updateStatusOrder } from '@api/orderApi';
 import PrintBill from '@components/PrintBill';
 
+import socket from '../../socket';
+
 function ManageOrderDetail() {
     const { orderId } = useParams();
     const [order, setOrder] = useState();
@@ -20,6 +22,25 @@ function ManageOrderDetail() {
     }, [orderId]);
 
     const handleUpdateStatus = (status) => {
+        let message = `Đơn hàng của bạn tại ${order.distributor.name}`;
+        if (status === 'cancelled') {
+            message += ' đã bị hủy';
+        }
+        if (status === 'shipping') {
+            message += ' đang được vận chuyển';
+        }
+
+        socket.emit('notification', {
+            receiverId: order.user,
+            type: 'ORDER',
+            message: message,
+            fromUser: {
+                avatar: '',
+                firstname: 'Admin',
+                lastname: 'Admin'
+            },
+            createdAt: new Date()
+        });
         updateStatusOrder(order._id, status).then(() => {
             setOrder({
                 ...order,

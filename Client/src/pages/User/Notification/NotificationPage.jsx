@@ -1,18 +1,56 @@
+import { useSelector, useDispatch } from 'react-redux';
+import { Avatar } from 'antd';
+import { useEffect } from 'react';
+
+import { setReadAll } from '../../../redux/notificationSlice';
+import { formatTime } from '@utils/formatTime';
+
 function NotificationPage() {
-    const handleClick = () => {
-        console.log('clicked');
-    };
+    const dispatch = useDispatch();
+    const { notifications } = useSelector((state) => state.notification);
+
+    useEffect(() => {
+        return () => {
+            dispatch(setReadAll());
+        };
+    }, [dispatch]);
+
     return (
         <>
-            <div className="mx-auto mt-10 w-[max(200px,50%)] bg-gray-200 p-6">
-                <h1>Notification Page</h1>
+            <div className="mx-auto w-[max(200px,50%)] md:p-6">
+                <h1 className="text-center text-xl font-bold">Thông báo</h1>
 
-                <button
-                    onClick={handleClick}
-                    className="mt-4 rounded-md bg-blue-500 px-4 py-2 font-medium text-white hover:bg-blue-600"
-                >
-                    Click me
-                </button>
+                <div className="mt-4 space-y-2">
+                    {notifications.map((notification) => (
+                        <div
+                            key={notification._id}
+                            className={
+                                notification.isRead
+                                    ? 'flex items-center gap-2 rounded-md bg-gray-100 p-2'
+                                    : 'flex items-center gap-2 rounded-md bg-white p-2'
+                            }
+                        >
+                            <Avatar
+                                size="large"
+                                src={
+                                    import.meta.env.VITE_APP_API_URL +
+                                    notification.fromUser.avatar.path
+                                }
+                            />
+                            <div>
+                                <p>
+                                    <strong>
+                                        {notification.fromUser.lastname}{' '}
+                                        {notification.fromUser.firstname}{' '}
+                                    </strong>
+
+                                    {notification.message}
+                                </p>
+                                <p>{formatTime(notification.createdAt)}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
             </div>
         </>
     );

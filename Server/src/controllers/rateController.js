@@ -1,6 +1,6 @@
 const Rate = require('../Models/rateModel');
 const imageController = require('./imageController');
-const mongoose = require('mongoose');
+const notificationController = require('./notificationController');
 
 const rateController = {
     getRates: async (req, res) => {
@@ -236,24 +236,40 @@ const rateController = {
         try {
             const { id } = req.params;
             const userId = req.user._id;
+            let message = null;
 
-            const rate = await Rate.findById(id);
+            const rate = await Rate.findById(id).populate('to from', 'name');
+            await notificationController.findOneAndDelete({
+                target: rate._id,
+            });
             // only like or dislike
             if (rate.likes.includes(userId)) {
                 rate.likes = rate.likes.filter(
                     like => like?.toString() !== userId.toString()
                 );
             } else {
+                message = `thích đánh giá của bạn tại ${
+                    rate.toType === 'Product' ? 'sản phẩm' : 'cửa hàng'
+                } ${rate.to.name}`;
+                await notificationController.createNotification({
+                    toUser: rate.from,
+                    fromUser: userId,
+                    type: 'LIKE_RATE',
+                    target: rate._id,
+                    message: message,
+                });
+
                 rate.likes.push(userId);
                 rate.dislikes = rate.dislikes.filter(
                     dislike => dislike?.toString() !== userId.toString()
                 );
             }
+
             await rate.save();
 
             return res.status(200).json({
-                likes: rate.likes,
-                dislikes: rate.dislikes,
+                rate,
+                messageSocket: message,
                 message: 'Like rate successfully',
             });
         } catch (error) {
@@ -268,6 +284,10 @@ const rateController = {
             const userId = req.user._id;
 
             const rate = await Rate.findById(id);
+
+            await notificationController.findOneAndDelete({
+                target: rate._id,
+            });
 
             if (rate.dislikes.includes(userId)) {
                 rate.dislikes = rate.dislikes.filter(

@@ -1,9 +1,9 @@
 const Order = require('../Models/orderModel');
-const User = require('../Models/userModel');
 
 const orderDetailController = require('./orderDetailController');
 const addressController = require('./addressController');
 const productController = require('./productController');
+const notificationController = require('./notificationController');
 
 const orderController = {
     create: async (req, res) => {
@@ -20,6 +20,7 @@ const orderController = {
             } = req.body;
 
             const user = req.user;
+            let orders = [];
 
             if (
                 [orderItems, address, location, paymentMethod, user].includes(
@@ -69,14 +70,15 @@ const orderController = {
                     paymentMethod,
                     itemsPrice,
                     shippingPrice: shippingPrice,
-                    user: user._id,
+                    user: user,
                     note,
                 });
 
                 await order.save();
+                orders.push(order);
             }
 
-            return res.status(201).json({ message: 'Order created' });
+            return res.status(201).json({ message: 'Order created', orders });
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: 'Internal server error' });
@@ -152,10 +154,26 @@ const orderController = {
                 return res.status(400).json({ message: 'Invalid status' });
             }
 
-            const order = await Order.findById(id).populate('orderItems');
+            const order = await Order.findById(id)
+                .populate('orderItems')
+                .populate('distributor', 'name');
 
             if (!order) {
                 return res.status(404).json({ message: 'Order not found' });
+            }
+
+            if (order.status === 'cancelled') {
+                return res.status(400).json({ message: 'Order was cancelled' });
+            }
+
+            if (status === 'shipping') {
+                await notificationController.createNotification({
+                    toUser: order.user,
+                    fromUser: order.distributor,
+                    type: 'ORDER',
+                    target: order._id,
+                    message: `Đơn hàng của bạn tại ${order.distributor.name} đang được vận chuyển`,
+                });
             }
 
             if (status === 'success') {

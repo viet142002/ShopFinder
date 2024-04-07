@@ -16,6 +16,8 @@ import { CiImport } from 'react-icons/ci';
 import { getInfoMyRetailerApi } from '../../api/retailerApi';
 
 import { unsetUser } from '../../redux/userSlice';
+import socket from '../../socket';
+import { notification } from '@utils/notification';
 
 const { Sider } = Layout;
 const items = [
@@ -130,6 +132,23 @@ function SiderManagerRetailer() {
                 break;
         }
     };
+
+    useEffect(() => {
+        socket.on('order', (data) => {
+            notification({
+                title: 'Có đơn hàng mới',
+                icon: 'https://via.placeholder.com/150',
+                message: `Bạn có một đơn hàng mới từ ${data?.user?.firstname} ${data?.user?.lastname}`
+            });
+        });
+        socket.emit('join-retailer', {
+            retailerId: retailer._id,
+            name: retailer.name
+        });
+        return () => {
+            socket.off('order');
+        };
+    }, [retailer._id, retailer.name]);
 
     return (
         <>

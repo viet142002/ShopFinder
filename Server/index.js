@@ -1,9 +1,23 @@
 const mongoose = require('mongoose');
 require('dotenv').config();
+const http = require('http');
+const { Server } = require('socket.io');
+const socketServer = require('./socketServer');
 
 const app = require('./configs/appConfig');
 
-app.listen(process.env.PORT, () => {
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: '*',
+    },
+});
+
+io.on('connection', socket => {
+    socketServer(socket);
+});
+
+server.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
 });
 

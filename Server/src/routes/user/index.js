@@ -9,6 +9,7 @@ const productRouter = require('./productRouter');
 const cartRouter = require('./cartRouter');
 const orderRouter = require('./orderRouter');
 const priceShippingRouter = require('./priceShippingRouter');
+const notificationRouter = require('./notificationRouter');
 
 router.use('/locations', locationRouter);
 router.use('/community', informationRouter);
@@ -19,5 +20,6 @@ router.use('/products', productRouter);
 router.use('/cart', cartRouter);
 router.use('/orders', orderRouter);
 router.use('/price-shipping', priceShippingRouter);
+router.use('/notifications', notificationRouter);
 
 module.exports = router;

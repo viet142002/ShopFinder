@@ -15,6 +15,7 @@ import routingReducer from './routingSlice';
 import userReducer from './userSlice';
 import ratingReducer from './ratingSlice';
 import retailerReducer from './retailerSlice';
+import notificationReducer from './notificationSlice';
 
 const persistConfig = {
     key: 'root',
@@ -26,7 +27,8 @@ const rootReducer = combineSlices({
     routing: routingReducer,
     user: userReducer,
     rating: ratingReducer,
-    retailer: retailerReducer
+    retailer: retailerReducer,
+    notification: notificationReducer
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
