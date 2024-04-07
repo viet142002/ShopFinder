@@ -6,6 +6,7 @@ const userController = {
     updateProfile: async (req, res) => {
         try {
             const { firstname, lastname, address, phone } = req.body;
+            console.table(req.body);
             const avatar = req?.file?.filename || null;
 
             if (!firstname && !lastname && !address && !phone && !avatar)
@@ -14,12 +15,6 @@ const userController = {
                 return res
                     .status(400)
                     .json({ message: 'Invalid phone number' });
-            if (
-                (!JSON.parse(address).province && !JSON.parse(address).district,
-                !JSON.parse(address).ward)
-            ) {
-                return res.status(400).json({ message: 'Invalid address' });
-            }
 
             const user = await User.findById(req.user._id)
                 .select('-password')
@@ -31,6 +26,7 @@ const userController = {
             if (firstname) user.firstname = firstname.trim();
             if (lastname) user.lastname = lastname.trim();
             if (address) {
+                console.log('vao address');
                 const newAddress = await addressController.create(
                     JSON.parse(address)
                 );
@@ -47,13 +43,13 @@ const userController = {
             }
 
             await user.save();
-            // await user.populate('avatar address').execPopulate();
 
             return res.status(200).json({
                 updatedUser: user,
                 message: 'Profile updated successfully',
             });
         } catch (error) {
+            console.error(error);
             return res.status(500).json({ message: error.message });
         }
     },
