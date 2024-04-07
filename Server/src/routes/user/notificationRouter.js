@@ -2,13 +2,13 @@ const router = require('express').Router();
 
 const {
     getNotification,
-    readNotification,
+    readNotifications,
     deleteNotification,
 } = require('../../controllers/notificationController');
 const { authorization } = require('../../middlewares/authMiddlewares');
 
 router.get('/:toUser', authorization, getNotification);
-router.put('/:notificationId', authorization, readNotification);
+router.put('/', authorization, readNotifications);
 router.delete('/:notificationId', authorization, deleteNotification);
 
 module.exports = router;

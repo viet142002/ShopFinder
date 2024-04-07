@@ -2,18 +2,20 @@ const Notification = require('../Models/notificationModel');
 
 exports.createNotification = async ({
     toUser,
-    fromUser,
+    from,
+    fromType = 'User',
     type,
     target,
     message,
 }) => {
-    if ([toUser, fromUser, type, target, message].includes(undefined)) {
+    if ([toUser, from, fromType, type, target, message].includes(undefined)) {
         throw new Error('Missing fields fields');
     }
 
     const notification = new Notification({
         toUser,
-        fromUser,
+        from,
+        fromType,
         type,
         target,
         message,
@@ -25,13 +27,38 @@ exports.createNotification = async ({
 exports.getNotification = async (req, res) => {
     try {
         const { toUser } = req.params;
-        const notifications = await Notification.find({ toUser }).populate({
-            path: 'fromUser',
-            select: 'firstname lastname avatar',
-            populate: {
-                path: 'avatar',
-            },
-        });
+        let notifications = [];
+        // populate from, populate from.logo when is Retailer and from.avatar when is User
+        const notificationsFromUser = await Notification.find({
+            toUser,
+            fromType: 'User',
+        })
+            .populate({
+                path: 'from',
+                populate: {
+                    path: 'avatar',
+                },
+            })
+            .sort({ createdAt: -1 });
+        const notificationsFromRetailer = await Notification.find({
+            toUser,
+            fromType: 'Retailer',
+        })
+            .populate({
+                path: 'from',
+                populate: {
+                    path: 'logo',
+                },
+            })
+            .sort({ createdAt: -1 });
+
+        notifications = [
+            ...notificationsFromUser,
+            ...notificationsFromRetailer,
+        ];
+
+        notifications.sort((a, b) => b.createdAt - a.createdAt);
+
         return res.status(200).json(notifications);
     } catch (error) {
         console.error(error);
@@ -39,11 +66,12 @@ exports.getNotification = async (req, res) => {
     }
 };
 
-exports.readNotification = async (req, res) => {
+exports.readNotifications = async (req, res) => {
     try {
-        const { notificationId } = req.params;
-        const notification = await Notification.findByIdAndUpdate(
-            notificationId,
+        const notification = await Notification.updateMany(
+            {
+                isRead: false,
+            },
             {
                 isRead: true,
             }

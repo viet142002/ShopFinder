@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 
 import { setReadAll } from '../../../redux/notificationSlice';
 import { formatTime } from '@utils/formatTime';
+import { readNotifications } from '@api/notificationApi';
 
 function NotificationPage() {
     const dispatch = useDispatch();
@@ -11,7 +12,9 @@ function NotificationPage() {
 
     useEffect(() => {
         return () => {
-            dispatch(setReadAll());
+            readNotifications().then(() => {
+                dispatch(setReadAll());
+            });
         };
     }, [dispatch]);
 
@@ -34,15 +37,22 @@ function NotificationPage() {
                                 size="large"
                                 src={
                                     import.meta.env.VITE_APP_API_URL +
-                                    notification.fromUser.avatar.path
+                                        notification?.from?.avatar?.path ||
+                                    notification?.from?.logo?.path
                                 }
                             />
                             <div>
                                 <p>
-                                    <strong>
-                                        {notification.fromUser.lastname}{' '}
-                                        {notification.fromUser.firstname}{' '}
-                                    </strong>
+                                    {notification.fromType === 'User' ? (
+                                        <strong>
+                                            {notification.from.lastname}{' '}
+                                            {notification.from.firstname}{' '}
+                                        </strong>
+                                    ) : (
+                                        <strong>
+                                            {notification.from.name}
+                                        </strong>
+                                    )}
 
                                     {notification.message}
                                 </p>

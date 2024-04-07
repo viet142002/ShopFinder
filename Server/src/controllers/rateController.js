@@ -253,7 +253,7 @@ const rateController = {
                 } ${rate.to.name}`;
                 await notificationController.createNotification({
                     toUser: rate.from,
-                    fromUser: userId,
+                    from: userId,
                     type: 'LIKE_RATE',
                     target: rate._id,
                     message: message,

@@ -8,11 +8,12 @@ import { getOrderById, updateStatusOrder } from '@api/orderApi';
 import PrintBill from '@components/PrintBill';
 
 import socket from '../../socket';
+import { useSelector } from 'react-redux';
 
 function ManageOrderDetail() {
     const { orderId } = useParams();
     const [order, setOrder] = useState();
-    console.log('🚀 ~ ManageOrderDetail ~ order:', order);
+    const { logo } = useSelector((state) => state.retailer.data.logo);
     const printRef = useRef();
 
     useEffect(() => {
@@ -34,10 +35,10 @@ function ManageOrderDetail() {
             receiverId: order.user,
             type: 'ORDER',
             message: message,
-            fromUser: {
-                avatar: '',
-                firstname: 'Admin',
-                lastname: 'Admin'
+            fromType: 'Retailer',
+            from: {
+                name: order.distributor.name,
+                logo: logo
             },
             createdAt: new Date()
         });

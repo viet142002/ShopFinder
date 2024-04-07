@@ -169,7 +169,8 @@ const orderController = {
             if (status === 'shipping') {
                 await notificationController.createNotification({
                     toUser: order.user,
-                    fromUser: order.distributor,
+                    from: order.distributor,
+                    fromType: 'Retailer',
                     type: 'ORDER',
                     target: order._id,
                     message: `Đơn hàng của bạn tại ${order.distributor.name} đang được vận chuyển`,

@@ -148,10 +148,10 @@ function SideBar({ ...props }) {
             dispatch(setNotifications(res.data));
         });
         socket.on('notification', (data) => {
-            const { avatar, firstname, lastname } = data.fromUser;
+            const { avatar, firstname, lastname, logo } = data.from;
             if (data.type === 'ORDER') {
                 notification({
-                    icon: avatar,
+                    icon: logo,
                     body: data.message,
                     title: 'Thông báo mới'
                 });
