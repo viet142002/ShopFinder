@@ -127,6 +127,24 @@ function CreateStorePage({ isRegisterRetailer }) {
                                     <Input type="number" />
                                 </Form.Item>
                             </div>
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="email">Email</label>
+                                <Form.Item
+                                    name="email"
+                                    id="email"
+                                    rules={
+                                        isRegisterRetailer && [
+                                            {
+                                                required: true,
+                                                message:
+                                                    'Vui lòng nhập địa chỉ email cửa hàng'
+                                            }
+                                        ]
+                                    }
+                                >
+                                    <Input type="email" />
+                                </Form.Item>
+                            </div>
                             <div className="create-store flex flex-col gap-2">
                                 <InputLocation onFill={onFill} label="Toạ độ" />
                             </div>

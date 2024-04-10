@@ -49,6 +49,8 @@ const translateSuccess = (msg) => {
             return 'Đặt hàng thành công';
         case 'Warehouse receipt created successfully':
             return 'Tạo phiếu nhập kho thành công';
+        case 'Update retailer successfully':
+            return 'Cập nhật thông tin cửa hàng thành công';
         default:
             return 'Thành công';
     }

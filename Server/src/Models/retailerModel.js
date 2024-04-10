@@ -6,6 +6,7 @@ const retailerSchema = new mongoose.Schema({
         required: true,
         unique: [true, 'Retailer name already exists'],
     },
+    // user who created this retailer
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -26,6 +27,10 @@ const retailerSchema = new mongoose.Schema({
         required: true,
     },
     phone: {
+        type: String,
+        default: '',
+    },
+    email: {
         type: String,
         default: '',
     },

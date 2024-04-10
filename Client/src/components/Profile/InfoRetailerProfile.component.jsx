@@ -34,11 +34,11 @@ function InfoRetailerProfile({ retailer }) {
                 </p>
                 <p>
                     <span>Email: </span>
-                    <span>{retailer.owner.email}</span>
+                    <span>{retailer.email}</span>
                 </p>
                 <p>
                     <span>Điện thoại: </span>
-                    <span>{retailer.owner.phone}</span>
+                    <span>{retailer.phone}</span>
                 </p>
                 <p>
                     <span>Loại cửa hàng: </span>

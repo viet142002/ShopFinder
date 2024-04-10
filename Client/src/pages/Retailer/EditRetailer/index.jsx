@@ -1,27 +1,11 @@
 import { Form, Input, Button, Col, Row, Layout } from 'antd';
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { handleFetch } from '@utils/expression';
-import { registerRetailerApi } from '@api/retailerApi';
+import { updateRetailerApi } from '@api/retailerApi';
 import { InputLocation, InputImage, InputAddress } from '@components/Input';
 import EditorFormat from '@components/EditorFormat/EditorFormat';
-
-// const FormatForm = (values, images, isRegisterRetailer) => {
-//     const formData = new FormData();
-//     if (isRegisterRetailer) {
-//         formData.append('mode', values.mode);
-//     }
-//     formData.append('name', values.name);
-//     formData.append('description', values.description);
-//     formData.append('type', values.type);
-//     formData.append('location', JSON.stringify(values.location));
-//     for (let i = 0; i < images.length; i++) {
-//         formData.append('images', images[i]);
-//     }
-//     formData.append('address', JSON.stringify(values.address));
-//     return formData;
-// };
 
 function EditRetailer() {
     const [newImages, setNewImages] = useState([]);
@@ -29,8 +13,6 @@ function EditRetailer() {
     const retailerData = useSelector((state) => state.retailer.data);
 
     const [form] = Form.useForm();
-
-    const dispatch = useDispatch();
 
     const onFill = (p) => {
         form.setFieldsValue({
@@ -41,16 +23,15 @@ function EditRetailer() {
         });
     };
 
-    const onFinish = (values) => {
-        const data = handleFetch(() =>
-            registerRetailerApi({
+    const onFinish = async (values) => {
+        await handleFetch(() =>
+            updateRetailerApi({
                 ...values,
                 id: retailerData._id,
                 newImages: newImages,
                 deleteImages: deleteImages
             })
         );
-        if (data) alert('Đăng ký cửa hàng thành công');
     };
 
     useEffect(() => {
@@ -118,6 +99,22 @@ function EditRetailer() {
                                     ]}
                                 >
                                     <Input type="number" />
+                                </Form.Item>
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <label htmlFor="email">Email</label>
+                                <Form.Item
+                                    name="email"
+                                    id="email"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message:
+                                                'Vui lòng nhập email cửa hàng'
+                                        }
+                                    ]}
+                                >
+                                    <Input type="email" />
                                 </Form.Item>
                             </div>
                             <div className="create-store flex flex-col gap-2">

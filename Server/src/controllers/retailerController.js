@@ -20,6 +20,7 @@ const retailerController = {
                 price,
                 to,
                 from,
+                email: retailerEmail,
             } = req.body;
             const { email } = req.user;
             const images = req.files;
@@ -36,6 +37,7 @@ const retailerController = {
                     price,
                     to,
                     from,
+                    retailerEmail,
                 ].includes(undefined)
             ) {
                 return res.status(400).json({
@@ -72,6 +74,7 @@ const retailerController = {
                 type,
                 mode,
                 description,
+                retailerEmail,
                 images: newImages || [],
             });
 
@@ -116,16 +119,16 @@ const retailerController = {
                 location,
                 name,
                 phone,
-                type,
                 description,
                 address,
                 deleteImages,
+                email,
             } = req.body;
 
             const images = req.files;
 
             if (
-                [location, name, phone, type, description, address].includes(
+                [location, name, phone, description, address, email].includes(
                     undefined
                 )
             ) {
@@ -136,14 +139,12 @@ const retailerController = {
 
             const retailer = await Retailer.findOne({
                 owner: req.user._id,
-            })
-                .populate('images')
-                .populate({
-                    path: 'location',
-                    populate: {
-                        path: 'address',
-                    },
-                });
+            }).populate({
+                path: 'location',
+                populate: {
+                    path: 'address',
+                },
+            });
 
             if (!retailer) {
                 return res.status(400).json({
@@ -158,6 +159,9 @@ const retailerController = {
                     needRemoveIds = deleteImages.map(image => image._id);
                 }
                 await imageController.deleteImages(deleteImages);
+                retailer.images = retailer.images.filter(
+                    image => !needRemoveIds.includes(image._id.toString())
+                );
             }
             if (images) {
                 const newImages = await imageController.createImage(images);
@@ -165,6 +169,9 @@ const retailerController = {
             }
             if (name) {
                 retailer.name = name;
+            }
+            if (email) {
+                retailer.email = email;
             }
             if (phone) {
                 retailer.phone = phone;
@@ -180,13 +187,27 @@ const retailerController = {
                 retailer.location.address = newAddress;
             }
 
-            if (type) {
-                retailer.type = type;
-            }
-
             if (description) {
                 retailer.description = description;
             }
+
+            const { lat, lng } = location;
+            if (
+                lat !== retailer.location.loc.coordinates[1] ||
+                lng !== retailer.location.loc.coordinates[0]
+            ) {
+                await locationController.update(retailer.location._id, {
+                    lat,
+                    lng,
+                });
+            }
+
+            await retailer.save();
+
+            return res.status(200).json({
+                retailer,
+                message: 'Update retailer successfully',
+            });
         } catch (error) {
             return res.status(500).json({
                 message: error.message,

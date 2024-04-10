@@ -26,7 +26,7 @@ export const registerRetailerApi = async (values) => {
 };
 
 export const updateRetailerApi = async (values) => {
-    return api.put('/retailer', values, {
+    return api.put('/retailer/update-retailer', values, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }

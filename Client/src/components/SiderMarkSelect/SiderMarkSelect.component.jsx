@@ -10,6 +10,30 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import 'react-perfect-scrollbar/dist/css/styles.css';
 
+(function () {
+    if (typeof EventTarget !== 'undefined') {
+        let supportsPassive = false;
+        try {
+            // Test via a getter in the options object to see if the passive property is accessed
+            const opts = Object.defineProperty({}, 'passive', {
+                get: () => {
+                    supportsPassive = true;
+                    return undefined; // Add a return statement here
+                }
+            });
+            window.addEventListener('testPassive', null, opts);
+            window.removeEventListener('testPassive', null, opts);
+        } catch (e) {
+            console.warn('Your browser does not support passive mode');
+        }
+        const func = EventTarget.prototype.addEventListener;
+        EventTarget.prototype.addEventListener = function (type, fn) {
+            this.func = func;
+            this.func(type, fn, supportsPassive ? { passive: false } : false);
+        };
+    }
+})();
+
 function SiderMarkSelect({ markSelected }) {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
@@ -64,7 +88,10 @@ function SiderMarkSelect({ markSelected }) {
             </div>
 
             {markSelected?.lat && !isMobile && (
-                <PerfectScrollbar>
+                <PerfectScrollbar
+                    className="h-full"
+                    options={{ suppressScrollX: true }}
+                >
                     <Inner info={info} />
                 </PerfectScrollbar>
             )}
