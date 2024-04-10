@@ -25,7 +25,6 @@ const ActionCardRate = memo(function ActionCardRate({
 
     const handleLike = () => {
         likeRateApi(_id).then((data) => {
-            console.log('🚀 ~ likeRateApi ~ data:', data);
             if (data.messageSocket) {
                 socket.emit('notification', {
                     receiverId: data.rate.from._id,

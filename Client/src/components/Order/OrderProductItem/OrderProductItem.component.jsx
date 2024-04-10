@@ -3,7 +3,6 @@ import { Image } from 'antd';
 import { memo } from 'react';
 
 function OrderProductItem({ product, discount, price, quantity }) {
-    console.log(product, discount, price, quantity);
     return (
         <>
             <div className="mt-2 flex gap-2 px-2">

@@ -6,8 +6,6 @@ import L from 'leaflet';
  * @returns {Number} The distance between the two locations in kilometers
  */
 export function calculateDistance(firstLocation, secondLocation) {
-    console.log(firstLocation, secondLocation);
-
     const first = L.latLng(firstLocation.lat, firstLocation.lng);
     const second = L.latLng(secondLocation.lat, secondLocation.lng);
 

@@ -38,16 +38,13 @@ function ProfilePage() {
     };
 
     const onFinish = async (values) => {
-        console.log('🚀 ~ onFinish ~ values:', values);
         setIsLoading(true);
         delete values.email;
 
         const data = formData({ ...values, avatar: newAvatar });
-        data.forEach((value, key) => console.log(key, value));
 
         const resData = await handleFetch(() => updateUser(user._id, data));
         if (resData) {
-            console.log(resData.updatedUser);
             dispatch({ type: 'user/updateUser', payload: resData.updatedUser });
             setIsChange(() => ({
                 isChangeAddress: false,

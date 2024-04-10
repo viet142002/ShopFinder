@@ -144,6 +144,7 @@ function SideBar({ ...props }) {
     };
 
     useEffect(() => {
+        if (!isAuth) return;
         getNotifications({ toUser: data._id }).then((res) => {
             dispatch(setNotifications(res.data));
         });

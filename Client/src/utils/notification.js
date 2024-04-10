@@ -4,7 +4,7 @@ export function notification({
     title
 }) {
     if (!('Notification' in window)) {
-        console.log('This browser does not support notifications');
+        alert('This browser does not support notifications');
         return;
     }
 

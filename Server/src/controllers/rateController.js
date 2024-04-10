@@ -89,7 +89,6 @@ const rateController = {
             const { rate, comment, deleteImages: original } = req.body;
             const images = req.files;
             const deleteImages = original ? JSON.parse(original) : [];
-            console.log('🚀 ~ updateRate: ~ deleteImages:', deleteImages);
 
             if (!rate && !comment && !images && deleteImages.length === 0) {
                 return res.status(400).json({

@@ -2,12 +2,15 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
-import socket from './socket';
-// import './utils/notificationPWA';
-
+// #region import layout and something
 import ProtectRoute from './routes/ProtectRoute';
-
 import DefaultLayout from './layouts/DefaultLayout';
+import ManageLayout from './layouts/ManageLayout';
+import { routesConstant } from './routes/routesConstant';
+import { setFirstLocation } from './redux/routingSlice';
+import socket from './socket';
+// #endregion
+// #region user page
 import Profile from './pages/user/Profile/ProfilePage';
 import Login from './pages/Auth/Login/LoginPage';
 import Register from './pages/Auth/Register/RegisterPage';
@@ -20,14 +23,17 @@ import CheckoutPage from './pages/User/Checkout/CheckoutPage';
 import NotificationPage from './pages/User/Notification/NotificationPage';
 import OrderPage from '@pages/User/Orders/OrderPage';
 import OrderDetailPage from '@pages/User/Orders/OrderDetailPage';
-
-import ManageLayout from './layouts/ManageLayout';
+import CreateStore from './pages/CreateStore/CreateStore';
+import AddAndEditProductByUser from '@pages/User/Product/AddAndEditProductByUser';
+// #endregion
+// #region admin page
 import RequestRetailerPage from './pages/Admin/RequestRetailerPage';
 import DashboardPage from './pages/Admin/DashboardPage';
 import ReportPage from './pages/Admin/ReportPage';
-// import NotificationPage from './pages/Admin/NotificationPage';
-
+// #endregion
+// #region retailer page
 import DashboardRetailer from './pages/Retailer/DashboardRetailer';
+import EditRetailerPage from './pages/Retailer/EditRetailer';
 import WarehouseManager from './pages/Retailer/WarehouseManager/WarehouseManager';
 import ManageOrder from './pages/Retailer/ManageOrder';
 import ManageOrderDetail from './pages/Retailer/ManageOrderDetail';
@@ -37,12 +43,7 @@ import ManageProduct from './pages/Retailer/Product/ManageProduct';
 import AddAndEditProduct from './pages/Retailer/Product/AddAndEditProduct';
 import ManagerProductDetail from './pages/Retailer/Product/ManagerProductDetail';
 import ImportWarehouse from './pages/Retailer/WarehouseManager/ImportWarehouse';
-
-import CreateStore from './pages/CreateStore/CreateStore';
-import { routesConstant } from './routes/routesConstant';
-
-import { setFirstLocation } from './redux/routingSlice';
-import AddAndEditProductByUser from '@pages/User/Product/AddAndEditProductByUser';
+// #endregion
 
 function App() {
     const dispatch = useDispatch();
@@ -70,7 +71,6 @@ function App() {
                     path={routesConstant.register.path}
                     element={<Register />}
                 />
-
                 <Route path="/" element={<DefaultLayout />}>
                     <Route index element={<HomePage />} />
                     <Route
@@ -116,9 +116,9 @@ function App() {
                     <Route
                         path="/notification"
                         element={
-                            // <ProtectRoute>
-                            <NotificationPage />
-                            // </ProtectRoute>
+                            <ProtectRoute>
+                                <NotificationPage />
+                            </ProtectRoute>
                         }
                     />
                     <Route
@@ -228,6 +228,10 @@ function App() {
                     <Route
                         path="import-product/:idImport"
                         element={<ImportWarehouse />}
+                    />
+                    <Route
+                        path="edit-retailer"
+                        element={<EditRetailerPage />}
                     />
                 </Route>
             </Routes>

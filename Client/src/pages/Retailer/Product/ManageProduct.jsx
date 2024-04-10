@@ -91,7 +91,6 @@ function ManageProduct() {
     const navigate = useNavigate();
 
     const handleChange = (item, value) => {
-        console.log(item, value);
         setSearchParams((prev) => {
             prev.set(item, value);
             return prev;

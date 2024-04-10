@@ -8,7 +8,6 @@ document.body.appendChild(addScript);
 window.googleTranslateElementInit = () => {
     const elements = document.getElementsByClassName('leaflet-routing-alt');
     if (elements.length > 0) {
-        console.log('Translating routing control');
         for (let i = 0; i < elements.length; i++) {
             new window.google.translate.TranslateElement(
                 {

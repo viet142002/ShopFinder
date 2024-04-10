@@ -10,7 +10,7 @@ let retailerOnline = [];
 
 const socketServer = socket => {
     socket.on('connection_error', error => {
-        console.log('error', error);
+        console.error('error', error);
     });
     socket.on('join', user => {
         !userOnline.some(u => u._id === user._id) &&
@@ -40,7 +40,6 @@ const socketServer = socket => {
         const retailer = retailerOnline.find(
             retailer => retailer.retailerId === data.receiverId
         );
-        console.log('retailerOnline', retailerOnline);
         console.table({
             retailer: retailer?.retailerId,
             receiverId: data?.receiverId,

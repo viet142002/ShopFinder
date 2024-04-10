@@ -25,6 +25,14 @@ export const registerRetailerApi = async (values) => {
     });
 };
 
+export const updateRetailerApi = async (values) => {
+    return api.put('/retailer', values, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+};
+
 export const getRequestsRetailerApi = async () => {
     try {
         const res = await api.get('admin/retailer/requests');

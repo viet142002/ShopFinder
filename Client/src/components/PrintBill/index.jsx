@@ -4,9 +4,6 @@ import { formatPrice } from '@utils/formatPrice';
 import { formatDate } from '@utils/formatDate';
 
 const PrintBill = React.forwardRef(function PrintBill({ bill, products }, ref) {
-    console.log('🚀 ~ PrintBill ~ ref:', ref);
-    console.log('🚀 ~ products:', products);
-    console.log('🚀 ~ bill:', bill);
     const { more, ward, district, province } =
         bill?.distributor?.location?.address || {};
     const {

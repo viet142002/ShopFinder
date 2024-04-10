@@ -33,7 +33,6 @@ function MarkerCus() {
     };
 
     useEffect(() => {
-        console.log('current ', current);
         const timeout = setTimeout(() => {
             getLocations({
                 lat: current.lat,

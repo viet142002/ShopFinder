@@ -100,9 +100,8 @@ function ModalRating({ title, to, toType }) {
                     payload: { isShow: false, rate: null }
                 });
             })
-            .catch((info) => {
+            .catch(() => {
                 setConfirmLoading(false);
-                console.log('Validate Failed:', info);
             });
     };
 

@@ -1,5 +1,4 @@
 const Location = require('../Models/locationModel');
-const mongoose = require('mongoose');
 
 const locationController = {
     create: async ({
@@ -41,9 +40,13 @@ const locationController = {
     },
     update: async (locationId, data) => {
         try {
-            const location = await Location.findByIdAndUpdate(location, data, {
-                new: true,
-            });
+            const location = await Location.findByIdAndUpdate(
+                locationId,
+                data,
+                {
+                    new: true,
+                }
+            );
             return location;
         } catch (error) {
             throw error;
@@ -111,7 +114,6 @@ const locationController = {
                     return location.information.status === 'approved';
                 });
             }
-            // console.log(locations);
             return res.status(200).json({
                 locations,
                 message: radius

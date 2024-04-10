@@ -25,7 +25,7 @@ function MyMarker() {
                 },
                 (error) => {
                     alert('Error getting location');
-                    console.log(error);
+                    console.error(error);
                 }
             );
         const navigate = getCurrentPosition();

@@ -3,6 +3,7 @@ import { Avatar, Tag } from 'antd';
 import HTMLRenderer from '../HTMLRenderer/HTMLRenderer.component';
 
 import { typeLocations } from '../../utils/typeConstraint';
+import { Link } from 'react-router-dom';
 
 function InfoRetailerProfile({ retailer }) {
     return (
@@ -64,6 +65,12 @@ function InfoRetailerProfile({ retailer }) {
                     className="rounded-md bg-gray-100 p-2"
                     htmlString={retailer.description}
                 />
+
+                <div className="mt-4 flex justify-center">
+                    <Link to={'../edit-retailer'} className=" px-4 py-2">
+                        Chỉnh sửa thông tin
+                    </Link>
+                </div>
             </div>
         </div>
     );

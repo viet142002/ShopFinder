@@ -15,7 +15,6 @@ export const getProvinces = async () => {
 
 export const getDistricts = async (provinceId) => {
     try {
-        console.log(provinceId);
         const response = await axios.get(
             `${baseURL}api/provinces/${provinceId}`
         );

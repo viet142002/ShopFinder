@@ -42,9 +42,7 @@ const authController = {
     },
     signIn: () => async (req, res) => {
         try {
-            console.log('signIn');
             const { email, password } = req.body;
-            console.log(req.body);
 
             const user = await User.findOne({ email })
                 .populate({

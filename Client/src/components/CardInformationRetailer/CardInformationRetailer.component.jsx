@@ -8,7 +8,6 @@ import { getDistributorByProductIdApi } from '../../api/productApi';
 function CardInformationRetailer() {
     const { productId } = useParams();
     const [data, setData] = useState({});
-    console.log('🚀 ~ CardInformationRetailer ~ data:', data);
 
     useEffect(() => {
         getDistributorByProductIdApi(productId).then((res) => {

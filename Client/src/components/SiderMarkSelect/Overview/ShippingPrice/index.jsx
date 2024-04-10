@@ -5,7 +5,6 @@ import { getPriceShipByRetailerId } from '@api/priceShippingApi';
 
 const ShippingPrice = memo(function ShippingPrice({ retailerId }) {
     const [priceShip, setPriceShip] = useState();
-    console.log('🚀 ~ ShippingPrice ~ priceShip:', priceShip);
 
     useEffect(() => {
         getPriceShipByRetailerId(retailerId).then((res) => {

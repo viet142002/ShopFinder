@@ -18,7 +18,7 @@ const addressController = {
     async delete(id) {
         try {
             const address = await Address.findByIdAndDelete(id);
-            return address;
+            return;
         } catch (error) {
             throw error;
         }

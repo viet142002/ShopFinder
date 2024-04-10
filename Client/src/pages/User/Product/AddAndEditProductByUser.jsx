@@ -54,9 +54,6 @@ function AddAndEditProductByUser() {
             newImages,
             deleteImages
         );
-        formData.forEach((value, key) => {
-            console.log(key, value);
-        });
         await handleFetch(() => createProductByUserApi(formData));
     };
 

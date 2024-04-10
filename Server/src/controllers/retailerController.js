@@ -110,6 +110,90 @@ const retailerController = {
         }
     },
 
+    update: async (req, res) => {
+        try {
+            const {
+                location,
+                name,
+                phone,
+                type,
+                description,
+                address,
+                deleteImages,
+            } = req.body;
+
+            const images = req.files;
+
+            if (
+                [location, name, phone, type, description, address].includes(
+                    undefined
+                )
+            ) {
+                return res.status(400).json({
+                    message: 'Missing required fields',
+                });
+            }
+
+            const retailer = await Retailer.findOne({
+                owner: req.user._id,
+            })
+                .populate('images')
+                .populate({
+                    path: 'location',
+                    populate: {
+                        path: 'address',
+                    },
+                });
+
+            if (!retailer) {
+                return res.status(400).json({
+                    message: 'Cant find retailer',
+                });
+            }
+            if (deleteImages) {
+                let needRemoveIds = [];
+                if (typeof deleteImages[0] === 'string') {
+                    needRemoveIds = deleteImages;
+                } else {
+                    needRemoveIds = deleteImages.map(image => image._id);
+                }
+                await imageController.deleteImages(deleteImages);
+            }
+            if (images) {
+                const newImages = await imageController.createImage(images);
+                retailer.images = [...retailer.images, ...newImages];
+            }
+            if (name) {
+                retailer.name = name;
+            }
+            if (phone) {
+                retailer.phone = phone;
+            }
+            if (
+                address.province !== retailer.location.address.province ||
+                address.district !== retailer.location.address.district ||
+                address.ward !== retailer.location.address.ward ||
+                address.more !== retailer.location.address.more
+            ) {
+                const newAddress = await addressController.create(address);
+                await addressController.delete(retailer.location.address._id);
+                retailer.location.address = newAddress;
+            }
+
+            if (type) {
+                retailer.type = type;
+            }
+
+            if (description) {
+                retailer.description = description;
+            }
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message,
+            });
+        }
+    },
+
     infoMyRetailer: async (req, res) => {
         try {
             const retailer = await Retailer.findOne({
@@ -179,7 +263,6 @@ const retailerController = {
                     message: 'Cant find requests',
                 });
             }
-            console.log(requests);
             return res.status(200).json({
                 requests,
                 message: 'Get requests successfully',

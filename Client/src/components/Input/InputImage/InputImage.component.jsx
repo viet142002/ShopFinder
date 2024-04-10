@@ -2,7 +2,12 @@ import { Carousel, Image } from 'antd';
 import { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 
-function InputImage({ setNewImages, setDeleteImages, images, ...props }) {
+function InputImage({
+    setNewImages,
+    setDeleteImages = () => {},
+    images,
+    ...props
+}) {
     const [imagePreview, setImagePreview] = useState([]);
     const onChangeImage = (e) => {
         const newImages = Array.from(e.target.files).map((file) => {
@@ -47,7 +52,7 @@ function InputImage({ setNewImages, setDeleteImages, images, ...props }) {
                 type="file"
                 id="images"
                 name="images"
-                className="p-2 border border-gray-300 rounded-md !hidden"
+                className="!hidden rounded-md border border-gray-300 p-2"
                 multiple
                 onChange={(e) => {
                     onChangeImage(e);
@@ -57,14 +62,14 @@ function InputImage({ setNewImages, setDeleteImages, images, ...props }) {
             <div className="space-y-4">
                 <label
                     htmlFor="images"
-                    className="cursor-pointer h-full w-full p-2 text-center border border-gray-300 rounded-md hover:bg-gray-100 transition-colors duration-300"
+                    className="h-full w-full cursor-pointer rounded-md border border-gray-300 p-2 text-center transition-colors duration-300 hover:bg-gray-100"
                 >
                     Thêm hình ảnh
                 </label>
                 {imagePreview.length === 0 && (
                     <label
                         htmlFor="images"
-                        className="h-64 bg-gray-200 rounded-md border-dashed border-4 border-gray-300 flex items-center justify-center cursor-pointer hover:bg-gray-100 transition-colors duration-300"
+                        className="flex h-64 cursor-pointer items-center justify-center rounded-md border-4 border-dashed border-gray-300 bg-gray-200 transition-colors duration-300 hover:bg-gray-100"
                     >
                         Chưa có hình ảnh
                     </label>
@@ -73,7 +78,7 @@ function InputImage({ setNewImages, setDeleteImages, images, ...props }) {
                     {imagePreview.map((image, index) => (
                         <div
                             key={index}
-                            className="relative bg-gray-300 !flex justify-center"
+                            className="relative !flex justify-center bg-gray-300"
                         >
                             <Image
                                 className="!h-64 object-cover"
@@ -82,7 +87,7 @@ function InputImage({ setNewImages, setDeleteImages, images, ...props }) {
                             />
                             <button
                                 type="button"
-                                className="absolute top-2 right-2 bg-white p-1 rounded-full"
+                                className="absolute right-2 top-2 rounded-full bg-white p-1"
                                 onClick={() => handleRemoveImage(image, index)}
                             >
                                 <FaTimes />

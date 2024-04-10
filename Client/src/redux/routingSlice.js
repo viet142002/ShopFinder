@@ -25,7 +25,6 @@ const routingSlice = createSlice({
             state.routes = action.payload;
         },
         setMarkSelect: (state, action) => {
-            console.log('setMarkSelect', action.payload);
             state.markSelected = action.payload.markSelected;
             state.info = action.payload.info;
         },
@@ -57,7 +56,6 @@ export const setFirstLocation = () => (dispatch) => {
             navigator.permissions
                 .query({ name: 'geolocation' })
                 .then((permissionStatus) => {
-                    console.log(permissionStatus.state);
                     if (permissionStatus.state === 'granted') {
                         getFirstCurrent();
                     } else if (permissionStatus.state === 'prompt') {
@@ -100,7 +98,7 @@ export const setFirstLocation = () => (dispatch) => {
                             getFirstCurrent();
                         }
                     },
-                    (error) => console.log(error)
+                    (error) => console.error(error)
                 );
             }
         };

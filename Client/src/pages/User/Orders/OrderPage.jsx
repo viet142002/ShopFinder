@@ -10,7 +10,6 @@ import FilterOrder from '@components/Order/FilterOrder/FilterOrder.component';
 
 function OrderPage() {
     const [orders, setOrders] = useState([]);
-    console.log('🚀 ~ OrderPage ~ orders:', orders);
     const [isLoading, setIsLoading] = useState(false);
     const [searchParams] = useSearchParams();
     const user = useSelector((state) => state.user.data);

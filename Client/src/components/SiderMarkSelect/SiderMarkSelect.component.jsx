@@ -13,7 +13,6 @@ import 'react-perfect-scrollbar/dist/css/styles.css';
 function SiderMarkSelect({ markSelected }) {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isMobile, setIsMobile] = useState(false);
-    console.log('🚀 ~ SiderMarkSelect ~ isMobile:', isMobile);
     const info = useSelector((state) => state.routing.info);
 
     useEffect(() => {

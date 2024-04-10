@@ -26,7 +26,6 @@ const userController = {
             if (firstname) user.firstname = firstname.trim();
             if (lastname) user.lastname = lastname.trim();
             if (address) {
-                console.log('vao address');
                 const newAddress = await addressController.create(
                     JSON.parse(address)
                 );
@@ -34,7 +33,6 @@ const userController = {
             }
             if (phone) user.phone = phone;
             if (avatar) {
-                console.log(user.avatar);
                 if (user.avatar) {
                     await imageController.delete(user.avatar._id);
                 }
