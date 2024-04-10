@@ -17,9 +17,6 @@ const retailerController = {
                 description,
                 mode,
                 address,
-                price,
-                to,
-                from,
                 email: retailerEmail,
             } = req.body;
             const { email } = req.user;
@@ -34,9 +31,6 @@ const retailerController = {
                     description,
                     mode,
                     address,
-                    price,
-                    to,
-                    from,
                     retailerEmail,
                 ].includes(undefined)
             ) {
@@ -74,17 +68,9 @@ const retailerController = {
                 type,
                 mode,
                 description,
-                retailerEmail,
+                email: retailerEmail,
                 images: newImages || [],
             });
-
-            const newPriceShipping = await priceShippingController.create({
-                retailer: newRetailer._id,
-                price,
-                to,
-                from,
-            });
-            newRetailer.priceShipping = newPriceShipping._id;
 
             const { lat, lng } = JSON.parse(location);
             const newLocation = await locationController.create({
@@ -182,9 +168,9 @@ const retailerController = {
                 address.ward !== retailer.location.address.ward ||
                 address.more !== retailer.location.address.more
             ) {
-                const newAddress = await addressController.create(address);
-                await addressController.delete(retailer.location.address._id);
-                retailer.location.address = newAddress;
+                await addressController.update(retailer.location.address._id, {
+                    ...address,
+                });
             }
 
             if (description) {
