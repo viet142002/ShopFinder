@@ -21,13 +21,13 @@ function InfoRetailerProfile({ retailer }) {
                     />
                     <h3>{retailer.name}</h3>
                 </div>
-                <p>
+                <div>
                     <span>Địa chỉ: </span>
                     <RenderAddress
                         address={retailer?.location?.address}
                         className="inline"
                     />
-                </p>
+                </div>
                 <p>
                     <span>Email: </span>
                     <span>{retailer.email}</span>

@@ -58,13 +58,13 @@ function OrderDetailItem({ order, children }) {
                             </span>
                         </p>
 
-                        <p>
+                        <div>
                             <span>Địa chỉ: </span>
                             <RenderAddress
                                 address={order.shippingAddress}
                                 className="inline text-lg font-[400]"
                             />
-                        </p>
+                        </div>
 
                         <p>
                             <span>Ghi chú: </span>
