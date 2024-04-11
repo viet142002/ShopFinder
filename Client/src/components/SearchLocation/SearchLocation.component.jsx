@@ -1,4 +1,4 @@
-import { Input, Space, Form, Select } from 'antd';
+import { Input, Space, Form, Select, InputNumber } from 'antd';
 
 import { typeLocations } from '../../utils/typeConstraint.js';
 import { useSearchParams } from 'react-router-dom';
@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 
 function SearchLocation() {
     const [form] = Form.useForm();
-    // const dispatch = useDispatch();
     const [searchParams, setSearchParams] = useSearchParams({
         name: '',
         type: 'all',
@@ -53,22 +52,23 @@ function SearchLocation() {
                     />
                 </Form.Item>
                 <Form.Item name="radius">
-                    <Input
-                        type="number"
+                    <InputNumber
+                        controls={false}
                         placeholder="Bán kính"
-                        className="w-[90px]"
+                        className="w-[80px]"
+                        min={1}
                         suffix="km"
-                        onChange={(e) => {
+                        onChange={(value) => {
+                            if (value < 1) value = 1;
                             setSearchParams(
                                 (prev) => {
-                                    prev.set('radius', e.target.value);
+                                    prev.set('radius', value);
                                     return prev;
                                 },
                                 {
                                     replace: true
                                 }
                             );
-                            // dispatch(setValues({ radius: e.target.value }));
                         }}
                     />
                 </Form.Item>
