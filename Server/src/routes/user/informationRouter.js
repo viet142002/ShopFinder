@@ -10,5 +10,12 @@ router.post(
     authorization,
     InformationController.create
 );
+router.put(
+    '/update-store/:id',
+    upload.array('images', 10),
+    authorization,
+    InformationController.update
+);
+router.get('/store/:id', InformationController.get);
 
 module.exports = router;

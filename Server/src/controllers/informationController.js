@@ -11,6 +11,7 @@ const InformationController = {
                 req.body;
             const images = req.files;
             const user = req.user._id;
+            console.log('🚀 ~ create ~ user:', req.user);
 
             if (
                 ['name', 'location', 'address', 'type', 'description'].some(
@@ -20,6 +21,18 @@ const InformationController = {
                 return res
                     .status(400)
                     .json({ message: 'Missing required fields' });
+            }
+
+            const existInfo = await Information.findOne({ name });
+
+            if (existInfo) {
+                console.log(images);
+                images.forEach(image => {
+                    imageController.deleteLocalImage(image.filename);
+                });
+                return res.status(400).json({
+                    message: 'Store name already exists',
+                });
             }
 
             if (images.length === 0) {
@@ -64,14 +77,17 @@ const InformationController = {
         }
     },
 
-    async update(req, res) {
+    async get(req, res) {
         try {
             const { id } = req.params;
-            const { name, location, address, type, phone, description } =
-                req.body;
-            const images = req.files;
-
-            const information = await Information.findById(id);
+            const information = await Information.findById(id)
+                .populate({
+                    path: 'location',
+                    populate: {
+                        path: 'address',
+                    },
+                })
+                .populate('images');
 
             if (!information) {
                 return res
@@ -79,38 +95,92 @@ const InformationController = {
                     .json({ message: 'Information not found' });
             }
 
-            if (images.length > 0) {
-                const newImages = await imageController.createImage(images);
-                await imageController.deleteImage(information.images);
-                information.images = newImages;
+            res.status(200).json(information);
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+
+    async update(req, res) {
+        try {
+            const { id } = req.params;
+            const userId = req.user._id;
+            const {
+                name,
+                location,
+                address,
+                phone,
+                email,
+                description,
+                deleteImages,
+            } = req.body;
+            const images = req.files;
+
+            const information = await Information.findById(id).populate({
+                path: 'location',
+                populate: {
+                    path: 'address',
+                },
+            });
+
+            if (!information) {
+                return res
+                    .status(404)
+                    .json({ message: 'Information not found' });
             }
 
-            if (address) {
-                const newAddress = await addressController.create(
-                    JSON.parse(address)
-                );
-                await addressController.delete(information.address);
-                information.address = newAddress._id;
+            if (information.user.toString() !== userId.toString()) {
+                return res.status(403).json({ message: 'Permission denied' });
             }
 
-            if (location) {
-                const { lat, lng } = JSON.parse(location);
-                const newLocation = await locationController.update(
-                    information.location,
+            if (
+                address.province !== information.location.address.province ||
+                address.district !== information.location.address.district ||
+                address.ward !== information.location.address.ward ||
+                address.more !== information.location.address.more
+            ) {
+                await addressController.update(
+                    information.location.address._id,
                     {
-                        lat,
-                        lng,
+                        ...address,
                     }
                 );
-                information.location = newLocation._id;
+            }
+
+            if (deleteImages) {
+                let needRemoveIds = [];
+                if (typeof deleteImages[0] === 'string') {
+                    needRemoveIds = deleteImages;
+                } else {
+                    needRemoveIds = deleteImages.map(image => image._id);
+                }
+                await imageController.deleteImages(deleteImages);
+                information.images = information.images.filter(
+                    image => !needRemoveIds.includes(image._id.toString())
+                );
+            }
+            if (images) {
+                const newImages = await imageController.createImage(images);
+                information.images = [...information.images, ...newImages];
+            }
+
+            const { lat, lng } = location;
+            if (
+                lat !== information.location.loc.coordinates[1] ||
+                lng !== information.location.loc.coordinates[0]
+            ) {
+                await locationController.update(information.location._id, {
+                    lat,
+                    lng,
+                });
             }
 
             if (name) {
                 information.name = name;
             }
 
-            if (type) {
-                information.type = type;
+            if (email) {
+                information.email = email;
             }
 
             if (phone) {
@@ -125,7 +195,7 @@ const InformationController = {
 
             res.status(200).json({
                 information,
-                message: 'Information updated successfully',
+                message: 'Update retailer successfully',
             });
         } catch (error) {
             res.status(500).json({ message: error.message });

@@ -1,16 +1,20 @@
 import { Form, Input, Button, Col, Row, Layout } from 'antd';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useLocation, useParams } from 'react-router-dom';
 
 import { handleFetch } from '@utils/expression';
-import { updateRetailerApi } from '@api/retailerApi';
+import { updateRetailerApi, getInfoMyRetailerApi } from '@api/retailerApi';
+import { updateStore, getStore } from '@api/communityApi';
+
 import { InputLocation, InputImage, InputAddress } from '@components/Input';
 import EditorFormat from '@components/EditorFormat/EditorFormat';
 
-function EditRetailer() {
+function EditStore() {
+    const { id } = useParams();
+    const { state } = useLocation();
     const [newImages, setNewImages] = useState([]);
     const [deleteImages, setDeleteImages] = useState([]);
-    const retailerData = useSelector((state) => state.retailer.data);
+    const [data, setData] = useState({});
 
     const [form] = Form.useForm();
 
@@ -24,23 +28,34 @@ function EditRetailer() {
     };
 
     const onFinish = async (values) => {
-        await handleFetch(() =>
-            updateRetailerApi({
-                ...values,
-                id: retailerData._id,
-                newImages: newImages,
-                deleteImages: deleteImages
-            })
-        );
+        state?.type === 'Information'
+            ? await handleFetch(() =>
+                  updateStore(id, {
+                      ...values,
+                      id: data._id,
+                      images: newImages,
+                      deleteImages: deleteImages
+                  })
+              )
+            : await handleFetch(() =>
+                  updateRetailerApi({
+                      ...values,
+                      id: data._id,
+                      images: newImages,
+                      deleteImages: deleteImages
+                  })
+              );
     };
 
     useEffect(() => {
-        if (Object.keys(retailerData) === 0) return;
-        const { name, phone, description, location } = retailerData;
+        if (Object.keys(data) === 0) return;
+        const { name, phone, description, location, email } = data;
+
         form.setFieldsValue({
-            name: name,
-            phone: phone,
-            description: description,
+            name,
+            phone,
+            email,
+            description,
             location: {
                 lat: location?.loc?.coordinates[1],
                 lng: location?.loc?.coordinates[0]
@@ -52,7 +67,18 @@ function EditRetailer() {
                 more: location?.address?.more
             }
         });
-    }, [retailerData, form]);
+    }, [data, form]);
+
+    useEffect(() => {
+        // fetch data
+        state?.type === 'Information'
+            ? getStore(id).then((res) => {
+                  setData(res.data);
+              })
+            : getInfoMyRetailerApi().then((res) => {
+                  setData(res.data.retailer);
+              });
+    }, [id, state?.type]);
 
     return (
         <Layout className="md:px-4 md:py-2">
@@ -91,7 +117,7 @@ function EditRetailer() {
                                     name="phone"
                                     id="phone"
                                     rules={[
-                                        {
+                                        state?.type !== 'Information' && {
                                             required: true,
                                             message:
                                                 'Vui lòng nhập số điện thoại cửa hàng'
@@ -107,7 +133,7 @@ function EditRetailer() {
                                     name="email"
                                     id="email"
                                     rules={[
-                                        {
+                                        state?.type !== 'Information' && {
                                             required: true,
                                             message:
                                                 'Vui lòng nhập email cửa hàng'
@@ -146,7 +172,7 @@ function EditRetailer() {
                                 <InputImage
                                     setDeleteImages={setDeleteImages}
                                     setNewImages={setNewImages}
-                                    images={retailerData.images}
+                                    images={data.images}
                                 />
                                 <Form.Item className="!mb-0 flex justify-center">
                                     <Button
@@ -166,4 +192,4 @@ function EditRetailer() {
     );
 }
 
-export default EditRetailer;
+export default EditStore;

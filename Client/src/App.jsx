@@ -25,6 +25,7 @@ import OrderPage from '@pages/User/Orders/OrderPage';
 import OrderDetailPage from '@pages/User/Orders/OrderDetailPage';
 import CreateStore from './pages/CreateStore/CreateStore';
 import AddAndEditProductByUser from '@pages/User/Product/AddAndEditProductByUser';
+import EditStore from '@pages/EditStore/EditStore';
 // #endregion
 // #region admin page
 import RequestRetailerPage from './pages/Admin/RequestRetailerPage';
@@ -33,7 +34,6 @@ import ReportPage from './pages/Admin/ReportPage';
 // #endregion
 // #region retailer page
 import DashboardRetailer from './pages/Retailer/DashboardRetailer';
-import EditRetailerPage from './pages/Retailer/EditRetailer';
 import WarehouseManager from './pages/Retailer/WarehouseManager/WarehouseManager';
 import ManageOrder from './pages/Retailer/ManageOrder';
 import ManageOrderDetail from './pages/Retailer/ManageOrderDetail';
@@ -78,6 +78,14 @@ function App() {
                         element={
                             <ProtectRoute>
                                 <CartPage />
+                            </ProtectRoute>
+                        }
+                    />
+                    <Route
+                        path="/edit-store/:id"
+                        element={
+                            <ProtectRoute>
+                                <EditStore />
                             </ProtectRoute>
                         }
                     />
@@ -229,10 +237,7 @@ function App() {
                         path="import-product/:idImport"
                         element={<ImportWarehouse />}
                     />
-                    <Route
-                        path="edit-retailer"
-                        element={<EditRetailerPage />}
-                    />
+                    <Route path="edit-retailer" element={<EditStore />} />
                 </Route>
             </Routes>
         </BrowserRouter>

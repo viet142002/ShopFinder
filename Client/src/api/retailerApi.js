@@ -13,9 +13,9 @@ export const getInfoMyRetailerApi = async () => {
     return api.get('/retailer/infoMyRetailer');
 };
 
-export const getRetailerByIdApi = async (id) => {
-    return api.get(`/retailer/${id}`);
-};
+// export const getRetailerByIdApi = async (id) => {
+//     return api.get(`/retailer/${id}`);
+// };
 
 export const registerRetailerApi = async (values) => {
     return api.post('/retailer/register', values, {

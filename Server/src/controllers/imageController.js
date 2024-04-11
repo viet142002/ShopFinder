@@ -68,6 +68,14 @@ const imageController = {
         }
         return;
     },
+
+    deleteLocalImage: async name => {
+        fs.unlink(`public/images/${name}`, err => {
+            if (err) {
+                throw err;
+            }
+        });
+    },
 };
 
 const deleteLocalImage = async name => {

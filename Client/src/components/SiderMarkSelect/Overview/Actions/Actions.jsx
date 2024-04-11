@@ -18,6 +18,7 @@ import {
 import ModalReport from '../../../Modal/ModalReport/ModalReport.component';
 
 function Actions({ info }) {
+    console.log('🚀 ~ Actions ~ info:', info);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [openReport, setOpenReport] = useState(false);
@@ -30,6 +31,21 @@ function Actions({ info }) {
 
     const handleShowRouting = () => {
         dispatch(setShowRouting());
+    };
+
+    const handleEdit = () => {
+        if (info.informationType === 'informationType') {
+            return navigate(`/edit-store/${info._id}`, {
+                state: {
+                    type: info.informationType
+                }
+            });
+        }
+        navigate(`/edit-store/${info._id}`, {
+            state: {
+                type: info.informationType
+            }
+        });
     };
 
     return (
@@ -64,6 +80,7 @@ function Actions({ info }) {
                     <Button
                         size="large"
                         shape="circle"
+                        onClick={handleEdit}
                         icon={<EditOutlined />}
                     />
                 ) : (
