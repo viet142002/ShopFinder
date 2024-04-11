@@ -17,6 +17,9 @@ export default {
             },
             width: {
                 sideBar: '250px'
+            },
+            boxShadow: {
+                card: '0 20px 27px rgb(0 0 0/5%)'
             }
         }
     },

@@ -74,6 +74,7 @@ function SearchLocation() {
                 </Form.Item>
                 <Form.Item name="type">
                     <Select
+                        placeholder="Loại cửa hàng"
                         style={{ width: 150 }}
                         onChange={(value) => {
                             setSearchParams(

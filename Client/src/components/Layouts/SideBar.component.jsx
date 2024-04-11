@@ -200,6 +200,7 @@ function SideBar({ ...props }) {
                                   'Hồ sơ',
                                   'profiles',
                                   <Avatar
+                                      alt="avatar"
                                       className="flex-shrink-0 -translate-x-[calc(50%-10px)]"
                                       size={35}
                                       src={

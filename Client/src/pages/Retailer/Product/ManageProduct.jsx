@@ -32,7 +32,7 @@ const columns = [
         render: (images) => {
             return (
                 <img
-                    className="rounded-md object-cover"
+                    className="h-[110px] w-[150px] rounded-md object-cover"
                     src={import.meta.env.VITE_APP_API_URL + images[0].path}
                     alt="product"
                 />
@@ -40,17 +40,12 @@ const columns = [
         }
     },
     {
-        title: 'Mã sản phẩm',
-        dataIndex: '_id',
-        key: '_id',
-        render: (id) => {
-            return <Link to={`./detail/${id}`}>{id}</Link>;
-        }
-    },
-    {
         title: 'Tên sản phẩm',
         dataIndex: 'name',
-        key: 'name'
+        key: 'name',
+        render: (_, record) => {
+            return <Link to={`./detail/${record._id}`}>{record.name}</Link>;
+        }
     },
     {
         title: 'Giá',

@@ -117,7 +117,17 @@ function CartItem({ item, setCart, setChecked }) {
                             <div className="col-span-4 flex h-full md:col-span-5">
                                 <div className="flex flex-col justify-between">
                                     <h3 className="text-lg font-medium">
-                                        {prod.product.name}
+                                        {prod.product.name}{' '}
+                                        {prod.product.status === 'sold-out' && (
+                                            <span className="text-red-500">
+                                                (Hết hàng)
+                                            </span>
+                                        )}
+                                        {prod.product.status === 'stop' && (
+                                            <span className="text-red-500">
+                                                (Ngừng kinh doanh)
+                                            </span>
+                                        )}
                                     </h3>
                                     <div className="items-center md:flex md:gap-2">
                                         <InputQuantity

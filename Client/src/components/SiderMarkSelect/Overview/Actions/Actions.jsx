@@ -18,7 +18,6 @@ import {
 import ModalReport from '../../../Modal/ModalReport/ModalReport.component';
 
 function Actions({ info }) {
-    console.log('🚀 ~ Actions ~ info:', info);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [openReport, setOpenReport] = useState(false);
@@ -52,6 +51,7 @@ function Actions({ info }) {
         <>
             <div className="mb-[16px] flex justify-between px-siderInfo">
                 <Button
+                    aria-label="showRouting"
                     type="primary"
                     className={clsx(
                         'text-white',
@@ -64,6 +64,7 @@ function Actions({ info }) {
                 />
 
                 <Button
+                    aria-label="store"
                     size="large"
                     shape="circle"
                     icon={<MdOutlineShoppingBag size={20} />}
@@ -78,6 +79,7 @@ function Actions({ info }) {
 
                 {_id === info.user || _id === info.owner ? (
                     <Button
+                        aria-label="edit"
                         size="large"
                         shape="circle"
                         onClick={handleEdit}
@@ -85,6 +87,7 @@ function Actions({ info }) {
                     />
                 ) : (
                     <Button
+                        aria-label="report"
                         size="large"
                         shape="circle"
                         icon={<WarningOutlined />}
@@ -93,6 +96,7 @@ function Actions({ info }) {
                 )}
 
                 <Button
+                    aria-label="close"
                     size="large"
                     shape="circle"
                     icon={<CloseOutlined />}
