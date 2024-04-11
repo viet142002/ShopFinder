@@ -96,6 +96,8 @@ const translateError = (msg) => {
             return 'Sản phẩm không tồn tại';
         case 'Not enough product':
             return 'Không đủ sản phẩm';
+        case 'Only support online payment with 1 store':
+            return 'Chỉ hỗ trợ thanh toán online với 1 cửa hàng';
         default:
             return 'Có lỗi xảy ra';
     }
@@ -114,10 +116,12 @@ const translateError = (msg) => {
 const handleFetch = async (callback) => {
     try {
         const res = await callback();
+
         if (res?.data?.message) success(translateSuccess(res.data.message));
 
         return res.data;
     } catch (err) {
+        console.log(err?.response);
         if (err?.response?.data?.message)
             error(translateError(err.response.data.message));
         return null;

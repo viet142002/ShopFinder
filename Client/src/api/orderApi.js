@@ -30,6 +30,14 @@ export const createOrder = async (data) => {
     return api.post('/orders', data);
 };
 
+export const createOrderWithVNPay = async (data) => {
+    return api.post('/orders/vnpay', data);
+};
+
+export const addDetailPayment = async (orderId, data) => {
+    return api.post(`/orders/add-detail-payment/${orderId}`, data);
+};
+
 export const getOrdersByDistributor = async ({
     page = 1,
     limit = 10,

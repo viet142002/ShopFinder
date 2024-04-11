@@ -25,6 +25,11 @@ const orderSchema = new mongoose.Schema(
             default: 'COD',
             required: true,
         },
+        // detailPayment is the payment detail of VNPay
+        detailPayment: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'DetailPayment',
+        },
         itemsPrice: { type: Number, required: true },
         shippingPrice: { type: Number, required: true },
         // total price is the sum of itemsPrice, shippingPrice, and taxPrice
@@ -41,7 +46,13 @@ const orderSchema = new mongoose.Schema(
         },
         status: {
             type: String,
-            enum: ['pending', 'shipping', 'success', 'cancelled'],
+            enum: [
+                'pendingPayment',
+                'pending',
+                'shipping',
+                'success',
+                'cancelled',
+            ],
             default: 'pending',
             required: true,
         },

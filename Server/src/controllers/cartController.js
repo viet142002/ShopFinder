@@ -122,6 +122,14 @@ const cartController = {
             return res.status(500).json({ message: err.message });
         }
     },
+
+    removeFormCartByIds: async (user, productIds) => {
+        const cart = await Cart.findOne({ user });
+        cart.items = cart.items.filter(
+            item => !productIds.includes(item.product.toString())
+        );
+        await cart.save();
+    },
 };
 
 module.exports = cartController;

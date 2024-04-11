@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Form } from 'antd';
+import { Form, message } from 'antd';
 
 import FormCheckout from '@components/Checkout/FormCheckout.component';
 import CardTotal from '@components/Checkout/CardTotal.component';
 
 import { handleFetch } from '@utils/expression';
-import { createOrder } from '@api/orderApi';
+import { createOrder, createOrderWithVNPay } from '@api/orderApi';
 import socket from '../../../socket';
 
 function CheckoutPage() {
@@ -16,6 +16,7 @@ function CheckoutPage() {
     const [priceSipping, setPriceShipping] = useState([]);
     const [location, setLocation] = useState({ lat: 0, lng: 0 });
     const { state } = useLocation();
+    console.log('🚀 ~ CheckoutPage ~ state:', state);
     const user = useSelector((state) => state.user.data);
 
     const onFinish = async (values) => {
@@ -38,6 +39,21 @@ function CheckoutPage() {
                 ).price
             };
         });
+
+        if (values.paymentMethod === 'VNPay') {
+            if (items.length > 1) {
+                message.error('Chỉ hỗ trợ thanh toán online với 1 cửa hàng');
+                return;
+            }
+            createOrderWithVNPay({
+                ...values,
+                orderItems: items,
+                amount: state.totalPrice + priceSipping[0].price
+            }).then((res) => {
+                window.location.href = res.data.vnpUrl;
+            });
+            return;
+        }
 
         const data = await handleFetch(() =>
             createOrder({

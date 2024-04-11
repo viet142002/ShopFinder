@@ -11,6 +11,8 @@ import { setFirstLocation } from './redux/routingSlice';
 import socket from './socket';
 // #endregion
 // #region user page
+import VNPayReturn from '@pages/User/Checkout/VNPayReturn';
+import PaymentFail from '@pages/User/Checkout/PaymentFail';
 import Profile from './pages/user/Profile/ProfilePage';
 import Login from './pages/Auth/Login/LoginPage';
 import Register from './pages/Auth/Register/RegisterPage';
@@ -102,6 +104,22 @@ function App() {
                         element={
                             <ProtectRoute>
                                 <OrderDetailPage />
+                            </ProtectRoute>
+                        }
+                    />
+                    <Route
+                        path="/order/vnp-return"
+                        element={
+                            <ProtectRoute>
+                                <VNPayReturn />
+                            </ProtectRoute>
+                        }
+                    />
+                    <Route
+                        path="/order/payment-fail"
+                        element={
+                            <ProtectRoute>
+                                <PaymentFail />
                             </ProtectRoute>
                         }
                     />

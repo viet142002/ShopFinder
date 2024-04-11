@@ -14,9 +14,9 @@ const orderDetailController = {
             },
         ]
     */
-    create: async (data, user) => {
+    create: async (data, user, isDeleteCart = true) => {
         const cart = await Cart.findOne({
-            user: user._id,
+            user: user?._id || user,
         });
 
         if (!cart) {
@@ -32,18 +32,19 @@ const orderDetailController = {
 
         await newOrderDetail.save();
 
-        cart.items = cart.items.filter(item => {
-            return data.productId !== item.product.toString();
-        });
-
-        await cart.save();
-
         await productController.subtractQuantity([
             {
                 _id: data.productId,
                 quantity: data.quantity,
             },
         ]);
+
+        if (isDeleteCart) {
+            cart.items = cart.items.filter(item => {
+                return data.productId !== item.product.toString();
+            });
+            await cart.save();
+        }
 
         return newOrderDetail;
     },

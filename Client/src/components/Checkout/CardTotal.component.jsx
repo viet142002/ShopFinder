@@ -95,7 +95,12 @@ function CardTotal({ state, location, priceSipping, setPriceShipping }) {
                         <div className="flex justify-between">
                             <p>Tổng cộng</p>
                             <p>
-                                {state?.totalPrice.toLocaleString('vi-VN', {
+                                {(
+                                    priceSipping.reduce(
+                                        (acc, cur) => acc + cur.price,
+                                        0
+                                    ) + state?.totalPrice
+                                ).toLocaleString('vi-VN', {
                                     style: 'currency',
                                     currency: 'VND'
                                 })}

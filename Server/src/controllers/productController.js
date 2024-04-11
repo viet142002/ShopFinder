@@ -543,7 +543,7 @@ const productController = {
                     products[i]?._id || products[i].product
                 );
                 if (product.quantity < products[i].quantity) {
-                    throw new Error('Not enough quantity');
+                    throw new Error('Not enough product');
                 }
 
                 product.quantity -= products[i].quantity;
