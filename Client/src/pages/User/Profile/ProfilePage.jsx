@@ -6,10 +6,11 @@ import { MdCameraAlt } from 'react-icons/md';
 
 import './profileStyle.scss';
 
-import InputAddress from '../../../components/Input/InputAddress/InputAddress.component';
-import { handleFetch } from '../../../utils/expression';
+import InputAddress from '@components/Input/InputAddress/InputAddress.component';
+import RenderAddress from '@components/RenderAddress';
 
-import { updateUser } from '../../../api/userApi';
+import { handleFetch } from '@utils/expression';
+import { updateUser } from '@api/userApi';
 
 const formData = (values) => {
     const data = new FormData();
@@ -172,10 +173,7 @@ function ProfilePage() {
                                     }))
                                 }
                             >
-                                {user?.address?.more}
-                                {user?.address?.more && ','}{' '}
-                                {user?.address?.ward}, {user?.address?.district}
-                                , {user?.address?.province}
+                                <RenderAddress address={user?.address} />
                             </Button>
                         </Tooltip>
                     ) : (

@@ -1,8 +1,9 @@
 import { Avatar, Tag } from 'antd';
 
 import HTMLRenderer from '../HTMLRenderer/HTMLRenderer.component';
+import RenderAddress from '@components/RenderAddress';
 
-import { typeLocations } from '../../utils/typeConstraint';
+import { typeLocations } from '@utils/typeConstraint';
 import { Link } from 'react-router-dom';
 
 function InfoRetailerProfile({ retailer }) {
@@ -22,15 +23,10 @@ function InfoRetailerProfile({ retailer }) {
                 </div>
                 <p>
                     <span>Địa chỉ: </span>
-                    <span>
-                        {retailer.location.address.more +
-                            (retailer.location.address.more && ', ') +
-                            retailer.location.address.ward +
-                            ', ' +
-                            retailer.location.address.district +
-                            ', ' +
-                            retailer.location.address.province}
-                    </span>
+                    <RenderAddress
+                        address={retailer?.location?.address}
+                        className="inline"
+                    />
                 </p>
                 <p>
                     <span>Email: </span>

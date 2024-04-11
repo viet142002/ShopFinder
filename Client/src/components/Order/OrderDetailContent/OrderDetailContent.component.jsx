@@ -1,7 +1,9 @@
 import { Tag } from 'antd';
 
-import { typeOrderStatus } from '@utils/typeConstraint';
 import OrderProductItem from '../OrderProductItem/OrderProductItem.component';
+import RenderAddress from '@components/RenderAddress';
+
+import { typeOrderStatus } from '@utils/typeConstraint';
 import { formatDate } from '@utils/formatDate';
 import { formatPrice } from '@utils/formatPrice';
 
@@ -58,14 +60,10 @@ function OrderDetailItem({ order, children }) {
 
                         <p>
                             <span>Địa chỉ: </span>
-                            <span className="text-lg font-[400]">
-                                {order.shippingAddress.more && (
-                                    <>{order.shippingAddress.more}, </>
-                                )}
-                                {order.shippingAddress.ward},{' '}
-                                {order.shippingAddress.district},{' '}
-                                {order.shippingAddress.province}
-                            </span>
+                            <RenderAddress
+                                address={order.shippingAddress}
+                                className="inline text-lg font-[400]"
+                            />
                         </p>
 
                         <p>
