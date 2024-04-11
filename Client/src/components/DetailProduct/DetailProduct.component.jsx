@@ -102,6 +102,16 @@ function DetailProduct() {
                                 <span className="pl-2">{product.quantity}</span>
                             </h1>
                         )}
+                        {product.status === 'sold-out' && (
+                            <h2 className="text-red-500">
+                                Sản phẩm đã hết hàng
+                            </h2>
+                        )}
+                        {product.status === 'stop' && (
+                            <h2 className="text-red-500">
+                                Sản phẩm ngừng kinh doanh
+                            </h2>
+                        )}
                         <div className="rounded-md bg-gray-200 p-2">
                             <HTMLRenderer
                                 className="text-wrap"
