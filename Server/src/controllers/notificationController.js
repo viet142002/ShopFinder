@@ -103,6 +103,6 @@ exports.deleteNotification = async (req, res) => {
     }
 };
 
-exports.findOneAndDelete = async ({ key, value }) => {
-    return await Notification.findOneAndDelete({ [key]: value });
+exports.findOneAndDelete = async ({ ...values }) => {
+    return await Notification.findOneAndDelete({ ...values });
 };

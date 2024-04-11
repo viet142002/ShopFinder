@@ -239,6 +239,7 @@ const rateController = {
 
             const rate = await Rate.findById(id).populate('to from', 'name');
             await notificationController.findOneAndDelete({
+                from: userId,
                 target: rate._id,
             });
             // only like or dislike
