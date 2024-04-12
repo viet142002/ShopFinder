@@ -20,7 +20,7 @@ function NotificationPage() {
 
     return (
         <>
-            <div className="mx-auto w-[max(200px,50%)] md:p-6">
+            <div className="mx-auto w-[95%] md:w-[60%] md:p-6">
                 <h1 className="text-center text-xl font-bold">Thông báo</h1>
 
                 <div className="mt-4 space-y-2">

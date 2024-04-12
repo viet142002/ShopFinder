@@ -1,14 +1,4 @@
-import {
-    Form,
-    Input,
-    Button,
-    Col,
-    Row,
-    Select,
-    Layout,
-    Radio,
-    Tooltip
-} from 'antd';
+import { Form, Input, Button, Col, Row, Select, Radio, Tooltip } from 'antd';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { QuestionCircleOutlined } from '@ant-design/icons';
@@ -77,23 +67,23 @@ function CreateStorePage({ isRegisterRetailer }) {
     };
 
     return (
-        <Layout className="md:px-4 md:py-2">
-            <Layout.Header className="flex items-center justify-center bg-white">
+        <section>
+            <div className="my-4 flex items-center justify-center md:my-8">
                 <h1 className="text-xl font-bold">
                     {isRegisterRetailer
                         ? 'Đăng ký bán hàng'
                         : 'Chia sẻ cửa hàng'}
                 </h1>
-            </Layout.Header>
-            <Layout.Content className="mt-10">
+            </div>
+            <div>
                 <Form variant="filled" form={form} onFinish={onFinish}>
-                    <Row gutter={{ md: 20 }} justify="center">
+                    <Row gutter={{ md: 22 }} justify="center" className="!mx-0">
                         <Col
                             md={10}
-                            span={20}
-                            className="rounded-md p-2 md:bg-white"
+                            span={22}
+                            className="mb-4 rounded-md md:bg-white md:shadow-card"
                         >
-                            <div className="flex flex-col gap-2">
+                            <div className="mt-2 flex flex-col gap-2">
                                 <label htmlFor="name">Tên cửa hàng</label>
                                 <Form.Item
                                     name="name"
@@ -247,8 +237,8 @@ function CreateStorePage({ isRegisterRetailer }) {
                                 <InputAddress form={form} />
                             </div>
                         </Col>
-                        <Col md={8} span={20}>
-                            <div className="flex flex-col gap-2 rounded-md md:bg-white md:p-2">
+                        <Col md={8} span={22}>
+                            <div className="flex flex-col gap-2 rounded-md md:bg-white md:px-3 md:py-2 md:shadow-card">
                                 <label htmlFor="image">Hình ảnh</label>
                                 <InputImage
                                     setDeleteImages={setDeleteImages}
@@ -267,8 +257,8 @@ function CreateStorePage({ isRegisterRetailer }) {
                         </Col>
                     </Row>
                 </Form>
-            </Layout.Content>
-        </Layout>
+            </div>
+        </section>
     );
 }
 
