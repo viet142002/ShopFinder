@@ -8,9 +8,9 @@ import { Link } from 'react-router-dom';
 
 function InfoRetailerProfile({ retailer }) {
     return (
-        <div className="bg-white p-2">
+        <div className="p-2 md:bg-white">
             <h2 className="text-lg font-medium">Thông tin cửa hàng</h2>
-            <div className="ml-4 mt-2 space-y-2">
+            <div className="mt-2 space-y-2 md:ml-4">
                 <div className="flex items-center gap-2">
                     <Avatar
                         size={60}
@@ -19,7 +19,10 @@ function InfoRetailerProfile({ retailer }) {
                             retailer.logo.path
                         }
                     />
-                    <h3>{retailer.name}</h3>
+                    <div>
+                        <h3>{retailer.name}</h3>
+                        <p>{retailer.createdAt}</p>
+                    </div>
                 </div>
                 <div>
                     <span>Địa chỉ: </span>
@@ -58,7 +61,7 @@ function InfoRetailerProfile({ retailer }) {
                 </p>
                 <p>Mô tả cửa hàng:</p>
                 <HTMLRenderer
-                    className="rounded-md bg-gray-100 p-2"
+                    className="rounded-md bg-white p-2 md:bg-gray-100"
                     htmlString={retailer.description}
                 />
 

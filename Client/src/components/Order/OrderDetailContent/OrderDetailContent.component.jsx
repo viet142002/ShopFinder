@@ -9,10 +9,10 @@ import { formatPrice } from '@utils/formatPrice';
 
 function OrderDetailItem({ order, children }) {
     return (
-        <div className="mx-2 mt-10 md:mx-10">
+        <div className="m-4 md:mx-10 md:mt-10">
             <div className="grid gap-4 md:grid-cols-2">
                 <div>
-                    <div className="rounded-lg p-2 shadow-xl">
+                    <div className="rounded-lg bg-white p-2 shadow-card">
                         <h2>{order.distributor.name}</h2>
                         {order.orderItems.map((prod) => (
                             <OrderProductItem
@@ -26,7 +26,7 @@ function OrderDetailItem({ order, children }) {
                     </div>
                 </div>
                 <div>
-                    <div className="rounded-lg p-2 shadow-xl">
+                    <div className="rounded-lg bg-white p-2 shadow-card">
                         <h2 className="mb-2 text-lg font-medium">
                             Thông tin đơn hàng
                         </h2>

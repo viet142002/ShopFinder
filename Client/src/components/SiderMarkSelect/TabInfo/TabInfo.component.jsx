@@ -20,7 +20,10 @@ function TabInfo({ info }) {
             key: 3,
             label: 'Giới thiệu',
             children: (
-                <HTMLRenderer className="mx-10" htmlString={info.description} />
+                <HTMLRenderer
+                    className="md:px-sideBarMark px-4"
+                    htmlString={info.description}
+                />
             )
         }
     ];

@@ -18,7 +18,7 @@ function OrderItem({ order }) {
     };
 
     return (
-        <section className="p-4 shadow-xl">
+        <section className="rounded-lg bg-white p-2 shadow-card md:p-4">
             <div className="mt-4">
                 <Link to={`./${order._id}`}>
                     <div>

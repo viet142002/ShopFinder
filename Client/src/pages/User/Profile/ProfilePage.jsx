@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Form, Input, Space, Layout, Button, Tooltip } from 'antd';
+import { Form, Input, Space, Button, Tooltip } from 'antd';
 
 import { MdCameraAlt } from 'react-icons/md';
 
@@ -57,12 +57,12 @@ function ProfilePage() {
 
     return (
         <>
-            <Layout.Header className="flex items-center justify-center bg-transparent">
+            <div className="mt-2 flex items-center justify-center bg-transparent">
                 <h1 className="text-center text-2xl font-semibold">
                     Hồ sơ cá nhân
                 </h1>
-            </Layout.Header>
-            <section className="profile mx-auto w-[80%] grid-flow-dense grid-cols-4 gap-5 md:mt-10 md:grid">
+            </div>
+            <section className="profile mx-auto w-[90%] grid-flow-dense grid-cols-4 gap-4 md:mt-10 md:grid md:w-[80%]">
                 <div className="order-1 col-span-1">
                     <div className="relative p-4 md:shadow-lg">
                         <div className="group relative mx-auto w-[60%] overflow-hidden rounded-full md:w-full">

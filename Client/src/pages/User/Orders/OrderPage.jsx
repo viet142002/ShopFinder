@@ -32,7 +32,7 @@ function OrderPage() {
             <div className="overflow-auto md:mt-10 md:flex md:justify-center">
                 <FilterOrder />
             </div>
-            <div className="space-y-4 md:mx-10 md:mt-4">
+            <div className="m-4 space-y-4 md:mx-10 md:mt-4">
                 {orders.length === 0 && (
                     <div className="text-center text-xl font-medium">
                         Bạn chưa có đơn hàng nào

@@ -1,10 +1,9 @@
-// import { useSelector, useDispatch } from 'react-redux';
-
-import MyCarousel from '../../components/Carousel/Carousel.component';
 import { useEffect, useState } from 'react';
-import { getInfoMyRetailerApi } from '../../api/retailerApi';
-import InfoRetailerProfile from '../../components/Profile/InfoRetailerProfile.component';
-import PriceShip from '../../components/Profile/PriceShip.component';
+
+import MyCarousel from '@components/Carousel/Carousel.component';
+import { getInfoMyRetailerApi } from '@api/retailerApi';
+import InfoRetailerProfile from '@components/Profile/InfoRetailerProfile.component';
+import PriceShip from '@components/Profile/PriceShip.component';
 
 function ManageRetailerProfile() {
     const [retailer, setRetailer] = useState();
