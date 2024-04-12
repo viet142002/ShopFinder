@@ -51,7 +51,7 @@ function SiderMarkSelect({ markSelected }) {
                 !isMobile
                     ? clsx({
                           'blur-siderInfo fixed top-0 z-[999] h-full w-[400px] bg-white shadow-2xl transition-all  duration-[250ms]': true,
-                          'left-[70px]': !isCollapsed,
+                          'left-[70px]': !isCollapsed && collapsed,
                           'left-[200px]': !collapsed && !isCollapsed,
                           '-left-[330px]': isCollapsed && collapsed,
                           '-left-[200px]': isCollapsed && !collapsed
