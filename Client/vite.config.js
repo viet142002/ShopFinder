@@ -68,7 +68,9 @@ export default defineConfig({
             '@components': '/src/components',
             '@pages': '/src/pages',
             '@api': '/src/api',
-            '@utils': '/src/utils'
+            '@utils': '/src/utils',
+            '@hooks': '/src/hooks',
+            '@redux': '/src/redux'
         }
     }
 });

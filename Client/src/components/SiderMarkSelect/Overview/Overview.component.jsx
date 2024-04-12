@@ -12,7 +12,7 @@ function OverviewInfo({ info }) {
         <>
             <Actions info={info} />
 
-            <div className="overview-info mx-10 space-y-2">
+            <div className="overview-info md:px-sideBarMark space-y-2 px-4">
                 <div className="flex items-center gap-x-2">
                     <MdOutlineLocationOn size={30} className="text-blue-500" />
                     <RenderAddress address={info.address} />
@@ -28,7 +28,7 @@ function OverviewInfo({ info }) {
                 </div>
             </div>
             <Divider className="my-[16px]" />
-            <div className="mx-10">
+            <div className="md:px-sideBarMark px-4">
                 <ShippingPrice retailerId={info._id} />
             </div>
         </>

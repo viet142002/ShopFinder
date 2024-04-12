@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Layout, Menu } from 'antd';
+import { Menu } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -18,8 +18,8 @@ import { getInfoMyRetailerApi } from '../../api/retailerApi';
 import { unsetUser } from '../../redux/userSlice';
 import socket from '../../socket';
 import { notification } from '@utils/notification';
+import SidebarContainer from './SideBarContainer';
 
-const { Sider } = Layout;
 const items = [
     {
         key: 'dashboard',
@@ -133,6 +133,46 @@ function SiderManagerRetailer() {
         }
     };
 
+    const MenuTop = (
+        <Menu
+            mode="inline"
+            defaultSelectedKeys={['dashboard']}
+            selectedKeys={
+                location.pathname === '/retailer'
+                    ? ['dashboard']
+                    : [location.pathname.split('/')[3]]
+            }
+            onClick={(e) => handleClick(e)}
+            items={
+                retailer.mode === 'normal'
+                    ? items
+                    : retailer.mode === 'only-pickup'
+                      ? itemsOnlyPickup
+                      : itemsNotQuantity
+            }
+        />
+    );
+
+    const MenuBottom = (
+        <Menu
+            mode="inline"
+            onClick={(e) => handleClick(e)}
+            selectable={false}
+            items={[
+                {
+                    key: '6',
+                    icon: <MdOutlineHome size={18} />,
+                    label: 'Về trang chủ'
+                },
+                {
+                    key: '7',
+                    icon: <MdOutlineLogout size={18} />,
+                    label: 'Đăng xuất'
+                }
+            ]}
+        />
+    );
+
     useEffect(() => {
         socket.on('order', (data) => {
             notification({
@@ -152,55 +192,7 @@ function SiderManagerRetailer() {
 
     return (
         <>
-            <Sider
-                className="hidden md:block"
-                theme="light"
-                style={{
-                    overflow: 'auto',
-                    height: '100vh',
-                    position: 'fixed',
-                    left: 0,
-                    top: 0,
-                    bottom: 0
-                }}
-            >
-                <div className="flex h-full flex-col justify-between">
-                    <Menu
-                        mode="inline"
-                        defaultSelectedKeys={['dashboard']}
-                        selectedKeys={
-                            location.pathname === '/retailer'
-                                ? ['dashboard']
-                                : [location.pathname.split('/')[3]]
-                        }
-                        onClick={(e) => handleClick(e)}
-                        items={
-                            retailer.mode === 'normal'
-                                ? items
-                                : retailer.mode === 'only-pickup'
-                                  ? itemsOnlyPickup
-                                  : itemsNotQuantity
-                        }
-                    />
-                    <Menu
-                        mode="inline"
-                        onClick={(e) => handleClick(e)}
-                        selectable={false}
-                        items={[
-                            {
-                                key: '6',
-                                icon: <MdOutlineHome size={18} />,
-                                label: 'Về trang chủ'
-                            },
-                            {
-                                key: '7',
-                                icon: <MdOutlineLogout size={18} />,
-                                label: 'Đăng xuất'
-                            }
-                        ]}
-                    />
-                </div>
-            </Sider>
+            <SidebarContainer MenuTop={MenuTop} MenuBottom={MenuBottom} />
         </>
     );
 }

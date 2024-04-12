@@ -5,7 +5,9 @@
             "@components/*": ["components/*"],
             "@utils/*": ["utils/*"],
             "@pages/*": ["pages/*"],
-            "@api/*": ["api/*"]
+            "@api/*": ["api/*"],
+            "@redux/*": ["redux/*"],
+            "@hooks/*": ["hooks/*"]
         }
     },
     "include": ["src"],

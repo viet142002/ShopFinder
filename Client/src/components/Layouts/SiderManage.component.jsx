@@ -1,4 +1,4 @@
-import { Layout, Menu } from 'antd';
+import { Menu } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -10,9 +10,8 @@ import {
 } from 'react-icons/md';
 import { VscGitPullRequestGoToChanges } from 'react-icons/vsc';
 
-import { unsetUser } from '../../redux/userSlice';
-
-const { Sider } = Layout;
+import { unsetUser } from '@redux/userSlice';
+import SidebarContainer from './SideBarContainer';
 
 function SiderManage() {
     const dispatch = useDispatch();
@@ -72,54 +71,45 @@ function SiderManage() {
         }
     ];
 
+    const MenuTop = (
+        <Menu
+            mode="inline"
+            defaultSelectedKeys={['1']}
+            selectedKeys={
+                items.findIndex(
+                    (item) => item.name === location.pathname.split('/')[2]
+                ) +
+                1 +
+                ''
+            }
+            onClick={(e) => handleClick(e)}
+            items={items}
+        />
+    );
+
+    const MenuBottom = (
+        <Menu
+            mode="inline"
+            onClick={(e) => handleClick(e)}
+            selectable={false}
+            items={[
+                {
+                    key: '5',
+                    icon: <UserOutlined />,
+                    label: 'Tài khoản'
+                },
+                {
+                    key: '6',
+                    icon: <MdOutlineLogout size={18} />,
+                    label: 'Đăng xuất'
+                }
+            ]}
+        />
+    );
+
     return (
         <>
-            <Sider
-                theme="light"
-                style={{
-                    overflow: 'auto',
-                    height: '100vh',
-                    position: 'fixed',
-                    left: 0,
-                    top: 0,
-                    bottom: 0
-                }}
-            >
-                <div className="h-full flex flex-col justify-between">
-                    <Menu
-                        mode="inline"
-                        defaultSelectedKeys={['1']}
-                        selectedKeys={
-                            items.findIndex(
-                                (item) =>
-                                    item.name ===
-                                    location.pathname.split('/')[2]
-                            ) +
-                            1 +
-                            ''
-                        }
-                        onClick={(e) => handleClick(e)}
-                        items={items}
-                    />
-                    <Menu
-                        mode="inline"
-                        onClick={(e) => handleClick(e)}
-                        selectable={false}
-                        items={[
-                            {
-                                key: '5',
-                                icon: <UserOutlined />,
-                                label: 'Tài khoản'
-                            },
-                            {
-                                key: '6',
-                                icon: <MdOutlineLogout size={18} />,
-                                label: 'Đăng xuất'
-                            }
-                        ]}
-                    />
-                </div>
-            </Sider>
+            <SidebarContainer MenuTop={MenuTop} MenuBottom={MenuBottom} />
         </>
     );
 }

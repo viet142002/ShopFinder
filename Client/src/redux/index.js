@@ -16,6 +16,7 @@ import userReducer from './userSlice';
 import ratingReducer from './ratingSlice';
 import retailerReducer from './retailerSlice';
 import notificationReducer from './notificationSlice';
+import sidebarSlice from './sidebarSlice';
 
 const persistConfig = {
     key: 'root',
@@ -28,7 +29,8 @@ const rootReducer = combineSlices({
     user: userReducer,
     rating: ratingReducer,
     retailer: retailerReducer,
-    notification: notificationReducer
+    notification: notificationReducer,
+    sidebar: sidebarSlice
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

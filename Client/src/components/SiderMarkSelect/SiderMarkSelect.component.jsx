@@ -9,6 +9,7 @@ import Inner from './Inner.component';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
 import 'react-perfect-scrollbar/dist/css/styles.css';
+import { useMobile } from '@hooks/useMobile';
 
 (function () {
     if (typeof EventTarget !== 'undefined') {
@@ -35,43 +36,28 @@ import 'react-perfect-scrollbar/dist/css/styles.css';
 })();
 
 function SiderMarkSelect({ markSelected }) {
-    const [isCollapsed, setIsCollapsed] = useState(false);
-    const [isMobile, setIsMobile] = useState(false);
+    const [isCollapsed, setIsCollapsed] = useState(true);
+    const { collapsed } = useSelector((state) => state.sidebar);
+    const { isMobile } = useMobile();
     const info = useSelector((state) => state.routing.info);
 
     useEffect(() => {
         setIsCollapsed(false);
     }, [markSelected]);
 
-    useEffect(() => {
-        if (window.innerWidth < 768) {
-            setIsMobile(true);
-        }
-
-        const resize = () => {
-            if (window.innerWidth < 768) {
-                setIsMobile(true);
-            } else {
-                setIsMobile(false);
-            }
-        };
-
-        window.addEventListener('resize', resize);
-
-        return () => {
-            window.removeEventListener('resize', resize);
-        };
-    }, []);
-
     return (
         <section
-            className={clsx(
-                !isMobile &&
-                    'blur-siderInfo absolute top-0 z-[999] h-full w-[400px] bg-white shadow-2xl transition-[left] duration-[500ms]',
-                (isCollapsed || !markSelected?.lat) && !isMobile
-                    ? '-left-[400px]'
-                    : 'left-0'
-            )}
+            className={
+                !isMobile
+                    ? clsx({
+                          'blur-siderInfo fixed top-0 z-[999] h-full w-[400px] bg-white shadow-2xl transition-all  duration-[250ms]': true,
+                          'left-[70px]': !isCollapsed,
+                          'left-[200px]': !collapsed && !isCollapsed,
+                          '-left-[330px]': isCollapsed && collapsed,
+                          '-left-[200px]': isCollapsed && !collapsed
+                      })
+                    : ''
+            }
         >
             {/* button Collapse */}
             <div className="absolute left-full top-[50%] z-[998] hidden md:block">

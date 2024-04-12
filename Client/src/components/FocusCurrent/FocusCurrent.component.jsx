@@ -25,7 +25,7 @@ function FocusCurrent() {
         }
     }, [p, map]);
     return (
-        <div className="absolute bottom-[92px] right-[13px] z-[99999]">
+        <div className="absolute bottom-[92px] right-[10px] z-[999]">
             <Button
                 className="bg-white"
                 size="middle"

@@ -30,6 +30,7 @@ function SiderMartSelectForMobile({ isCollapsed, setIsCollapsed, children }) {
                 onClose={handleClosed}
                 snapPoints={[-50, 0.6, 100, 0]}
                 initialSnap={1}
+                style={{ zIndex: 999 }}
             >
                 <Sheet.Container>
                     <Sheet.Header />

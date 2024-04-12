@@ -9,15 +9,12 @@ export default {
                 price: '#d01345'
             },
             margin: {
-                sideBar: '250px'
+                sideBarMark: '2.5rem'
             },
             padding: {
-                siderInfo: '39px',
-                'custom-2': '64px'
+                sideBarMark: '2.5rem'
             },
-            width: {
-                sideBar: '250px'
-            },
+            width: {},
             boxShadow: {
                 card: '0 20px 27px rgb(0 0 0/5%)'
             }

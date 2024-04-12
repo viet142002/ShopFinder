@@ -3,7 +3,7 @@ import { typeLocations } from '../../../utils/typeConstraint';
 
 function HeaderInfo({ name, rate, type, informationType }) {
     return (
-        <div className="px-siderInfo pt-[5px]">
+        <div className="md:px-sideBarMark px-3 pt-[5px]">
             <h2 className="text-lg font-medium">
                 {name}{' '}
                 {informationType === 'Information' && (

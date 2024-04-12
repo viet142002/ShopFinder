@@ -40,7 +40,6 @@ import DashboardRetailer from './pages/Retailer/DashboardRetailer';
 import WarehouseManager from './pages/Retailer/WarehouseManager/WarehouseManager';
 import ManageOrder from './pages/Retailer/ManageOrder';
 import ManageOrderDetail from './pages/Retailer/ManageOrderDetail';
-import StatisticRetailer from './pages/Retailer/StatisticRetailer';
 import ManageRetailerProfile from './pages/Retailer/ManageRetailerProfile';
 import ManageProduct from './pages/Retailer/Product/ManageProduct';
 import AddAndEditProduct from './pages/Retailer/Product/AddAndEditProduct';
@@ -248,10 +247,7 @@ function App() {
                             path="order/:orderId"
                             element={<ManageOrderDetail />}
                         />
-                        <Route
-                            path="statistic"
-                            element={<StatisticRetailer />}
-                        />
+
                         <Route
                             path="profile"
                             element={<ManageRetailerProfile />}

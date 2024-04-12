@@ -65,7 +65,7 @@ function CardRate(rate) {
 
     return (
         <section className="card-rate space-y-2">
-            <div className="mx-2 md:mx-10">
+            <div className="md:px-sideBarMark px-4">
                 <div className="flex items-center gap-2">
                     <Avatar
                         size={38}
@@ -109,7 +109,7 @@ function CardRate(rate) {
 
             <DisplayImagesRate images={rate.images} />
 
-            <div className="mx-10 flex items-center">
+            <div className="md:px-sideBarMark flex items-center px-4">
                 <ActionCardRate
                     likes={rate.likes}
                     dislikes={rate.dislikes}

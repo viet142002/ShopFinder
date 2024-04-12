@@ -49,7 +49,7 @@ function Actions({ info }) {
 
     return (
         <>
-            <div className="mb-[16px] flex justify-between px-siderInfo">
+            <div className="md:px-sideBarMark mb-[16px] flex justify-between px-4">
                 <Button
                     aria-label="showRouting"
                     type="primary"

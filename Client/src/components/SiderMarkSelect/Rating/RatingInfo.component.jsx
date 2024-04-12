@@ -10,7 +10,7 @@ const RatingInfo = memo(function RatingInfo({ info }) {
     return (
         <>
             <div className="space-y-2">
-                <Row className="px-siderInfo">
+                <Row className="md:px-sideBarMark px-4">
                     <RateTotal locationId={info._id} />
                 </Row>
                 <Rating />

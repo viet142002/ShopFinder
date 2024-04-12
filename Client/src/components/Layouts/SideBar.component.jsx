@@ -1,5 +1,5 @@
-import { Menu, Layout, Avatar, Badge } from 'antd';
-import { useEffect, useState } from 'react';
+import { Menu, Avatar, Badge } from 'antd';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { HiOutlineViewfinderCircle } from 'react-icons/hi2';
@@ -14,8 +14,6 @@ import {
 } from '@ant-design/icons';
 import { useLocation } from 'react-router-dom';
 
-const { Sider } = Layout;
-
 import { unsetUser } from '../../redux/userSlice';
 import { setNotifications, setOneNotify } from '../../redux/notificationSlice';
 import { getNotifications } from '@api/notificationApi';
@@ -23,6 +21,7 @@ import { getNotifications } from '@api/notificationApi';
 import { notification } from '@utils/notification';
 
 import socket from '../../socket';
+import SidebarContainer from './SideBarContainer';
 
 function getItem(label, key, icon, children, type) {
     return {
@@ -37,7 +36,6 @@ function getItem(label, key, icon, children, type) {
 function SideBar({ ...props }) {
     const { pathname } = useLocation();
     const dispatch = useDispatch();
-    const [collapsed, setCollapsed] = useState(true);
 
     const { data, isAuth } = useSelector((state) => state.user);
     const { countNotRead } = useSelector((state) => state.notification);
@@ -168,19 +166,8 @@ function SideBar({ ...props }) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
-        <Sider
-            theme="light"
-            className="bg-opacity-50"
-            trigger={null}
-            collapsible
-            collapsedWidth={70}
-            collapsed={collapsed}
-            onMouseEnter={() => setCollapsed(false)}
-            onMouseLeave={() => setCollapsed(true)}
-            {...props}
-        >
-            <div className="demo-logo-vertical" />
-            <div className="flex h-full flex-col justify-between">
+        <SidebarContainer
+            MenuTop={
                 <Menu
                     theme="light"
                     mode="inline"
@@ -188,6 +175,8 @@ function SideBar({ ...props }) {
                     onClick={handleClick}
                     items={menuItemsUpper}
                 />
+            }
+            MenuBottom={
                 <Menu
                     theme="light"
                     mode="vertical"
@@ -225,8 +214,9 @@ function SideBar({ ...props }) {
                               }
                     ]}
                 />
-            </div>
-        </Sider>
+            }
+            {...props}
+        />
     );
 }
 

@@ -18,9 +18,10 @@ function Map() {
         <>
             <MapContainer
                 center={[p.lat, p.lng]}
-                zoom={100}
-                className="h-svh w-full"
+                zoom={13}
+                className="relative h-full w-full"
                 zoomControl={false}
+                inertia={true}
             >
                 <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                 <MyMarker />
