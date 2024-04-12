@@ -1,9 +1,7 @@
-import { Layout, Form } from 'antd';
+import { Form } from 'antd';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
-import ButtonBack from '../../../components/ActionsButton/ButtonBack.component';
 
 import {
     createProductApi,
@@ -77,12 +75,12 @@ function AddAndEditProduct() {
     }, [form, productId, isAddMode]);
 
     return (
-        <section className="py-4 md:px-8">
-            <Layout.Header className="mb-2 flex items-center justify-center bg-transparent">
-                <h3 className="text-xl font-semibold">
+        <section>
+            <div className="my-4 flex items-center justify-center md:my-8">
+                <h1 className="text-xl font-bold">
                     {isAddMode ? 'Thêm sản phẩm' : 'Chỉnh sửa sản phẩm'}
-                </h3>
-            </Layout.Header>
+                </h1>
+            </div>
 
             <Form
                 form={form}

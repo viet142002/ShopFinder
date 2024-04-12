@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Button, Layout, Space, Tag } from 'antd';
+import { Button, Space, Tag } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import CommentProduct from '../../../components/Comments/CommentProduct.component';
-
-import { getProductByIdApi } from '../../../api/productApi';
-import { typeStatus } from '../../../utils/typeConstraint';
-import ButtonBack from '../../../components/ActionsButton/ButtonBack.component';
-import MyCarousel from '../../../components/Carousel/Carousel.component';
+import { getProductByIdApi } from '@api/productApi';
+import { typeStatus } from '@utils/typeConstraint';
+import MyCarousel from '@components/Carousel/Carousel.component';
 import DisplayRates from '@components/DisplayRate/DisplayRate.component';
 
 function ManagerProductDetail() {
@@ -20,15 +17,14 @@ function ManagerProductDetail() {
     }, [productId]);
 
     return (
-        <section className="py-4 md:px-8">
-            <ButtonBack />
-            <Layout.Header className="mb-2 flex items-center justify-between bg-transparent">
-                <h1 className="text-xl font-semibold">Chi tiết sản phẩm</h1>
-            </Layout.Header>
-            <Layout.Content className="grid gap-4 md:grid-cols-3">
+        <section>
+            <div className="my-4 flex items-center justify-center md:my-8">
+                <h1 className="text-xl font-bold">Chi tiết sản phẩm</h1>
+            </div>
+            <div className="mx-auto grid w-[95%] gap-4 md:w-[90%] md:grid-cols-3">
                 {product && (
-                    <section className="bg-white p-2 md:col-span-2">
-                        <h2 className="mb-2 text-xl font-bold">
+                    <section className="rounded-lg md:col-span-2 md:bg-white md:p-2 md:shadow-card">
+                        <h2 className="mb-2 text-lg font-bold">
                             Thông tin sản phẩm
                         </h2>
                         <div className="grid gap-4 md:grid-cols-2">
@@ -39,7 +35,7 @@ function ManagerProductDetail() {
                                 </h3>
                                 <small>{product?._id}</small>
                                 <div
-                                    className="mt-2 rounded-md bg-gray-100 p-2 text-sm"
+                                    className="mt-2 rounded-md bg-white p-2 text-sm md:bg-gray-100"
                                     dangerouslySetInnerHTML={{
                                         __html: product?.description
                                     }}
@@ -100,7 +96,7 @@ function ManagerProductDetail() {
                                 </p>
                             </div>
                         </div>
-                        <div className="">
+                        <div className="mt-2 flex justify-center md:justify-end">
                             <Button
                                 onClick={() =>
                                     navigate(
@@ -115,11 +111,11 @@ function ManagerProductDetail() {
                 )}
                 <section className="md:col-span-1">
                     {/* <CommentProduct /> */}
-                    <div className="bg-white p-2">
+                    <div className="rounded-lg bg-white py-2 shadow-card">
                         <DisplayRates productId={productId} />
                     </div>
                 </section>
-            </Layout.Content>
+            </div>
         </section>
     );
 }

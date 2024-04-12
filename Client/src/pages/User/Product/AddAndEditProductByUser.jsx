@@ -80,12 +80,12 @@ function AddAndEditProductByUser() {
     }, [form, productId, isAddMode]);
 
     return (
-        <main>
-            <Layout.Header className="flex items-center justify-center bg-transparent">
-                <h1 className="text-center text-xl font-medium">
+        <section>
+            <div className="my-4 flex items-center justify-center md:my-8">
+                <h1 className="text-xl font-bold">
                     {isAddMode ? 'Thêm sản phẩm' : 'Chỉnh sửa sản phẩm'}
                 </h1>
-            </Layout.Header>
+            </div>
             <Form
                 form={form}
                 variant="filled"
@@ -100,10 +100,9 @@ function AddAndEditProductByUser() {
                     imageBefore={initialValues.images}
                     setNewImages={setNewImages}
                     setDeleteImages={setDeleteImages}
-                    // createdByUser
                 />
             </Form>
-        </main>
+        </section>
     );
 }
 

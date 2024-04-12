@@ -14,9 +14,9 @@ function FormProduct({
 }) {
     return (
         <>
-            <div className="grid gap-6 md:grid-flow-row md:grid-cols-3">
-                <section className="rounded-md bg-white md:col-span-2">
-                    <div className="flex flex-col gap-4 p-4">
+            <div className="mx-auto mb-4 grid w-[90%] gap-6 md:grid-flow-row md:grid-cols-3">
+                <section className="rounded-md md:col-span-2 md:bg-white">
+                    <div className="flex flex-col gap-4 md:p-4">
                         <h3 className="text-lg font-semibold">
                             Thông tin sản phẩm
                         </h3>
@@ -105,12 +105,11 @@ function FormProduct({
                     </div>
                 </section>
                 <section className="-order-1 rounded-md md:order-1 md:col-span-1">
-                    <div className="flex flex-col justify-between gap-4 bg-white p-4 ">
+                    <div className="flex flex-col justify-between gap-4 md:bg-white md:p-4 ">
                         <div className="space-y-4">
                             <h3 className="text-lg font-semibold">
                                 Hình ảnh sản phẩm
                             </h3>
-
                             <div className="flex flex-col gap-2">
                                 <InputImage
                                     setNewImages={setNewImages}
