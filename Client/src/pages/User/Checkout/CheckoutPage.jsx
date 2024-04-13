@@ -16,7 +16,6 @@ function CheckoutPage() {
     const [priceSipping, setPriceShipping] = useState([]);
     const [location, setLocation] = useState({ lat: 0, lng: 0 });
     const { state } = useLocation();
-    console.log('🚀 ~ CheckoutPage ~ state:', state);
     const user = useSelector((state) => state.user.data);
 
     const onFinish = async (values) => {

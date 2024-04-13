@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
 const User = require('../Models/userModel');
+const { generateToken } = require('../helper');
 
 const authController = {
     signUp: () => async (req, res) => {
@@ -83,23 +83,6 @@ const authController = {
             });
         }
     },
-};
-
-const generateToken = user => {
-    const token = jwt.sign(
-        {
-            _id: user._id,
-            role: user.role,
-            email: user.email,
-            retailer: user?.pendingRetailer?.retailer || '',
-        },
-        process.env.JWT_SECRET,
-        {
-            expiresIn: '1d',
-        }
-    );
-
-    return token;
 };
 
 module.exports = authController;

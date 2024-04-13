@@ -11,7 +11,6 @@ const InformationController = {
                 req.body;
             const images = req.files;
             const user = req.user._id;
-            console.log('🚀 ~ create ~ user:', req.user);
 
             if (
                 ['name', 'location', 'address', 'type', 'description'].some(
@@ -26,7 +25,6 @@ const InformationController = {
             const existInfo = await Information.findOne({ name });
 
             if (existInfo) {
-                console.log(images);
                 images.forEach(image => {
                     imageController.deleteLocalImage(image.filename);
                 });

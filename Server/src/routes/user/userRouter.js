@@ -10,5 +10,7 @@ router.put(
     upload.single('avatar'),
     userController.updateProfile
 );
+router.post('/new-password', authorization, userController.newPassword);
+router.post('/send-mail', userController.sendMailReset);
 
 module.exports = router;

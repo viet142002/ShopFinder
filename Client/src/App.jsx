@@ -12,6 +12,8 @@ import { setFirstLocation } from './redux/routingSlice';
 import socket from './socket';
 // #endregion
 // #region user page
+import NewPassword from '@pages/User/ForgotPassword/NewPassword';
+import ForgotPassword from '@pages/User/ForgotPassword';
 import VNPayReturn from '@pages/User/Checkout/VNPayReturn';
 import PaymentFail from '@pages/User/Checkout/PaymentFail';
 import Profile from './pages/user/Profile/ProfilePage';
@@ -73,6 +75,11 @@ function App() {
                         path={routesConstant.login.path}
                         element={<Login />}
                     />
+                    <Route
+                        path="/forgot-password"
+                        element={<ForgotPassword />}
+                    />
+                    <Route path="/new-password" element={<NewPassword />} />
                     <Route
                         path={routesConstant.register.path}
                         element={<Register />}

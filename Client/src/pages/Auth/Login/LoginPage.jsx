@@ -8,9 +8,9 @@ import { Button } from 'antd';
 
 import style from '../style.module.scss';
 import loginSchema from './validate';
-import { loginApi } from '../../../api/authApi';
-import { setUser } from '../../../redux/userSlice';
-import { handleFetch } from '../../../utils/expression';
+import { loginApi } from '@api/authApi';
+import { setUser } from '@redux/userSlice';
+import { handleFetch } from '@utils/expression';
 
 function LoginPage() {
     const dispatch = useDispatch();
@@ -126,6 +126,11 @@ function LoginPage() {
                                             }
                                         >
                                             Đăng ký
+                                        </Link>
+                                    </p>
+                                    <p className="text-center">
+                                        <Link to="/forgot-password">
+                                            Quên mật khẩu?
                                         </Link>
                                     </p>
                                 </div>
