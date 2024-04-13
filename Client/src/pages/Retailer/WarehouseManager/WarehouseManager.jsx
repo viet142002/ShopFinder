@@ -1,11 +1,10 @@
-import { Layout, Table, Tag } from 'antd';
+import { Table, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import ActionImportExportProducts from '../../../components/ActionImportExportProducts/ActionImportExportProducts.component';
-import ButtonBack from '../../../components/ActionsButton/ButtonBack.component';
+import ActionImportExportProducts from '@components/ActionImportExportProducts/ActionImportExportProducts.component';
 
-import { getWarehousesApi } from '../../../api/warehouseApi';
+import { getWarehousesApi } from '@api/warehouseApi';
 
 const cols = [
     {
@@ -56,15 +55,14 @@ function WarehouseManager({ isImport = true }) {
         });
     }, []);
     return (
-        <section className="px-4 py-2 space-y-2">
-            <ButtonBack />
-            <Layout.Header className="bg-white flex justify-center items-center mb-2">
+        <section className="space-y-2 px-4 py-2">
+            <div className="mb-2 flex items-center justify-center bg-white">
                 <h1 className="text-xl font-semibold">
                     Quản lý {isImport ? 'nhập' : 'xuất'}
                 </h1>
-            </Layout.Header>
-            <Layout.Content className="grid grid-cols-1 md:grid-cols-4 md:gap-4 gap-y-4">
-                <section className="md:col-span-1 bg-white">
+            </div>
+            <div className="grid grid-cols-1 gap-y-4 md:grid-cols-4 md:gap-4">
+                <section className="bg-white md:col-span-1">
                     <ActionImportExportProducts isImport={isImport} />
                 </section>
                 <section className="col-span-3">
@@ -74,7 +72,7 @@ function WarehouseManager({ isImport = true }) {
                         rowKey={(record) => record._id}
                     />
                 </section>
-            </Layout.Content>
+            </div>
         </section>
     );
 }

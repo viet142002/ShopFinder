@@ -1,13 +1,18 @@
 import { Space, Button, Tag } from 'antd';
-import { acceptRequestApi, rejectRequestApi } from '../../api/retailerApi.js';
+import {
+    acceptRequestApi,
+    rejectRequestApi
+} from '../../../api/retailerApi.js';
 import { useState } from 'react';
 
-function ActionRequestRetailer({ recordId, setRequest, requests }) {
+function ActionRequestRetailer({ recordId, setRequest, requests = [] }) {
     const [loading, setLoading] = useState({
         acceptRequest: false,
         rejectRequest: false
     });
-    const [result, setResult] = useState('');
+    const [result, setResult] = useState(
+        requests?.find((request) => request?._id === recordId).status || ''
+    );
 
     const handleAccept = async (_id) => {
         setLoading({

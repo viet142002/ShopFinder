@@ -263,7 +263,15 @@ const retailerController = {
 
             const requests = await Retailer.find({
                 status: { $in: status },
-            }).populate('location owner');
+            })
+                .populate({
+                    path: 'location',
+                    populate: {
+                        path: 'address',
+                    },
+                })
+                .populate('images logo')
+                .populate('owner', '-password');
 
             if (!requests) {
                 return res.status(400).json({

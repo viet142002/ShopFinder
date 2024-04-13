@@ -1,24 +1,12 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import {
-    Layout,
-    Form,
-    Input,
-    InputNumber,
-    Button,
-    Image,
-    Row,
-    Col,
-    Table
-} from 'antd';
-
-import ButtonBack from '../../../components/ActionsButton/ButtonBack.component';
-import EditorFormat from '../../../components/EditorFormat/EditorFormat';
+import { Form, Input, InputNumber, Button, Image, Row, Col, Table } from 'antd';
 
 import { getProductsFromDistributor } from '../../../api/productApi';
 import { createWarehouseApi, getWarehouseApi } from '../../../api/warehouseApi';
 
 import { handleFetch } from '@utils/expression';
+import EditorFormat from '@components/EditorFormat/EditorFormat';
 
 function ImportWarehouse() {
     const [resultSearch, setResultSearch] = useState([]);
@@ -291,16 +279,15 @@ function ImportWarehouse() {
 
     return (
         <section className="space-y-2 px-4 py-2">
-            <ButtonBack />
-            <Layout.Header className="flex items-center justify-center bg-white">
+            <div className="flex items-center justify-center bg-white">
                 <div className="p-3">
                     <h1 className="text-2xl font-semibold">
                         {isAddMode ? 'Tạo phiếu nhập' : 'Thông tin phiếu nhập'}
                     </h1>
                 </div>
-            </Layout.Header>
+            </div>
 
-            <Layout.Content>
+            <div>
                 <Row gutter={{ md: isAddMode ? 20 : 0 }}>
                     <Col md={isAddMode ? 12 : 0} span={isAddMode ? 24 : 0}>
                         <Input.Search
@@ -392,7 +379,7 @@ function ImportWarehouse() {
                         </Form>
                     </Col>
                 </Row>
-            </Layout.Content>
+            </div>
         </section>
     );
 }

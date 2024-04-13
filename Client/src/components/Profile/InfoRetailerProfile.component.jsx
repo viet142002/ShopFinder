@@ -6,7 +6,7 @@ import RenderAddress from '@components/RenderAddress';
 import { typeLocations } from '@utils/typeConstraint';
 import { Link } from 'react-router-dom';
 
-function InfoRetailerProfile({ retailer }) {
+function InfoRetailerProfile({ retailer, isShowButtonEdit = true }) {
     return (
         <div className="p-2 md:bg-white">
             <h2 className="text-lg font-medium">Thông tin cửa hàng</h2>
@@ -64,12 +64,13 @@ function InfoRetailerProfile({ retailer }) {
                     className="rounded-md bg-white p-2 md:bg-gray-100"
                     htmlString={retailer.description}
                 />
-
-                <div className="mt-4 flex justify-center">
-                    <Link to={'../edit-retailer'} className=" px-4 py-2">
-                        Chỉnh sửa thông tin
-                    </Link>
-                </div>
+                {isShowButtonEdit && (
+                    <div className="mt-4 flex justify-center">
+                        <Link to={'../edit-retailer'} className=" px-4 py-2">
+                            Chỉnh sửa thông tin
+                        </Link>
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -1,31 +1,32 @@
+// TODO: Page hiển thị danh sách yêu cầu mở cửa hàng của retailer
+
 import { useState, useEffect } from 'react';
 import { Table, Tag, Space, Button } from 'antd';
 
-import { getRequestsRetailerApi } from '../../api/retailerApi';
-import DetailRequestRetailer from '../../components/DetailRequestRetailer/DetailRequestRetailer.component';
-import ActionRequestRetailer from '../../components/ActionsButton/ActionRequestRetailer.component';
+import { getRequestsRetailerApi } from '@api/retailerApi';
+import DetailRequestRetailer from '@components/RequestRetailer/DetailRequestRetailer';
+import ActionRequestRetailer from '@components/RequestRetailer/ActionsButton';
+import FilterRequest from '@components/RequestRetailer/FilterRequest';
+import { useSearchParams } from 'react-router-dom';
 
 function RequestRetailerPage() {
+    const [searchParams] = useSearchParams();
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [open, setOpen] = useState({
         target: null,
         isOpen: false
     });
+    const status = searchParams.get('status');
+    const sort = searchParams.get('sort');
 
     useEffect(() => {
-        async function fetchRequests() {
-            try {
-                setLoading(true);
-                const data = await getRequestsRetailerApi();
+        getRequestsRetailerApi({ status, sort })
+            .then((data) => {
                 setRequests(data.requests);
-                setLoading(false);
-            } catch (error) {
-                console.error('RequestRetailerPage -> fetchRequests', error);
-            }
-        }
-        fetchRequests();
-    }, []);
+            })
+            .finally(() => setLoading(false));
+    }, [status, sort]);
 
     const columns = [
         {
@@ -100,25 +101,34 @@ function RequestRetailerPage() {
                 <p>Loading...</p>
             ) : (
                 <>
+                    <div className="mb-5">
+                        <h1 className="text-center text-xl font-bold">
+                            Yêu cầu đăng ký cửa hàng
+                        </h1>
+                    </div>
+                    <div className="mb-4 flex justify-center">
+                        <FilterRequest />
+                    </div>
                     <Table
                         columns={columns}
                         dataSource={requests}
                         rowKey="_id"
                     />
-                    {requests && (
-                        <DetailRequestRetailer
-                            open={open.isOpen}
-                            onClose={() =>
-                                setOpen({
-                                    target: null,
-                                    isOpen: false
-                                })
-                            }
-                            data={requests.find(
-                                (request) => request._id === open.target
-                            )}
-                        />
-                    )}
+
+                    <DetailRequestRetailer
+                        open={open.isOpen}
+                        onClose={() =>
+                            setOpen({
+                                target: null,
+                                isOpen: false
+                            })
+                        }
+                        data={requests.find(
+                            (request) => request._id === open.target
+                        )}
+                        setRequest={setRequests}
+                        requests={requests}
+                    />
                 </>
             )}
         </section>
