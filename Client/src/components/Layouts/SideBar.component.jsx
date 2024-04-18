@@ -105,8 +105,8 @@ function SideBar({ ...props }) {
                 navigate('/share-store');
                 break;
             case 'retailer-manager':
-                if (!isAuth) {
-                    navigate('/login');
+                if (!data?.pendingRetailer?.status) {
+                    navigate('/register-retailer');
                     break;
                 }
                 if (data.pendingRetailer.status === 'pending') {

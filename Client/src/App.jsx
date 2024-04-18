@@ -76,16 +76,16 @@ function App() {
                         element={<Login />}
                     />
                     <Route
-                        path="/forgot-password"
-                        element={<ForgotPassword />}
-                    />
-                    <Route path="/new-password" element={<NewPassword />} />
-                    <Route
                         path={routesConstant.register.path}
                         element={<Register />}
                     />
                     <Route path="/" element={<DefaultLayout />}>
                         <Route index element={<HomePage />} />
+                        <Route
+                            path="/forgot-password"
+                            element={<ForgotPassword />}
+                        />
+                        <Route path="/new-password" element={<NewPassword />} />
                         <Route
                             path="/cart"
                             element={

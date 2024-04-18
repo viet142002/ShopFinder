@@ -46,8 +46,8 @@ function NewPassword() {
     }, [email, form]);
 
     return (
-        <>
-            <header>
+        <section>
+            <div>
                 <div className="mt-2 flex justify-center">
                     <img
                         src="/public/logo.png"
@@ -55,8 +55,8 @@ function NewPassword() {
                         className="w-40 rounded-full"
                     />
                 </div>
-            </header>
-            <main className="mx-auto w-[80%] md:w-[50%]">
+            </div>
+            <div className="mx-auto w-[80%] md:w-[50%]">
                 <div className="my-8">
                     <h1 className="text-center text-lg font-bold">
                         Mật khẩu mới
@@ -146,8 +146,8 @@ function NewPassword() {
                         </Button>
                     </Form.Item>
                 </Form>
-            </main>
-        </>
+            </div>
+        </section>
     );
 }
 
