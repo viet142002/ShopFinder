@@ -43,7 +43,7 @@ function RegisterPage() {
                 )}
             >
                 <div className={clsx(style['slider-thumb'])}></div>
-                <section className="z-10 w-[90%] bg-white bg-opacity-[0.8] p-10 md:w-[50%]">
+                <section className="z-10 w-[90%] bg-white bg-opacity-[0.8] p-6 md:p-10 md:w-[50%]">
                     <h1 className="mb-10 text-center text-2xl font-bold">
                         Đăng ký
                     </h1>
@@ -107,6 +107,7 @@ function RegisterPage() {
                                         name="password"
                                         placeholder="Mật khẩu"
                                         className="input-auth"
+                                        autoComplete="on"
                                     />
                                     <ErrorMessage
                                         name="password"
@@ -119,6 +120,7 @@ function RegisterPage() {
                                         name="confirm_password"
                                         placeholder="Nhập lại mật khẩu"
                                         className="input-auth"
+                                        autoComplete="on"
                                     />
                                     <ErrorMessage
                                         name="confirm_password"

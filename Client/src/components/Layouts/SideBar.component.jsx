@@ -193,10 +193,14 @@ function SideBar({ ...props }) {
                                       className="flex-shrink-0 -translate-x-[calc(50%-10px)]"
                                       size={35}
                                       src={
-                                          data.avatar
-                                              ? import.meta.env
-                                                    .VITE_APP_API_URL +
-                                                data.avatar.path
+                                          data?.avatar?.path
+                                              ? data.avatar.path.slice(0, 4) ===
+                                                'http'
+                                                  ? data.avatar.path
+                                                  : `${
+                                                        import.meta.env
+                                                            .VITE_APP_API_URL
+                                                    }/${data.avatar.path}`
                                               : import.meta.env
                                                     .VITE_APP_AVATAR_DEFAULT
                                       }

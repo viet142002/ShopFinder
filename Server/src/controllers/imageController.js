@@ -2,6 +2,19 @@ const Image = require('../models/imageModel');
 const fs = require('fs');
 
 const imageController = {
+    createImageWithPath: async ({ path, name }) => {
+        try {
+            const image = new Image({
+                path,
+                name,
+            });
+
+            await image.save();
+            return image;
+        } catch (error) {
+            throw error;
+        }
+    },
     createSingle: async file => {
         try {
             const image = new Image({

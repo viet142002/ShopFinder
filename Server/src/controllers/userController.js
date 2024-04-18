@@ -9,7 +9,6 @@ const userController = {
     updateProfile: async (req, res) => {
         try {
             const { firstname, lastname, address, phone } = req.body;
-            console.table(req.body);
             const avatar = req?.file?.filename || null;
 
             if (!firstname && !lastname && !address && !phone && !avatar)

@@ -15,3 +15,7 @@ export const registerApi = ({ firstname, lastname, email, password }) => {
         password
     });
 };
+
+export const loginWithGoogleApi = (data) => {
+    return api.post('/auth/signin-google', data);
+};

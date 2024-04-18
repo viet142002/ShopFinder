@@ -26,6 +26,7 @@ function ProfilePage() {
     const [form] = Form.useForm();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.data);
+    console.log('🚀 ~ ProfilePage ~ user:', user);
     const [newAvatar, setNewAvatar] = useState(null);
     const [isChange, setIsChange] = useState({
         isChangeAddress: false,
@@ -41,9 +42,7 @@ function ProfilePage() {
     const onFinish = async (values) => {
         setIsLoading(true);
         delete values.email;
-
         const data = formData({ ...values, avatar: newAvatar });
-
         const resData = await handleFetch(() => updateUser(user._id, data));
         if (resData) {
             dispatch({ type: 'user/updateUser', payload: resData.updatedUser });
@@ -73,9 +72,13 @@ function ProfilePage() {
                                         newAvatar
                                             ? URL.createObjectURL(newAvatar)
                                             : user?.avatar?.path
-                                              ? import.meta.env
-                                                    .VITE_APP_API_URL +
-                                                user.avatar.path
+                                              ? user.avatar.path.slice(0, 4) ===
+                                                'http'
+                                                  ? user.avatar.path
+                                                  : `${
+                                                        import.meta.env
+                                                            .VITE_APP_API_URL
+                                                    }/${user.avatar.path}`
                                               : import.meta.env
                                                     .VITE_APP_AVATAR_DEFAULT
                                     }
