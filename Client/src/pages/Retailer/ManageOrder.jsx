@@ -4,7 +4,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 
 import { getOrdersByDistributor } from '@api/orderApi';
 
-import { formatDate } from '@utils/formatDate';
+import { formatTime } from '@utils/formatTime';
 import { typeOrderStatus } from '@utils/typeConstraint';
 import { formatPrice } from '@utils/formatPrice';
 import FilterOrder from '@components/Order/FilterOrder/FilterOrder.component';
@@ -21,7 +21,7 @@ const columns = [
         title: 'Date',
         dataIndex: 'createdAt',
         key: 'createdAt',
-        render: (date) => formatDate(date)
+        render: (date) => formatTime(date)
     },
     {
         title: 'Status',
@@ -93,7 +93,14 @@ function ManageOrder() {
                 <FilterOrder />
             </div>
             <section className="p-5">
-                <Table columns={columns} dataSource={orders} rowKey="_id" />
+                <Table
+                    columns={columns}
+                    dataSource={orders}
+                    rowKey="_id"
+                    pagination={{
+                        pageSize: 20
+                    }}
+                />
             </section>
         </>
     );

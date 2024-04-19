@@ -68,8 +68,8 @@ function App() {
     }, []);
 
     return (
-        <BrowserRouter>
-            <Suspense fallback={<Loading />}>
+        <Suspense fallback={<Loading />}>
+            <BrowserRouter>
                 <Routes>
                     <Route
                         path={routesConstant.login.path}
@@ -282,8 +282,8 @@ function App() {
                         <Route path="edit-retailer" element={<EditStore />} />
                     </Route>
                 </Routes>
-            </Suspense>
-        </BrowserRouter>
+            </BrowserRouter>
+        </Suspense>
     );
 }
 

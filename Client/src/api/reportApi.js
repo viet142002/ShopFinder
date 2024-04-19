@@ -11,7 +11,7 @@ export const createReportApi = async (data) => {
 
 export const getReportsApi = async (params) => {
     try {
-        const res = await api.get('reports', { params });
+        const res = await api.get('/admin/reports', { params });
         return res.data;
     } catch (error) {
         throw error.response.data;

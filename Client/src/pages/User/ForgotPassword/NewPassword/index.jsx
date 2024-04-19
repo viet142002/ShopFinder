@@ -49,11 +49,7 @@ function NewPassword() {
         <section>
             <div>
                 <div className="mt-2 flex justify-center">
-                    <img
-                        src="/public/logo.png"
-                        alt=""
-                        className="w-40 rounded-full"
-                    />
+                    <img src="/logo.png" alt="" className="w-40 rounded-full" />
                 </div>
             </div>
             <div className="mx-auto w-[80%] md:w-[50%]">

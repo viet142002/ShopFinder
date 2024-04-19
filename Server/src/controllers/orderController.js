@@ -171,6 +171,7 @@ const orderController = {
             const { status, detailPaymentData } = req.body;
 
             const order = await Order.findById(id).populate('orderItems');
+            console.log('🚀 ~ addDetailPayment: ~ order:', order);
             if (!order) {
                 return res.status(404).json({ message: 'Order not found' });
             }
@@ -181,19 +182,14 @@ const orderController = {
             order.status = status;
 
             if (status === 'pending') {
-                await notificationController.createNotification({
-                    toUser: order.user,
-                    from: order.distributor,
-                    fromType: 'Retailer',
-                    type: 'ORDER',
-                    target: order._id,
-                    message: `Đơn hàng của bạn tại ${order.distributor.name} đang được xử lý`,
-                });
                 // delete cart
                 const productIds = order.orderItems.map(item =>
                     item.product.toString()
                 );
-                await cartController.removeFormCartByIds(user, productIds);
+                await cartController.removeFormCartByIds(
+                    order.user,
+                    productIds
+                );
             }
 
             if (status === 'cancelled') {

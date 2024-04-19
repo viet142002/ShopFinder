@@ -47,7 +47,7 @@ function SidebarContainer({ MenuTop, MenuBottom, ...props }) {
                             className="flex items-center"
                         >
                             <img
-                                src="/public/logo_removebg.png"
+                                src="/logo_removebg.png"
                                 alt="logo"
                                 className="h-10 w-10"
                             />

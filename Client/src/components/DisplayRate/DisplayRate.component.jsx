@@ -54,13 +54,23 @@ function DisplayRates({ id: locationId, productId }) {
                         {myRate && (
                             <>
                                 <CardRate {...myRate} />
-                                <Divider />
+                                <Divider
+                                    style={{
+                                        margin: '16px 0px'
+                                    }}
+                                />
                             </>
                         )}
                         {rates?.length !== 0
                             ? rates?.map((rate, index) => (
                                   <div key={rate._id}>
-                                      {index !== 0 && <Divider />}
+                                      {index !== 0 && (
+                                          <Divider
+                                              style={{
+                                                  margin: '16px 0px'
+                                              }}
+                                          />
+                                      )}
                                       <CardRate {...rate} />
                                   </div>
                               ))

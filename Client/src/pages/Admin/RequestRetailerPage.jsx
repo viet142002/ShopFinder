@@ -8,6 +8,7 @@ import DetailRequestRetailer from '@components/RequestRetailer/DetailRequestReta
 import ActionRequestRetailer from '@components/RequestRetailer/ActionsButton';
 import FilterRequest from '@components/RequestRetailer/FilterRequest';
 import { useSearchParams } from 'react-router-dom';
+import { formatTime } from '@utils/formatTime';
 
 function RequestRetailerPage() {
     const [searchParams] = useSearchParams();
@@ -53,11 +54,6 @@ function RequestRetailerPage() {
             key: 'phone'
         },
         {
-            title: 'Địa chỉ',
-            dataIndex: 'address',
-            key: 'address'
-        },
-        {
             title: 'Loại cửa hàng',
             key: 'type',
             dataIndex: 'type'
@@ -77,6 +73,14 @@ function RequestRetailerPage() {
                     )}
                 </Space>
             )
+        },
+        {
+            title: 'Thời gian',
+            key: 'createdAt',
+            dataIndex: 'createdAt',
+            render: (createdAt) => {
+                return <p>{formatTime(createdAt)}</p>;
+            }
         },
         {
             title: 'Action',

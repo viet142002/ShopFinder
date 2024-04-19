@@ -254,7 +254,8 @@ const retailerController = {
     // Gets all pending requests
     getRequestsRetailer: async (req, res) => {
         try {
-            let { status = 'all' } = req.query;
+            let { status = 'all', sort = 'asc' } = req.query;
+            console.log('🚀 ~ getRequestsRetailer: ~ sort:', sort);
             if (status === 'all') {
                 status = ['pending', 'approved', 'rejected'];
             } else {
@@ -271,7 +272,8 @@ const retailerController = {
                     },
                 })
                 .populate('images logo')
-                .populate('owner', '-password');
+                .populate('owner', '-password')
+                .sort({ createdAt: sort });
 
             if (!requests) {
                 return res.status(400).json({

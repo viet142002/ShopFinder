@@ -1,8 +1,8 @@
 import { Menu } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+// import { UserOutlined } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { MdOutlineNotifications } from 'react-icons/md';
+// import { MdOutlineNotifications } from 'react-icons/md';
 import {
     MdOutlineReport,
     MdOutlineDashboard,
@@ -29,12 +29,12 @@ function SiderManage() {
             case '3':
                 navigate('./report');
                 break;
-            case '4':
-                navigate('./notification');
-                break;
-            case '5':
-                navigate('./store');
-                break;
+            // case '4':
+            //     navigate('./notification');
+            //     break;
+            // case '5':
+            //     navigate('./store');
+            //     break;
             case '6':
                 dispatch(unsetUser());
                 navigate('/login');
@@ -62,13 +62,13 @@ function SiderManage() {
             icon: <MdOutlineReport size={18} />,
             label: 'Báo cáo',
             name: 'report'
-        },
-        {
-            key: '4',
-            icon: <MdOutlineNotifications size={18} />,
-            label: 'Thông báo',
-            name: 'notification'
         }
+        // {
+        //     key: '4',
+        //     icon: <MdOutlineNotifications size={18} />,
+        //     label: 'Thông báo',
+        //     name: 'notification'
+        // }
     ];
 
     const MenuTop = (
@@ -93,11 +93,11 @@ function SiderManage() {
             onClick={(e) => handleClick(e)}
             selectable={false}
             items={[
-                {
-                    key: '5',
-                    icon: <UserOutlined />,
-                    label: 'Tài khoản'
-                },
+                // {
+                //     key: '5',
+                //     icon: <UserOutlined />,
+                //     label: 'Tài khoản'
+                // },
                 {
                     key: '6',
                     icon: <MdOutlineLogout size={18} />,

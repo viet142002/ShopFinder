@@ -19,7 +19,7 @@ const notificationSlice = createSlice({
             if (!action.payload.isRead) {
                 state.countNotRead += 1;
             }
-            state.notifications = [...state.notifications, action.payload];
+            state.notifications = [action.payload, ...state.notifications];
         },
         setReadAll: (state) => {
             state.notifications.forEach((notify) => {

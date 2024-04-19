@@ -13,9 +13,8 @@ import { useNavigate } from 'react-router-dom';
 import {
     unsetMarkSelect,
     setShowRouting
-} from '../../../../redux/routingSlice';
-
-import ModalReport from '../../../Modal/ModalReport/ModalReport.component';
+} from '@redux/routingSlice';
+import ModalReport from '@components/Modal/ModalReport/ModalReport.component';
 
 function Actions({ info }) {
     const dispatch = useDispatch();

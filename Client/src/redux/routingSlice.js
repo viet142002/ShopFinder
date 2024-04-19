@@ -4,7 +4,6 @@ import { createSlice } from '@reduxjs/toolkit';
 const routingSlice = createSlice({
     name: 'routing',
     initialState: {
-        // address: {},
         current: { lat: 0, lng: 0 },
         fixedLocation: { lat: 0, lng: 0 },
         markSelected: { lat: null, lng: null },
@@ -16,7 +15,6 @@ const routingSlice = createSlice({
     reducers: {
         setFixedLocation: (state, action) => {
             state.fixedLocation = action.payload.location;
-            // state.address = action.payload.address;
         },
         setCurrentLocation: (state, action) => {
             state.current = action.payload;
@@ -29,7 +27,7 @@ const routingSlice = createSlice({
             state.info = action.payload.info;
         },
         unsetMarkSelect: (state) => {
-            state.markSelected = { lat: 0, lng: 0 };
+            state.markSelected = { lat: null, lng: null };
             state.info = {};
             state.routes = [];
             state.showRouting = false;

@@ -23,6 +23,7 @@ const reportSchema = new mongoose.Schema(
             required: true,
             enum: [
                 'spam',
+                'fake',
                 'harassment',
                 'hate-speech',
                 'violence',

@@ -1,10 +1,10 @@
 // import { useState } from 'react';
 import Sheet from 'react-modal-sheet';
 import { useDispatch, useSelector } from 'react-redux';
-import { setShowRouting } from '../../redux/routingSlice';
-import { useEffect, useRef } from 'react';
+import { setShowRouting } from '@redux/routingSlice';
+import { useEffect, useRef, memo } from 'react';
 
-function SiderMartSelectForMobile({ isCollapsed, setIsCollapsed, children }) {
+function SiderMarkSelectForMobile({ isCollapsed, setIsCollapsed, children }) {
     const dispatch = useDispatch();
     const { showRouting } = useSelector((state) => state.routing);
 
@@ -44,4 +44,5 @@ function SiderMartSelectForMobile({ isCollapsed, setIsCollapsed, children }) {
     );
 }
 
-export default SiderMartSelectForMobile;
+const SiderMarkSelectForMobileMemo = memo(SiderMarkSelectForMobile);
+export default SiderMarkSelectForMobileMemo;

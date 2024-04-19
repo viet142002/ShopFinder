@@ -17,7 +17,7 @@ const PrintBill = React.forwardRef(function PrintBill({ bill, products }, ref) {
         <div ref={ref}>
             <div
                 style={{
-                    width: '120mm'
+                    width: '80mm'
                 }}
             >
                 <div className="bg-red-300">

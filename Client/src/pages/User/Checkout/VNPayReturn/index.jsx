@@ -1,7 +1,8 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Spin } from 'antd';
 
 import { addDetailPayment } from '@api/orderApi';
-import { useEffect } from 'react';
 
 const update = async (id, data) => {
     await addDetailPayment(id, data);
@@ -14,6 +15,10 @@ function VNPayReturn() {
     const orderId = searchParams.get('orderId');
 
     useEffect(() => {
+        if (!orderId) {
+            navigate('/');
+            return;
+        }
         const data = {
             price: searchParams.get('vnp_Amount'),
             bank_code: searchParams.get('vnp_BankCode'),
@@ -23,10 +28,11 @@ function VNPayReturn() {
             responseCode: searchParams.get('vnp_ResponseCode'),
             transactionNo: searchParams.get('vnp_TransactionNo')
         };
-        if (searchParams.get('vnp_ResponseCode') === '00') {
+        if (searchParams?.get('vnp_ResponseCode') == '00') {
             update(orderId, {
                 status: 'pending',
-                detailPaymentData: data
+                detailPaymentData: data,
+                isPaid: true
             }).then(() => {
                 navigate('/');
             });
@@ -43,10 +49,17 @@ function VNPayReturn() {
     }, [orderId, navigate, searchParams]);
 
     return (
-        <>
-            <h1>VNPay return</h1>
-            <h1>hello</h1>
-        </>
+        <div className="absolute left-1/2 top-1/2 h-20 w-full -translate-x-1/2">
+            <Spin
+                tip="Đang xác thực..."
+                size="large"
+                style={{
+                    margin: '0px'
+                }}
+            >
+                <div className="content" />
+            </Spin>
+        </div>
     );
 }
 

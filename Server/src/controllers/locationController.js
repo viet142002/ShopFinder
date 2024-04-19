@@ -60,7 +60,7 @@ const locationController = {
                 'furniture',
                 'clothes',
                 'food',
-                'cafe',
+                'beverage',
                 'other',
             ];
             if (type !== 'all' && !typeArray.includes(type)) {

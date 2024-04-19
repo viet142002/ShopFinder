@@ -40,11 +40,6 @@ const socketServer = socket => {
         const retailer = retailerOnline.find(
             retailer => retailer.retailerId === data.receiverId
         );
-        console.table({
-            retailer: retailer?.retailerId,
-            receiverId: data?.receiverId,
-            true: retailer?.retailerId === data?.receiverId,
-        });
         if (retailer) {
             socket.to(retailer.socketId).emit('order', data);
         }

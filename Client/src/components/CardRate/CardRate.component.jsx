@@ -7,8 +7,10 @@ import ActionCardRate from './ActionCardRate/ActionCardRate.component';
 import DisplayImagesRate from './DisplayImagesRate/DisplayImages.component';
 import ModalReport from '../Modal/ModalReport/ModalReport.component';
 
-import { deleteRateApi } from '../../api/RateApi';
-import { handleFetch } from '../../utils/expression';
+import { deleteRateApi } from '@api/RateApi';
+import { handleFetch } from '@utils/expression';
+import { returnUrl } from '@utils/returnUrl';
+import { formatTime } from '@utils/formatTime';
 
 const items1 = [
     {
@@ -65,20 +67,14 @@ function CardRate(rate) {
 
     return (
         <section className="card-rate space-y-2">
-            <div className="md:px-sideBarMark px-4">
+            <div className="px-4 md:px-sideBarMark">
                 <div className="flex items-center gap-2">
-                    <Avatar
-                        size={38}
-                        src={
-                            rate?.from?.avatar
-                                ? import.meta.env.VITE_APP_API_URL +
-                                  rate.from.avatar?.path
-                                : import.meta.env.VITE_APP_AVATAR_DEFAULT
-                        }
-                    />
+                    <Avatar size={38} src={returnUrl({ user: rate.from })} />
                     <div>
                         <h3>
-                            {rate.from?.firstname} {rate.from?.lastname}
+                            {isMyRate
+                                ? 'Bạn'
+                                : `${rate.from?.lastname} ${rate.from?.firstname}`}
                         </h3>
                         <div>
                             <Rate
@@ -109,7 +105,7 @@ function CardRate(rate) {
 
             <DisplayImagesRate images={rate.images} />
 
-            <div className="md:px-sideBarMark flex items-center px-4">
+            <div className="flex items-center px-4 md:px-sideBarMark">
                 <ActionCardRate
                     likes={rate.likes}
                     dislikes={rate.dislikes}
@@ -117,7 +113,7 @@ function CardRate(rate) {
                     userId={user._id}
                 />
                 <span className="ml-auto text-sm">
-                    {new Date(rate.createdAt).toLocaleDateString()}
+                    {formatTime(rate.createdAt)}
                 </span>
             </div>
 

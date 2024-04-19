@@ -67,7 +67,6 @@ function FormCheckout({ address, onFill }) {
                     htmlType="button"
                     size="small"
                     type="text"
-                    // className="ml-5 transition-all duration-200 ease-in-out hover:text-blue-500"
                     onClick={() => setIsChangeAddress(!isChangeAddress)}
                     icon={<EditOutlined />}
                 />

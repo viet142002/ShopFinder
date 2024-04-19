@@ -1,5 +1,4 @@
 import { Button, Modal, Avatar, Form, Input, Rate } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -8,6 +7,7 @@ import { addRateApi, updateRateApi } from '../../../api/RateApi';
 import { handleFetch } from '../../../utils/expression';
 
 import UploadImage from '../../UploadImage/UploadImage.component';
+import { returnUrl } from '@utils/returnUrl';
 
 const formatForm = (values) => {
     const { rate, comment, images, to, toType, deleteImages } = values;
@@ -158,7 +158,7 @@ function ModalRating({ title, to, toType }) {
             >
                 <section className="my-4">
                     <div>
-                        <Avatar icon={<UserOutlined />} />
+                        <Avatar src={returnUrl({ user })} />
                         <span className="ml-2">
                             {user.firstname} {user.lastname}
                         </span>

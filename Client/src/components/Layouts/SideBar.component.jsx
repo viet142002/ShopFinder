@@ -22,6 +22,7 @@ import { notification } from '@utils/notification';
 
 import socket from '../../socket';
 import SidebarContainer from './SideBarContainer';
+import { returnUrl } from '@utils/returnUrl';
 
 function getItem(label, key, icon, children, type) {
     return {
@@ -192,18 +193,7 @@ function SideBar({ ...props }) {
                                       alt="avatar"
                                       className="flex-shrink-0 -translate-x-[calc(50%-10px)]"
                                       size={35}
-                                      src={
-                                          data?.avatar?.path
-                                              ? data.avatar.path.slice(0, 4) ===
-                                                'http'
-                                                  ? data.avatar.path
-                                                  : `${
-                                                        import.meta.env
-                                                            .VITE_APP_API_URL
-                                                    }/${data.avatar.path}`
-                                              : import.meta.env
-                                                    .VITE_APP_AVATAR_DEFAULT
-                                      }
+                                      src={returnUrl({ user: data })}
                                   />,
                                   [
                                       getItem('Thông tin cá nhân', 'profile'),

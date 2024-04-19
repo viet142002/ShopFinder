@@ -39,6 +39,15 @@ function OrderDetailPage() {
                             Hủy đơn hàng
                         </Button>
                     )}
+                    {order.status === 'shipping' && (
+                        <Button
+                            type="primary"
+                            className="w-full bg-blue-500"
+                            onClick={() => handleUpdateStatus('success')}
+                        >
+                            Đã nhận hàng
+                        </Button>
+                    )}
                 </OrderDetailContent>
             )}
         </>

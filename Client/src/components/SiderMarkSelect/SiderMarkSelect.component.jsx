@@ -1,14 +1,18 @@
 import { useSelector } from 'react-redux';
-import { useEffect, useState, memo } from 'react';
+import { useEffect, useState, memo, lazy, Suspense } from 'react';
 
 import { CaretLeftOutlined, CaretRightOutlined } from '@ant-design/icons';
 import clsx from 'clsx';
-
-import SiderMartSelectForMobile from './SiderMartSelectForMobile.component';
-import Inner from './Inner.component';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-
 import 'react-perfect-scrollbar/dist/css/styles.css';
+
+// import SiderMartSelectForMobile from './SiderMarkSelectForMobile.component';
+const SiderMartSelectForMobile = lazy(
+    () => import('./SiderMarkSelectForMobile.component')
+);
+import Inner from './Inner.component';
+
+
 import { useMobile } from '@hooks/useMobile';
 
 function SiderMarkSelect({ markSelected }) {
@@ -26,7 +30,7 @@ function SiderMarkSelect({ markSelected }) {
             className={
                 !isMobile
                     ? clsx({
-                          'blur-siderInfo fixed top-0 z-[999] h-full w-[400px] bg-white shadow-2xl transition-all  duration-[250ms]': true,
+                          'blur-siderInfo fixed top-0 z-[999] h-full w-[400px] bg-white shadow-2xl transition-all duration-[250ms]': true,
                           'left-[70px]': !isCollapsed && collapsed,
                           'left-[200px]': !collapsed && !isCollapsed,
                           '-left-[330px]': isCollapsed && collapsed,
@@ -63,13 +67,15 @@ function SiderMarkSelect({ markSelected }) {
                     <Inner info={info} />
                 </PerfectScrollbar>
             )}
-            {isMobile && (
-                <SiderMartSelectForMobile
-                    isCollapsed={isCollapsed}
-                    setIsCollapsed={setIsCollapsed}
-                >
-                    <Inner info={info} />
-                </SiderMartSelectForMobile>
+            {markSelected?.lat && isMobile && (
+                <Suspense fallback="loading...">
+                    <SiderMartSelectForMobile
+                        isCollapsed={isCollapsed}
+                        setIsCollapsed={setIsCollapsed}
+                    >
+                        <Inner info={info} />
+                    </SiderMartSelectForMobile>
+                </Suspense>
             )}
         </section>
     );

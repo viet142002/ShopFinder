@@ -250,7 +250,9 @@ function CreateStorePage({ isRegisterRetailer }) {
                                         className="bg-blue-500"
                                         htmlType="submit"
                                     >
-                                        Chia sẻ
+                                        {isRegisterRetailer
+                                            ? 'Đăng ký'
+                                            : 'Chia sẻ'}
                                     </Button>
                                 </Form.Item>
                             </div>

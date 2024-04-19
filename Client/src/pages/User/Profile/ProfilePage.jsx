@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Form, Input, Space, Button, Tooltip } from 'antd';
 
 import { MdCameraAlt } from 'react-icons/md';
+import { returnUrl } from '@utils/returnUrl';
 
 import './profileStyle.scss';
 
@@ -26,7 +27,6 @@ function ProfilePage() {
     const [form] = Form.useForm();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.user.data);
-    console.log('🚀 ~ ProfilePage ~ user:', user);
     const [newAvatar, setNewAvatar] = useState(null);
     const [isChange, setIsChange] = useState({
         isChangeAddress: false,
@@ -71,16 +71,7 @@ function ProfilePage() {
                                     src={
                                         newAvatar
                                             ? URL.createObjectURL(newAvatar)
-                                            : user?.avatar?.path
-                                              ? user.avatar.path.slice(0, 4) ===
-                                                'http'
-                                                  ? user.avatar.path
-                                                  : `${
-                                                        import.meta.env
-                                                            .VITE_APP_API_URL
-                                                    }/${user.avatar.path}`
-                                              : import.meta.env
-                                                    .VITE_APP_AVATAR_DEFAULT
+                                            : returnUrl({ user })
                                     }
                                     alt="avatar"
                                 />

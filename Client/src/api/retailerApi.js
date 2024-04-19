@@ -33,9 +33,11 @@ export const updateRetailerApi = async (values) => {
     });
 };
 
-export const getRequestsRetailerApi = async () => {
+export const getRequestsRetailerApi = async (params) => {
     try {
-        const res = await api.get('admin/retailer/requests');
+        const res = await api.get('admin/retailer/requests', {
+            params: params
+        });
         return res.data;
     } catch (error) {
         return error.response.data.message;

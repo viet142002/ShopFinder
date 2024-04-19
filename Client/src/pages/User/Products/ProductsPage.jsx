@@ -36,13 +36,13 @@ function ProductsPage() {
     return (
         <>
             <Layout.Header className="flex items-center justify-center bg-transparent">
-                <h1 className="text-center text-xl">
+                <h1 className="text-center text-xl font-bold">
                     Danh sách sản phẩm của cửa hàng
                 </h1>
             </Layout.Header>
 
             {state?.type === 'Information' && (
-                <div className="">
+                <div className="flex justify-center p-4">
                     <Link to={'./add-product'}>
                         <Button type="primary" className="bg-blue-500">
                             Đóng góp
@@ -60,7 +60,9 @@ function ProductsPage() {
                     ))}
                 </div>
             ) : (
-                <h1>No products found</h1>
+                <h2 className="text-center text-lg font-medium">
+                    Không có sản phẩm nào trong cửa hàng
+                </h2>
             )}
         </>
     );
