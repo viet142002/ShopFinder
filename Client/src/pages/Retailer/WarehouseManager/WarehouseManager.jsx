@@ -1,6 +1,6 @@
 import { Table, Tag } from 'antd';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 
 import ActionImportExportProducts from '@components/ActionImportExportProducts/ActionImportExportProducts.component';
 
@@ -48,22 +48,26 @@ const cols = [
 
 function WarehouseManager({ isImport = true }) {
     const [data, setData] = useState([]);
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
-        getWarehousesApi().then((res) => {
+        getWarehousesApi({
+            fromDate: searchParams.get('fromDate'),
+            toDate: searchParams.get('toDate')
+        }).then((res) => {
             setData(res.warehouseReceipts);
         });
-    }, []);
+    }, [searchParams]);
     return (
         <section className="space-y-2 px-4 py-2">
-            <div className="mb-2 flex items-center justify-center bg-white">
-                <h1 className="text-xl font-semibold">
+            <div className="mb-2 p-4">
+                <h1 className="text-center text-xl font-bold">
                     Quản lý {isImport ? 'nhập' : 'xuất'}
                 </h1>
             </div>
             <div className="grid grid-cols-1 gap-y-4 md:grid-cols-4 md:gap-4">
-                <section className="bg-white md:col-span-1">
-                    <ActionImportExportProducts isImport={isImport} />
+                <section className="md:col-span-1">
+                    <ActionImportExportProducts />
                 </section>
                 <section className="col-span-3">
                     <Table

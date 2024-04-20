@@ -42,8 +42,13 @@ const warehouseReceiptController = {
     async getWarehouseReceipts(req, res) {
         try {
             const { _id } = req.user;
+            const { fromDate, toDate } = req.query;
             const warehouseReceipts = await WarehouseReceipt.find({
                 retailer: _id,
+                createdAt: {
+                    $gte: new Date(fromDate),
+                    $lt: new Date(toDate),
+                },
             }).populate({
                 path: 'products.product',
                 select: 'name price images',

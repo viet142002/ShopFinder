@@ -1,24 +1,29 @@
 import { Button, Form, DatePicker, Divider } from 'antd';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
-function ActionImportExportProducts({ isImport }) {
+function ActionImportExportProducts() {
     const navigate = useNavigate();
+    const [, setSearchParams] = useSearchParams();
 
     const onFinish = (values) => {
-        console.log('Received values of form: ', values);
+        const data = {
+            fromDate: new Date(values.date[0]).toISOString(),
+            toDate: new Date(values.date[1]).toISOString()
+        };
+        setSearchParams(data);
     };
 
     return (
-        <div className="space-y-3 flex justify-center flex-col p-3">
+        <div className="flex flex-col justify-center space-y-3 rounded-md bg-white p-3 shadow-card">
             <Button onClick={() => navigate('./add-warehouse')}>
-                Tạo phiếu {isImport ? 'nhập' : 'xuất'}
+                Tạo phiếu nhập
             </Button>
             <Divider>OR</Divider>
             <Form
                 layout="inline"
                 onFinish={onFinish}
-                className="flex justify-center w-full gap-3"
+                className="flex w-full justify-center gap-3"
             >
                 <Form.Item name="date" className="!m-0">
                     <DatePicker.RangePicker />
