@@ -7,22 +7,21 @@ const warehouseReceiptController = {
         try {
             const { note, type, products } = req.body;
             const retailer = req.user._id;
-
             let productsArray = [];
-
+            let totalPrice = 0;
             for (let i = 0; i < products.length; i++) {
                 productsArray.push({
                     product: products[i]._id,
                     quantity: products[i].amount,
                     price_import: products[i].price_import,
                 });
+                totalPrice += products[i].price_import * products[i].amount;
             }
-
             await productController.addQuantity(productsArray);
-
             const warehouseReceipt = new WarehouseReceipt({
                 note,
                 type,
+                total_price: totalPrice,
                 products: productsArray,
                 retailer,
             });
@@ -46,8 +45,8 @@ const warehouseReceiptController = {
             const warehouseReceipts = await WarehouseReceipt.find({
                 retailer: _id,
                 createdAt: {
-                    $gte: new Date(fromDate),
-                    $lt: new Date(toDate),
+                    $gte: new Date(fromDate || '2020-01-01'),
+                    $lt: new Date(toDate || new Date()),
                 },
             }).populate({
                 path: 'products.product',

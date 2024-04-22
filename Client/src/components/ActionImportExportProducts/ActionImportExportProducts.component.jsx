@@ -7,6 +7,10 @@ function ActionImportExportProducts() {
     const [, setSearchParams] = useSearchParams();
 
     const onFinish = (values) => {
+        if (!values.date) {
+            setSearchParams({});
+            return;
+        }
         const data = {
             fromDate: new Date(values.date[0]).toISOString(),
             toDate: new Date(values.date[1]).toISOString()

@@ -17,6 +17,10 @@ const warehouseReceiptSchema = new mongoose.Schema(
                 ref: 'Order',
             },
         ],
+        total_price: {
+            type: Number,
+            required: true,
+        },
         products: [
             {
                 product: {

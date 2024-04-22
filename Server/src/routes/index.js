@@ -5,6 +5,8 @@ const retailerRouter = require('./retailer');
 const adminRouter = require('./admin');
 const userRouter = require('./user');
 
+const warehouseReceiptRouter = require('../controllers/warehouseReceiptController');
+
 const router = express.Router();
 
 router.use('/auth', authRouter);
