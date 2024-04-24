@@ -9,7 +9,6 @@ import { formatDate } from '@utils/formatDate';
 import { formatPrice } from '@utils/formatPrice';
 
 function OrderDetailItem({ order, children }) {
-    console.log('🚀 ~ OrderDetailItem ~ order:', order);
     return (
         <div className="m-4 md:mx-10 md:mt-10">
             <div className="grid gap-4 md:grid-cols-2">
@@ -53,9 +52,6 @@ function OrderDetailItem({ order, children }) {
                                 {order.paymentMethod}
                             </span>
                         </p>
-                        {/* bank_code : "NCB" bank_tran_no : "VNP14384121" card_type
-                        : "ATM" pay_date : 20240419095002 price : 5310000
-                        response_code : "00" transaction_no : "14384121" */}
                         {order?.detailPayment && (
                             <div>
                                 <p>Chi tiết thanh toán: </p>
@@ -187,7 +183,7 @@ function OrderDetailItem({ order, children }) {
                                 {formatPrice(order.totalPrice)}
                             </span>
                         </p>
-                        <div className="mt-2">{children}</div>
+                        <div className="mt-4">{children}</div>
                     </div>
                 </div>
             </div>

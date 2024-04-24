@@ -29,10 +29,10 @@ function OrderProductItem({ product, discount, price, quantity }) {
                         <h3 className="text-lg font-medium">{product.name}</h3>
                         <div>
                             <p className="text-lg">x{quantity}</p>
-                            <p className="text-lg text-red-600">
+                            <p className="text-lg">
                                 {discount > 0 ? (
                                     <>
-                                        <span>
+                                        <span className="text-green-600">
                                             {(
                                                 price *
                                                 (1 - discount / 100)
@@ -41,7 +41,7 @@ function OrderProductItem({ product, discount, price, quantity }) {
                                                 currency: 'VND'
                                             })}
                                         </span>
-                                        <span className="ml-2 text-sm line-through">
+                                        <span className="ml-2 text-sm text-red-500 line-through">
                                             {price.toLocaleString('vi-VN', {
                                                 style: 'currency',
                                                 currency: 'VND'
