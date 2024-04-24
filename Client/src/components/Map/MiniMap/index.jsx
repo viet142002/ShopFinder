@@ -2,7 +2,7 @@ import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { memo, useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
 
-function MiniMap({ coordinates }) {
+function MiniMap({ coordinates, children }) {
     const [isShow, setIsShow] = useState(false);
     useEffect(() => {
         setIsShow(true);
@@ -18,6 +18,7 @@ function MiniMap({ coordinates }) {
                 >
                     <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
                     <Marker position={[coordinates.lat, coordinates.lng]} />
+                    {children}
                 </MapContainer>
             )}
         </>
