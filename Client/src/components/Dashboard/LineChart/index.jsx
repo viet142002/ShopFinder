@@ -1,3 +1,4 @@
+import { daysInMonth } from '@utils/daysInMonth';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -8,6 +9,7 @@ import {
     Tooltip,
     Legend
 } from 'chart.js';
+import { memo } from 'react';
 import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
@@ -50,34 +52,76 @@ const options = {
     }
 };
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-
-const data = {
-    labels,
-    datasets: [
-        {
-            label: 'Bán',
-            data: [65, 59, 80, 81, 56, 55, 40],
-            borderColor: 'rgb(255, 99, 132)',
-            backgroundColor: 'rgba(255, 99, 132, 0.5)',
-            yAxisID: 'y'
-        },
-        {
-            label: 'Nhập',
-            data: [28, 48, 40, 19, 86, 27, 90],
-            borderColor: 'rgb(53, 162, 235)',
-            backgroundColor: 'rgba(53, 162, 235, 0.5)',
-            yAxisID: 'y1'
+export const LineChart = memo(function LineChart({
+    time = 'year',
+    dataForChart
+}) {
+    let data = null;
+    if (dataForChart) {
+        if (time === 'year') {
+            const labelsYear = Array.from({ length: 12 }, (_, i) => i + 1);
+            data = {
+                labels: labelsYear,
+                datasets: [
+                    {
+                        label: 'Bán',
+                        data: dataForChart.sell,
+                        backgroundColor: 'rgba(20, 99, 250, .5)',
+                        borderColor: 'rgba(20, 99, 250, .2)'
+                    },
+                    {
+                        label: 'Nhập',
+                        data: dataForChart.import,
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)'
+                    }
+                ]
+            };
         }
-    ]
-};
-
-function LineChart() {
+        if (time === 'month') {
+            const labelsMonth = Array.from(
+                { length: daysInMonth() },
+                (_, i) => i + 1
+            );
+            data = {
+                labels: labelsMonth,
+                datasets: [
+                    {
+                        label: 'Bán',
+                        data: dataForChart.sell,
+                        backgroundColor: 'rgba(20, 99, 250, .5)',
+                        borderColor: 'rgba(20, 99, 250, .2)'
+                    },
+                    {
+                        label: 'Nhập',
+                        data: dataForChart.import,
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)'
+                    }
+                ]
+            };
+        }
+        if (time === 'week') {
+            const labelsYear = Array.from({ length: 7 }, (_, i) => i + 1);
+            data = {
+                labels: labelsYear,
+                datasets: [
+                    {
+                        label: 'Bán',
+                        data: dataForChart.sell,
+                        backgroundColor: 'rgba(20, 99, 250, .5)',
+                        borderColor: 'rgba(20, 99, 250, .2)'
+                    },
+                    {
+                        label: 'Nhập',
+                        data: dataForChart.import,
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)'
+                    }
+                ]
+            };
+        }
+    }
     return (
-        <div className="shadow-card rounded-xl bg-white p-4">
-            <Line options={options} data={data} />
+        <div className="rounded-xl bg-white p-4 shadow-card">
+            {data && dataForChart && <Line options={options} data={data} />}
         </div>
     );
-}
-
-export default LineChart;
+});

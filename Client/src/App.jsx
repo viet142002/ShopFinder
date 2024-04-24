@@ -38,6 +38,7 @@ import DashboardPage from './pages/Admin/DashboardPage';
 import ReportPage from './pages/Admin/ReportPage';
 // #endregion
 // #region retailer page
+import AnalystRevenue from '@pages/Retailer/Analyst/AnalystRevenue';
 import DashboardRetailer from './pages/Retailer/DashboardRetailer';
 import WarehouseManager from './pages/Retailer/WarehouseManager/WarehouseManager';
 import ManageOrder from './pages/Retailer/ManageOrder';
@@ -243,6 +244,10 @@ function App() {
                             index
                             path="dashboard"
                             element={<DashboardRetailer />}
+                        />
+                        <Route
+                            path="analyst/:title"
+                            element={<AnalystRevenue />}
                         />
                         <Route path="product" element={<ManageProduct />} />
                         <Route

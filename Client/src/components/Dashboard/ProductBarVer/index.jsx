@@ -7,6 +7,7 @@ import {
     Tooltip,
     Legend
 } from 'chart.js';
+import { memo } from 'react';
 
 ChartJS.register(
     CategoryScale,
@@ -56,12 +57,23 @@ const data = {
 
 import { Bar } from 'react-chartjs-2';
 
-function ProductBarVer() {
+export const ProductBarVer = memo(function ProductBarVer({ dataChart }) {
+    let data = null;
+    if (dataChart) {
+        data = {
+            labels: dataChart.map((item) => item.product.name),
+            datasets: [
+                {
+                    label: 'Sản phẩm bán chạy',
+                    data: dataChart.map((item) => item.totalQuantity),
+                    backgroundColor: 'rgba(0, 143, 251, 0.6)'
+                }
+            ]
+        };
+    }
     return (
-        <div className="shadow-card rounded-xl bg-white p-4">
-            <Bar data={data} options={options} />
+        <div className="rounded-xl bg-white p-4 shadow-card">
+            {dataChart && <Bar data={data} options={options} />}
         </div>
     );
-}
-
-export default ProductBarVer;
+});

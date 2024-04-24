@@ -6,7 +6,7 @@ const warehouseReceiptController = {
     async createWarehouseReceipt(req, res) {
         try {
             const { note, type, products } = req.body;
-            const retailer = req.user._id;
+            const { retailer } = req.user;
             let productsArray = [];
             let totalPrice = 0;
             for (let i = 0; i < products.length; i++) {
@@ -36,14 +36,13 @@ const warehouseReceiptController = {
             });
         }
     },
-
     // Get all warehouse receipts
     async getWarehouseReceipts(req, res) {
         try {
-            const { _id } = req.user;
+            const { retailer: retailerId } = req.user;
             const { fromDate, toDate } = req.query;
             const warehouseReceipts = await WarehouseReceipt.find({
-                retailer: _id,
+                retailer: retailerId,
                 createdAt: {
                     $gte: new Date(fromDate || '2020-01-01'),
                     $lt: new Date(toDate || new Date()),
@@ -66,7 +65,6 @@ const warehouseReceiptController = {
             });
         }
     },
-
     // Get a warehouse receipt by ID
     async getWarehouseReceipt(req, res) {
         try {

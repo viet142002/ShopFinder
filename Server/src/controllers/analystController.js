@@ -4,13 +4,21 @@ const Product = require('../Models/productModel');
 const Rate = require('../Models/rateModel');
 const WarehouseReceipt = require('../Models/warehouseReceiptModel');
 
-const { startOfWeek, startOfMonth, startOfYear } = require('date-fns');
+const {
+    startOfWeek,
+    startOfYear,
+    getDaysInMonth,
+    endOfYear,
+    startOfMonth,
+    endOfMonth,
+    endOfWeek,
+} = require('date-fns');
 
 const analystController = {
     // Get analyst overview
     getAnalystOverview: async (req, res) => {
         try {
-            const { retailerId } = req.params;
+            const { retailer: retailerId } = req.user;
             // only get in month
             const orders = await Order.find({
                 distributor: retailerId,
@@ -45,14 +53,16 @@ const analystController = {
     // Get revenue follow week or month or year
     getRevenue: async (req, res) => {
         try {
-            const retailerId = req.params.retailerId;
-            const { time = 'year' } = req.query;
+            const { retailer: retailerId } = req.user;
+            const { time = 'year', date = null } = req.query;
+            const dateQuery = new Date(date ? date : new Date());
             if (time !== 'month' && time !== 'year' && time !== 'week') {
                 return res.status(400).json({
                     message: 'Invalid time. Time must be month, year or week',
                 });
             }
             let revenue = [];
+            let revenueFormatForChart = [];
             if (time === 'year') {
                 revenue = await Order.aggregate([
                     {
@@ -60,7 +70,8 @@ const analystController = {
                             distributor: new ObjectId(retailerId),
                             status: 'success',
                             createdAt: {
-                                $gte: startOfYear(new Date()),
+                                $gte: startOfYear(dateQuery),
+                                $lte: endOfYear(dateQuery),
                             },
                         },
                     },
@@ -82,6 +93,10 @@ const analystController = {
                         },
                     },
                 ]);
+                revenueFormatForChart = new Array(12).fill(0).map((_, i) => {
+                    const month = revenue.find(r => r._id === i + 1);
+                    return month ? month.totalRevenue : 0;
+                });
             }
             if (time === 'month') {
                 revenue = await Order.aggregate([
@@ -90,7 +105,8 @@ const analystController = {
                             distributor: new ObjectId(retailerId),
                             status: 'success',
                             createdAt: {
-                                $gte: startOfMonth(new Date()),
+                                $gte: startOfMonth(dateQuery),
+                                $lte: endOfMonth(dateQuery),
                             },
                         },
                     },
@@ -112,6 +128,14 @@ const analystController = {
                         },
                     },
                 ]);
+                revenueFormatForChart = new Array(
+                    getDaysInMonth(new Date(date ? date : new Date()))
+                )
+                    .fill(0)
+                    .map((_, i) => {
+                        const day = revenue.find(r => r._id === i + 1);
+                        return day ? day.totalRevenue : 0;
+                    });
             }
             if (time === 'week') {
                 revenue = await Order.aggregate([
@@ -120,7 +144,8 @@ const analystController = {
                             distributor: new ObjectId(retailerId),
                             status: 'success',
                             createdAt: {
-                                $gte: startOfWeek(new Date()),
+                                $gte: startOfWeek(dateQuery),
+                                $lte: endOfWeek(dateQuery),
                             },
                         },
                     },
@@ -142,8 +167,13 @@ const analystController = {
                         },
                     },
                 ]);
+                revenueFormatForChart = new Array(7).fill(0).map((_, i) => {
+                    const day = revenue.find(r => r._id === i + 1);
+                    return day ? day.totalRevenue : 0;
+                });
             }
-            res.status(200).json({ revenue });
+
+            res.status(200).json({ revenue, revenueFormatForChart });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
@@ -151,18 +181,21 @@ const analystController = {
     // Get price import follow month or year or week
     getPriceImport: async (req, res) => {
         try {
-            const retailerId = req.params.retailerId;
-            const time = req.query.time;
-            let price_import;
+            const { retailer: retailerId } = req.user;
+            const { time, date } = req.query;
+            const dateQuery = new Date(date ? date : new Date());
+            let price_import = [];
+            let price_import_format = [];
 
             if (time === 'year') {
                 price_import = await WarehouseReceipt.aggregate([
                     {
                         $match: {
-                            retailer: new ObjectId('65faa94bbd61e0c9c1d78b4e'),
+                            retailer: new ObjectId(retailerId),
                             type: 'import',
                             createdAt: {
-                                $gte: startOfYear(new Date()),
+                                $gte: startOfYear(dateQuery),
+                                $lte: endOfYear(dateQuery),
                             },
                         },
                     },
@@ -188,15 +221,21 @@ const analystController = {
                         },
                     },
                 ]);
+
+                price_import_format = new Array(12).fill(0).map((_, i) => {
+                    const month = price_import.find(r => r._id === i + 1);
+                    return month ? month.total_price : 0;
+                });
             }
             if (time === 'month') {
                 price_import = await WarehouseReceipt.aggregate([
                     {
                         $match: {
-                            retailer: new ObjectId('65faa94bbd61e0c9c1d78b4e'),
+                            retailer: new ObjectId(retailerId),
                             type: 'import',
                             createdAt: {
-                                $gte: startOfMonth(new Date()),
+                                $gte: startOfMonth(dateQuery),
+                                $lte: endOfMonth(dateQuery),
                             },
                         },
                     },
@@ -222,15 +261,23 @@ const analystController = {
                         },
                     },
                 ]);
+
+                price_import_format = new Array(getDaysInMonth(dateQuery))
+                    .fill(0)
+                    .map((_, i) => {
+                        const day = price_import.find(r => r._id === i + 1);
+                        return day ? day.total_price : 0;
+                    });
             }
             if (time === 'week') {
                 price_import = await WarehouseReceipt.aggregate([
                     {
                         $match: {
-                            retailer: new ObjectId('65faa94bbd61e0c9c1d78b4e'),
+                            retailer: new ObjectId(retailerId),
                             type: 'import',
                             createdAt: {
-                                $gte: startOfWeek(new Date()),
+                                $gte: startOfWeek(dateQuery),
+                                $lte: endOfWeek(dateQuery),
                             },
                         },
                     },
@@ -256,8 +303,12 @@ const analystController = {
                         },
                     },
                 ]);
+                price_import_format = new Array(7).fill(0).map((_, i) => {
+                    const day = price_import.find(r => r._id === i + 1);
+                    return day ? day.total_price : 0;
+                });
             }
-            res.status(200).json({ price_import });
+            res.status(200).json({ price_import, price_import_format });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }
@@ -265,9 +316,9 @@ const analystController = {
     // Get top 5 product have the most quantity sold follow month or year or week
     getTopProduct: async (req, res) => {
         try {
-            const retailerId = req.params.retailerId;
-            console.log('🚀 ~ getTopProduct: ~ retailerId:', retailerId);
-            const { time = 'year' } = req.query;
+            const { retailer: retailerId } = req.user;
+            const { time = 'year', date } = req.query;
+            const dateQuery = new Date(date ? date : new Date());
             const top_products = await Order.aggregate([
                 {
                     $match: {
@@ -276,10 +327,16 @@ const analystController = {
                         createdAt: {
                             $gte:
                                 time === 'year'
-                                    ? startOfYear(new Date())
+                                    ? startOfYear(dateQuery)
                                     : time === 'month'
-                                    ? startOfMonth(new Date())
-                                    : startOfWeek(new Date()),
+                                    ? startOfMonth(dateQuery)
+                                    : startOfWeek(dateQuery),
+                            $lte:
+                                time === 'year'
+                                    ? endOfYear(dateQuery)
+                                    : time === 'month'
+                                    ? endOfMonth(dateQuery)
+                                    : endOfWeek(dateQuery),
                         },
                     },
                 },
@@ -330,7 +387,6 @@ const analystController = {
                     },
                 },
             ]);
-
             return res.status(200).json({ top_products });
         } catch (error) {
             res.status(500).json({ message: error.message });
@@ -339,8 +395,9 @@ const analystController = {
     // Get top 5 customer have the most total price follow month or year or week
     getTopCustomer: async (req, res) => {
         try {
-            const retailerId = req.params.retailerId;
-            const time = req.query.time;
+            const { retailer: retailerId } = req.user;
+            const { time, date } = req.query;
+            const dateQuery = new Date(date ? date : new Date());
             const topCustomers = await Order.aggregate([
                 {
                     $match: {
@@ -349,10 +406,16 @@ const analystController = {
                         createdAt: {
                             $gte:
                                 time === 'year'
-                                    ? startOfYear(new Date())
+                                    ? startOfYear(dateQuery)
                                     : time === 'month'
-                                    ? startOfMonth(new Date())
-                                    : startOfWeek(new Date()),
+                                    ? startOfMonth(dateQuery)
+                                    : startOfWeek(dateQuery),
+                            $lte:
+                                time === 'year'
+                                    ? endOfYear(dateQuery)
+                                    : time === 'month'
+                                    ? endOfMonth(dateQuery)
+                                    : endOfWeek(dateQuery),
                         },
                     },
                 },

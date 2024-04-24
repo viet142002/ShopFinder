@@ -6,6 +6,9 @@ const instantApi = axios.create({
 });
 
 instantApi.interceptors.request.use((config) => {
+    if (config.url.includes('login')) {
+        localStorage.removeItem('expired');
+    }
     const token = localStorage.getItem('token');
     if (token) {
         config.headers.authorization = token;
@@ -18,10 +21,13 @@ instantApi.interceptors.response.use(
         return response;
     },
     (error) => {
+        const expired = localStorage.getItem('expired');
         console.error('🚀 ~ error:', error?.response);
         if (error.response?.status === 401) {
-            alert('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại!!!');
+            if (!expired)
+                alert('Phiên đăng nhập hết hạn, vui lòng đăng nhập lại!!!');
             localStorage.removeItem('token');
+            localStorage.setItem('expired', true);
             window.location.href = `/login?redirect=${window.location.pathname}`;
         }
         return Promise.reject(error);

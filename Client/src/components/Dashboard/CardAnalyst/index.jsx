@@ -1,12 +1,12 @@
 import { HeartFilled } from '@ant-design/icons';
 
-function CardAnalyst({
+export function CardAnalyst({
     icon = <HeartFilled className="text-2xl text-white" />,
-    title = 'Analyst'
+    title = 'Analyst',
+    value = 0
 }) {
-    const value = 1000;
     return (
-        <div className="shadow-card flex items-center rounded-xl bg-white p-4">
+        <div className="flex items-center rounded-xl bg-white p-4 shadow-card">
             <div className="flex-1">
                 <p>{title}</p>
                 <p className="text-4xl font-medium">{value.toLocaleString()}</p>
@@ -17,5 +17,3 @@ function CardAnalyst({
         </div>
     );
 }
-
-export default CardAnalyst;
