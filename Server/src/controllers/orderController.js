@@ -262,7 +262,7 @@ const orderController = {
                         },
                     },
                 })
-                .populate('shippingAddress');
+                .populate('shippingAddress detailPayment');
 
             return res.status(200).json(order);
         } catch (error) {
