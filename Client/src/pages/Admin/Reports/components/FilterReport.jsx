@@ -5,9 +5,9 @@ import { useSearchParams } from 'react-router-dom';
 function FilterFollowStatus() {
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const handleChange = (value) => {
+    const handleChange = (key, value) => {
         setSearchParams(prev => {
-            prev.set('reason', value);
+            prev.set(key, value);
             return prev;
         });
     };
@@ -29,7 +29,7 @@ function FilterFollowStatus() {
                 <Radio.Button value="pending">Chờ xử lý</Radio.Button>
                 <Radio.Button value="processed">Đã xử lý</Radio.Button>
             </Radio.Group>
-            <Select onChange={handleChange} className='w-40' defaultValue='all'>
+            <Select onChange={(val) => handleChange('reason', val)} className='w-40' defaultValue='all'>
                 <Select.Option value='all'>Tất cả</Select.Option>
                 {
                     typeReport.map((item) => (
@@ -39,6 +39,15 @@ function FilterFollowStatus() {
                     ))
                 }
             </Select>
+            <Select onChange={(value) => handleChange('type', value)} className='w-40' defaultValue='all'>
+                <Select.Option value='all'>Tất cả</Select.Option>
+                <Select.Option value='Product'>Sản phẩm</Select.Option>
+                <Select.Option value='Rate'>Đánh giá</Select.Option>
+                <Select.Option value='Retailer'>Cửa hàng</Select.Option>
+                <Select.Option value='Information'>Cửa hàng cộng đồng</Select.Option>
+
+            </Select>
+
         </div>
     );
 }

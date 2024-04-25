@@ -11,11 +11,12 @@ function ReportPage() {
     const [searchParams] = useSearchParams();
     const status = searchParams.get('status') || 'all';
     const reason = searchParams.get('reason') || 'all';
+    const type = searchParams.get('type') || 'all';
     useEffect(() => {
-        getReportsApi({ status, reason }).then((res) => {
+        getReportsApi({ status, reason, type }).then((res) => {
             setReports(res.data.reports);
         });
-    }, [status, reason]);
+    }, [status, reason, type]);
     return (
         <section className="mx-auto w-[90%]">
             <h1 className="p-6 text-center text-lg font-medium">Các báo cáo</h1>
@@ -33,10 +34,22 @@ function ReportPage() {
                     title="Đến"
                     dataIndex="to"
                     key="to"
-                    render={(to) => {
-                        return to?.toType === 'Retailer'
-                            ? to?.to?.name
-                            : `${to?.to?.firstname} ${to?.to?.lastname}`;
+                    render={(to, record) => {
+                        let title = '';
+                        if (record?.toType === 'Rate') {
+                            title = record?.to?.name || 'Đánh giá';
+                        }
+                        if (record?.toType === 'Retailer') {
+                            title = record?.to?.name || 'Cửa hàng';
+                        }
+                        if (record?.toType === 'Product') {
+                            title = record?.to?.name || 'Sản phẩm';
+                        }
+                        if (record?.toType === 'Information') {
+                            title = record?.to?.name || 'Cửa hàng cộng đồng';
+                        }
+
+                        return title;
                     }}
                 />
                 <Table.Column title="Lý do" dataIndex="reason" key="reason" />

@@ -3,15 +3,16 @@ const Report = require('../Models/reportModel');
 const reportController = {
     getReports: async (req, res) => {
         try {
-            const { status, limit = 20, skip = 0, reason } = req.query;
+            const { status, limit = 20, skip = 0, reason, type } = req.query;
             const query = {};
 
-            if (status)
+            if (status) {
                 query.status =
                     status === 'all'
                         ? { $in: ['pending', 'processed'] }
                         : status;
-            if (reason)
+            }
+            if (reason) {
                 query.reason =
                     reason === 'all'
                         ? {
@@ -26,6 +27,20 @@ const reportController = {
                               ],
                           }
                         : reason;
+            }
+            if (type) {
+                query.toType =
+                    type === 'all'
+                        ? {
+                              $in: [
+                                  'Rate',
+                                  'Retailer',
+                                  'Product',
+                                  'Information',
+                              ],
+                          }
+                        : type;
+            }
 
             const reports = await Report.find(query)
                 .limit(parseInt(limit, 10))
