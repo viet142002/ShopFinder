@@ -188,7 +188,7 @@ function App() {
                         />
                         <Route path="/store/:id" element={<ProductsPage />} />
                         <Route
-                            path="/store/:id/edit-product/:productId"
+                            path="/store/:storeId/edit-product/:productId"
                             element={
                                 <ProtectRoute>
                                     <AddAndEditProductByUser />
@@ -196,7 +196,7 @@ function App() {
                             }
                         />
                         <Route
-                            path="/store/:id/add-product"
+                            path="/store/:storeId/add-product"
                             element={
                                 <ProtectRoute>
                                     <AddAndEditProductByUser />

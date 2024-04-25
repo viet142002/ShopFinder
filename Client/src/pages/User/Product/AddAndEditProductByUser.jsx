@@ -6,7 +6,7 @@ import { handleFetch } from '@utils/expression';
 import {
     createProductByUserApi,
     getProductByIdApi,
-    updateProductByIdApi
+    updateProductByUserApi
 } from '@api/productApi';
 
 import FormProduct from '@components/Form/FormProduct.component';
@@ -30,7 +30,7 @@ const formatForm = (values, images = [], deleteImages = []) => {
 };
 
 function AddAndEditProductByUser() {
-    const { productId, id } = useParams();
+    const { productId, storeId } = useParams();
     const isAddMode = !productId;
     const [newImages, setNewImages] = useState([]);
     const [deleteImages, setDeleteImages] = useState([]);
@@ -49,7 +49,7 @@ function AddAndEditProductByUser() {
         const formData = formatForm(
             {
                 ...values,
-                distributor: id
+                distributor: storeId
             },
             newImages,
             deleteImages
@@ -59,7 +59,7 @@ function AddAndEditProductByUser() {
 
     const EditProduct = async (values) => {
         const formData = formatForm(values, newImages, deleteImages);
-        await handleFetch(() => updateProductByIdApi(productId, formData));
+        await handleFetch(() => updateProductByUserApi(productId, formData));
     };
 
     const onFinish = async (values) => {

@@ -74,58 +74,6 @@ const productController = {
             });
         }
     },
-    // create product by user share product
-    createProductByUser: async (req, res) => {
-        try {
-            // distributor is information id
-            const { name, price, description, distributor } = req.body;
-
-            const files = req.files;
-            const user = req.user._id;
-
-            if (!name || !price) {
-                return res.status(400).json({
-                    message: 'Missing required fields',
-                });
-            }
-
-            if (price < 0) {
-                return res.status(400).json({
-                    message: 'Invalid price',
-                });
-            }
-
-            if (files.length < 1) {
-                return res.status(400).json({
-                    message: 'Missing images',
-                });
-            }
-
-            const images = await imageController.createImage(files);
-
-            const newProduct = new Product({
-                status: 'only-display',
-                distributor,
-                distributorType: 'Information',
-                name,
-                price,
-                description,
-                images,
-                userCreate: user,
-            });
-
-            await newProduct.save();
-
-            return res.status(200).json({
-                newProduct,
-                message: 'Product created successfully',
-            });
-        } catch (error) {
-            return res.status(500).json({
-                message: error.message,
-            });
-        }
-    },
     // update detail product by retailer
     updateProduct: async (req, res) => {
         try {
@@ -188,7 +136,58 @@ const productController = {
             });
         }
     },
+    // create product by user share product
+    createProductByUser: async (req, res) => {
+        try {
+            // distributor is information id
+            const { name, price, description, distributor } = req.body;
 
+            const files = req.files;
+            const user = req.user._id;
+
+            if (!name || !price) {
+                return res.status(400).json({
+                    message: 'Missing required fields',
+                });
+            }
+
+            if (price < 0) {
+                return res.status(400).json({
+                    message: 'Invalid price',
+                });
+            }
+
+            if (files.length < 1) {
+                return res.status(400).json({
+                    message: 'Missing images',
+                });
+            }
+
+            const images = await imageController.createImage(files);
+
+            const newProduct = new Product({
+                status: 'only-display',
+                distributor,
+                distributorType: 'Information',
+                name,
+                price,
+                description,
+                images,
+                userCreate: user,
+            });
+
+            await newProduct.save();
+
+            return res.status(200).json({
+                newProduct,
+                message: 'Product created successfully',
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message,
+            });
+        }
+    },
     // update detail product by user share product
     updateProductByUser: async (req, res) => {
         try {

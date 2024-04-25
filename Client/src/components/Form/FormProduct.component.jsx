@@ -10,7 +10,6 @@ function FormProduct({
     setNewImages,
     setDeleteImages,
     retailer = {}
-    // createdByUser = false
 }) {
     return (
         <>

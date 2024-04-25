@@ -116,6 +116,7 @@ const translateError = (msg) => {
 const handleFetch = async (callback) => {
     try {
         const res = await callback();
+        console.log('🚀 ~ handleFetch ~ res:', res);
 
         if (res?.data?.message) success(translateSuccess(res.data.message));
 

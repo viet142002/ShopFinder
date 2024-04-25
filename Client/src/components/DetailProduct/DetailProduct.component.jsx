@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
 import { Carousel, Image, Button, InputNumber, Dropdown, Space } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
@@ -12,7 +12,8 @@ import ModalReport from '@components/Modal/ModalReport/ModalReport.component';
 import { useAuth } from '@hooks/useAuth';
 
 function DetailProduct() {
-    const { productId } = useParams();
+    const { productId, id: storeId } = useParams();
+    const navigate = useNavigate();
     const { data: user } = useAuth();
     const [product, setProduct] = useState({});
     const [loading, setLoading] = useState(true);
@@ -26,7 +27,7 @@ function DetailProduct() {
                 setOpenReport(true);
                 break;
             case '2':
-                console.log('Chỉnh sửa sản phẩm');
+                navigate(`/store/${storeId}/edit-product/${productId}`)
                 break;
             default:
                 break;
