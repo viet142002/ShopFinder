@@ -1,10 +1,9 @@
-// import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 
-import { getCartApi } from '../../../api/cartApi';
+import { getCartApi } from '@api/cartApi';
 
-import CartItem from '../../../components/CartItem/CartItem.component';
-import CartTotal from '../../../components/CartTotal/CartTotal.component';
+import CartItem from '@components/CartItem/CartItem.component';
+import CartTotal from '@components/CartTotal/CartTotal.component';
 
 function CartPage() {
     const [cart, setCart] = useState([]);
@@ -17,7 +16,7 @@ function CartPage() {
     return (
         <main className="mx-2 md:mx-0">
             <div className="mx-auto mt-10 grid gap-4 md:w-[80%] md:grid-cols-6">
-                <section className="p-2 shadow-lg md:col-span-4">
+                <section className="p-2 shadow-card md:col-span-4">
                     {cart.length > 0 ? (
                         cart.map((item) => {
                             return (
@@ -36,7 +35,7 @@ function CartPage() {
                     )}
                 </section>
                 <section className="md:col-span-2">
-                    <div className="p-2 shadow-lg">
+                    <div className="p-2 shadow-card">
                         <CartTotal cart={cart} checked={checked} />
                     </div>
                 </section>

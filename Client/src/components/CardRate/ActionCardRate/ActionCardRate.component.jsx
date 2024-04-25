@@ -6,11 +6,12 @@ import {
 } from '@ant-design/icons';
 import { Button } from 'antd';
 import { memo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import { likeRateApi, dislikeRateApi } from '../../../api/RateApi';
 
 import socket from '../../../socket';
+import { useAuth } from '@hooks';
 
 const ActionCardRate = memo(function ActionCardRate({
     likes,
@@ -19,9 +20,7 @@ const ActionCardRate = memo(function ActionCardRate({
     userId
 }) {
     const dispatch = useDispatch();
-    const { firstname, lastname, avatar } = useSelector(
-        (state) => state.user.data
-    );
+    const { data: { firstname, lastname, avatar } } = useAuth();
 
     const handleLike = () => {
         likeRateApi(_id).then((data) => {

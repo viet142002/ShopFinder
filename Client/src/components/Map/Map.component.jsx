@@ -11,8 +11,7 @@ import Routing from '../Routing/Routing.component';
 import FocusCurrent from '../FocusCurrent/FocusCurrent.component';
 
 function Map() {
-    const p = useSelector((state) => state.routing.fixedLocation);
-    const showRouting = useSelector((state) => state.routing.showRouting);
+    const { fixedLocation: p, showRouting } = useSelector((state) => state.routing);
 
     return (
         <>

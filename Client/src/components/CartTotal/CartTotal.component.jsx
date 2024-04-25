@@ -5,9 +5,8 @@ import { Button } from 'antd';
 import { calculatePrice } from '../../utils/calculatePrice';
 function CartTotal({ cart, checked }) {
     const totalPrice = useMemo(() => calculatePrice(cart), [cart]);
-
     return (
-        <div>
+        <>
             <h2>Tổng cộng</h2>
             <h3>
                 Thành tiền:
@@ -44,7 +43,8 @@ function CartTotal({ cart, checked }) {
                     </Button>
                 </Link>
             </div>
-        </div>
+        </>
+
     );
 }
 

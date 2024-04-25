@@ -15,13 +15,14 @@ import {
     setShowRouting
 } from '@redux/routingSlice';
 import ModalReport from '@components/Modal/ModalReport/ModalReport.component';
+import { useAuth } from '@hooks/useAuth';
 
 function Actions({ info }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [openReport, setOpenReport] = useState(false);
     const showRouting = useSelector((state) => state.routing.showRouting);
-    const { _id } = useSelector((state) => state.user.data);
+    const { data: { _id } } = useAuth();
 
     const handleClose = () => {
         dispatch(unsetMarkSelect());

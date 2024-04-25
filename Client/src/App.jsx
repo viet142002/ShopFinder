@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect, Suspense } from 'react';
 
 // #region import layout and something
@@ -48,16 +48,17 @@ import ManageProduct from './pages/Retailer/Product/ManageProduct';
 import AddAndEditProduct from './pages/Retailer/Product/AddAndEditProduct';
 import ManagerProductDetail from './pages/Retailer/Product/ManagerProductDetail';
 import ImportWarehouse from './pages/Retailer/WarehouseManager/ImportWarehouse';
+import { useAuth } from './hooks';
 // #endregion
 
 function App() {
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.data);
+    const { data: user } = useAuth();
 
     useEffect(() => {
         dispatch(setFirstLocation());
-        socket.on('connect', () => {});
-        socket.on('disconnect', () => {});
+        socket.on('connect', () => { });
+        socket.on('disconnect', () => { });
         if (user) {
             socket.emit('join', user);
         }

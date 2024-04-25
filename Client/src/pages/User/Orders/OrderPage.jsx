@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { useSearchParams } from 'react-router-dom';
 import { Spin } from 'antd';
 
@@ -7,12 +6,13 @@ import { getOrders } from '@api/orderApi';
 
 import OrderItem from '@components/Order/OrderItem.Component';
 import FilterOrder from '@components/Order/FilterOrder/FilterOrder.component';
+import { useAuth } from '@hooks/useAuth';
 
 function OrderPage() {
     const [orders, setOrders] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [searchParams] = useSearchParams();
-    const user = useSelector((state) => state.user.data);
+    const { data: user } = useAuth();
 
     useEffect(() => {
         setIsLoading(true);

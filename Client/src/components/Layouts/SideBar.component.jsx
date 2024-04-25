@@ -23,6 +23,7 @@ import { notification } from '@utils/notification';
 import socket from '../../socket';
 import SidebarContainer from './SideBarContainer';
 import { returnUrl } from '@utils/returnUrl';
+import { useAuth } from '@hooks/useAuth';
 
 function getItem(label, key, icon, children, type) {
     return {
@@ -38,7 +39,7 @@ function SideBar({ ...props }) {
     const { pathname } = useLocation();
     const dispatch = useDispatch();
 
-    const { data, isAuth } = useSelector((state) => state.user);
+    const { data, isAuth } = useAuth();
     const { countNotRead } = useSelector((state) => state.notification);
 
     const navigate = useNavigate();
@@ -187,25 +188,25 @@ function SideBar({ ...props }) {
                     items={[
                         isAuth
                             ? getItem(
-                                  'Hồ sơ',
-                                  'profiles',
-                                  <Avatar
-                                      alt="avatar"
-                                      className="flex-shrink-0 -translate-x-[calc(50%-10px)]"
-                                      size={35}
-                                      src={returnUrl({ user: data })}
-                                  />,
-                                  [
-                                      getItem('Thông tin cá nhân', 'profile'),
-                                      getItem('Đơn hàng của bạn', 'order'),
-                                      getItem('Đăng xuất', 'logout')
-                                  ]
-                              )
+                                'Hồ sơ',
+                                'profiles',
+                                <Avatar
+                                    alt="avatar"
+                                    className="flex-shrink-0 -translate-x-[calc(50%-10px)]"
+                                    size={35}
+                                    src={returnUrl({ user: data })}
+                                />,
+                                [
+                                    getItem('Thông tin cá nhân', 'profile'),
+                                    getItem('Đơn hàng của bạn', 'order'),
+                                    getItem('Đăng xuất', 'logout')
+                                ]
+                            )
                             : {
-                                  key: 'login',
-                                  icon: <LoginOutlined />,
-                                  label: 'Đăng nhập'
-                              }
+                                key: 'login',
+                                icon: <LoginOutlined />,
+                                label: 'Đăng nhập'
+                            }
                     ]}
                 />
             }

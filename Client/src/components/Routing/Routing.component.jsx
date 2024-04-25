@@ -13,10 +13,7 @@ const Routing = () => {
     const map = useMap();
     const dispatch = useDispatch();
     const routingControl = useRef(null);
-
-    const destination = useSelector((state) => state.routing.markSelected);
-    const fixedLocation = useSelector((state) => state.routing.fixedLocation);
-    const showRouting = useSelector((state) => state.routing.showRouting);
+    const { destination, fixedLocation, showRouting } = useSelector((state) => state.routing);
 
     useEffect(() => {
         // check if we have all the data we need to show routing

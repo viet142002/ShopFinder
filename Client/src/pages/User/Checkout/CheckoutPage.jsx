@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { Form, message } from 'antd';
 
 import FormCheckout from '@components/Checkout/FormCheckout.component';
@@ -9,6 +8,7 @@ import CardTotal from '@components/Checkout/CardTotal.component';
 import { handleFetch } from '@utils/expression';
 import { createOrder, createOrderWithVNPay } from '@api/orderApi';
 import socket from '../../../socket';
+import { useAuth } from '@hooks/useAuth';
 
 function CheckoutPage() {
     const navigate = useNavigate();
@@ -16,7 +16,7 @@ function CheckoutPage() {
     const [priceSipping, setPriceShipping] = useState([]);
     const [location, setLocation] = useState({ lat: 0, lng: 0 });
     const { state } = useLocation();
-    const user = useSelector((state) => state.user.data);
+    const { data: user } = useAuth();
 
     const onFinish = async (values) => {
         const items = state.cart.map((item) => {

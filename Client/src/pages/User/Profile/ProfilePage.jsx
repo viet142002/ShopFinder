@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Form, Input, Space, Button, Tooltip } from 'antd';
 
 import { MdCameraAlt } from 'react-icons/md';
@@ -12,6 +12,7 @@ import RenderAddress from '@components/RenderAddress';
 
 import { handleFetch } from '@utils/expression';
 import { updateUser } from '@api/userApi';
+import { useAuth } from '@hooks/useAuth';
 
 const formData = (values) => {
     const data = new FormData();
@@ -26,7 +27,7 @@ const formData = (values) => {
 function ProfilePage() {
     const [form] = Form.useForm();
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.data);
+    const { data: user } = useAuth();
     const [newAvatar, setNewAvatar] = useState(null);
     const [isChange, setIsChange] = useState({
         isChangeAddress: false,

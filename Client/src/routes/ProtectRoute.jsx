@@ -2,15 +2,14 @@ import { Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { Modal } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
-import { useSelector } from 'react-redux';
 import { getToken } from '../redux/storage';
+import { useAuth } from '@hooks/useAuth';
 
 function ProtectRoute({ access = 'customer', children }) {
     const navigate = useNavigate();
     const location = useLocation();
     const token = getToken();
-    const user = useSelector((state) => state.user);
-    // const { message, modal, notification } = App.useApp();
+    const { data: user } = useAuth();
 
     const showConfirm = () => {
         Modal.confirm({

@@ -1,11 +1,12 @@
 import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { useAuth } from '@hooks/useAuth';
 
 function Rating() {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { isAuth } = useSelector((state) => state.user);
+    const { isAuth } = useAuth();
     const { myRate } = useSelector((state) => state.rating);
 
     const handleOpenModal = () => {

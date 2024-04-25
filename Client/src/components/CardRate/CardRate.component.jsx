@@ -1,5 +1,5 @@
 import { Avatar, Rate, Dropdown, Modal, Button } from 'antd';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { MoreOutlined } from '@ant-design/icons';
 
@@ -11,6 +11,7 @@ import { deleteRateApi } from '@api/RateApi';
 import { handleFetch } from '@utils/expression';
 import { returnUrl } from '@utils/returnUrl';
 import { formatTime } from '@utils/formatTime';
+import { useAuth } from '@hooks/useAuth';
 
 const items1 = [
     {
@@ -32,7 +33,7 @@ const items2 = [
 
 function CardRate(rate) {
     const dispatch = useDispatch();
-    const user = useSelector((state) => state.user.data);
+    const { data: user } = useAuth();
     const isMyRate = user._id === rate?.from?._id;
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [openReport, setOpenReport] = useState(false);

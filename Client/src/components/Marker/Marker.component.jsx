@@ -11,7 +11,6 @@ import { getLocations } from '../../api/locationApi';
 
 function MarkerCus() {
     const [searchParams] = useSearchParams();
-
     const [locations, setLocations] = useState([]);
     const dispatch = useDispatch();
     const current = useSelector((state) => state.routing.current);

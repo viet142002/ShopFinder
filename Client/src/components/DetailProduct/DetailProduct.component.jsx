@@ -1,18 +1,48 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState, useRef } from 'react';
-import { Carousel, Image, Button, InputNumber } from 'antd';
+import { Carousel, Image, Button, InputNumber, Dropdown, Space } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 
-import { getProductByIdApi } from '../../api/productApi';
-import { addToCartApi } from '../../api/cartApi';
-import { handleFetch } from '../../utils/expression';
+import { getProductByIdApi } from '@api/productApi';
+import { addToCartApi } from '@api/cartApi';
+import { handleFetch } from '@utils/expression';
 
-import HTMLRenderer from '../../components/HTMLRenderer/HTMLRenderer.component';
+import HTMLRenderer from '@components/HTMLRenderer/HTMLRenderer.component';
+import ModalReport from '@components/Modal/ModalReport/ModalReport.component';
+import { useAuth } from '@hooks/useAuth';
 
 function DetailProduct() {
     const { productId } = useParams();
+    const { data: user } = useAuth();
     const [product, setProduct] = useState({});
     const [loading, setLoading] = useState(true);
+    const [openReport, setOpenReport] = useState(false);
+    const [isMyProduct, setIsMyProduct] = useState(false);
     const quantityRef = useRef();
+
+    const onClick = ({ key }) => {
+        switch (key) {
+            case '1':
+                setOpenReport(true);
+                break;
+            case '2':
+                console.log('Chỉnh sửa sản phẩm');
+                break;
+            default:
+                break;
+        }
+    };
+
+    const items = [
+        !isMyProduct && {
+            label: 'Báo cáo sản phẩm',
+            key: '1',
+        },
+        isMyProduct && {
+            label: 'Chỉnh sửa sản phẩm',
+            key: '2',
+        },
+    ];
 
     const handleIncrease = () => {
         if (product.quantity && quantityRef.current.value < product.quantity)
@@ -33,6 +63,12 @@ function DetailProduct() {
     };
 
     useEffect(() => {
+        if (user?._id === product?.userCreate) {
+            setIsMyProduct(true);
+        }
+    }, [product, user]);
+
+    useEffect(() => {
         getProductByIdApi(productId)
             .then((res) => {
                 setProduct(res.data);
@@ -40,6 +76,7 @@ function DetailProduct() {
             .finally(() => {
                 setLoading(false);
             });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [productId]);
 
     return (
@@ -57,9 +94,8 @@ function DetailProduct() {
                                 >
                                     <Image
                                         className="!h-64 object-cover"
-                                        src={`${
-                                            import.meta.env.VITE_APP_API_URL
-                                        }${image.path}`}
+                                        src={`${import.meta.env.VITE_APP_API_URL
+                                            }${image.path}`}
                                         alt=""
                                     />
                                 </div>
@@ -69,32 +105,49 @@ function DetailProduct() {
 
                     <div className="flex flex-col gap-2">
                         <h1 className="text-2xl font-bold">{product.name}</h1>
-                        {product.discount ? (
-                            <h1 className="text-lg text-red-500">
-                                {(
-                                    product.price *
-                                    (1 - product.discount / 100)
-                                ).toLocaleString('vi-VN', {
-                                    style: 'currency',
-                                    currency: 'VND'
-                                })}
-                                <span className="ml-2 text-sm">
-                                    <del>
-                                        {product.price.toLocaleString('vi-VN', {
-                                            style: 'currency',
-                                            currency: 'VND'
-                                        })}
-                                    </del>
-                                </span>
-                            </h1>
-                        ) : (
-                            <h1 className="text-lg text-red-500">
-                                {product.price.toLocaleString('vi-VN', {
-                                    style: 'currency',
-                                    currency: 'VND'
-                                })}
-                            </h1>
-                        )}
+                        <div className='flex justify-between' >
+                            {product.discount ? (
+                                <h2 className="text-lg text-red-500">
+                                    {(
+                                        product.price *
+                                        (1 - product.discount / 100)
+                                    ).toLocaleString('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND'
+                                    })}
+                                    <span className="ml-2 text-sm">
+                                        <del>
+                                            {product.price.toLocaleString('vi-VN', {
+                                                style: 'currency',
+                                                currency: 'VND'
+                                            })}
+                                        </del>
+                                    </span>
+                                </h2>
+                            ) : (
+                                <h1 className="text-lg text-red-500">
+                                    {product.price.toLocaleString('vi-VN', {
+                                        style: 'currency',
+                                        currency: 'VND'
+                                    })}
+                                </h1>
+                            )}
+
+                            <Dropdown menu={{ items, onClick }}>
+                                <a onClick={(e) => e.preventDefault()}>
+                                    <Space>
+                                        Thêm
+                                        <DownOutlined />
+                                    </Space>
+                                </a>
+                            </Dropdown>
+                            <ModalReport
+                                open={openReport}
+                                toId={productId}
+                                toType="product"
+                                handleCancel={() => setOpenReport(false)}
+                            />
+                        </div>
 
                         {product.status === 'available' && (
                             <h1>
