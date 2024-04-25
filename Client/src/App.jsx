@@ -35,7 +35,8 @@ import EditStore from '@pages/EditStore/EditStore';
 // #region admin page
 import RequestRetailerPage from './pages/Admin/RequestRetailerPage';
 import DashboardPage from './pages/Admin/DashboardPage';
-import ReportPage from './pages/Admin/ReportPage';
+import ReportPage from './pages/Admin/Reports/ReportPage';
+import ReportDetail from './pages/Admin/Reports/ReportDetail';
 // #endregion
 // #region retailer page
 import AnalystRevenue from '@pages/Retailer/Analyst/AnalystRevenue';
@@ -226,7 +227,8 @@ function App() {
                             path="request"
                             element={<RequestRetailerPage />}
                         />
-                        <Route path="report" element={<ReportPage />} />
+                        <Route path="reports" element={<ReportPage />} />
+                        <Route path="reports/:reportId" element={<ReportDetail />} />
                         <Route
                             path="notification"
                             element={<NotificationPage />}

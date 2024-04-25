@@ -2,23 +2,33 @@ import { Modal, Form, Input, Button, Space, Select } from 'antd';
 
 import { typeReport } from '../../../utils/typeConstraint';
 
-import { createReportApi } from '../../../api/reportApi';
+import { createReportApi } from '@api/reportApi';
+import { handleFetch } from '@utils/expression';
 
 const ModalReport = ({ open, handleCancel, toId, toType }) => {
-    const onFinish = (values) => {
-        createReportApi({ ...values, to: toId, toType }).then(() => {
+    const [form] = Form.useForm();
+    const onFinish = async (values) => {
+        const data = handleFetch(() => createReportApi({ ...values, to: toId, toType }), handleCancel);
+        if (data) {
+            form.resetFields();
             handleCancel();
-        });
+        }
     };
     return (
         <Modal
             centered
             title={<h2 className="text-center text-lg md:text-xl">Báo cáo</h2>}
             open={open}
-            onCancel={handleCancel}
+            onCancel={() => {
+                form.resetFields();
+                handleCancel();
+            }}
             footer={null}
         >
-            <Form onFinish={onFinish}>
+            <Form onFinish={onFinish} form={form} initialValues={{
+                reason: '',
+                description: '',
+            }}>
                 <Form.Item
                     name="reason"
                     rules={[

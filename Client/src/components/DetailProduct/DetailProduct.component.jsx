@@ -145,7 +145,7 @@ function DetailProduct() {
                             <ModalReport
                                 open={openReport}
                                 toId={productId}
-                                toType="product"
+                                toType="Product"
                                 handleCancel={() => setOpenReport(false)}
                             />
                         </div>

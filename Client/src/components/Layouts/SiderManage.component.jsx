@@ -27,7 +27,7 @@ function SiderManage() {
                 navigate('./request');
                 break;
             case '3':
-                navigate('./report');
+                navigate('./reports');
                 break;
             // case '4':
             //     navigate('./notification');

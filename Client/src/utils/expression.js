@@ -51,6 +51,8 @@ const translateSuccess = (msg) => {
             return 'Tạo phiếu nhập kho thành công';
         case 'Update retailer successfully':
             return 'Cập nhật thông tin cửa hàng thành công';
+        case 'Report created successfully':
+            return 'Tạo báo cáo thành công';
         default:
             return 'Thành công';
     }
@@ -116,7 +118,6 @@ const translateError = (msg) => {
 const handleFetch = async (callback) => {
     try {
         const res = await callback();
-        console.log('🚀 ~ handleFetch ~ res:', res);
 
         if (res?.data?.message) success(translateSuccess(res.data.message));
 

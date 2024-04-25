@@ -6,8 +6,26 @@ const reportController = {
             const { status, limit = 20, skip = 0, reason } = req.query;
             const query = {};
 
-            if (status) query.status = status;
-            if (reason) query.reason = reason;
+            if (status)
+                query.status =
+                    status === 'all'
+                        ? { $in: ['pending', 'processed'] }
+                        : status;
+            if (reason)
+                query.reason =
+                    reason === 'all'
+                        ? {
+                              $in: [
+                                  'spam',
+                                  'fake',
+                                  'harassment',
+                                  'hate-speech',
+                                  'violence',
+                                  'wrong-information',
+                                  'other',
+                              ],
+                          }
+                        : reason;
 
             const reports = await Report.find(query)
                 .limit(parseInt(limit, 10))

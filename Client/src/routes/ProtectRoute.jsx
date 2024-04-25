@@ -50,7 +50,7 @@ function ProtectRoute({ access = 'customer', children }) {
         );
 
     if (access === 'admin') {
-        if (user.data.role !== 'admin')
+        if (user.role !== 'admin')
             return (
                 <Navigate
                     to={`/login?redirect=${location.pathname}`}
@@ -60,7 +60,7 @@ function ProtectRoute({ access = 'customer', children }) {
     }
 
     if (access === 'retailer') {
-        if (user.data.role !== 'retailer')
+        if (user.role !== 'retailer')
             return (
                 <Navigate
                     to={`/login?redirect=${location.pathname}`}

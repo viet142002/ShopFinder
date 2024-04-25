@@ -5,7 +5,7 @@ import ManageLayout from '../layouts/ManageLayout';
 
 import DashboardPage from '@pages/Admin/DashboardPage';
 import RequestRetailerPage from '@pages/Admin/RequestRetailerPage';
-import ReportPage from '@pages/Admin/ReportPage';
+import ReportPage from '@pages/Admin/Reports/ReportPage';
 import NotificationPage from '@pages/User/Notification/NotificationPage';
 
 const AdminRouter = () => {
