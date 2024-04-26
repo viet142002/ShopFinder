@@ -15,3 +15,7 @@ export const getReportApi = async (id) => {
 export const deleteReportApi = async (id) => {
     return api.delete(`/admin/reports/${id}`);
 };
+
+export const updateReportApi = async (id, data) => {
+    return api.patch(`/admin/reports/${id}`, data);
+};

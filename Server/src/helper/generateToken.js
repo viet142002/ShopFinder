@@ -6,6 +6,7 @@ const generateToken = (user, exp = '1d') => {
             _id: user._id,
             role: user.role,
             email: user.email,
+            status: user.status,
             retailer:
                 user?.pendingRetailer.status === 'approved'
                     ? user?.pendingRetailer?.retailer

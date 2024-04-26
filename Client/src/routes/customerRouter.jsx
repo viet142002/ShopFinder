@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import ProtectRoute from './ProtectRoute';
 import DefaultLayout from '../layouts/DefaultLayout';
@@ -81,8 +81,11 @@ const customerRouter = () => {
                         </ProtectRoute>
                     }
                 />
-                <Route path="/store/:id" element={<ProductsPage />} />
-                <Route path="/store/:id/:idProduct" element={<ProductPage />} />
+                <Route path="/stores/:id" element={<ProductsPage />} />
+                <Route
+                    path="/stores/:id/:idProduct"
+                    element={<ProductPage />}
+                />
             </Route>
         </>
     );

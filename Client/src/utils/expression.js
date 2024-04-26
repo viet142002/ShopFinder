@@ -100,6 +100,8 @@ const translateError = (msg) => {
             return 'Không đủ sản phẩm';
         case 'Only support online payment with 1 store':
             return 'Chỉ hỗ trợ thanh toán online với 1 cửa hàng';
+        case 'User is blocked':
+            return 'Tài khoản đã bị khóa';
         default:
             return 'Có lỗi xảy ra';
     }

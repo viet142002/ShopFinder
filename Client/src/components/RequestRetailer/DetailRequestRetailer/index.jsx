@@ -1,7 +1,7 @@
 import { Drawer } from 'antd';
 import { memo } from 'react';
 
-import InfoRetailerProfile from '@components/Profile/InfoRetailerProfile.component';
+import InfoRetailerProfile from '@components/Profile/InfoStoreProfile.component';
 import MyCarousel from '@components/Carousel/Carousel.component';
 import ActionRequestRetailer from '@components/RequestRetailer/ActionsButton';
 import MiniMap from '@components/Map/MiniMap';

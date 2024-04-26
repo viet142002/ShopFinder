@@ -6,45 +6,42 @@ import RenderAddress from '@components/RenderAddress';
 import { typeLocations } from '@utils/typeConstraint';
 import { Link } from 'react-router-dom';
 
-function InfoRetailerProfile({ retailer, isShowButtonEdit = true }) {
+function InfoStoreProfile({ store, isShowButtonEdit = true }) {
     return (
-        <div className="p-2 md:bg-white">
+        <div className="overflow-hidden rounded-lg p-2 md:bg-white">
             <h2 className="text-lg font-medium">Thông tin cửa hàng</h2>
             <div className="mt-2 space-y-2 md:ml-4">
                 <div className="flex items-center gap-2">
                     <Avatar
                         size={60}
-                        src={
-                            import.meta.env.VITE_APP_API_URL +
-                            retailer.logo.path
-                        }
+                        src={import.meta.env.VITE_APP_API_URL + store.logo.path}
                     />
                     <div>
-                        <h3>{retailer.name}</h3>
-                        <p>{retailer.createdAt}</p>
+                        <h3>{store.name}</h3>
+                        <p>{store.createdAt}</p>
                     </div>
                 </div>
                 <div>
                     <span>Địa chỉ: </span>
                     <RenderAddress
-                        address={retailer?.location?.address}
+                        address={store?.location?.address}
                         className="inline"
                     />
                 </div>
                 <p>
                     <span>Email: </span>
-                    <span>{retailer.email}</span>
+                    <span>{store.email}</span>
                 </p>
                 <p>
                     <span>Điện thoại: </span>
-                    <span>{retailer.phone}</span>
+                    <span>{store.phone}</span>
                 </p>
                 <p>
                     <span>Loại cửa hàng: </span>
                     <span>
                         {
                             typeLocations.find(
-                                (item) => item.value === retailer.type
+                                (item) => item.value === store.type
                             ).label
                         }
                     </span>
@@ -52,7 +49,7 @@ function InfoRetailerProfile({ retailer, isShowButtonEdit = true }) {
                 <p>
                     <span>Chế độ: </span>
                     <span>
-                        {retailer.mode === 'normal' ? (
+                        {store.mode === 'normal' ? (
                             <Tag color="success">Bán trực tuyến và tại chổ</Tag>
                         ) : (
                             <Tag color="processing">Chỉ bản tại chổ</Tag>
@@ -62,7 +59,7 @@ function InfoRetailerProfile({ retailer, isShowButtonEdit = true }) {
                 <p>Mô tả cửa hàng:</p>
                 <HTMLRenderer
                     className="rounded-md bg-white p-2 md:bg-gray-100"
-                    htmlString={retailer.description}
+                    htmlString={store.description}
                 />
                 {isShowButtonEdit && (
                     <div className="mt-4 flex justify-center">
@@ -76,4 +73,4 @@ function InfoRetailerProfile({ retailer, isShowButtonEdit = true }) {
     );
 }
 
-export default InfoRetailerProfile;
+export default InfoStoreProfile;

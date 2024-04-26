@@ -12,7 +12,7 @@ import ModalReport from '@components/Modal/ModalReport/ModalReport.component';
 import { useAuth } from '@hooks/useAuth';
 
 function DetailProduct() {
-    const { productId, id: storeId } = useParams();
+    const { productId, storeId } = useParams();
     const navigate = useNavigate();
     const { data: user } = useAuth();
     const [product, setProduct] = useState({});
@@ -27,7 +27,7 @@ function DetailProduct() {
                 setOpenReport(true);
                 break;
             case '2':
-                navigate(`/store/${storeId}/edit-product/${productId}`)
+                navigate(`/stores/${storeId}/edit-product/${productId}`);
                 break;
             default:
                 break;
@@ -37,12 +37,12 @@ function DetailProduct() {
     const items = [
         !isMyProduct && {
             label: 'Báo cáo sản phẩm',
-            key: '1',
+            key: '1'
         },
         isMyProduct && {
             label: 'Chỉnh sửa sản phẩm',
-            key: '2',
-        },
+            key: '2'
+        }
     ];
 
     const handleIncrease = () => {
@@ -95,8 +95,9 @@ function DetailProduct() {
                                 >
                                     <Image
                                         className="!h-64 object-cover"
-                                        src={`${import.meta.env.VITE_APP_API_URL
-                                            }${image.path}`}
+                                        src={`${
+                                            import.meta.env.VITE_APP_API_URL
+                                        }${image.path}`}
                                         alt=""
                                     />
                                 </div>
@@ -106,7 +107,7 @@ function DetailProduct() {
 
                     <div className="flex flex-col gap-2">
                         <h1 className="text-2xl font-bold">{product.name}</h1>
-                        <div className='flex justify-between' >
+                        <div className="flex justify-between">
                             {product.discount ? (
                                 <h2 className="text-lg text-red-500">
                                     {(
@@ -118,10 +119,13 @@ function DetailProduct() {
                                     })}
                                     <span className="ml-2 text-sm">
                                         <del>
-                                            {product.price.toLocaleString('vi-VN', {
-                                                style: 'currency',
-                                                currency: 'VND'
-                                            })}
+                                            {product.price.toLocaleString(
+                                                'vi-VN',
+                                                {
+                                                    style: 'currency',
+                                                    currency: 'VND'
+                                                }
+                                            )}
                                         </del>
                                     </span>
                                 </h2>

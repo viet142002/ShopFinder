@@ -16,6 +16,10 @@ export const getRatesApi = async ({ to, skip, userId }) => {
     }
 };
 
+export const getRateByIdApi = async (id) => {
+    return api.get(`rates/get-rate/${id}`);
+};
+
 export const getCountStarRatesApi = async (to) => {
     try {
         const res = await api.get('rates/count-star', {

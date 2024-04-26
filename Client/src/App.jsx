@@ -12,6 +12,7 @@ import { setFirstLocation } from './redux/routingSlice';
 import socket from './socket';
 // #endregion
 // #region user page
+import StoreProfile from '@pages/User/StoreProfile';
 import NewPassword from '@pages/User/ForgotPassword/NewPassword';
 import ForgotPassword from '@pages/User/ForgotPassword';
 import VNPayReturn from '@pages/User/Checkout/VNPayReturn';
@@ -38,7 +39,6 @@ import DashboardPage from './pages/Admin/DashboardPage';
 import ReportPage from './pages/Admin/Reports/ReportPage';
 import ReportDetail from './pages/Admin/Reports/ReportDetail';
 import UsersManager from '@pages/Admin/UserManager/UsersManager';
-import RetailerManager from '@pages/Admin/RetailerManager';
 import InformationManager from '@pages/Admin/InformationManager';
 // #endregion
 // #region retailer page
@@ -61,8 +61,8 @@ function App() {
 
     useEffect(() => {
         dispatch(setFirstLocation());
-        socket.on('connect', () => { });
-        socket.on('disconnect', () => { });
+        socket.on('connect', () => {});
+        socket.on('disconnect', () => {});
         if (user) {
             socket.emit('join', user);
         }
@@ -190,9 +190,16 @@ function App() {
                                 </ProtectRoute>
                             }
                         />
-                        <Route path="/store/:id" element={<ProductsPage />} />
                         <Route
-                            path="/store/:storeId/edit-product/:productId"
+                            path="/stores/:storeId"
+                            element={<StoreProfile />}
+                        />
+                        <Route
+                            path="/stores/:storeId/products"
+                            element={<ProductsPage />}
+                        />
+                        <Route
+                            path="/stores/:storeId/edit-product/:productId"
                             element={
                                 <ProtectRoute>
                                     <AddAndEditProductByUser />
@@ -200,7 +207,7 @@ function App() {
                             }
                         />
                         <Route
-                            path="/store/:storeId/add-product"
+                            path="/stores/:storeId/add-product"
                             element={
                                 <ProtectRoute>
                                     <AddAndEditProductByUser />
@@ -208,7 +215,7 @@ function App() {
                             }
                         />
                         <Route
-                            path="/store/:id/detail/:productId"
+                            path="/stores/:storeId/products/:productId"
                             element={<ProductPage />}
                         />
                     </Route>
@@ -231,11 +238,15 @@ function App() {
                             element={<RequestRetailerPage />}
                         />
                         <Route path="reports" element={<ReportPage />} />
-                        <Route path="reports/:reportId" element={<ReportDetail />} />
-                        <Route path='users' element={<UsersManager />} />
-                        <Route path='retailer' element={<RetailerManager />} />
-                        <Route path='information' element={<InformationManager />} />
-
+                        <Route
+                            path="reports/:reportId"
+                            element={<ReportDetail />}
+                        />
+                        <Route path="users" element={<UsersManager />} />
+                        <Route
+                            path="information"
+                            element={<InformationManager />}
+                        />
                     </Route>
 
                     <Route

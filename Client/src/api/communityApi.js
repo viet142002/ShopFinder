@@ -19,3 +19,7 @@ export const updateStore = async (id, data) => {
 export const getStore = async (id) => {
     return api.get(`/community/store/${id}`);
 };
+
+export const getAllStore = async (params) => {
+    return api.get('admin/information', { params });
+};

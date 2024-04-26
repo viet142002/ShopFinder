@@ -31,6 +31,7 @@ const formatForm = (values, images = [], deleteImages = []) => {
 
 function AddAndEditProductByUser() {
     const { productId, storeId } = useParams();
+    console.log('here');
     const isAddMode = !productId;
     const [newImages, setNewImages] = useState([]);
     const [deleteImages, setDeleteImages] = useState([]);

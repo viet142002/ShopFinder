@@ -27,13 +27,11 @@ function SiderManage() {
                 navigate('/admin/request');
                 break;
             case 'reports':
+                console.log('vao');
                 navigate('/admin/reports');
                 break;
             case 'users':
                 navigate('/admin/users');
-                break;
-            case 'retailer':
-                navigate('/admin/retailer');
                 break;
             case 'information':
                 navigate('/admin/information');
@@ -61,22 +59,16 @@ function SiderManage() {
             name: 'request'
         },
         {
-            key: 'report',
+            key: 'reports',
             icon: <MdOutlineReport size={18} />,
             label: 'Báo cáo',
-            name: 'report'
+            name: 'reports'
         },
         {
             key: 'users',
             icon: <MdOutlineReport size={18} />,
             label: 'Quản lý người dùng',
             name: 'users'
-        },
-        {
-            key: 'retailer',
-            icon: <MdOutlineReport size={18} />,
-            label: 'Quản lý cửa hàng',
-            name: 'retailer'
         },
         {
             key: 'information',

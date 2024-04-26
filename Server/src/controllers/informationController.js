@@ -102,7 +102,7 @@ const InformationController = {
     async update(req, res) {
         try {
             const { id } = req.params;
-            const userId = req.user._id;
+            const { _id: userId, role } = req.user;
             const {
                 name,
                 location,
@@ -127,7 +127,10 @@ const InformationController = {
                     .json({ message: 'Information not found' });
             }
 
-            if (information.user.toString() !== userId.toString()) {
+            if (
+                information.user.toString() !== userId.toString() ||
+                role !== 'admin'
+            ) {
                 return res.status(403).json({ message: 'Permission denied' });
             }
 
@@ -217,6 +220,37 @@ const InformationController = {
                 information,
                 message: 'Information deleted successfully',
             });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async getAll(req, res) {
+        try {
+            const { type = 'all', status = 'all', name } = req.query;
+            let query = {};
+
+            if (type) {
+                query.type = type === 'all' ? { $ne: null } : type;
+            }
+            if (status) {
+                query.status = status === 'all' ? { $ne: null } : status;
+            }
+            if (name) {
+                query.name = { $regex: name, $options: 'i' };
+            }
+
+            console.log(query);
+
+            const information = await Information.find(query)
+                .populate({
+                    path: 'location',
+                    populate: {
+                        path: 'address',
+                    },
+                })
+                .populate('images');
+
+            res.status(200).json({ information });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }

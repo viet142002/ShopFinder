@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Table } from 'antd';
+import { Table, Tag } from 'antd';
 
 import { getReportsApi } from '@api/reportApi';
 import { Link, useSearchParams } from 'react-router-dom';
@@ -19,7 +19,7 @@ function ReportPage() {
     return (
         <section className="mx-auto w-[90%]">
             <h1 className="p-6 text-center text-lg font-medium">Các báo cáo</h1>
-            <div className='flex justify-center mb-4'>
+            <div className="mb-4 flex justify-center">
                 <FilterReport />
             </div>
             <Table dataSource={reports} rowKey="_id">
@@ -61,12 +61,22 @@ function ReportPage() {
                     title="Trạng thái"
                     dataIndex="status"
                     key="status"
+                    render={(status) => (
+                        <Tag color={status === 'pending' ? 'orange' : 'blue'}>
+                            {
+                                {
+                                    pending: 'Chờ duyệt',
+                                    processed: 'Đã duyệt'
+                                }[status]
+                            }
+                        </Tag>
+                    )}
                 />
                 <Table.Column
                     title="Hành động"
                     render={(_, record) => (
                         <Link to={`/admin/reports/${record._id}`}>
-                            Xem chi tiết
+                            Chi tiết
                         </Link>
                     )}
                 />

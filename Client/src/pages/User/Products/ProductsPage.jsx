@@ -7,7 +7,7 @@ import CardProduct from '@components/CardProduct/CardProduct.component';
 
 function ProductsPage() {
     const { state } = useLocation();
-    const { id } = useParams();
+    const { storeId } = useParams();
     const [data, setData] = useState({
         products: [],
         total: 0,
@@ -16,7 +16,7 @@ function ProductsPage() {
     });
 
     useEffect(() => {
-        getProductsFromDistributor({ distributor: id })
+        getProductsFromDistributor({ distributor: storeId })
             .then((res) => {
                 setData((prev) => ({
                     products: [...prev.products, ...res.data.products],
@@ -31,7 +31,7 @@ function ProductsPage() {
                     isLoading: false
                 }));
             });
-    }, [id]);
+    }, [storeId]);
 
     return (
         <>
@@ -43,7 +43,7 @@ function ProductsPage() {
 
             {state?.type === 'Information' && (
                 <div className="flex justify-center p-4">
-                    <Link to={'./add-product'}>
+                    <Link to={`/stores/${storeId}/add-product`}>
                         <Button type="primary" className="bg-blue-500">
                             Đóng góp
                         </Button>
@@ -56,7 +56,11 @@ function ProductsPage() {
             ) : data.products && data.products.length > 0 ? (
                 <div className="mx-auto grid w-[calc(100%-30px)] grid-cols-2 gap-[15px] md:grid-cols-5 md:gap-8">
                     {data.products.map((product, index) => (
-                        <CardProduct product={product} key={index} />
+                        <CardProduct
+                            product={product}
+                            storeId={storeId}
+                            key={index}
+                        />
                     ))}
                 </div>
             ) : (

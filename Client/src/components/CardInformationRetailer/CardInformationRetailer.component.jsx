@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Avatar, Rate } from 'antd';
 
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { getDistributorByProductIdApi } from '../../api/productApi';
 
 function CardInformationRetailer() {
-    const { productId } = useParams();
+    const { productId, storeId } = useParams();
     const [data, setData] = useState({});
 
     useEffect(() => {
@@ -17,25 +17,30 @@ function CardInformationRetailer() {
 
     return (
         <section className="flex flex-wrap gap-4 rounded-md bg-gray-200 p-2">
-            <div className="flex h-full min-w-[400px] flex-1 items-center gap-2 md:min-w-fit">
-                <Avatar
-                    size={60}
-                    src={
-                        data.distributor?.logo
-                            ? `${import.meta.env.VITE_APP_API_URL}${
-                                  data.distributor.logo.path
-                              }`
-                            : `${
-                                  import.meta.env.VITE_APP_LOGO_RETAILER_DEFAULT
-                              }`
-                    }
-                />
-                <div>
-                    <h2 className="text-lg font-medium">
-                        {data.distributor?.name || 'Name Retailer'}
-                    </h2>
-                    <Rate value={data.averageRate} disabled />
-                </div>
+            <div className="flex-1">
+                <Link to={`/stores/${storeId}`}>
+                    <div className="flex h-full min-w-[400px] items-center gap-2 md:min-w-fit">
+                        <Avatar
+                            size={60}
+                            src={
+                                data.distributor?.logo
+                                    ? `${import.meta.env.VITE_APP_API_URL}${
+                                          data.distributor.logo.path
+                                      }`
+                                    : `${
+                                          import.meta.env
+                                              .VITE_APP_LOGO_RETAILER_DEFAULT
+                                      }`
+                            }
+                        />
+                        <div>
+                            <h2 className="text-lg font-medium">
+                                {data.distributor?.name || 'Name Retailer'}
+                            </h2>
+                            <Rate value={data.averageRate} disabled />
+                        </div>
+                    </div>
+                </Link>
             </div>
 
             <div className="grid flex-1 grid-cols-2">

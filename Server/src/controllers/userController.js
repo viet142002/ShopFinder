@@ -90,17 +90,20 @@ const userController = {
 
     getAllUser: async (req, res) => {
         try {
-            const { status, name, phone, email } = req.query;
+            const { status, name, phone, email, sort = 'desc' } = req.query;
             const query = {
-                role: 'customer',
+                role: {
+                    $ne: 'admin',
+                },
             };
-
             if (status && status !== 'all') query.status = status;
             if (name) query.lastname = { $regex: name, $options: 'i' };
             if (phone) query.phone = { $regex: phone, $options: 'i' };
             if (email) query.email = { $regex: email, $options: 'i' };
 
-            const users = await User.find(query).populate('avatar address');
+            const users = await User.find(query)
+                .populate('avatar address')
+                .sort(sort);
 
             return res.status(200).json({ users });
         } catch (error) {

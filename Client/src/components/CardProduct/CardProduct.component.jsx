@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 import { formatPrice } from '../../utils/formatPrice';
 
-function CardProduct({ product }) {
+function CardProduct({ product, storeId }) {
     return (
-        <Link to={`./detail/${product._id}`}>
+        <Link to={`/stores/${storeId}/products/${product._id}`}>
             <Card
                 hoverable
                 className="h-full w-full"

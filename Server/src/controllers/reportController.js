@@ -44,7 +44,8 @@ const reportController = {
 
             const reports = await Report.find(query)
                 .populate('from', 'firstname lastname avatar email')
-                .populate('to');
+                .populate('to')
+                .sort({ createdAt: -1 });
             // .limit(parseInt(limit, 10))
             // .skip(parseInt(skip, 10))
 
@@ -65,7 +66,7 @@ const reportController = {
     getReport: async (req, res) => {
         try {
             const report = await Report.findById(req.params.id)
-                .populate('from', 'firstname lastname avatar email')
+                .populate('from', 'firstname lastname avatar email status')
                 .populate('to');
 
             if (!report) {
@@ -80,7 +81,7 @@ const reportController = {
                 toType: report.toType,
             }).populate({
                 path: 'from',
-                select: 'firstname lastname avatar email',
+                select: 'firstname lastname avatar email status',
                 populate: {
                     path: 'avatar',
                     select: 'path',
@@ -162,6 +163,22 @@ const reportController = {
 
             return res.status(200).json({
                 message: 'Report deleted successfully',
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message,
+            });
+        }
+    },
+
+    deleteReports: async (req, res) => {
+        try {
+            const { reports } = req.body;
+
+            await Report.deleteMany({ _id: { $in: reports } });
+
+            return res.status(200).json({
+                message: 'Reports deleted successfully',
             });
         } catch (error) {
             return res.status(500).json({

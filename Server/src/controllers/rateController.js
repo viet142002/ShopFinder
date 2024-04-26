@@ -6,7 +6,6 @@ const rateController = {
     getRates: async (req, res) => {
         try {
             const { to, limit = 20, skip = 0, userId } = req.query;
-
             let myRate = null;
             if (userId) {
                 myRate = await Rate.findOne({
@@ -50,6 +49,35 @@ const rateController = {
             });
         }
     },
+    getRate: async (req, res) => {
+        try {
+            const { id } = req.params;
+            const rate = await Rate.findById(id)
+                .populate('images reply')
+                .populate({
+                    path: 'from',
+                    select: 'firstname lastname avatar',
+                    populate: {
+                        path: 'avatar',
+                    },
+                });
+
+            if (!rate) {
+                return res.status(404).json({
+                    message: 'Rating not found',
+                });
+            }
+
+            return res.status(200).json({
+                rate,
+                message: 'Get rate successfully',
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message,
+            });
+        }
+    },
     addRate: async (req, res) => {
         try {
             const { to, toType, rate, comment = '' } = req.body;
@@ -86,11 +114,17 @@ const rateController = {
         try {
             const { id } = req.params;
             // deleteImages is array of image id
-            const { rate, comment, deleteImages: original } = req.body;
+            const { rate, comment, deleteImages: original, status } = req.body;
             const images = req.files;
             const deleteImages = original ? JSON.parse(original) : [];
 
-            if (!rate && !comment && !images && deleteImages.length === 0) {
+            if (
+                !rate &&
+                !comment &&
+                !images &&
+                deleteImages.length === 0 &&
+                !status
+            ) {
                 return res.status(400).json({
                     message: 'No changes detected',
                 });
@@ -102,8 +136,10 @@ const rateController = {
                     message: 'Rating not found',
                 });
             }
-
-            if (rateUpdate.from.toString() !== req.user._id.toString()) {
+            if (
+                rateUpdate.from.toString() !== req.user._id.toString() &&
+                req.user.role !== 'admin'
+            ) {
                 return res.status(403).json({
                     message: 'Permission denied',
                 });
@@ -122,8 +158,9 @@ const rateController = {
             }
 
             if (rate) rateUpdate.rate = parseInt(rate);
-
             if (comment) rateUpdate.comment = comment;
+            if (status) rateUpdate.status = status;
+
             // populate images
             await rateUpdate.save();
             await rateUpdate.populate('images');
@@ -141,7 +178,6 @@ const rateController = {
     deleteRate: async (req, res) => {
         try {
             const { id } = req.params;
-
             const rate = await Rate.findByIdAndDelete(id);
 
             if (!rate) {

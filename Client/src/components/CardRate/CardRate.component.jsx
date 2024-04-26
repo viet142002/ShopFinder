@@ -32,6 +32,7 @@ const items2 = [
 ];
 
 function CardRate(rate) {
+    console.log('🚀 ~ CardRate ~ rate:', rate);
     const dispatch = useDispatch();
     const { data: user } = useAuth();
     const isMyRate = user._id === rate?.from?._id;

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 import MyCarousel from '@components/Carousel/Carousel.component';
 import { getInfoMyRetailerApi } from '@api/retailerApi';
-import InfoRetailerProfile from '@components/Profile/InfoRetailerProfile.component';
+import InfoStoreProfile from '@components/Profile/InfoStoreProfile.component';
 import PriceShip from '@components/Profile/PriceShip.component';
 
 function ManageRetailerProfile() {
@@ -15,11 +15,11 @@ function ManageRetailerProfile() {
     }, []);
 
     return (
-        <main className="md:mx-10 md:mt-10">
+        <section className="md:mx-10 md:my-10">
             {retailer && (
                 <section className="grid gap-4 md:grid-cols-5">
                     <div className=" md:col-span-3">
-                        <InfoRetailerProfile retailer={retailer} />
+                        <InfoStoreProfile store={retailer} />
                     </div>
                     <div className="-order-1 space-y-2 overflow-hidden md:order-1 md:col-span-2">
                         <MyCarousel images={retailer.images} />
@@ -30,7 +30,7 @@ function ManageRetailerProfile() {
                 </section>
             )}
             <section></section>
-        </main>
+        </section>
     );
 }
 

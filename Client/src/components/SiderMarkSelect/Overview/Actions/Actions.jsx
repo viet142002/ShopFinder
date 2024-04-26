@@ -10,10 +10,7 @@ import { MdOutlineDirections, MdOutlineShoppingBag } from 'react-icons/md';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 
-import {
-    unsetMarkSelect,
-    setShowRouting
-} from '@redux/routingSlice';
+import { unsetMarkSelect, setShowRouting } from '@redux/routingSlice';
 import ModalReport from '@components/Modal/ModalReport/ModalReport.component';
 import { useAuth } from '@hooks/useAuth';
 
@@ -22,7 +19,9 @@ function Actions({ info }) {
     const navigate = useNavigate();
     const [openReport, setOpenReport] = useState(false);
     const showRouting = useSelector((state) => state.routing.showRouting);
-    const { data: { _id } } = useAuth();
+    const {
+        data: { _id }
+    } = useAuth();
 
     const handleClose = () => {
         dispatch(unsetMarkSelect());
@@ -49,7 +48,7 @@ function Actions({ info }) {
 
     return (
         <>
-            <div className="md:px-sideBarMark mb-[16px] flex justify-between px-4">
+            <div className="mb-[16px] flex justify-between px-4 md:px-sideBarMark">
                 <Button
                     aria-label="showRouting"
                     type="primary"
@@ -69,7 +68,7 @@ function Actions({ info }) {
                     shape="circle"
                     icon={<MdOutlineShoppingBag size={20} />}
                     onClick={() =>
-                        navigate(`/store/${info._id}`, {
+                        navigate(`/stores/${info._id}/products`, {
                             state: {
                                 type: info.informationType
                             }

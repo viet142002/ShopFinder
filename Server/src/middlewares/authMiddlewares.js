@@ -1,10 +1,11 @@
 const jwt = require('jsonwebtoken');
+const User = require('../Models/userModel');
 
 const authMiddlewares = {
     /**
      * Middleware to check if user is authorized
      */
-    authorization: (req, res, next) => {
+    authorization: async (req, res, next) => {
         if (!req.headers.authorization) {
             return res.status(401).json({
                 message: 'Unauthorized',
@@ -19,6 +20,18 @@ const authMiddlewares = {
             if (!user) {
                 return res.status(401).json({
                     message: 'Unauthorized',
+                });
+            }
+
+            const checkUser = await User.findById(user._id);
+            if (!checkUser) {
+                return res.status(401).json({
+                    message: 'Unauthorized',
+                });
+            }
+            if (checkUser.status === 'blocked') {
+                return res.status(403).json({
+                    message: 'User is blocked',
                 });
             }
 
@@ -39,7 +52,7 @@ const authMiddlewares = {
      * To check if user is an admin
      * router.put('/profile', authorization('admin'), userController.updateProfile);
      */
-    authentication: role => (req, res, next) => {
+    authentication: role => async (req, res, next) => {
         if (!req.headers.authorization) {
             return res.status(401).json({
                 message: 'Unauthorized',
@@ -59,7 +72,17 @@ const authMiddlewares = {
                     message: 'Forbidden',
                 });
             }
-
+            const checkUser = await User.findById(user._id);
+            if (!checkUser) {
+                return res.status(401).json({
+                    message: 'Unauthorized',
+                });
+            }
+            if (checkUser.status === 'blocked') {
+                return res.status(403).json({
+                    message: 'User is blocked',
+                });
+            }
             req.user = user;
             next();
         } catch (error) {

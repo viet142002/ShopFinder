@@ -70,6 +70,12 @@ const authController = {
                 });
             }
 
+            if (user.status === 'blocked') {
+                return res.status(403).json({
+                    message: 'User is blocked',
+                });
+            }
+
             const token = generateToken(user);
 
             delete user._doc.password;
