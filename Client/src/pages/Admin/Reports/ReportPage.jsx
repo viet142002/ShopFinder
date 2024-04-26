@@ -5,7 +5,6 @@ import { getReportsApi } from '@api/reportApi';
 import { Link, useSearchParams } from 'react-router-dom';
 import FilterReport from './components/FilterReport';
 
-// TODO: Create ReportPage page for admin
 function ReportPage() {
     const [reports, setReports] = useState([]);
     const [searchParams] = useSearchParams();

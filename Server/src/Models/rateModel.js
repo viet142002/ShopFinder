@@ -50,6 +50,11 @@ const rateSchema = new mongoose.Schema(
                 ref: 'User',
             },
         ],
+        status: {
+            type: String,
+            enum: ['blocked', 'normal'],
+            default: 'normal',
+        },
     },
     {
         timestamps: true,

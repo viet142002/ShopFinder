@@ -88,6 +88,45 @@ const userController = {
         }
     },
 
+    getAllUser: async (req, res) => {
+        try {
+            const { status, name, phone, email } = req.query;
+            const query = {
+                role: 'customer',
+            };
+
+            if (status && status !== 'all') query.status = status;
+            if (name) query.lastname = { $regex: name, $options: 'i' };
+            if (phone) query.phone = { $regex: phone, $options: 'i' };
+            if (email) query.email = { $regex: email, $options: 'i' };
+
+            const users = await User.find(query).populate('avatar address');
+
+            return res.status(200).json({ users });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: error.message });
+        }
+    },
+
+    updateStatus: async (req, res) => {
+        try {
+            const { userId } = req.params;
+            const { status } = req.body;
+
+            await User.findByIdAndUpdate(userId, {
+                status: status,
+            });
+
+            return res.status(200).json({
+                message: 'Update status successfully',
+            });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: error.message });
+        }
+    },
+
     sendMailReset: async (req, res) => {
         try {
             const { email } = req.body;

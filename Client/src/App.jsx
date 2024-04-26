@@ -37,6 +37,9 @@ import RequestRetailerPage from './pages/Admin/RequestRetailerPage';
 import DashboardPage from './pages/Admin/DashboardPage';
 import ReportPage from './pages/Admin/Reports/ReportPage';
 import ReportDetail from './pages/Admin/Reports/ReportDetail';
+import UsersManager from '@pages/Admin/UserManager/UsersManager';
+import RetailerManager from '@pages/Admin/RetailerManager';
+import InformationManager from '@pages/Admin/InformationManager';
 // #endregion
 // #region retailer page
 import AnalystRevenue from '@pages/Retailer/Analyst/AnalystRevenue';
@@ -229,10 +232,10 @@ function App() {
                         />
                         <Route path="reports" element={<ReportPage />} />
                         <Route path="reports/:reportId" element={<ReportDetail />} />
-                        <Route
-                            path="notification"
-                            element={<NotificationPage />}
-                        />
+                        <Route path='users' element={<UsersManager />} />
+                        <Route path='retailer' element={<RetailerManager />} />
+                        <Route path='information' element={<InformationManager />} />
+
                     </Route>
 
                     <Route

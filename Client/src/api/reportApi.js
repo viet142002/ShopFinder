@@ -8,6 +8,10 @@ export const getReportsApi = async (params) => {
     return api.get('/admin/reports', { params });
 };
 
+export const getReportApi = async (id) => {
+    return api.get(`/admin/reports/${id}`);
+};
+
 export const deleteReportApi = async (id) => {
-    return api.delete(`reports/${id}`);
+    return api.delete(`/admin/reports/${id}`);
 };

@@ -32,6 +32,11 @@ const informationSchema = new mongoose.Schema(
             ref: 'Image',
             default: '65fd4951f687ef962765aa4a',
         },
+        status: {
+            type: String,
+            enum: ['blocked', 'normal'],
+            default: 'normal',
+        },
         images: [
             {
                 type: mongoose.Schema.Types.ObjectId,

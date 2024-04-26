@@ -43,10 +43,10 @@ const reportController = {
             }
 
             const reports = await Report.find(query)
-                .limit(parseInt(limit, 10))
-                .skip(parseInt(skip, 10))
                 .populate('from', 'firstname lastname avatar email')
                 .populate('to');
+            // .limit(parseInt(limit, 10))
+            // .skip(parseInt(skip, 10))
 
             const length = reports.length;
 
@@ -74,8 +74,24 @@ const reportController = {
                 });
             }
 
+            const relatedReports = await Report.find({
+                _id: { $ne: report._id },
+                to: report.to,
+                toType: report.toType,
+            }).populate({
+                path: 'from',
+                select: 'firstname lastname avatar email',
+                populate: {
+                    path: 'avatar',
+                    select: 'path',
+                },
+            });
+
             return res.status(200).json({
-                report,
+                report: {
+                    ...report._doc,
+                    relatedReports,
+                },
                 message: 'Report retrieved successfully',
             });
         } catch (error) {

@@ -20,21 +20,24 @@ function SiderManage() {
 
     const handleClick = (item) => {
         switch (item.key) {
-            case '1':
-                navigate('./dashboard');
+            case 'dashboard':
+                navigate('/admin/dashboard');
                 break;
-            case '2':
-                navigate('./request');
+            case 'request':
+                navigate('/admin/request');
                 break;
-            case '3':
-                navigate('./reports');
+            case 'reports':
+                navigate('/admin/reports');
                 break;
-            // case '4':
-            //     navigate('./notification');
-            //     break;
-            // case '5':
-            //     navigate('./store');
-            //     break;
+            case 'users':
+                navigate('/admin/users');
+                break;
+            case 'retailer':
+                navigate('/admin/retailer');
+                break;
+            case 'information':
+                navigate('/admin/information');
+                break;
             case '6':
                 dispatch(unsetUser());
                 navigate('/login');
@@ -46,29 +49,42 @@ function SiderManage() {
 
     const items = [
         {
-            key: '1',
+            key: 'dashboard',
             icon: <MdOutlineDashboard size={18} />,
             label: 'Tổng quan',
             name: 'dashboard'
         },
         {
-            key: '2',
+            key: 'request',
             icon: <VscGitPullRequestGoToChanges size={18} />,
             label: 'Yêu cầu',
             name: 'request'
         },
         {
-            key: '3',
+            key: 'report',
             icon: <MdOutlineReport size={18} />,
             label: 'Báo cáo',
             name: 'report'
+        },
+        {
+            key: 'users',
+            icon: <MdOutlineReport size={18} />,
+            label: 'Quản lý người dùng',
+            name: 'users'
+        },
+        {
+            key: 'retailer',
+            icon: <MdOutlineReport size={18} />,
+            label: 'Quản lý cửa hàng',
+            name: 'retailer'
+        },
+        {
+            key: 'information',
+            icon: <MdOutlineReport size={18} />,
+            label: 'Quản lý thông tin cộng đồng',
+            name: 'information'
         }
-        // {
-        //     key: '4',
-        //     icon: <MdOutlineNotifications size={18} />,
-        //     label: 'Thông báo',
-        //     name: 'notification'
-        // }
+
     ];
 
     const MenuTop = (

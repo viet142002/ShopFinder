@@ -25,8 +25,8 @@ const userSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['active', 'blocked'],
-        default: 'active',
+        enum: ['normal', 'blocked'],
+        default: 'normal',
     },
     pendingRetailer: {
         retailer: {
