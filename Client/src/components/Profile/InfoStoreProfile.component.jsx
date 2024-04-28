@@ -61,6 +61,26 @@ function InfoStoreProfile({ store, isShowButtonEdit = true }) {
                         )}
                     </span>
                 </p>
+
+                <p>
+                    <span>Trạng thái: </span>
+                    <span>
+                        {store.status === 'normal' ||
+                        store.status === 'approved' ? (
+                            <Tag color="success">Hoạt động</Tag>
+                        ) : (
+                            <Tag color="error">Chưa duyệt / Cấm</Tag>
+                        )}
+                    </span>
+                </p>
+
+                <Link
+                    to={`/stores/${store._id}/products`}
+                    className="mr-4 block text-right"
+                >
+                    Xem sản phẩm
+                </Link>
+
                 <p>Mô tả cửa hàng:</p>
                 <HTMLRenderer
                     className="rounded-md bg-white p-2 md:bg-gray-100"

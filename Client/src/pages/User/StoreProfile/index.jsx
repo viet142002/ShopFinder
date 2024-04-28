@@ -31,12 +31,12 @@ function StoreProfile() {
                         </div>
                         <div className="-order-1 space-y-4 overflow-hidden md:order-1 md:col-span-2">
                             <MyCarousel images={store.images} />
-                            <div className="mt-6 hidden rounded-lg bg-white md:block">
+                            <div className="mt-6 hidden rounded-lg bg-white pb-2 pt-4 md:block">
                                 <DisplayRates id={storeId} />
                             </div>
                         </div>
                     </section>
-                    <div className="block md:hidden">
+                    <div className="mt-4 block md:hidden">
                         <DisplayRates id={storeId} />
                     </div>
                 </>
