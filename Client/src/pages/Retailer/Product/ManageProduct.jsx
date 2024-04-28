@@ -16,12 +16,12 @@ import {
     useParams,
     useSearchParams
 } from 'react-router-dom';
-import CardProduct from '../../../components/CardProduct/CardProduct.component';
-
 import { MdAdd } from 'react-icons/md';
 
-import { getProductsFromDistributor } from '../../../api/productApi';
-import { typeStatus } from '../../../utils/typeConstraint';
+import { CardProduct } from '@components/Card';
+
+import { getProductsFromDistributor } from '@api/productApi';
+import { typeStatus } from '@utils/typeConstraint';
 
 const columns = [
     {

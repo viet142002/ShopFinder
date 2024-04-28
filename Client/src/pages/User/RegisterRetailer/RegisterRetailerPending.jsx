@@ -3,9 +3,9 @@ import { Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { getInfoMyRetailerApi } from '../../api/retailerApi';
-import HTMLRenderer from '../../components/HTMLRenderer/HTMLRenderer.component';
-import { typeLocations } from '../../utils/typeConstraint';
+import { getInfoMyRetailerApi } from '../../../api/retailerApi';
+import HTMLRenderer from '../../../components/HTMLRenderer/HTMLRenderer.component';
+import { typeLocations } from '../../../utils/typeConstraint';
 
 function RegisterRetailerPending() {
     const dispatch = useDispatch();

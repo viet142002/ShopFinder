@@ -9,7 +9,7 @@ import {
     updateProductByUserApi
 } from '@api/productApi';
 
-import FormProduct from '@components/Form/FormProduct.component';
+import { FormProduct } from '@components/Form';
 
 const formatForm = (values, images = [], deleteImages = []) => {
     const formData = new FormData();

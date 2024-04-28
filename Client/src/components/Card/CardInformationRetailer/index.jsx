@@ -3,9 +3,9 @@ import { Avatar, Rate } from 'antd';
 
 import { Link, useParams } from 'react-router-dom';
 
-import { getDistributorByProductIdApi } from '../../api/productApi';
+import { getDistributorByProductIdApi } from '../../../api/productApi';
 
-function CardInformationRetailer() {
+export function CardInformationRetailer() {
     const { productId, storeId } = useParams();
     const [data, setData] = useState({});
 
@@ -62,5 +62,3 @@ function CardInformationRetailer() {
         </section>
     );
 }
-
-export default CardInformationRetailer;

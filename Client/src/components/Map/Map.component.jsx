@@ -8,10 +8,12 @@ import './style.scss';
 import MyMarker from '../Marker/MyMarker.component';
 import MarkerCus from '../Marker/Marker.component';
 import Routing from '../Routing/Routing.component';
-import FocusCurrent from '../FocusCurrent/FocusCurrent.component';
+import FocusCurrent from '../FocusCurrent';
 
 function Map() {
-    const { fixedLocation: p, showRouting } = useSelector((state) => state.routing);
+    const { fixedLocation: p, showRouting } = useSelector(
+        (state) => state.routing
+    );
 
     return (
         <>

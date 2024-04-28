@@ -2,10 +2,10 @@ import { Form, Input, Button, Select } from 'antd';
 import { useState } from 'react';
 import { EditOutlined } from '@ant-design/icons';
 
-import InputAddress from '../Input/InputAddress/InputAddress.component';
-import InputLocation from '../Input/InputLocation/InputLocation.component';
+import InputAddress from '../../Input/InputAddress/InputAddress.component';
+import InputLocation from '../../Input/InputLocation/InputLocation.component';
 
-function FormCheckout({ address, onFill }) {
+export function FormCheckout({ address, onFill }) {
     const [isChangeAddress, setIsChangeAddress] = useState(false);
 
     return (
@@ -114,5 +114,3 @@ function FormCheckout({ address, onFill }) {
         </>
     );
 }
-
-export default FormCheckout;

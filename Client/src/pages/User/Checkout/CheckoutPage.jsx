@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Form, message } from 'antd';
 
-import FormCheckout from '@components/Checkout/FormCheckout.component';
+import { FormCheckout } from '@components/Form';
 import CardTotal from '@components/Checkout/CardTotal.component';
 
 import { handleFetch } from '@utils/expression';

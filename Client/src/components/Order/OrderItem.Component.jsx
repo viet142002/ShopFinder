@@ -4,8 +4,7 @@ import { Link } from 'react-router-dom';
 
 import OrderProductItem from './OrderProductItem/OrderProductItem.component';
 
-import { formatPrice } from '@utils/formatPrice';
-import { typeOrderStatus } from '@utils/typeConstraint';
+import { formatPrice, typeOrderStatus } from '@utils/index';
 import { updateStatusOrder } from '@api/orderApi';
 
 function OrderItem({ order }) {

@@ -1,6 +1,6 @@
 import { Image } from 'antd';
 
-function MiniCartItem({ item, className }) {
+export function MiniCardCartItem({ item, className }) {
     return (
         <>
             <div className={className}>
@@ -54,5 +54,3 @@ function MiniCartItem({ item, className }) {
         </>
     );
 }
-
-export default MiniCartItem;

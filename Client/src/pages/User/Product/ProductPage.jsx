@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 
 import DetailProduct from '@components/DetailProduct/DetailProduct.component';
-import CardInformationRetailer from '@components/CardInformationRetailer/CardInformationRetailer.component';
+import { CardInformationRetailer } from '@components/Card';
 import DisplayRate from '@components/DisplayRate/DisplayRate.component';
 import ModalRating from '@components/Modal/ModalRating/ModalRating.component';
 import RateTotal from '@components/Rate/RateTotal/RateTotal.component';

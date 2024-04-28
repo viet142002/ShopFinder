@@ -1,9 +1,9 @@
 import { Button } from 'antd';
 import { useEffect } from 'react';
 
-import MiniCartItem from '../CartItem/MiniCartItem.component';
-import { calculateDistance } from '../../utils/calculateDistance';
-import { getPriceShipById } from '../../api/priceShippingApi';
+import { MiniCardCartItem } from '@components/Card';
+import { calculateDistance } from '@utils/calculateDistance';
+import { getPriceShipById } from '@api/priceShippingApi';
 
 function CardTotal({ state, location, priceSipping, setPriceShipping }) {
     useEffect(() => {
@@ -42,7 +42,7 @@ function CardTotal({ state, location, priceSipping, setPriceShipping }) {
                                 >
                                     {item.items.map((prod) => {
                                         return (
-                                            <MiniCartItem
+                                            <MiniCardCartItem
                                                 item={prod}
                                                 key={prod.product._id}
                                                 className="flex rounded-md p-2 shadow-md"

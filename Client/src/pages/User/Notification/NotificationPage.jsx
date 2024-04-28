@@ -2,10 +2,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Avatar } from 'antd';
 import { useEffect } from 'react';
 
-import { setReadAll } from '../../../redux/notificationSlice';
-import { formatTime } from '@utils/formatTime';
+import { setReadAll } from '@redux/notificationSlice';
+import { formatTime, returnUrl } from '@utils/index';
 import { readNotifications } from '@api/notificationApi';
-import { returnUrl } from '@utils/returnUrl';
 import { Link } from 'react-router-dom';
 
 function NotificationPage() {

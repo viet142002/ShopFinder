@@ -3,14 +3,14 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
-import { typeLocations } from '../../utils/typeConstraint';
-import EditorFormat from '../../components/EditorFormat/EditorFormat';
-import InputAddress from '../../components/Input/InputAddress/InputAddress.component';
-import InputImage from '../../components/Input/InputImage/InputImage.component';
-import { shareStore } from '../../api/communityApi';
-import { registerRetailerApi } from '../../api/retailerApi';
-import { handleFetch } from '../../utils/expression';
-import InputLocation from '../../components/Input/InputLocation/InputLocation.component';
+import { typeLocations } from '../../../utils/typeConstraint';
+import EditorFormat from '../../../components/EditorFormat/EditorFormat';
+import InputAddress from '../../../components/Input/InputAddress/InputAddress.component';
+import InputImage from '../../../components/Input/InputImage/InputImage.component';
+import { shareStore } from '../../../api/communityApi';
+import { registerRetailerApi } from '../../../api/retailerApi';
+import { handleFetch } from '../../../utils/expression';
+import InputLocation from '../../../components/Input/InputLocation/InputLocation.component';
 
 const FormatForm = (values, images, isRegisterRetailer) => {
     const formData = new FormData();

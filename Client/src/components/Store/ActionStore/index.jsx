@@ -24,11 +24,12 @@ function ActionStore({ storeId, setStores, stores, type = 'retailer' }) {
             data = res.data;
         }
         if (data.message === 'Successfully') {
-            setResult('approved');
+            setResult(type === 'retailer' ? 'approved' : 'normal');
             setStores((prev) => [
                 ...prev.map((request) => {
                     if (request._id === _id) {
-                        request.status = 'approved';
+                        request.status =
+                            type === 'retailer' ? 'approved' : 'normal';
                     }
                     return request;
                 })

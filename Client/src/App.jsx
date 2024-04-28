@@ -12,16 +12,17 @@ import { setFirstLocation } from './redux/routingSlice';
 import socket from './socket';
 // #endregion
 // #region user page
+import EditProfile from '@pages/User/Profile/EditProfile';
 import StoreProfile from '@pages/User/StoreProfile';
 import NewPassword from '@pages/User/ForgotPassword/NewPassword';
 import ForgotPassword from '@pages/User/ForgotPassword';
 import VNPayReturn from '@pages/User/Checkout/VNPayReturn';
 import PaymentFail from '@pages/User/Checkout/PaymentFail';
-import Profile from './pages/user/Profile/ProfilePage';
+import Profile from './pages/User/Profile';
 import Login from './pages/Auth/Login/LoginPage';
 import Register from './pages/Auth/Register/RegisterPage';
-import RegisterRetailerPending from './pages/RegisterRetailer/RegisterRetailerPending';
-import HomePage from './pages/Home/HomePage';
+import RegisterRetailerPending from './pages/User/RegisterRetailer/RegisterRetailerPending';
+import HomePage from './pages/User/Home/HomePage';
 import ProductsPage from './pages/User/Products/ProductsPage';
 import ProductPage from './pages/User/Product/ProductPage';
 import CartPage from './pages/User/Cart/CartPage';
@@ -29,9 +30,9 @@ import CheckoutPage from './pages/User/Checkout/CheckoutPage';
 import NotificationPage from './pages/User/Notification/NotificationPage';
 import OrderPage from '@pages/User/Orders/OrderPage';
 import OrderDetailPage from '@pages/User/Orders/OrderDetailPage';
-import CreateStore from './pages/CreateStore/CreateStore';
+import CreateStore from './pages/User/CreateStore/CreateStore';
 import AddAndEditProductByUser from '@pages/User/Product/AddAndEditProductByUser';
-import EditStore from '@pages/EditStore/EditStore';
+import EditStore from '@pages/EditStore';
 // #endregion
 // #region admin page
 import RequestRetailerPage from './pages/Admin/RetailerManager';
@@ -177,6 +178,14 @@ function App() {
                             element={
                                 <ProtectRoute>
                                     <Profile />
+                                </ProtectRoute>
+                            }
+                        />
+                        <Route
+                            path="/profile/edit"
+                            element={
+                                <ProtectRoute>
+                                    <EditProfile />
                                 </ProtectRoute>
                             }
                         />

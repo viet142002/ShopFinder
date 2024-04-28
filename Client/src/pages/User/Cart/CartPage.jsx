@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { getCartApi } from '@api/cartApi';
 
-import CartItem from '@components/CartItem/CartItem.component';
-import CartTotal from '@components/CartTotal/CartTotal.component';
+import { CardCartItem, CardCartTotal } from '@components/Card';
 
 function CartPage() {
     const [cart, setCart] = useState([]);
@@ -20,7 +19,7 @@ function CartPage() {
                     {cart.length > 0 ? (
                         cart.map((item) => {
                             return (
-                                <CartItem
+                                <CardCartItem
                                     setChecked={setChecked}
                                     key={item.distributor._id}
                                     item={item}
@@ -36,7 +35,7 @@ function CartPage() {
                 </section>
                 <section className="md:col-span-2">
                     <div className="rounded-md p-2 shadow-card">
-                        <CartTotal cart={cart} checked={checked} />
+                        <CardCartTotal cart={cart} checked={checked} />
                     </div>
                 </section>
             </div>

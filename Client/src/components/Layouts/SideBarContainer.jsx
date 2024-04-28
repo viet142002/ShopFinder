@@ -1,11 +1,10 @@
 import { Layout } from 'antd';
 
-import { useMobile } from '@hooks/useMobile';
+import { useMobile, useClickOutside } from '@hooks/index';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { setCollapsed } from '@redux/sidebarSlice';
 import { useRef } from 'react';
-import { useClickOutside } from '@hooks/useClickOutSide';
 
 function SidebarContainer({ MenuTop, MenuBottom, ...props }) {
     const dispatch = useDispatch();

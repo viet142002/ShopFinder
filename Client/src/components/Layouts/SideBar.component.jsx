@@ -14,15 +14,14 @@ import {
 } from '@ant-design/icons';
 import { useLocation } from 'react-router-dom';
 
-import { unsetUser } from '../../redux/userSlice';
-import { setNotifications, setOneNotify } from '../../redux/notificationSlice';
+import { unsetUser } from '@redux/userSlice';
+import { setNotifications, setOneNotify } from '@redux/notificationSlice';
 import { getNotifications } from '@api/notificationApi';
 
-import { notification } from '@utils/notification';
+import { notification, returnUrl } from '@utils/index';
 
 import socket from '../../socket';
 import SidebarContainer from './SideBarContainer';
-import { returnUrl } from '@utils/returnUrl';
 import { useAuth } from '@hooks/useAuth';
 
 function getItem(label, key, icon, children, type) {
@@ -188,25 +187,25 @@ function SideBar({ ...props }) {
                     items={[
                         isAuth
                             ? getItem(
-                                'Hồ sơ',
-                                'profiles',
-                                <Avatar
-                                    alt="avatar"
-                                    className="flex-shrink-0 -translate-x-[calc(50%-10px)]"
-                                    size={35}
-                                    src={returnUrl({ user: data })}
-                                />,
-                                [
-                                    getItem('Thông tin cá nhân', 'profile'),
-                                    getItem('Đơn hàng của bạn', 'order'),
-                                    getItem('Đăng xuất', 'logout')
-                                ]
-                            )
+                                  'Hồ sơ',
+                                  'profiles',
+                                  <Avatar
+                                      alt="avatar"
+                                      className="flex-shrink-0 -translate-x-[calc(50%-10px)]"
+                                      size={35}
+                                      src={returnUrl({ user: data })}
+                                  />,
+                                  [
+                                      getItem('Thông tin cá nhân', 'profile'),
+                                      getItem('Đơn hàng của bạn', 'order'),
+                                      getItem('Đăng xuất', 'logout')
+                                  ]
+                              )
                             : {
-                                key: 'login',
-                                icon: <LoginOutlined />,
-                                label: 'Đăng nhập'
-                            }
+                                  key: 'login',
+                                  icon: <LoginOutlined />,
+                                  label: 'Đăng nhập'
+                              }
                     ]}
                 />
             }

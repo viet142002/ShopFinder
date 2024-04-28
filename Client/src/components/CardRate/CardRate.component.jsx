@@ -8,9 +8,7 @@ import DisplayImagesRate from './DisplayImagesRate/DisplayImages.component';
 import ModalReport from '../Modal/ModalReport/ModalReport.component';
 
 import { deleteRateApi } from '@api/RateApi';
-import { handleFetch } from '@utils/expression';
-import { returnUrl } from '@utils/returnUrl';
-import { formatTime } from '@utils/formatTime';
+import { returnUrl, formatTime, handleFetch } from '@utils/index';
 import { useAuth } from '@hooks/useAuth';
 
 const items1 = [
@@ -32,7 +30,6 @@ const items2 = [
 ];
 
 function CardRate(rate) {
-    console.log('🚀 ~ CardRate ~ rate:', rate);
     const dispatch = useDispatch();
     const { data: user } = useAuth();
     const isMyRate = user._id === rate?.from?._id;

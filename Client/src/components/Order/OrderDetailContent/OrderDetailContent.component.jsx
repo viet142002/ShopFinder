@@ -4,9 +4,7 @@ import OrderProductItem from '../OrderProductItem/OrderProductItem.component';
 import RenderAddress from '@components/RenderAddress';
 import MiniMap from '@components/Map/MiniMap';
 
-import { typeOrderStatus } from '@utils/typeConstraint';
-import { formatDate } from '@utils/formatDate';
-import { formatPrice } from '@utils/formatPrice';
+import { typeOrderStatus, formatDate, formatPrice } from '@utils/index';
 
 function OrderDetailItem({ order, children }) {
     return (

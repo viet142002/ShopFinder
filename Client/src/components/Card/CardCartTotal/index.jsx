@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import { Button } from 'antd';
 
-import { calculatePrice } from '../../utils/calculatePrice';
-function CartTotal({ cart, checked }) {
+import { calculatePrice } from '@/utils/calculatePrice';
+
+export function CardCartTotal({ cart, checked }) {
     const totalPrice = useMemo(() => calculatePrice(cart), [cart]);
     return (
         <>
@@ -44,8 +45,5 @@ function CartTotal({ cart, checked }) {
                 </Link>
             </div>
         </>
-
     );
 }
-
-export default CartTotal;

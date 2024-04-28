@@ -1,9 +1,9 @@
 import { Button, Form, Input, InputNumber, Select } from 'antd';
-import InputImage from '../Input/InputImage/InputImage.component';
-import EditorFormat from '../EditorFormat/EditorFormat';
+import InputImage from '@components/Input/InputImage/InputImage.component';
+import EditorFormat from '@components/EditorFormat/EditorFormat';
 import { typeStatus } from '@utils/typeConstraint';
 
-function FormProduct({
+export function FormProduct({
     isAddMode,
     isChange,
     imageBefore,
@@ -132,5 +132,3 @@ function FormProduct({
         </>
     );
 }
-
-export default FormProduct;

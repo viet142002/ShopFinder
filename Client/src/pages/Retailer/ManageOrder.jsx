@@ -4,9 +4,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 
 import { getOrdersByDistributor } from '@api/orderApi';
 
-import { formatTime } from '@utils/formatTime';
-import { typeOrderStatus } from '@utils/typeConstraint';
-import { formatPrice } from '@utils/formatPrice';
+import { formatTime, typeOrderStatus, formatPrice } from '@utils/index';
 import FilterOrder from '@components/Order/FilterOrder/FilterOrder.component';
 
 import socket from '../../socket';

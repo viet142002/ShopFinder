@@ -3,14 +3,13 @@ import { useDispatch } from 'react-redux';
 import { Form, Input, Space, Button, Tooltip } from 'antd';
 
 import { MdCameraAlt } from 'react-icons/md';
-import { returnUrl } from '@utils/returnUrl';
+import { returnUrl, handleFetch } from '@utils/index';
 
 import './profileStyle.scss';
 
 import InputAddress from '@components/Input/InputAddress/InputAddress.component';
 import RenderAddress from '@components/RenderAddress';
 
-import { handleFetch } from '@utils/expression';
 import { updateUser } from '@api/userApi';
 import { useAuth } from '@hooks/useAuth';
 

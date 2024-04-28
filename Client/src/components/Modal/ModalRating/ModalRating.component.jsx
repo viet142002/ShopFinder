@@ -4,10 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { setNewRate, updateRate } from '@redux/ratingSlice';
 import { addRateApi, updateRateApi } from '@api/RateApi';
-import { handleFetch } from '@utils/expression';
+import { handleFetch, returnUrl } from '@utils/index';
 
-import UploadImage from '../../UploadImage/UploadImage.component';
-import { returnUrl } from '@utils/returnUrl';
+import UploadImage from '@components/UploadImage/UploadImage.component';
 import { useAuth } from '@hooks/useAuth';
 
 const formatForm = (values) => {

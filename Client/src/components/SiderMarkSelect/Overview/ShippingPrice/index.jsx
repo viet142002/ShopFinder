@@ -1,4 +1,4 @@
-import { formatPrice } from '@utils/formatPrice';
+import { formatPrice } from '@utils/index';
 import { useEffect, useState, memo } from 'react';
 
 import { getPriceShipByRetailerId } from '@api/priceShippingApi';

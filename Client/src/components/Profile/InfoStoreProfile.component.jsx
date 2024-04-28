@@ -1,11 +1,10 @@
 import { Avatar, Tag } from 'antd';
+import { Link } from 'react-router-dom';
 
 import HTMLRenderer from '../HTMLRenderer/HTMLRenderer.component';
 import RenderAddress from '@components/RenderAddress';
 
-import { typeLocations } from '@utils/typeConstraint';
-import { Link } from 'react-router-dom';
-import { formatTime } from '@utils/formatTime';
+import { typeLocations, formatTime } from '@utils/index';
 
 function InfoStoreProfile({ store, isShowButtonEdit = true }) {
     return (

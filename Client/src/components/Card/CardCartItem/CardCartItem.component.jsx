@@ -3,11 +3,11 @@ import { Button, Image, Checkbox } from 'antd';
 
 import { DeleteOutlined } from '@ant-design/icons';
 
-import InputQuantity from '../Input/InputQuantity/InputQuantity.component';
+import InputQuantity from '../../Input/InputQuantity/InputQuantity.component';
 
-import { updateCartApi, removeFromCartApi } from '../../api/cartApi';
+import { updateCartApi, removeFromCartApi } from '../../../api/cartApi';
 
-function CartItem({ item, setCart, setChecked }) {
+export function CardCartItem({ item, setCart, setChecked }) {
     const [changeQuantity, setChangeQuantity] = useState({
         productId: '',
         quantity: 0
@@ -211,5 +211,3 @@ function CartItem({ item, setCart, setChecked }) {
         </>
     );
 }
-
-export default CartItem;

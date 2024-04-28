@@ -6,9 +6,7 @@ import { getReportApi, updateReportApi } from '@api/reportApi';
 import { updateStatusUser } from '@api/userApi';
 import { updateRateApi } from '@api/RateApi';
 
-import { returnUrl } from '@utils/returnUrl';
-import { formatTime } from '@utils/formatTime';
-import { typeReport } from '@utils/typeConstraint';
+import { returnUrl, formatTime, typeReport } from '@utils/index';
 import ModalDisplayRate from './components/ModalDisplayRate';
 
 function ReportDetail() {

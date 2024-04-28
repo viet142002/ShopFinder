@@ -1,9 +1,9 @@
 import { Card } from 'antd';
 import { Link } from 'react-router-dom';
 
-import { formatPrice } from '../../utils/formatPrice';
+import { formatPrice } from '../../../utils/formatPrice';
 
-function CardProduct({ product, storeId }) {
+export function CardProduct({ product, storeId }) {
     return (
         <Link to={`/stores/${storeId}/products/${product._id}`}>
             <Card
@@ -32,5 +32,3 @@ function CardProduct({ product, storeId }) {
         </Link>
     );
 }
-
-export default CardProduct;

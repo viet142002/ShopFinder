@@ -3,7 +3,7 @@ import { useParams, useLocation, Link } from 'react-router-dom';
 import { Layout, Button } from 'antd';
 
 import { getProductsFromDistributor } from '@api/productApi';
-import CardProduct from '@components/CardProduct/CardProduct.component';
+import { CardProduct } from '@components/Card';
 
 function ProductsPage() {
     const { state } = useLocation();
