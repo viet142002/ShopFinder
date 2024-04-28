@@ -25,6 +25,9 @@ const rateController = {
             const rates = await Rate.find({
                 to: to,
                 from: { $ne: userId },
+                status: {
+                    $ne: 'blocked',
+                },
             })
                 .populate({
                     path: 'from',
@@ -217,26 +220,41 @@ const rateController = {
             const { to } = req.query;
 
             const oneStar = await Rate.countDocuments({
+                status: {
+                    $ne: 'blocked',
+                },
                 to: to,
                 rate: 1,
             });
 
             const twoStar = await Rate.countDocuments({
+                status: {
+                    $ne: 'blocked',
+                },
                 to: to,
                 rate: 2,
             });
 
             const threeStar = await Rate.countDocuments({
+                status: {
+                    $ne: 'blocked',
+                },
                 to: to,
                 rate: 3,
             });
 
             const fourStar = await Rate.countDocuments({
+                status: {
+                    $ne: 'blocked',
+                },
                 to: to,
                 rate: 4,
             });
 
             const fiveStar = await Rate.countDocuments({
+                status: {
+                    $ne: 'blocked',
+                },
                 to: to,
                 rate: 5,
             });

@@ -1,34 +1,25 @@
 import { Space, Button, Tag } from 'antd';
 import {
     acceptRequestApi,
-    rejectRequestApi
-} from '../../../api/retailerApi.js';
+    rejectRequestApi,
+    blockedRetailerApi
+} from '@api/retailerApi.js';
 import { useState } from 'react';
 
-function ActionRequestRetailer({ recordId, setRequest, requests = [] }) {
-    const [loading, setLoading] = useState({
-        acceptRequest: false,
-        rejectRequest: false
-    });
+function ActionRequestRetailer({ recordId, setRequests, requests = [] }) {
+    const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(
         requests?.find((request) => request?._id === recordId).status || ''
     );
 
     const handleAccept = async (_id) => {
-        setLoading({
-            ...loading,
-            acceptRequest: true
-        });
+        setLoading(true);
 
         const data = await acceptRequestApi(_id);
 
-        setLoading({
-            ...loading,
-            acceptRequest: false
-        });
         if (data.message === 'Approved request successfully') {
             setResult('approved');
-            setRequest([
+            setRequests([
                 ...requests.map((request) => {
                     if (request._id === _id) {
                         request.status = 'approved';
@@ -37,23 +28,15 @@ function ActionRequestRetailer({ recordId, setRequest, requests = [] }) {
                 })
             ]);
         }
+        setLoading(false);
     };
 
     const handleReject = async (_id) => {
-        setLoading({
-            ...loading,
-            rejectRequest: true
-        });
-
+        setLoading(true);
         const data = await rejectRequestApi(_id);
-        setLoading({
-            ...loading,
-            rejectRequest: false
-        });
         if (data.message === 'Rejected request successfully') {
             setResult('rejected');
-
-            setRequest([
+            setRequests([
                 ...requests.map((request) => {
                     if (request._id === _id) {
                         request.status = 'rejected';
@@ -62,6 +45,25 @@ function ActionRequestRetailer({ recordId, setRequest, requests = [] }) {
                 })
             ]);
         }
+        setLoading(false);
+    };
+
+    const handleBlock = async (_id) => {
+        setLoading(true);
+        const res = await blockedRetailerApi(_id);
+        console.log('🚀 ~ handleBlock ~ data:', res.data);
+        if (res.data.message === 'Blocked retailer successfully') {
+            setResult('blocked');
+            setRequests((prev) => {
+                return prev.map((request) => {
+                    if (request._id === _id) {
+                        request.status = 'blocked';
+                    }
+                    return request;
+                });
+            });
+        }
+        setLoading(false);
     };
 
     return (
@@ -69,20 +71,42 @@ function ActionRequestRetailer({ recordId, setRequest, requests = [] }) {
             {result === 'rejected' ? (
                 <Tag color="red">Đã từ chối</Tag>
             ) : result === 'approved' ? (
-                <Tag color="green">Đã chấp thuận</Tag>
+                <Space size="middle">
+                    <Tag color="green">Đã chấp thuận</Tag>
+                    <Button
+                        type="primary"
+                        onClick={() => handleBlock(recordId)}
+                        loading={loading}
+                        danger
+                    >
+                        Chặn cửa hàng
+                    </Button>
+                </Space>
+            ) : result === 'blocked' ? (
+                <Space size="middle">
+                    <Tag color="red">Đã chặn</Tag>
+                    <Button
+                        type="primary"
+                        onClick={() => handleAccept(recordId)}
+                        loading={loading}
+                        className="bg-blue-500"
+                    >
+                        Mở chặn
+                    </Button>
+                </Space>
             ) : (
                 <Space size="middle">
                     <Button
                         className="bg-blue-500 text-white hover:bg-blue-400 hover:!text-white"
                         onClick={() => handleAccept(recordId)}
-                        loading={loading.acceptRequest}
+                        loading={loading}
                     >
                         Chấp thuận
                     </Button>
                     <Button
                         type="danger"
                         onClick={() => handleReject(recordId)}
-                        loading={loading.rejectRequest}
+                        loading={loading}
                     >
                         Từ chối
                     </Button>

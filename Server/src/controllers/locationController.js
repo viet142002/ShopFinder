@@ -85,6 +85,9 @@ const locationController = {
                         $centerSphere: [[lng, lat], radius / 6371],
                     },
                 },
+                status: {
+                    $ne: 'blocked',
+                },
             })
                 .populate({
                     path: 'information',

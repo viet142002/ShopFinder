@@ -96,6 +96,13 @@ function CartItem({ item, setCart, setChecked }) {
                                     onChange={() =>
                                         handleChecked(prod.product._id)
                                     }
+                                    disabled={
+                                        prod.product.status === 'sold-out' ||
+                                        prod.product.status === 'stop' ||
+                                        prod.product.distributor.status ===
+                                            'blocked' ||
+                                        prod.product.status === 'blocked'
+                                    }
                                 />
                                 <div className="relative flex h-full w-full items-center">
                                     <Image
@@ -126,6 +133,14 @@ function CartItem({ item, setCart, setChecked }) {
                                         {prod.product.status === 'stop' && (
                                             <span className="text-red-500">
                                                 (Ngừng kinh doanh)
+                                            </span>
+                                        )}
+                                        {(prod.product.distributor.status ===
+                                            'blocked' ||
+                                            prod.product.status ===
+                                                'blocked') && (
+                                            <span className="text-red-500">
+                                                (Bị chặn)
                                             </span>
                                         )}
                                     </h3>

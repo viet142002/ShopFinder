@@ -18,5 +18,10 @@ router.put(
     authMiddlewares.authentication('admin'),
     retailerController.rejectRequestRetailer
 );
+router.put(
+    '/block/:id',
+    authMiddlewares.authentication('admin'),
+    retailerController.blockRetailer
+);
 
 module.exports = router;

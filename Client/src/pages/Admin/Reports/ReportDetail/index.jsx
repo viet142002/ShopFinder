@@ -112,7 +112,7 @@ function ReportDetail() {
                                             Người báo cáo:
                                         </span>
                                         <span>
-                                            {report?.from?.firstname}
+                                            {report?.from?.firstname}{' '}
                                             {report?.from?.lastname}
                                         </span>
                                     </div>
@@ -207,7 +207,7 @@ function ReportDetail() {
                                             </Button>
                                             <Button
                                                 onClick={() =>
-                                                    handleBan('user')
+                                                    handleBan('rate')
                                                 }
                                                 disabled={
                                                     report?.to?.status ===

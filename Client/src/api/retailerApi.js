@@ -61,3 +61,7 @@ export const rejectRequestApi = async (id) => {
         return error.response.message;
     }
 };
+
+export const blockedRetailerApi = async (id) => {
+    return api.put(`admin/retailer/block/${id}`);
+};

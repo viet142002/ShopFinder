@@ -39,7 +39,7 @@ import DashboardPage from './pages/Admin/DashboardPage';
 import ReportPage from './pages/Admin/Reports/ReportPage';
 import ReportDetail from './pages/Admin/Reports/ReportDetail';
 import UsersManager from '@pages/Admin/UserManager/UsersManager';
-import InformationManager from '@pages/Admin/InformationManager';
+import InformationManager from '@pages/Admin/InformationManager/InformationManager';
 // #endregion
 // #region retailer page
 import AnalystRevenue from '@pages/Retailer/Analyst/AnalystRevenue';

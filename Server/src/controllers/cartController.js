@@ -2,6 +2,8 @@ const Cart = require('../Models/cartModel');
 const Product = require('../Models/productModel');
 const Location = require('../Models/locationModel');
 
+const RetailerController = require('./retailerController');
+
 const cartController = {
     addToCart: async (req, res) => {
         try {
@@ -13,6 +15,16 @@ const cartController = {
             if (!product) {
                 return res.status(400).json({ message: 'Product not found' });
             }
+
+            const isBlockedRetailer =
+                await RetailerController.checkBlockRetailer(
+                    product.distributor
+                );
+
+            if (isBlockedRetailer) {
+                return res.status(400).json({ message: 'Retailer is blocked' });
+            }
+
             if (quantity > product.quantity) {
                 return res.status(400).json({ message: 'Not enough product' });
             }
@@ -51,7 +63,7 @@ const cartController = {
                 path: 'items.product',
                 populate: {
                     path: 'images distributor',
-                    select: 'name _id path location',
+                    select: 'name _id path location status',
                 },
             });
 

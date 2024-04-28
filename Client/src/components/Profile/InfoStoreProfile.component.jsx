@@ -11,16 +11,21 @@ function InfoStoreProfile({ store, isShowButtonEdit = true }) {
         <div className="overflow-hidden rounded-lg p-2 md:bg-white">
             <h2 className="text-lg font-medium">Thông tin cửa hàng</h2>
             <div className="mt-2 space-y-2 md:ml-4">
-                <div className="flex items-center gap-2">
-                    <Avatar
-                        size={60}
-                        src={import.meta.env.VITE_APP_API_URL + store.logo.path}
-                    />
-                    <div>
-                        <h3>{store.name}</h3>
-                        <p>{store.createdAt}</p>
+                <Link to={`/stores/${store._id}`}>
+                    <div className="flex items-center gap-2">
+                        <Avatar
+                            size={60}
+                            src={
+                                import.meta.env.VITE_APP_API_URL +
+                                store?.logo?.path
+                            }
+                        />
+                        <div>
+                            <h3>{store.name}</h3>
+                            <p>{store.createdAt}</p>
+                        </div>
                     </div>
-                </div>
+                </Link>
                 <div>
                     <span>Địa chỉ: </span>
                     <RenderAddress

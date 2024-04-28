@@ -17,6 +17,12 @@ const locationSchema = new mongoose.Schema({
         ref: 'Address',
         required: true,
     },
+    status: {
+        type: String,
+        enum: ['normal', 'blocked'],
+        default: 'normal',
+        required: true,
+    },
     type: {
         type: String,
         enum: [

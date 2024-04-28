@@ -16,7 +16,7 @@ function CartPage() {
     return (
         <main className="mx-2 md:mx-0">
             <div className="mx-auto mt-10 grid gap-4 md:w-[80%] md:grid-cols-6">
-                <section className="p-2 shadow-card md:col-span-4">
+                <section className="rounded-md p-2 shadow-card md:col-span-4">
                     {cart.length > 0 ? (
                         cart.map((item) => {
                             return (
@@ -35,7 +35,7 @@ function CartPage() {
                     )}
                 </section>
                 <section className="md:col-span-2">
-                    <div className="p-2 shadow-card">
+                    <div className="rounded-md p-2 shadow-card">
                         <CartTotal cart={cart} checked={checked} />
                     </div>
                 </section>

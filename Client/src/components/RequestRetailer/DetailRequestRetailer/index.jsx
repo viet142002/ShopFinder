@@ -35,13 +35,13 @@ function DetailRequestRetailer({
                         </div>
                         <MyCarousel images={data.images} />
                         <InfoRetailerProfile
-                            retailer={data}
+                            store={data}
                             isShowButtonEdit={false}
                         />
                         <div className="flex justify-center">
                             <ActionRequestRetailer
                                 recordId={data._id}
-                                setRequest={setRequests}
+                                setRequests={setRequests}
                                 requests={requests}
                             />
                         </div>

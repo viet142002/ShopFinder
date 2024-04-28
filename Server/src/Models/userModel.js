@@ -35,7 +35,13 @@ const userSchema = new mongoose.Schema({
         },
         status: {
             type: String,
-            enum: ['not-register', 'pending', 'rejected', 'approved'],
+            enum: [
+                'not-register',
+                'pending',
+                'rejected',
+                'approved',
+                'blocked',
+            ],
             default: 'not-register',
         },
     },

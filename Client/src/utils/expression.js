@@ -102,6 +102,8 @@ const translateError = (msg) => {
             return 'Chỉ hỗ trợ thanh toán online với 1 cửa hàng';
         case 'User is blocked':
             return 'Tài khoản đã bị khóa';
+        case 'Retailer is blocked':
+            return 'Cửa hàng đã bị khóa';
         default:
             return 'Có lỗi xảy ra';
     }

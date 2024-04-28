@@ -1,5 +1,3 @@
-// TODO: Page hiển thị danh sách yêu cầu mở cửa hàng của retailer
-
 import { useState, useEffect } from 'react';
 import { Table, Tag, Space, Button } from 'antd';
 
@@ -130,7 +128,7 @@ function RequestRetailerPage() {
                         data={requests.find(
                             (request) => request._id === open.target
                         )}
-                        setRequest={setRequests}
+                        setRequests={setRequests}
                         requests={requests}
                     />
                 </>

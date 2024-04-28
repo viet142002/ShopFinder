@@ -1,10 +1,10 @@
 const Retailer = require('../Models/retailerModel');
 const User = require('../Models/userModel');
+const Location = require('../Models/locationModel');
 
 const imageController = require('./imageController');
 const addressController = require('./addressController');
 const locationController = require('./locationController');
-const priceShippingController = require('./priceShippingController');
 
 const retailerController = {
     register: async (req, res) => {
@@ -255,9 +255,8 @@ const retailerController = {
     getRequestsRetailer: async (req, res) => {
         try {
             let { status = 'all', sort = 'asc' } = req.query;
-            console.log('🚀 ~ getRequestsRetailer: ~ sort:', sort);
             if (status === 'all') {
-                status = ['pending', 'approved', 'rejected'];
+                status = ['pending', 'approved', 'rejected', 'blocked'];
             } else {
                 status = [status];
             }
@@ -306,6 +305,9 @@ const retailerController = {
                     message: 'Cant find user',
                 });
             }
+            const location = await Location.findById(retailer.location);
+
+            location.status = 'normal';
             retailer.status = 'approved';
             user.role = 'retailer';
 
@@ -314,6 +316,7 @@ const retailerController = {
                 status: 'approved',
             };
 
+            await location.save();
             await user.save();
             await retailer.save();
 
@@ -356,6 +359,53 @@ const retailerController = {
             return res.status(500).json({
                 message: error.message,
             });
+        }
+    },
+    // Block a retailer
+    blockRetailer: async (req, res) => {
+        try {
+            const retailer = await Retailer.findById(req.params.id);
+            if (!retailer) {
+                return res.status(400).json({
+                    message: 'Cant find retailer',
+                });
+            }
+            const user = await User.findById(retailer.owner);
+            const location = await Location.findById(retailer.location);
+
+            location.status = 'blocked';
+            retailer.status = 'blocked';
+            user.pendingRetailer = {
+                retailer: retailer._id,
+                status: 'blocked',
+            };
+
+            await location.save();
+            await retailer.save();
+            await user.save();
+
+            return res.status(200).json({
+                retailer,
+                message: 'Blocked retailer successfully',
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message,
+            });
+        }
+    },
+    // check block status
+    checkBlockRetailer: async retailerId => {
+        try {
+            const retailer = await Retailer.findById(retailerId);
+            if (!retailer) {
+                return res.status(400).json({
+                    message: 'Cant find retailer',
+                });
+            }
+            return retailer.status === 'blocked';
+        } catch (error) {
+            throw new Error(error.message);
         }
     },
 };
