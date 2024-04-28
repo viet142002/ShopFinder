@@ -98,7 +98,6 @@ const InformationController = {
             res.status(500).json({ message: error.message });
         }
     },
-
     async update(req, res) {
         try {
             const { id } = req.params;
@@ -226,7 +225,7 @@ const InformationController = {
     },
     async getAll(req, res) {
         try {
-            const { type = 'all', status = 'all', name } = req.query;
+            const { type = 'all', status = 'all', name, phone } = req.query;
             let query = {};
 
             if (type) {
@@ -238,8 +237,9 @@ const InformationController = {
             if (name) {
                 query.name = { $regex: name, $options: 'i' };
             }
-
-            console.log(query);
+            if (phone) {
+                query.phone = { $regex: phone, $options: 'i' };
+            }
 
             const information = await Information.find(query)
                 .populate({
@@ -248,9 +248,34 @@ const InformationController = {
                         path: 'address',
                     },
                 })
-                .populate('images');
+                .populate('images logo');
 
             res.status(200).json({ information });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    async updateStatus(req, res) {
+        try {
+            const { id } = req.params;
+            const { status } = req.body;
+
+            const information = await Information.findById(id);
+
+            if (!information) {
+                return res
+                    .status(404)
+                    .json({ message: 'Information not found' });
+            }
+
+            await locationController.update(information.location, { status });
+            information.status = status;
+            await information.save();
+
+            res.status(200).json({
+                information,
+                message: 'Successfully',
+            });
         } catch (error) {
             res.status(500).json({ message: error.message });
         }

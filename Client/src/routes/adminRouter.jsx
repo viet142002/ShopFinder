@@ -4,8 +4,8 @@ import ProtectRoute from './ProtectRoute';
 import ManageLayout from '../layouts/ManageLayout';
 
 import DashboardPage from '@pages/Admin/DashboardPage';
-import RequestRetailerPage from '@pages/Admin/RequestRetailerPage';
-import ReportPage from '@pages/Admin/Reports/ReportPage';
+import RequestRetailerPage from '@pages/Admin/RetailerManager';
+import ReportPage from '@pages/Admin/Reports';
 import NotificationPage from '@pages/User/Notification/NotificationPage';
 
 const AdminRouter = () => {

@@ -5,6 +5,7 @@ import RenderAddress from '@components/RenderAddress';
 
 import { typeLocations } from '@utils/typeConstraint';
 import { Link } from 'react-router-dom';
+import { formatTime } from '@utils/formatTime';
 
 function InfoStoreProfile({ store, isShowButtonEdit = true }) {
     return (
@@ -22,7 +23,7 @@ function InfoStoreProfile({ store, isShowButtonEdit = true }) {
                         />
                         <div>
                             <h3>{store.name}</h3>
-                            <p>{store.createdAt}</p>
+                            <p>{formatTime(store.createdAt)}</p>
                         </div>
                     </div>
                 </Link>

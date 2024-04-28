@@ -322,7 +322,7 @@ const retailerController = {
 
             return res.status(200).json({
                 retailer,
-                message: 'Approved request successfully',
+                message: 'Successfully',
             });
         } catch (error) {
             return res.status(500).json({
@@ -386,7 +386,7 @@ const retailerController = {
 
             return res.status(200).json({
                 retailer,
-                message: 'Blocked retailer successfully',
+                message: 'Successfully',
             });
         } catch (error) {
             return res.status(500).json({

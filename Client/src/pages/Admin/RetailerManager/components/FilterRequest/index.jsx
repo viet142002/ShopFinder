@@ -1,7 +1,7 @@
 import { Radio, Select, Space } from 'antd';
 import { useSearchParams } from 'react-router-dom';
 
-function FilterRequest() {
+export function FilterRequest() {
     const [searchParams, setSearchParams] = useSearchParams();
 
     return (
@@ -17,7 +17,7 @@ function FilterRequest() {
                     defaultValue={searchParams.get('status') || 'all'}
                     buttonStyle="solid"
                     className="text-nowrap"
-                    size="large"
+                    size="middle"
                 >
                     <Radio.Button value="all">Tất cả</Radio.Button>
                     <Radio.Button value="pending">Chờ xác nhận</Radio.Button>
@@ -28,7 +28,7 @@ function FilterRequest() {
                 <Select
                     defaultValue="desc"
                     style={{ width: 120 }}
-                    size="large"
+                    size="middle"
                     onChange={(value) => {
                         setSearchParams((prev) => {
                             prev.set('sort', value);
@@ -44,5 +44,3 @@ function FilterRequest() {
         </>
     );
 }
-
-export default FilterRequest;

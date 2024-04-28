@@ -34,9 +34,9 @@ import AddAndEditProductByUser from '@pages/User/Product/AddAndEditProductByUser
 import EditStore from '@pages/EditStore/EditStore';
 // #endregion
 // #region admin page
-import RequestRetailerPage from './pages/Admin/RequestRetailerPage';
+import RequestRetailerPage from './pages/Admin/RetailerManager';
 import DashboardPage from './pages/Admin/DashboardPage';
-import ReportPage from './pages/Admin/Reports/ReportPage';
+import ReportPage from './pages/Admin/Reports';
 import ReportDetail from './pages/Admin/Reports/ReportDetail';
 import UsersManager from '@pages/Admin/UserManager/UsersManager';
 import InformationManager from '@pages/Admin/InformationManager/InformationManager';

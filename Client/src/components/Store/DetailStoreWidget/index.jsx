@@ -3,16 +3,10 @@ import { memo } from 'react';
 
 import InfoRetailerProfile from '@components/Profile/InfoStoreProfile.component';
 import MyCarousel from '@components/Carousel/Carousel.component';
-import ActionRequestRetailer from '@components/RequestRetailer/ActionsButton';
+import ActionStore from '@components/Store/ActionStore';
 import MiniMap from '@components/Map/MiniMap';
 
-function DetailRequestRetailer({
-    open,
-    onClose,
-    data = {},
-    setRequests,
-    requests
-}) {
+function DetailStoreWidget({ open, onClose, data = {}, setStores, stores }) {
     return (
         <>
             <Drawer
@@ -39,10 +33,11 @@ function DetailRequestRetailer({
                             isShowButtonEdit={false}
                         />
                         <div className="flex justify-center">
-                            <ActionRequestRetailer
-                                recordId={data._id}
-                                setRequests={setRequests}
-                                requests={requests}
+                            <ActionStore
+                                storeId={data._id}
+                                setStores={setStores}
+                                stores={stores}
+                                type="information"
                             />
                         </div>
                     </>
@@ -52,5 +47,5 @@ function DetailRequestRetailer({
     );
 }
 
-const MemoDetailRequestRetailer = memo(DetailRequestRetailer);
-export default MemoDetailRequestRetailer;
+const MemoDetailStoreWidget = memo(DetailStoreWidget);
+export default MemoDetailStoreWidget;

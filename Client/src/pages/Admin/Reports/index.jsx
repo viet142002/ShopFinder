@@ -17,7 +17,7 @@ function ReportPage() {
         });
     }, [status, reason, type]);
     return (
-        <section className="mx-auto w-[90%]">
+        <section className="mx-auto w-[90%] md:w-[80%]">
             <h1 className="p-6 text-center text-lg font-medium">Các báo cáo</h1>
             <div className="mb-4 flex justify-center">
                 <FilterReport />

@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Table, Tag, Space, Button } from 'antd';
+import { useSearchParams } from 'react-router-dom';
 
 import { getRequestsRetailerApi } from '@api/retailerApi';
-import DetailRequestRetailer from '@components/RequestRetailer/DetailRequestRetailer';
-import ActionRequestRetailer from '@components/RequestRetailer/ActionsButton';
-import FilterRequest from '@components/RequestRetailer/FilterRequest';
-import { useSearchParams } from 'react-router-dom';
+import DetailStoreWidget from '@components/Store/DetailStoreWidget';
+import ActionStore from '@components/Store/ActionStore';
+import { FilterRequest } from './components';
+
 import { formatTime } from '@utils/formatTime';
 
 function RequestRetailerPage() {
@@ -86,10 +87,10 @@ function RequestRetailerPage() {
             render: (_, record) => (
                 <Space size="middle">
                     {record.status === 'pending' && (
-                        <ActionRequestRetailer
-                            recordId={record._id}
-                            setRequest={setRequests}
-                            requests={requests}
+                        <ActionStore
+                            storeId={record._id || 'abc'}
+                            setStores={setRequests}
+                            stores={requests}
                         />
                     )}
                 </Space>
@@ -98,16 +99,14 @@ function RequestRetailerPage() {
     ];
 
     return (
-        <section className="p-5">
+        <section className="mx-auto w-[90%] md:w-[80%]">
             {loading ? (
                 <p>Loading...</p>
             ) : (
                 <>
-                    <div className="mb-5">
-                        <h1 className="text-center text-xl font-bold">
-                            Yêu cầu đăng ký cửa hàng
-                        </h1>
-                    </div>
+                    <h1 className="p-6 text-center text-lg font-medium">
+                        Quản lý cửa hàng
+                    </h1>
                     <div className="mb-4 flex justify-center">
                         <FilterRequest />
                     </div>
@@ -117,7 +116,7 @@ function RequestRetailerPage() {
                         rowKey="_id"
                     />
 
-                    <DetailRequestRetailer
+                    <DetailStoreWidget
                         open={open.isOpen}
                         onClose={() =>
                             setOpen({
@@ -128,8 +127,8 @@ function RequestRetailerPage() {
                         data={requests.find(
                             (request) => request._id === open.target
                         )}
-                        setRequests={setRequests}
-                        requests={requests}
+                        setStores={setRequests}
+                        stores={requests}
                     />
                 </>
             )}

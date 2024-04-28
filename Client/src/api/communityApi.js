@@ -23,3 +23,7 @@ export const getStore = async (id) => {
 export const getAllStore = async (params) => {
     return api.get('admin/information', { params });
 };
+
+export const updateStatus = async (id, { status }) => {
+    return api.patch(`/admin/information/${id}`, { status });
+};
