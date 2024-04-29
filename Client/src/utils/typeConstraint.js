@@ -50,6 +50,11 @@ export const typeStatus = [
         value: 'only-display',
         label: 'Chỉ hiển thị',
         color: 'blue'
+    },
+    {
+        value: 'blocked',
+        label: 'Bị chặn',
+        color: 'red'
     }
 ];
 

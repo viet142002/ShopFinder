@@ -15,7 +15,6 @@ function ProductPage() {
             <div className="mx-auto w-[95%] space-y-4 md:mt-10 md:w-[70%]">
                 <DetailProduct />
                 <CardInformationRetailer />
-
                 <div className="space-y-4">
                     <div className="flex">
                         <RateTotal productId={productId} />

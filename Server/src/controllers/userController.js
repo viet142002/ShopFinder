@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 const User = require('../Models/userModel');
+
+const RetailerControl = require('./retailerController');
 const imageController = require('./imageController');
 const addressController = require('./addressController');
 
@@ -116,11 +118,32 @@ const userController = {
         try {
             const { userId } = req.params;
             const { status } = req.body;
-
-            await User.findByIdAndUpdate(userId, {
-                status: status,
-            });
-
+            const user = await User.findById(userId);
+            if (!user) {
+                return res.status(400).json({ message: 'User not found' });
+            }
+            if (status === 'blocked') {
+                const { retailer } = await RetailerControl.instanceUpdateStatus(
+                    user.pendingRetailer.retailer,
+                    'blocked'
+                );
+                user.pendingRetailer = {
+                    retailer: retailer._id,
+                    status: 'blocked',
+                };
+            }
+            if (status === 'normal') {
+                const { retailer } = await RetailerControl.instanceUpdateStatus(
+                    user.pendingRetailer.retailer,
+                    'approved'
+                );
+                user.pendingRetailer = {
+                    retailer: retailer._id,
+                    status: 'approved',
+                };
+            }
+            user.status = status;
+            await user.save();
             return res.status(200).json({
                 message: 'Update status successfully',
             });

@@ -18,7 +18,7 @@ function HeaderLayout() {
             <div className="flex h-full items-center justify-between px-4">
                 <div className="flex items-center">
                     <img
-                        src="/public/logo_removebg.png"
+                        src="/logo_removebg.png"
                         alt="logo"
                         className="h-8 w-8"
                     />

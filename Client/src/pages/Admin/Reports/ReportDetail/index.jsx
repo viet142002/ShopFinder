@@ -1,3 +1,5 @@
+// TODO: BLOCKED USER, RATE, RETAILER, PRODUCT, INFORMATION
+
 import { Avatar, Button, Tag } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -8,6 +10,9 @@ import { updateRateApi } from '@api/RateApi';
 
 import { returnUrl, formatTime, typeReport } from '@utils/index';
 import ModalDisplayRate from './components/ModalDisplayRate';
+import { blockedRetailerApi } from '@api/retailerApi';
+import { updateStatus } from '@api/communityApi';
+import { updateStatusByAdminApi } from '@api/productApi';
 
 function ReportDetail() {
     const navigate = useNavigate();
@@ -15,49 +20,47 @@ function ReportDetail() {
     const [report, setReport] = useState(null);
     const [isShowModal, setIsShowModal] = useState(false);
 
-    const blockUser = () => {
-        updateStatusUser({ userId: report.from._id, status: 'blocked' }).then(
-            () => {
-                setReport({
-                    ...report,
-                    from: { ...report.from, status: 'blocked' }
-                });
-            }
-        );
-    };
-    const handleBlockedRate = () => {
-        updateRateApi({
-            id: report?.to?._id,
-            values: { status: 'blocked' }
-        }).then(() => {
-            setReport({ ...report, to: { ...report.to, status: 'blocked' } });
-        });
-    };
     const handleConfirm = () => {
         updateReportApi(reportId, { status: 'processed' }).then(() => {
             setReport({ ...report, status: 'processed' });
         });
     };
-
-    const handleBan = (type) => {
-        switch (type) {
-            case 'user':
-                blockUser();
-                break;
-            case 'rate':
-                handleBlockedRate();
-                break;
-            case 'retailer':
-                console.log('ban retailer');
-                break;
-            case 'product':
-                console.log('ban product');
-                break;
-            case 'information':
-                console.log('ban information');
-                break;
-            default:
-                break;
+    // block retailer and information
+    const handleBlock = async ({ isBlockUser = false }) => {
+        console.log(isBlockUser);
+        if (isBlockUser) {
+            const res = await updateStatusUser({
+                userId: report.from._id,
+                status: 'blocked'
+            });
+            if (res.status === 200) {
+                setReport({
+                    ...report,
+                    from: { ...report.from, status: 'blocked' }
+                });
+            }
+            return;
+        }
+        const type = report.toType.toLowerCase();
+        const id = report.to._id;
+        let res = null;
+        if (type === 'retailer') {
+            res = await blockedRetailerApi(id);
+        }
+        if (type === 'information') {
+            res = await updateStatus(id, { status: 'blocked' });
+        }
+        if (type === 'product') {
+            res = await updateStatusByAdminApi(id, 'blocked');
+        }
+        if (type === 'rate') {
+            res = await updateRateApi({
+                id: id,
+                values: { status: 'blocked' }
+            });
+        }
+        if (res.status === 200) {
+            setReport({ ...report, to: { ...report.to, status: 'blocked' } });
         }
     };
 
@@ -179,10 +182,12 @@ function ReportDetail() {
                                             ) : (
                                                 <Button
                                                     onClick={() =>
-                                                        handleBan('user')
+                                                        handleBlock({
+                                                            isBlockUser: true
+                                                        })
                                                     }
                                                 >
-                                                    Cấm người dùng
+                                                    Cấm người báo cáo
                                                 </Button>
                                             )}
                                         </>
@@ -204,9 +209,7 @@ function ReportDetail() {
                                                 Xem đánh giá
                                             </Button>
                                             <Button
-                                                onClick={() =>
-                                                    handleBan('rate')
-                                                }
+                                                onClick={() => handleBlock({})}
                                                 disabled={
                                                     report?.to?.status ===
                                                     'blocked'
@@ -229,9 +232,7 @@ function ReportDetail() {
                                                 Xem cửa hàng
                                             </Button>
                                             <Button
-                                                onClick={() =>
-                                                    handleBan('retailer')
-                                                }
+                                                onClick={() => handleBlock({})}
                                             >
                                                 Cấm cửa hàng
                                             </Button>
@@ -246,12 +247,18 @@ function ReportDetail() {
                                             >
                                                 Xem sản phẩm
                                             </Button>
+
                                             <Button
-                                                onClick={() =>
-                                                    handleBan('product')
+                                                onClick={() => handleBlock({})}
+                                                disabled={
+                                                    report?.to?.status ===
+                                                    'blocked'
                                                 }
                                             >
-                                                Cấm sản phẩm
+                                                {report?.to?.status ===
+                                                'blocked'
+                                                    ? 'Đã ẩn'
+                                                    : 'Ẩn sản phẩm'}
                                             </Button>
                                         </>
                                     )}
@@ -265,9 +272,7 @@ function ReportDetail() {
                                                 Xem thông tin
                                             </Button>
                                             <Button
-                                                onClick={() =>
-                                                    handleBan('information')
-                                                }
+                                                onClick={() => handleBlock()}
                                             >
                                                 Cấm thông tin
                                             </Button>

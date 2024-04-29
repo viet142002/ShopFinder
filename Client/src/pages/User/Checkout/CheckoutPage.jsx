@@ -62,7 +62,6 @@ function CheckoutPage() {
         );
         if (data) {
             data.orders.forEach((order) => {
-                console.log('🚀 ~ data.orders.forEach ~ order:', order);
                 socket.emit('order', {
                     receiverId: order?.distributor,
                     order

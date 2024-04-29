@@ -170,6 +170,9 @@ function DetailProduct() {
                                 Sản phẩm ngừng kinh doanh
                             </h2>
                         )}
+                        {product.status === 'blocked' && (
+                            <h2 className="text-red-500">Sản phẩm bị chặn</h2>
+                        )}
                         <div className="rounded-md bg-gray-200 p-2">
                             <HTMLRenderer
                                 className="text-wrap"

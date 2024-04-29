@@ -27,7 +27,6 @@ function SiderManage() {
                 navigate('/admin/request');
                 break;
             case 'reports':
-                console.log('vao');
                 navigate('/admin/reports');
                 break;
             case 'users':

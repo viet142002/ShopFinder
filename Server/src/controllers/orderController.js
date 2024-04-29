@@ -171,7 +171,6 @@ const orderController = {
             const { status, detailPaymentData } = req.body;
 
             const order = await Order.findById(id).populate('orderItems');
-            console.log('🚀 ~ addDetailPayment: ~ order:', order);
             if (!order) {
                 return res.status(404).json({ message: 'Order not found' });
             }

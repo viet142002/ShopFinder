@@ -8,7 +8,7 @@ import MyCarousel from '@components/Carousel/Carousel.component';
 import DisplayRates from '@components/DisplayRate/DisplayRate.component';
 
 function ManagerProductDetail() {
-    const { productId } = useParams();
+    const { productId, id: retailerId } = useParams();
     const navigate = useNavigate();
     const [product, setProduct] = useState(null);
 
@@ -100,9 +100,10 @@ function ManagerProductDetail() {
                             <Button
                                 onClick={() =>
                                     navigate(
-                                        `./../../edit-product/${productId}`
+                                        `/retailer/${retailerId}/product/edit-product/${productId}`
                                     )
                                 }
+                                disabled={product?.status === 'blocked'}
                             >
                                 Chỉnh sửa
                             </Button>
@@ -110,7 +111,6 @@ function ManagerProductDetail() {
                     </section>
                 )}
                 <section className="md:col-span-1">
-                    {/* <CommentProduct /> */}
                     <div className="rounded-lg bg-white py-2 shadow-card">
                         <DisplayRates productId={productId} />
                     </div>

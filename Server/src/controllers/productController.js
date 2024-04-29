@@ -81,6 +81,7 @@ const productController = {
             let { name, price, description, discount, status, deleteImages } =
                 req.body;
             const files = req.files;
+            const { role } = req.user;
 
             if (!['available', 'stop'].includes(status)) {
                 return res.status(400).json({
@@ -105,7 +106,10 @@ const productController = {
                 });
             }
 
-            if (product.distributor.toString() !== retailer._id.toString()) {
+            if (
+                product.distributor.toString() !== retailer._id.toString() &&
+                retailer.mode === 'only-pickup'
+            ) {
                 return res.status(403).json({
                     message: 'Permission denied',
                 });
@@ -242,7 +246,6 @@ const productController = {
             });
         }
     },
-
     getProductsFromDistributor: async (req, res) => {
         try {
             let status = req.query.status || ['available', 'only-display'];
@@ -435,6 +438,43 @@ const productController = {
         }
     },
 
+    updateStatusByAdmin: async (req, res) => {
+        try {
+            const { id: productId } = req.params;
+            const { status } = req.body;
+            const product = await Product.findById(productId);
+            if (!product) {
+                return res.status(404).json({
+                    message: 'Product not found',
+                });
+            }
+
+            if (
+                ![
+                    'draft',
+                    'available',
+                    'sold-out',
+                    'stop',
+                    'only-display',
+                    'blocked',
+                ].includes(status)
+            ) {
+                return res.status(400).json({
+                    message: 'Invalid status',
+                });
+            }
+            product.status = status;
+            await product.save();
+            return res.status(200).json({
+                message: 'Update status successfully',
+            });
+        } catch (error) {
+            return res.status(500).json({
+                message: error.message,
+            });
+        }
+    },
+
     /*
      * @returns {Promise} { message }
      * Delete product by user
@@ -463,34 +503,6 @@ const productController = {
             await imageController.deleteImages(
                 product.images.map(image => image._id)
             );
-
-            await product.remove();
-
-            return res.status(200).json({
-                message: 'Product deleted successfully',
-            });
-        } catch (error) {
-            return res.status(500).json({
-                message: error.message,
-            });
-        }
-    },
-
-    deleteProductByAdmin: async (req, res) => {
-        try {
-            const productId = req.params.id;
-
-            const product = await Product.findById.populate('images').exec();
-
-            if (!product) {
-                return res.status(404).json({
-                    message: 'Product not found',
-                });
-            }
-
-            for (let i = 0; i < product.images.length; i++) {
-                await imageController.deleteImage(product.images[i].name);
-            }
 
             await product.remove();
 

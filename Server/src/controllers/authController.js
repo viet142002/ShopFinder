@@ -95,7 +95,6 @@ const authController = {
         try {
             const { email, id, family_name, given_name, picture, name } =
                 req.body;
-            console.log('🚀 ~ signInWithGoogle: ~ req.body:', req.body);
 
             let user = await User.findOne({ email })
                 .populate({
@@ -128,7 +127,6 @@ const authController = {
             const token = generateToken(user);
 
             delete user._doc.password;
-            console.log('🚀 ~ signInWithGoogle: ~ user:', user);
 
             return res.status(200).json({
                 user,

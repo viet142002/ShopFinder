@@ -55,10 +55,12 @@ export const deleteProductByIdApi = async (id) => {
         return error.response.data;
     }
 };
-
 export const createProductByUserApi = async (data) => {
     return api.post('products', data);
 };
 export const updateProductByUserApi = async (id, data) => {
     return api.put(`products/${id}`, data);
+};
+export const updateStatusByAdminApi = async (id, status) => {
+    return api.patch(`admin/products/${id}`, { status });
 };

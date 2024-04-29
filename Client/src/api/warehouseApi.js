@@ -1,7 +1,6 @@
 import api from './instantApi';
 
 export const getWarehousesApi = async (query) => {
-    console.log('🚀 ~ getWarehousesApi ~ query:', query);
     try {
         const res = await api.get('/retailer/warehouse', {
             params: query

@@ -65,7 +65,8 @@ const columns = [
             return (
                 <Tag
                     color={
-                        typeStatus.find((item) => item.value === status).color
+                        typeStatus.find((item) => item.value === status)
+                            ?.color || 'red'
                     }
                 >
                     {typeStatus.find((item) => item.value === status).label}
@@ -144,6 +145,7 @@ function ManageProduct() {
                         <Select.Option value="only-display">
                             Chỉ hiển thị
                         </Select.Option>
+                        <Select.Option value="blocked">Bị chặn</Select.Option>
                     </Select>
                     <Input.Search
                         placeholder="Tên sản phẩm..."

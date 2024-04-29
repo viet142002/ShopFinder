@@ -19,7 +19,6 @@ export function ButtonLoginWithGG({ setData }) {
 
     useEffect(() => {
         if (user) {
-            console.log('🚀 ~ useEffect ~ user:', user);
             const fetchData = async () => {
                 try {
                     const profile = await axios.get(

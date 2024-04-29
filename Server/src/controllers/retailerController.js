@@ -293,7 +293,10 @@ const retailerController = {
     // Approve a request
     acceptRequestRetailer: async (req, res) => {
         try {
-            const retailer = await Retailer.findById(req.params.id);
+            const { retailer } = await this.instanceUpdateStatus(
+                req.params.id,
+                'approved'
+            );
             if (!retailer) {
                 return res.status(400).json({
                     message: 'Cant find retailer',
@@ -305,20 +308,12 @@ const retailerController = {
                     message: 'Cant find user',
                 });
             }
-            const location = await Location.findById(retailer.location);
-
-            location.status = 'normal';
-            retailer.status = 'approved';
             user.role = 'retailer';
-
             user.pendingRetailer = {
                 retailer: retailer._id,
                 status: 'approved',
             };
-
-            await location.save();
             await user.save();
-            await retailer.save();
 
             return res.status(200).json({
                 retailer,
@@ -330,25 +325,23 @@ const retailerController = {
             });
         }
     },
-
     // Reject a request
     rejectRequestRetailer: async (req, res) => {
         try {
-            const retailer = await Retailer.findById(req.params.id);
+            const { retailer } = await this.instanceUpdateStatus(
+                req.params.id,
+                'rejected'
+            );
             if (!retailer) {
                 return res.status(400).json({
                     message: 'Cant find retailer',
                 });
             }
             const user = await User.findById(retailer.owner);
-
-            retailer.status = 'rejected';
             user.pendingRetailer = {
                 retailer: retailer._id,
                 status: 'rejected',
             };
-
-            await retailer.save();
             await user.save();
 
             return res.status(200).json({
@@ -361,29 +354,52 @@ const retailerController = {
             });
         }
     },
+    instanceUpdateStatus: async (retailerId, status) => {
+        try {
+            const retailer = await Retailer.findById(retailerId);
+            if (!retailer) {
+                return {
+                    retailer: null,
+                };
+            }
+
+            const location = await Location.findById(retailer.location);
+            if (status === 'blocked') {
+                location.status = 'blocked';
+                retailer.status = 'blocked';
+            }
+            if (status === 'approved') {
+                location.status = 'normal';
+                retailer.status = 'approved';
+            }
+            if (status === 'rejected') {
+                retailer.status = 'rejected';
+                location.status = 'blocked';
+            }
+            await location.save();
+            await retailer.save();
+
+            return {
+                retailer,
+                message: 'Successfully',
+            };
+        } catch (error) {
+            throw new Error(error.message);
+        }
+    },
     // Block a retailer
     blockRetailer: async (req, res) => {
         try {
-            const retailer = await Retailer.findById(req.params.id);
-            if (!retailer) {
-                return res.status(400).json({
-                    message: 'Cant find retailer',
-                });
-            }
+            const { retailer } = await this.instanceUpdateStatus(
+                req.params.id,
+                'blocked'
+            );
             const user = await User.findById(retailer.owner);
-            const location = await Location.findById(retailer.location);
-
-            location.status = 'blocked';
-            retailer.status = 'blocked';
             user.pendingRetailer = {
                 retailer: retailer._id,
                 status: 'blocked',
             };
-
-            await location.save();
-            await retailer.save();
             await user.save();
-
             return res.status(200).json({
                 retailer,
                 message: 'Successfully',

@@ -127,7 +127,6 @@ const handleFetch = async (callback) => {
 
         return res.data;
     } catch (err) {
-        console.log(err?.response);
         if (err?.response?.data?.message)
             error(translateError(err.response.data.message));
         return null;

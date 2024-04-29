@@ -56,7 +56,14 @@ const productSchema = new mongoose.Schema({
     // only-display for product is share by user or retailer
     status: {
         type: String,
-        enum: ['draft', 'available', 'sold-out', 'stop', 'only-display'],
+        enum: [
+            'draft',
+            'available',
+            'sold-out',
+            'stop',
+            'only-display',
+            'blocked',
+        ],
         default: 'draft',
     },
     reviews: [

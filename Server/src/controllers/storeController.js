@@ -4,7 +4,6 @@ const Retailer = require('../Models/retailerModel');
 exports.getStore = async (req, res) => {
     try {
         const { storeId } = req.params;
-        console.log('🚀 ~ exports.getStore= ~ storeId:', storeId);
 
         let store = null;
         store = await Retailer.findById(storeId)
