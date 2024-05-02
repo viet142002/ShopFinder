@@ -11,9 +11,11 @@ import Routing from '../Routing/Routing.component';
 import FocusCurrent from '../FocusCurrent';
 
 function Map() {
-    const { fixedLocation: p, showRouting } = useSelector(
-        (state) => state.routing
-    );
+    const {
+        fixedLocation: p,
+        showRouting,
+        markSelected
+    } = useSelector((state) => state.routing);
 
     return (
         <>
@@ -28,7 +30,7 @@ function Map() {
                 <MyMarker />
                 {!showRouting && <MarkerCus />}
                 <FocusCurrent />
-                <Routing />
+                <Routing start={p} destination={markSelected} />
                 <ZoomControl position="bottomright" />
             </MapContainer>
         </>

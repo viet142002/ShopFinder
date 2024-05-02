@@ -24,7 +24,15 @@ function OrderDetailItem({ order, children }) {
                         ))}
                     </div>
                     <div className="h-80 overflow-hidden rounded-lg shadow-card">
-                        <MiniMap coordinates={order.location} />
+                        <MiniMap
+                            coordinates={order.location}
+                            destination={{
+                                lat: order.distributor.location.loc
+                                    .coordinates[1],
+                                lng: order.distributor.location.loc
+                                    .coordinates[0]
+                            }}
+                        />
                     </div>
                 </div>
                 <div>

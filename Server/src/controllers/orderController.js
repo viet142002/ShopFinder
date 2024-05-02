@@ -255,7 +255,7 @@ const orderController = {
                     select: 'name location',
                     populate: {
                         path: 'location',
-                        select: 'address',
+                        select: 'address loc',
                         populate: {
                             path: 'address',
                         },

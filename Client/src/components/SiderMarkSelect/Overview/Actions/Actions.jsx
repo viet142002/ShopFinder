@@ -18,7 +18,7 @@ function Actions({ info }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [openReport, setOpenReport] = useState(false);
-    const showRouting = useSelector((state) => state.routing.showRouting);
+    const { showRouting } = useSelector((state) => state.routing);
     const {
         data: { _id }
     } = useAuth();
@@ -103,7 +103,6 @@ function Actions({ info }) {
                 />
             </div>
             <Divider className="my-[16px]" />
-
             <ModalReport
                 open={openReport}
                 handleCancel={() => setOpenReport(false)}

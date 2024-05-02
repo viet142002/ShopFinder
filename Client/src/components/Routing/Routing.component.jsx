@@ -6,17 +6,17 @@ import L from 'leaflet';
 import { useSelector, useDispatch } from 'react-redux';
 import { useMap } from 'react-leaflet';
 import { useEffect, useRef } from 'react';
+import { setRoute } from '@redux/routingSlice';
+import { iconDefault } from '@utils/icon';
 
-import { setRoute } from '../../redux/routingSlice';
-
-const Routing = () => {
+const Routing = ({ start, destination }) => {
     const map = useMap();
     const dispatch = useDispatch();
     const routingControl = useRef(null);
-    const { markSelected: destination, fixedLocation, showRouting } = useSelector((state) => state.routing);
+    const { showRouting } = useSelector((state) => state.routing);
     useEffect(() => {
         // check if we have all the data we need to show routing
-        if (!fixedLocation || !destination || !showRouting) {
+        if (!start || !destination || !showRouting) {
             if (!routingControl.current) return;
             map.removeControl(routingControl.current);
             return;
@@ -47,7 +47,6 @@ const Routing = () => {
                 Uturn: 'quay đầu'
             },
             instructions: {
-                // instruction, postfix if the road is named
                 Head: ['Đi thẳng {dir}', ' trên {road}'],
                 Continue: ['Tiếp tục {dir}', ' trên {road}'],
                 TurnAround: ['Quay đầu'],
@@ -89,7 +88,7 @@ const Routing = () => {
             return L.Routing.control({
                 language: 'vi',
                 waypoints: [
-                    L.latLng(fixedLocation.lat, fixedLocation.lng),
+                    L.latLng(start.lat, start.lng),
                     L.latLng(destination.lat, destination.lng)
                 ],
                 lineOptions: {
@@ -112,7 +111,16 @@ const Routing = () => {
                     geocodingQueryParams: {
                         acceptLanguage: 'vi-VN'
                     }
-                })
+                }),
+                // custom mark
+                createMarker: function (i, wp) {
+                    if (i === 0) {
+                        return L.marker(wp.latLng, {
+                            draggable: false,
+                            icon: iconDefault
+                        });
+                    }
+                }
             });
         };
 
@@ -142,7 +150,7 @@ const Routing = () => {
         routingControl.current = newRoutingControl;
 
         newRoutingControl.addTo(map);
-    }, [destination, fixedLocation, map, dispatch, showRouting]);
+    }, [destination, start, map, dispatch, showRouting]);
 
     return null;
 };
