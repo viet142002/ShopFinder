@@ -1,25 +1,8 @@
 import api from './instantApi';
 
-/**
- *
- * @param {String} storeId
- * @returns {Promise} { products, total }
- * Get products in store by storeId
- * products: Array of products
- * total: Number of products
- */
-export const getProductsFromDistributor = ({
-    search = '',
-    distributor,
-    status = ['available', 'only-display', 'not-quantity'],
-    limit = 30
-}) => {
-    return api.get(`products/${distributor}`, {
-        params: {
-            search,
-            status,
-            limit
-        }
+export const getProducts = (params) => {
+    return api.get('products', {
+        params
     });
 };
 
@@ -44,7 +27,7 @@ export const updateProductByIdApi = async (id, data) => {
 };
 
 export const getProductByIdApi = async (id) => {
-    return api.get(`products/detail/${id}`);
+    return api.get(`products/${id}`);
 };
 
 export const deleteProductByIdApi = async (id) => {

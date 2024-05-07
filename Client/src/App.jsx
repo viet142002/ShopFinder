@@ -12,6 +12,7 @@ import { setFirstLocation } from './redux/routingSlice';
 import socket from './socket';
 // #endregion
 // #region user page
+import ListShared from '@pages/User/StoreProfile/ListShared';
 import EditProfile from '@pages/User/Profile/EditProfile';
 import StoreProfile from '@pages/User/StoreProfile';
 import NewPassword from '@pages/User/ForgotPassword/NewPassword';
@@ -88,10 +89,12 @@ function App() {
                     />
                     <Route path="/" element={<DefaultLayout />}>
                         <Route index element={<HomePage />} />
+
                         <Route
                             path="/forgot-password"
                             element={<ForgotPassword />}
                         />
+                        <Route path="/list-shared" element={<ListShared />} />
                         <Route path="/new-password" element={<NewPassword />} />
                         <Route
                             path="/cart"

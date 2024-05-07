@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useLocation, Link } from 'react-router-dom';
 import { Layout, Button } from 'antd';
 
-import { getProductsFromDistributor } from '@api/productApi';
+import { getProducts } from '@api/productApi';
 import { CardProduct } from '@components/Card';
 
 function ProductsPage() {
@@ -16,7 +16,7 @@ function ProductsPage() {
     });
 
     useEffect(() => {
-        getProductsFromDistributor({ distributor: storeId })
+        getProducts({ distributor: storeId })
             .then((res) => {
                 setData((prev) => ({
                     products: [...prev.products, ...res.data.products],

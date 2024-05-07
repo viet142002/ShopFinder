@@ -2,10 +2,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Form, Input, InputNumber, Button, Image, Row, Col, Table } from 'antd';
 
-import { getProductsFromDistributor } from '../../../api/productApi';
-import { createWarehouseApi, getWarehouseApi } from '../../../api/warehouseApi';
+import { getProducts } from '@api/productApi';
+import { createWarehouseApi, getWarehouseApi } from '@api/warehouseApi';
 
-import { handleFetch } from '@utils/expression';
+import { handleFetch, returnUrl } from '@utils/index';
 import EditorFormat from '@components/EditorFormat/EditorFormat';
 
 function ImportWarehouse() {
@@ -205,7 +205,7 @@ function ImportWarehouse() {
             render: (images) => (
                 <Image
                     className="rounded-md object-cover"
-                    src={'http://localhost:3001' + images[0].path}
+                    src={returnUrl(images[0].path)}
                     alt="product"
                     width={100}
                 />
@@ -251,8 +251,8 @@ function ImportWarehouse() {
 
     useEffect(() => {
         if (isAddMode) {
-            getProductsFromDistributor({
-                search,
+            getProducts({
+                name: search,
                 distributor: idRetailer,
                 status: 'all'
             }).then((res) => {

@@ -68,7 +68,7 @@ function CardRate(rate) {
         <section className="card-rate space-y-2">
             <div className="px-4 md:px-sideBarMark">
                 <div className="flex items-center gap-2">
-                    <Avatar size={38} src={returnUrl({ user: rate.from })} />
+                    <Avatar size={38} src={returnUrl(rate.from.avatar.path)} />
                     <div>
                         <h3>
                             {isMyRate

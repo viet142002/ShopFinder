@@ -8,8 +8,6 @@ import { loginWithGoogleApi } from '@api/authApi';
 
 export function ButtonLoginWithGG({ setData }) {
     const [user, setUser] = useState(null);
-    // const [profile, setProfile] = useState(null);
-    // console.log('🚀 ~ ButtonLoginWithGG ~ profile:', profile);
     const handleLogin = useGoogleLogin({
         flow: 'implicit',
         onSuccess: (res) => {

@@ -1,8 +1,8 @@
-function formatPrice(price) {
-    return price.toLocaleString('vi-VN', {
+function formatPrice(price, currency = 'VND', locate = 'vi-VN') {
+    return new Intl.NumberFormat(locate, {
         style: 'currency',
-        currency: 'VND'
-    });
+        currency: currency
+    }).format(price);
 }
 
 export { formatPrice };

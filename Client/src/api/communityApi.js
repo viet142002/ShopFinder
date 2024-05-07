@@ -20,6 +20,10 @@ export const getStore = async (id) => {
     return api.get(`/community/store/${id}`);
 };
 
+export const getMySharedStore = async (params) => {
+    return api.get('/community/stores', { params });
+};
+
 export const getAllStore = async (params) => {
     return api.get('admin/information', { params });
 };

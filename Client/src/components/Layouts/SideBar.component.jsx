@@ -187,25 +187,25 @@ function SideBar({ ...props }) {
                     items={[
                         isAuth
                             ? getItem(
-                                  'Hồ sơ',
-                                  'profiles',
-                                  <Avatar
-                                      alt="avatar"
-                                      className="flex-shrink-0 -translate-x-[calc(50%-10px)]"
-                                      size={35}
-                                      src={returnUrl({ user: data })}
-                                  />,
-                                  [
-                                      getItem('Thông tin cá nhân', 'profile'),
-                                      getItem('Đơn hàng của bạn', 'order'),
-                                      getItem('Đăng xuất', 'logout')
-                                  ]
-                              )
+                                'Hồ sơ',
+                                'profiles',
+                                <Avatar
+                                    alt="avatar"
+                                    className="flex-shrink-0 -translate-x-[calc(50%-10px)]"
+                                    size={35}
+                                    src={returnUrl(data.avatar.path)}
+                                />,
+                                [
+                                    getItem('Thông tin cá nhân', 'profile'),
+                                    getItem('Đơn hàng của bạn', 'order'),
+                                    getItem('Đăng xuất', 'logout')
+                                ]
+                            )
                             : {
-                                  key: 'login',
-                                  icon: <LoginOutlined />,
-                                  label: 'Đăng nhập'
-                              }
+                                key: 'login',
+                                icon: <LoginOutlined />,
+                                label: 'Đăng nhập'
+                            }
                     ]}
                 />
             }

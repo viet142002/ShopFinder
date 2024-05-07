@@ -49,15 +49,8 @@ function NotificationPage() {
                                     size="large"
                                     src={
                                         notification.fromType === 'User'
-                                            ? returnUrl({
-                                                  user: notification.from
-                                              })
-                                            : returnUrl({
-                                                  user: {
-                                                      avatar: notification.from
-                                                          .logo
-                                                  }
-                                              })
+                                            ? returnUrl(notification.from.avatar.path)
+                                            : returnUrl(notification.from.logo.path)
                                     }
                                 />
                                 <div>

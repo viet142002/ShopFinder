@@ -71,7 +71,7 @@ function ProfilePage() {
                                     src={
                                         newAvatar
                                             ? URL.createObjectURL(newAvatar)
-                                            : returnUrl({ user })
+                                            : returnUrl(user.avatar.path)
                                     }
                                     alt="avatar"
                                 />

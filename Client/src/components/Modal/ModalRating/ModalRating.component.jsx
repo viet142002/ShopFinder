@@ -158,7 +158,7 @@ function ModalRating({ title, to, toType }) {
             >
                 <section className="my-4">
                     <div>
-                        <Avatar src={returnUrl({ user })} />
+                        <Avatar src={returnUrl(user.avatar.path)} />
                         <span className="ml-2">
                             {user.firstname} {user.lastname}
                         </span>

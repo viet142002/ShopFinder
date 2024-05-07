@@ -20,7 +20,7 @@ import { MdAdd } from 'react-icons/md';
 
 import { CardProduct } from '@components/Card';
 
-import { getProductsFromDistributor } from '@api/productApi';
+import { getProducts } from '@api/productApi';
 import { typeStatus } from '@utils/typeConstraint';
 
 const columns = [
@@ -94,10 +94,10 @@ function ManageProduct() {
     };
 
     useEffect(() => {
-        getProductsFromDistributor({
+        getProducts({
             distributor: id,
             status: searchParams.get('status') || 'all',
-            search: searchParams.get('search') || ''
+            name: searchParams.get('search') || ''
         }).then((res) => setData(res.data));
     }, [id, searchParams]);
 

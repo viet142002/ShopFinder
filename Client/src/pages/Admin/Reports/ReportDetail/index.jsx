@@ -27,7 +27,6 @@ function ReportDetail() {
     };
     // block retailer and information
     const handleBlock = async ({ isBlockUser = false }) => {
-        console.log(isBlockUser);
         if (isBlockUser) {
             const res = await updateStatusUser({
                 userId: report.from._id,
@@ -313,7 +312,7 @@ const CardReportRelated = ({ report }) => {
         <div className="rounded-lg p-2 shadow-card">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <Avatar src={returnUrl({ user: report.from })} />
+                    <Avatar src={returnUrl(report.from.avatar.path)} />
                     <p>
                         {report.from.firstname} {report.from.lastname}
                     </p>
