@@ -6,7 +6,7 @@ import RenderAddress from '@components/RenderAddress';
 
 import { typeLocations, formatTime } from '@utils/index';
 
-function InfoStoreProfile({ store, isShowButtonEdit = true }) {
+function InfoStoreProfile({ store, isShowButtonEdit = true, isUser = false }) {
     return (
         <div className="overflow-hidden rounded-lg p-2 md:bg-white">
             <h2 className="text-lg font-medium">Thông tin cửa hàng</h2>
@@ -88,7 +88,14 @@ function InfoStoreProfile({ store, isShowButtonEdit = true }) {
                 />
                 {isShowButtonEdit && (
                     <div className="mt-4 flex justify-center">
-                        <Link to={'../edit-retailer'} className=" px-4 py-2">
+                        <Link
+                            to={
+                                isUser
+                                    ? `/edit-store/${store._id}`
+                                    : '../edit-retailer'
+                            }
+                            className=" px-4 py-2"
+                        >
                             Chỉnh sửa thông tin
                         </Link>
                     </div>

@@ -15,3 +15,4 @@ export * from './retailerApi';
 export * from './userApi';
 export * from './warehouseApi';
 export * from './storeApi';
+export * from './instantApi';

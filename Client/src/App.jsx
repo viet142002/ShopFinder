@@ -89,7 +89,6 @@ function App() {
                     />
                     <Route path="/" element={<DefaultLayout />}>
                         <Route index element={<HomePage />} />
-
                         <Route
                             path="/forgot-password"
                             element={<ForgotPassword />}

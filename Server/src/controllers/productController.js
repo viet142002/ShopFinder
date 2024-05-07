@@ -8,8 +8,14 @@ const imageController = require("./imageController");
 const productController = {
 	getProducts: async (req, res) => {
 		try {
-			const { name, limit, page, status, userCreated, distributor } =
-				req.query;
+			const {
+				name,
+				limit = 10,
+				page,
+				status,
+				userCreated,
+				distributor,
+			} = req.query;
 			const query = {};
 			if (distributor) {
 				query.distributor = distributor;

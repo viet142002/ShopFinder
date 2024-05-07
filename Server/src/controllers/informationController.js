@@ -230,6 +230,8 @@ const InformationController = {
 				name,
 				phone,
 				user,
+				page,
+				limit = 20,
 			} = req.query;
 			let query = {};
 
@@ -256,9 +258,14 @@ const InformationController = {
 						path: "address",
 					},
 				})
-				.populate("images logo");
+				.populate("images logo")
+				.sort({ createdAt: -1 })
+				.skip((page - 1) * limit)
+				.limit(limit);
 
-			res.status(200).json({ information });
+			const total = await Information.countDocuments(query);
+
+			res.status(200).json({ information, page, total });
 		} catch (error) {
 			res.status(500).json({ message: error.message });
 		}
