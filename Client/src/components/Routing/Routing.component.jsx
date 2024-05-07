@@ -114,7 +114,7 @@ const Routing = ({ start, destination }) => {
                 }),
                 // custom mark
                 createMarker: function (i, wp) {
-                    if (i === 0) {
+                    if (i === 1) {
                         return L.marker(wp.latLng, {
                             draggable: false,
                             icon: iconDefault

@@ -36,7 +36,7 @@ function MarkerCus() {
             getLocations({
                 lat: current.lat,
                 lng: current.lng,
-                radius: searchParams.get('radius') || 5,
+                radius: searchParams.get('radius') || 2,
                 type: searchParams.get('type') || 'all',
                 name: searchParams.get('name') || ''
             }).then((data) => {

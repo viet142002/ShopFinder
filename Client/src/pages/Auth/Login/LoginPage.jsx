@@ -44,10 +44,10 @@ function LoginPage() {
                 ) {
                     return navigate(redirect);
                 }
-
                 return navigate(redirect);
             }
 
+            if (data.user.role === 'retailer') return navigate(`/retailer/${data.user.pendingRetailer.retailer}/dashboard`);
             if (data.user.role === 'admin') return navigate('/admin/dashboard');
             return navigate('/');
         }

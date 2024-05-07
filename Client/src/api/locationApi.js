@@ -1,12 +1,6 @@
 import api from './instantApi';
 
-export const getLocations = async ({
-    lat,
-    lng,
-    radius = 5,
-    type,
-    name = ''
-}) => {
+export const getLocations = async ({ lat, lng, radius, type, name = '' }) => {
     try {
         const response = await api.get('/locations', {
             params: {

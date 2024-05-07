@@ -20,7 +20,9 @@ const ActionCardRate = memo(function ActionCardRate({
     userId
 }) {
     const dispatch = useDispatch();
-    const { data: { firstname, lastname, avatar } } = useAuth();
+    const {
+        data: { firstname, lastname, avatar }
+    } = useAuth();
 
     const handleLike = () => {
         likeRateApi(_id).then((data) => {

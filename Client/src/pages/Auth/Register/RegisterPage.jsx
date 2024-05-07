@@ -60,7 +60,6 @@ function RegisterPage() {
                     >
                         {({
                             isSubmitting
-                            /* and other goodies */
                         }) => (
                             <Form className="space-y-6">
                                 <div className="flex gap-6">
