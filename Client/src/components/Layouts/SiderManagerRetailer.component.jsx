@@ -4,16 +4,11 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { UserOutlined } from '@ant-design/icons';
-import {
-    MdOutlineDashboard,
-    MdOutlineLogout,
-    MdOutlineHome
-} from 'react-icons/md';
+import { MdOutlineDashboard, MdOutlineLogout } from 'react-icons/md';
 import { BsBox } from 'react-icons/bs';
 import { VscGitPullRequestGoToChanges } from 'react-icons/vsc';
 import { CiImport } from 'react-icons/ci';
 
-import { getInfoMyRetailerApi } from '@api/retailerApi';
 import { unsetUser } from '@redux/userSlice';
 import socket from '../../socket';
 import { notification } from '@utils/notification';
@@ -89,19 +84,10 @@ const itemsOnlyPickup = [
 ];
 
 function SiderManagerRetailer() {
-    const retailer = useSelector((state) => state.retailer.data);
+    const { retailer } = useSelector((state) => state.retailer.data);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const location = useLocation();
-
-    useEffect(() => {
-        getInfoMyRetailerApi().then((res) => {
-            dispatch({
-                type: 'retailer/setRetailer',
-                payload: res.data.retailer
-            });
-        });
-    }, [dispatch]);
 
     const handleClick = (item) => {
         switch (item.key) {
@@ -122,7 +108,7 @@ function SiderManagerRetailer() {
                 break;
             case '7':
                 dispatch(unsetUser());
-                navigate('/login');
+                navigate('/login-retailer');
                 break;
             case 'profile':
                 navigate('./profile');
@@ -158,11 +144,6 @@ function SiderManagerRetailer() {
             onClick={(e) => handleClick(e)}
             selectable={false}
             items={[
-                {
-                    key: '6',
-                    icon: <MdOutlineHome size={18} />,
-                    label: 'Về trang chủ'
-                },
                 {
                     key: '7',
                     icon: <MdOutlineLogout size={18} />,

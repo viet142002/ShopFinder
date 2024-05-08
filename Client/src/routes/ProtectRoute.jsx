@@ -4,12 +4,14 @@ import { ExclamationCircleFilled } from '@ant-design/icons';
 
 import { getToken } from '../redux/storage';
 import { useAuth } from '@hooks/useAuth';
+import { useSelector } from 'react-redux';
 
 function ProtectRoute({ access = 'customer', children }) {
     const navigate = useNavigate();
     const location = useLocation();
     const token = getToken();
     const { data: user } = useAuth();
+    const { retailer } = useSelector((state) => state.retailer.data);
 
     const showConfirm = () => {
         Modal.confirm({
@@ -34,7 +36,7 @@ function ProtectRoute({ access = 'customer', children }) {
             }
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }
+    };
 
     if (!token) {
         showConfirm();
@@ -60,10 +62,10 @@ function ProtectRoute({ access = 'customer', children }) {
     }
 
     if (access === 'retailer') {
-        if (user.role !== 'retailer')
+        if (!retailer)
             return (
                 <Navigate
-                    to={`/login?redirect=${location.pathname}`}
+                    to={`/login-retailer?redirect=${location.pathname}`}
                     state={{ from: location }}
                 />
             );

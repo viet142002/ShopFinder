@@ -67,6 +67,8 @@ function RequestRetailerPage() {
                         <Tag color="blue">Đang chờ</Tag>
                     ) : record.status === 'approved' ? (
                         <Tag color="green">Đã chấp thuận</Tag>
+                    ) : record.status === 'blocked' ? (
+                        <Tag color="red">Đã chặn</Tag>
                     ) : (
                         <Tag color="red">Đã từ chối</Tag>
                     )}

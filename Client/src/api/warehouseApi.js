@@ -21,10 +21,5 @@ export const getWarehouseApi = async (id) => {
 };
 
 export const createWarehouseApi = async (data) => {
-    try {
-        const res = await api.post('/retailer/warehouse', data);
-        return res.data;
-    } catch (error) {
-        return error.response.data;
-    }
+    return api.post('/retailer/warehouse', data);
 };

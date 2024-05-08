@@ -8,12 +8,14 @@ import { Button } from 'antd';
 
 import style from '../style.module.scss';
 import loginSchema from './validate';
-import { loginApi } from '@api/authApi';
+import { loginApi, loginRetailerApi } from '@api/authApi';
 import { setUser } from '@redux/userSlice';
 import { handleFetch } from '@utils/expression';
 import { ButtonLoginWithGG } from '@components/Button';
+import { setRetailer } from '@redux/retailerSlice';
+import { Show } from '@components/common';
 
-function LoginPage() {
+function LoginPage({ isLoginRetailer = false }) {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -23,13 +25,30 @@ function LoginPage() {
 
     const handleSubmit = async (values, { setSubmitting }) => {
         setSubmitting(true);
-        const data = await handleFetch(() => loginApi(values));
+        let data = null;
+        if (isLoginRetailer) {
+            data = await handleFetch(() => loginRetailerApi(values));
+        } else {
+            data = await handleFetch(() => loginApi(values));
+        }
         setData(data);
         setSubmitting(false);
     };
 
     useEffect(() => {
         if (data) {
+            if (isLoginRetailer) {
+                dispatch(
+                    setRetailer({
+                        retailer: data.retailer,
+                        token: data.token
+                    })
+                );
+                localStorage.setItem('token', data.token);
+                if (redirect) return navigate(redirect);
+                return navigate(`/retailer/${data.retailer._id}/dashboard`);
+            }
+
             dispatch(setUser({ user: data.user, token: data.token }));
             if (redirect) {
                 if (
@@ -38,19 +57,17 @@ function LoginPage() {
                 ) {
                     return navigate(redirect);
                 }
-                if (
-                    redirect.split('/').includes('retailer') &&
-                    data.user.role === 'retailer'
-                ) {
-                    return navigate(redirect);
-                }
                 return navigate(redirect);
             }
 
-            if (data.user.role === 'retailer') return navigate(`/retailer/${data.user.pendingRetailer.retailer}/dashboard`);
+            if (data.user.role === 'retailer')
+                return navigate(
+                    `/retailer/${data.user.pendingRetailer.retailer}/dashboard`
+                );
             if (data.user.role === 'admin') return navigate('/admin/dashboard');
             return navigate('/');
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, dispatch, navigate, redirect]);
 
     return (
@@ -64,7 +81,7 @@ function LoginPage() {
                 <div className={clsx(style['slider-thumb'])}></div>
                 <section className="z-10 w-[90%] bg-white bg-opacity-[0.8] p-6 md:h-auto md:w-[40%] md:px-14 md:py-10">
                     <h1 className="mb-10 text-center text-2xl font-bold">
-                        Đăng nhập
+                        {isLoginRetailer ? 'Đăng nhập cửa hàng' : 'Đăng nhập'}
                     </h1>
                     <Formik
                         initialValues={{ email: '', password: '' }}
@@ -124,15 +141,24 @@ function LoginPage() {
                                 <div>
                                     <p className="text-center">
                                         Bạn chưa có tài khoản?{' '}
-                                        <Link
-                                            to={
-                                                redirect
-                                                    ? `/register?redirect=${redirect}`
-                                                    : '/register'
-                                            }
-                                        >
-                                            Đăng ký
-                                        </Link>
+                                        <Show>
+                                            <Show.Then isTrue={isLoginRetailer}>
+                                                <Link to="/register-retailer">
+                                                    Đăng ký
+                                                </Link>
+                                            </Show.Then>
+                                            <Show.Else>
+                                                <Link
+                                                    to={
+                                                        redirect
+                                                            ? `/register?redirect=${redirect}`
+                                                            : '/register'
+                                                    }
+                                                >
+                                                    Đăng ký
+                                                </Link>
+                                            </Show.Else>
+                                        </Show>
                                     </p>
                                     <p className="text-center">
                                         <Link to="/forgot-password">
@@ -153,9 +179,11 @@ function LoginPage() {
                         )}
                     </Formik>
 
-                    <div className="mt-6 flex justify-center">
-                        <ButtonLoginWithGG setData={setData} />
-                    </div>
+                    {!isLoginRetailer && (
+                        <div className="mt-6 flex justify-center">
+                            <ButtonLoginWithGG setData={setData} />
+                        </div>
+                    )}
                 </section>
             </div>
         </>

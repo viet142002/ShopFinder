@@ -84,8 +84,16 @@ function App() {
                         element={<Login />}
                     />
                     <Route
+                        path="/login-retailer"
+                        element={<Login isLoginRetailer={true} />}
+                    />
+                    <Route
                         path={routesConstant.register.path}
                         element={<Register />}
+                    />
+                    <Route
+                        path="/register-retailer"
+                        element={<CreateStore isRegisterRetailer />}
                     />
                     <Route path="/" element={<DefaultLayout />}>
                         <Route index element={<HomePage />} />
@@ -164,14 +172,6 @@ function App() {
                             element={
                                 <ProtectRoute>
                                     <NotificationPage />
-                                </ProtectRoute>
-                            }
-                        />
-                        <Route
-                            path={routesConstant.registerRetailer.path}
-                            element={
-                                <ProtectRoute>
-                                    <CreateStore isRegisterRetailer />
                                 </ProtectRoute>
                             }
                         />

@@ -1,7 +1,6 @@
 import {
     getOverviewByRetailer,
     getTopProductByRetailer,
-    // getTopTopCustomerByRetailer,
     getRevenueByRetailer,
     getPriceImportByRetailer
 } from '@api/analystApi';

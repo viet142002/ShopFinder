@@ -14,7 +14,12 @@ function NewPassword() {
         resetPassword({ data: values, token: searchParams.get('token') })
             .then(() => {
                 message.success('Đổi mật khẩu thành công!');
-                navigate('/login');
+                if (searchParams.get('typeAccount') === 'user') {
+                    navigate('/login');
+                }
+                if (searchParams.get('typeAccount') === 'retailer') {
+                    navigate('/login-retailer');
+                }
             })
             .catch((err) => {
                 switch (err.response?.data?.message) {
@@ -31,6 +36,9 @@ function NewPassword() {
                         break;
                     case 'Invalid email':
                         message.error('Email không hợp lệ!');
+                        break;
+                    case 'User is blocked':
+                        message.error('Bạn đã bị chặn!');
                         break;
                     default:
                         message.error('Đường dẫn đã hết hạng!');

@@ -9,6 +9,7 @@ import { updateStatus } from '@api/communityApi';
 import { useState } from 'react';
 
 function ActionStore({ storeId, setStores, stores, type = 'retailer' }) {
+    console.log('🚀 ~ ActionStore ~ type:', type);
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(
         stores?.find((store) => store?._id === storeId)?.status || ''

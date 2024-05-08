@@ -5,9 +5,9 @@ import clsx from 'clsx';
 
 import style from '../style.module.scss';
 import registerSchema from './validate';
-import { registerApi } from '../../../api/authApi';
-import { setUser } from '../../../redux/userSlice';
-import { handleFetch } from '../../../utils/expression';
+import { registerApi } from '@api/authApi';
+import { setUser } from '@redux/userSlice';
+import { handleFetch } from '@utils/expression';
 
 function RegisterPage() {
     const dispatch = useDispatch();
@@ -43,7 +43,7 @@ function RegisterPage() {
                 )}
             >
                 <div className={clsx(style['slider-thumb'])}></div>
-                <section className="z-10 w-[90%] bg-white bg-opacity-[0.8] p-6 md:p-10 md:w-[50%]">
+                <section className="z-10 w-[90%] bg-white bg-opacity-[0.8] p-6 md:w-[50%] md:p-10">
                     <h1 className="mb-10 text-center text-2xl font-bold">
                         Đăng ký
                     </h1>
@@ -58,9 +58,7 @@ function RegisterPage() {
                         validationSchema={registerSchema}
                         onSubmit={handleSubmit}
                     >
-                        {({
-                            isSubmitting
-                        }) => (
+                        {({ isSubmitting }) => (
                             <Form className="space-y-6">
                                 <div className="flex gap-6">
                                     <div className="flex-1">
@@ -135,8 +133,18 @@ function RegisterPage() {
                                                     ? `/login?redirect=${redirect}`
                                                     : '/login'
                                             }
+                                            className="hover:text-blue-500"
                                         >
                                             Đăng nhập
+                                        </Link>
+                                    </p>
+                                    <p className="text-center">
+                                        Bạn muốn đăng ký bán hàng?{' '}
+                                        <Link
+                                            to="/register-retailer"
+                                            className="hover:text-blue-500"
+                                        >
+                                            Đăng ký ngay
                                         </Link>
                                     </p>
                                 </div>

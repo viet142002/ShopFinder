@@ -314,7 +314,9 @@ const orderController = {
 					fromType: "Retailer",
 					type: "ORDER",
 					target: order._id,
-					message: `Đơn hàng của bạn tại ${order.distributor.name} đang được vận chuyển`,
+					message: `Đơn hàng của bạn tại ${
+						order.distributor.name
+					} ngày ${formatDate(order.createdAt)} đang được vận chuyển`,
 				});
 			}
 

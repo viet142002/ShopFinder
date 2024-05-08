@@ -21,7 +21,7 @@ import sidebarSlice from './sidebarSlice';
 const persistConfig = {
     key: 'root',
     storage,
-    whitelist: ['user', 'routing']
+    whitelist: ['user', 'routing', 'retailer']
 };
 
 const rootReducer = combineSlices({

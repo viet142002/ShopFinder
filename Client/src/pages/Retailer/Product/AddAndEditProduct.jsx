@@ -45,7 +45,7 @@ function AddAndEditProduct() {
         images: []
     });
     const [form] = Form.useForm();
-    const retailer = useSelector((state) => state.retailer.data);
+    const { retailer } = useSelector((state) => state.retailer.data);
 
     const AddProduct = async (values) => {
         const formData = formatForm(values, newImages, deleteImages);

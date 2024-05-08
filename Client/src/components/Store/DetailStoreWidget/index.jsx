@@ -6,7 +6,14 @@ import MyCarousel from '@components/Carousel/Carousel.component';
 import ActionStore from '@components/Store/ActionStore';
 import MiniMap from '@components/Map/MiniMap';
 
-function DetailStoreWidget({ open, onClose, data = {}, setStores, stores }) {
+function DetailStoreWidget({
+    open,
+    onClose,
+    data = {},
+    setStores,
+    stores,
+    type = 'retailer'
+}) {
     return (
         <>
             <Drawer
@@ -37,7 +44,7 @@ function DetailStoreWidget({ open, onClose, data = {}, setStores, stores }) {
                                 storeId={data._id}
                                 setStores={setStores}
                                 stores={stores}
-                                type="information"
+                                type={type}
                             />
                         </div>
                     </>

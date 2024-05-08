@@ -83,7 +83,7 @@ const productController = {
 				});
 			}
 
-			const distributor = await Retailer.findOne({ owner: req.user._id });
+			const distributor = await Retailer.findById(req.user.retailer);
 
 			if (!distributor || distributor.status !== "approved") {
 				return res.status(403).json({
@@ -138,7 +138,7 @@ const productController = {
 			if (typeof deleteImages === "string") {
 				deleteImages = [deleteImages];
 			}
-			const retailer = await Retailer.findOne({ owner: req.user._id });
+			const retailer = await Retailer.findById(req.user.retailer);
 
 			const productId = req.params.id;
 
@@ -375,7 +375,7 @@ const productController = {
 	deleteProduct: async (req, res) => {
 		try {
 			const productId = req.params.id;
-			const retailer = req.user._id;
+			const retailer = req.user.retailer;
 
 			const product = await Product.findById(productId)
 				.populate("images")

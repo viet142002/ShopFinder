@@ -11,15 +11,15 @@ import EditorFormat from '@components/EditorFormat/EditorFormat';
 function ImportWarehouse() {
     const [resultSearch, setResultSearch] = useState([]);
     const [inOutProducts, setInOutProducts] = useState([]);
-
-    const navigate = useNavigate();
-
     const [search, setSearch] = useState('');
     const [infoWarehouse, setInfoWarehouse] = useState({
         createdAt: '',
         note: ''
     });
     const { idImport, id: idRetailer } = useParams();
+
+    const navigate = useNavigate();
+
     const isAddMode = !idImport;
 
     const handleAdd = (record) => {
