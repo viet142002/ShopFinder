@@ -49,16 +49,19 @@ function NotificationPage() {
                                     size="large"
                                     src={
                                         notification.fromType === 'User'
-                                            ? returnUrl(notification.from.avatar.path)
-                                            : returnUrl(notification.from.logo.path)
+                                            ? returnUrl(
+                                                  notification.from.avatar.path
+                                              )
+                                            : returnUrl(
+                                                  notification.from.logo.path
+                                              )
                                     }
                                 />
                                 <div>
                                     <p>
                                         {notification.fromType === 'User' ? (
                                             <strong>
-                                                {notification.from.lastname}{' '}
-                                                {notification.from.firstname}{' '}
+                                                {notification.from.fullname}
                                             </strong>
                                         ) : (
                                             <strong>

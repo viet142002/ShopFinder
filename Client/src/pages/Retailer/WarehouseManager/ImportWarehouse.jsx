@@ -82,6 +82,7 @@ function ImportWarehouse() {
                     src={'http://localhost:3001' + images[0].path}
                     alt="product"
                     width={100}
+                    loading="lazy"
                 />
             )
         },
@@ -128,6 +129,7 @@ function ImportWarehouse() {
                     src={'http://localhost:3001' + images[0].path}
                     alt="product"
                     width={100}
+                    loading="lazy"
                 />
             )
         },
@@ -208,6 +210,7 @@ function ImportWarehouse() {
                     src={returnUrl(images[0].path)}
                     alt="product"
                     width={100}
+                    loading="lazy"
                 />
             )
         },

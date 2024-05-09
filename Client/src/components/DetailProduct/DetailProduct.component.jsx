@@ -99,6 +99,7 @@ function DetailProduct() {
                                             import.meta.env.VITE_APP_API_URL
                                         }${image.path}`}
                                         alt=""
+                                        loading="lazy"
                                     />
                                 </div>
                             ))}

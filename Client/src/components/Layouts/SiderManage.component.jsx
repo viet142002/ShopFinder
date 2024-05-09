@@ -23,8 +23,8 @@ function SiderManage() {
             case 'dashboard':
                 navigate('/admin/dashboard');
                 break;
-            case 'request':
-                navigate('/admin/request');
+            case 'retailer':
+                navigate('/admin/retailer');
                 break;
             case 'reports':
                 navigate('/admin/reports');
@@ -52,10 +52,10 @@ function SiderManage() {
             name: 'dashboard'
         },
         {
-            key: 'request',
+            key: 'retailer',
             icon: <VscGitPullRequestGoToChanges size={18} />,
-            label: 'Yêu cầu',
-            name: 'request'
+            label: 'Cửa hàng',
+            name: 'retailer'
         },
         {
             key: 'reports',
@@ -75,7 +75,6 @@ function SiderManage() {
             label: 'Quản lý thông tin cộng đồng',
             name: 'information'
         }
-
     ];
 
     const MenuTop = (

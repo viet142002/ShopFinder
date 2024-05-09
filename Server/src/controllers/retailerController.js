@@ -234,24 +234,32 @@ const retailerController = {
 	// Gets all pending requests
 	getRequestsRetailer: async (req, res) => {
 		try {
-			let { status = "all", sort = "asc" } = req.query;
-			if (status === "all") {
-				status = ["pending", "approved", "rejected", "blocked"];
-			} else {
-				status = [status];
-			}
+			const { status, name, phone, email } = req.query;
+			let query = {};
 
-			const requests = await Retailer.find({
-				status: { $in: status },
-			})
+			if (status && status !== "all") {
+				query.status = status;
+			}
+			if (name) {
+				query.name = { $regex: name, $options: "i" };
+			}
+			if (phone) {
+				query.phone = { $regex: phone, $options: "i" };
+			}
+			if (email) {
+				query.email = { $regex: email, $options: "i" };
+			}
+			console.log("🚀 ~ getRequestsRetailer: ~ query:", query);
+
+			const requests = await Retailer.find(query)
 				.populate({
 					path: "location",
 					populate: {
 						path: "address",
 					},
 				})
-				.populate("images logo")
-				.sort({ createdAt: sort });
+				.populate("images logo");
+			console.log("🚀 ~ getRequestsRetailer: ~ requests:", requests);
 
 			if (!requests) {
 				return res.status(400).json({

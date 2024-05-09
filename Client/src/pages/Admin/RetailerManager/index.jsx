@@ -5,7 +5,7 @@ import { useSearchParams } from 'react-router-dom';
 import { getRequestsRetailerApi } from '@api/retailerApi';
 import DetailStoreWidget from '@components/Store/DetailStoreWidget';
 import ActionStore from '@components/Store/ActionStore';
-import { FilterRequest } from './components';
+import { FilterRetailer } from './components';
 
 import { formatTime } from '@utils/formatTime';
 
@@ -17,16 +17,14 @@ function RequestRetailerPage() {
         target: null,
         isOpen: false
     });
-    const status = searchParams.get('status');
-    const sort = searchParams.get('sort');
 
     useEffect(() => {
-        getRequestsRetailerApi({ status, sort })
+        getRequestsRetailerApi({ ...Object.fromEntries(searchParams) })
             .then((data) => {
                 setRequests(data.requests);
             })
             .finally(() => setLoading(false));
-    }, [status, sort]);
+    }, [searchParams]);
 
     const columns = [
         {
@@ -109,9 +107,8 @@ function RequestRetailerPage() {
                     <h1 className="p-6 text-center text-lg font-medium">
                         Quản lý cửa hàng
                     </h1>
-                    <div className="mb-4 flex justify-center">
-                        <FilterRequest />
-                    </div>
+                    <FilterRetailer />
+
                     <Table
                         columns={columns}
                         dataSource={requests}

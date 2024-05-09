@@ -4,9 +4,13 @@ import { useMobile, useClickOutside } from '@hooks/index';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { setCollapsed } from '@redux/sidebarSlice';
-import { useRef } from 'react';
+import { memo, useRef } from 'react';
 
-function SidebarContainer({ MenuTop, MenuBottom, ...props }) {
+const SidebarContainer = memo(function SidebarContainer({
+    MenuTop,
+    MenuBottom,
+    ...props
+}) {
     const dispatch = useDispatch();
     const { isMobile } = useMobile();
     const collapsed = useSelector((state) => state.sidebar.collapsed);
@@ -15,7 +19,6 @@ function SidebarContainer({ MenuTop, MenuBottom, ...props }) {
         dispatch(setCollapsed(value));
     };
 
-    // how to click outside to close sidebar
     const ref = useRef();
 
     useClickOutside(ref, () => {
@@ -66,6 +69,6 @@ function SidebarContainer({ MenuTop, MenuBottom, ...props }) {
             </div>
         </Layout.Sider>
     );
-}
+});
 
 export default SidebarContainer;

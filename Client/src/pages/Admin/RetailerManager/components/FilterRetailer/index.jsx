@@ -2,7 +2,7 @@ import { Button, Col, Form, Input, Row, Select, Space } from 'antd';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-export const FilterUser = () => {
+export const FilterRetailer = () => {
     const [form] = Form.useForm();
     const [searchParams, setSearchParams] = useSearchParams();
     const onFinish = (values) => {
@@ -25,14 +25,14 @@ export const FilterUser = () => {
             onFinish={onFinish}
             initialValues={{
                 status: 'all',
-                fullname: '',
+                name: '',
                 phone: '',
                 email: ''
             }}
         >
             <Row gutter={24}>
                 <Col span={8} key={1}>
-                    <Form.Item name="fullname" label="Name">
+                    <Form.Item name="name" label="Name">
                         <Input placeholder="Name" />
                     </Form.Item>
                 </Col>
@@ -52,8 +52,14 @@ export const FilterUser = () => {
                     <Form.Item name="status" label="Status">
                         <Select>
                             <Select.Option value="all">Tất cả</Select.Option>
-                            <Select.Option value="normal">
-                                Bình thường
+                            <Select.Option value="pending">
+                                Chờ duyệt
+                            </Select.Option>
+                            <Select.Option value="approved">
+                                Đã duyệt
+                            </Select.Option>
+                            <Select.Option value="rejected">
+                                Từ chối
                             </Select.Option>
                             <Select.Option value="blocked">Khoá</Select.Option>
                         </Select>

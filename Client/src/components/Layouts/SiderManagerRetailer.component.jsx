@@ -158,7 +158,7 @@ function SiderManagerRetailer() {
             notification({
                 title: 'Có đơn hàng mới',
                 icon: 'https://via.placeholder.com/150',
-                message: `Bạn có một đơn hàng mới từ ${data?.user?.firstname} ${data?.user?.lastname}`
+                message: `Bạn có một đơn hàng mới từ ${data?.user?.fullname}`
             });
         });
         socket.emit('join-retailer', {

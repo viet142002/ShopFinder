@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { Form, Input, Space, Button, Tooltip } from 'antd';
+import { Form, Input, Button, Tooltip } from 'antd';
 
 import { MdCameraAlt } from 'react-icons/md';
 import { returnUrl, handleFetch } from '@utils/index';
@@ -15,8 +15,7 @@ import { useAuth } from '@hooks/useAuth';
 
 const formData = (values) => {
     const data = new FormData();
-    if (values.firstname) data.append('firstname', values.firstname);
-    if (values.lastname) data.append('lastname', values.lastname);
+    if (values.fullname) data.append('fullname', values.fullname);
     if (values.phone) data.append('phone', values.phone);
     if (values.address) data.append('address', JSON.stringify(values.address));
     if (values.avatar) data.append('avatar', values.avatar);
@@ -106,40 +105,25 @@ function ProfilePage() {
                     layout="vertical"
                     onValuesChange={handleChanges}
                     initialValues={{
-                        firstname: user.firstname,
-                        lastname: user.lastname,
+                        fullname: user.fullname,
                         email: user.email,
                         phone: user.phone
                     }}
                     requiredMark={false}
                     onFinish={onFinish}
                 >
-                    <Space className="w-full">
-                        <Form.Item
-                            label="Họ"
-                            name="lastname"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập họ!'
-                                }
-                            ]}
-                        >
-                            <Input />
-                        </Form.Item>
-                        <Form.Item
-                            label="Tên"
-                            name="firstname"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập tên!'
-                                }
-                            ]}
-                        >
-                            <Input />
-                        </Form.Item>
-                    </Space>
+                    <Form.Item
+                        label="Họ và tên"
+                        name="fullname"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Vui lòng nhập họ và tên!'
+                            }
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
                     <Form.Item label="Email" name="email">
                         <Input disabled />
                     </Form.Item>

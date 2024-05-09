@@ -100,8 +100,7 @@ function CheckoutPage() {
                 }
             }}
             initialValues={{
-                lastname: user?.lastname,
-                firstname: user?.firstname,
+                fullname: user?.fullname,
                 phone: user?.phone,
                 address: user?.address,
                 paymentMethod: 'COD'

@@ -80,9 +80,11 @@ function ProductsPage() {
                 )}
             </div>
 
-            <div className="mt-4 flex justify-center">
-                <PaginationPage current={data.page} total={data.total} />
-            </div>
+            {data.products.length > 0 && (
+                <div className="mt-4 flex justify-center">
+                    <PaginationPage current={data.page} total={data.total} />
+                </div>
+            )}
         </section>
     );
 }

@@ -36,7 +36,7 @@ const PrintBill = React.forwardRef(function PrintBill({ bill, products }, ref) {
                         </h1>
                         <p>Mã HD: {bill._id}</p>
                         <p>Ngày lặp: {formatDate(new Date())}</p>
-                        <p>Khách hàng: {bill?.fullName}</p>
+                        <p>Khách hàng: {bill?.fullname}</p>
                         <p>SDT: {bill?.phone}</p>
                         <p>
                             Địa chỉ: {moreBill && `${moreBill}, `}

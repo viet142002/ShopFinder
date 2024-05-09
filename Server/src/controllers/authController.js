@@ -21,8 +21,7 @@ const authController = {
 			const hashPassword = await bcrypt.hash(password, 10);
 
 			const newUser = new User({
-				firstname,
-				lastname,
+				fullname: `${lastname.trim()} ${firstname.trim()}`,
 				email,
 				password: hashPassword,
 			});
@@ -105,8 +104,7 @@ const authController = {
 				.populate({
 					path: "address",
 					select: "province district ward more",
-				})
-				.populate("pendingRetailer");
+				});
 
 			if (!user) {
 				// create user
@@ -118,8 +116,7 @@ const authController = {
 				user = new User({
 					email,
 					password: hashPassword,
-					firstname: given_name,
-					lastname: family_name,
+					fullname: `${family_name.trim()} ${given_name.trim()}`,
 					avatar,
 				});
 				await user.save();

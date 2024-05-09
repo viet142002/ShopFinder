@@ -11,10 +11,10 @@ const { sendMail, generateToken } = require("../helper");
 const userController = {
 	updateProfile: async (req, res) => {
 		try {
-			const { firstname, lastname, address, phone } = req.body;
+			const { fullname, address, phone } = req.body;
 			const avatar = req?.file?.filename || null;
 
-			if (!firstname && !lastname && !address && !phone && !avatar)
+			if (!fullname && !address && !phone && !avatar)
 				return res.status(400).json({ message: "No changes detected" });
 			if (phone && !/^\d{10}$/.test(phone))
 				return res
@@ -28,8 +28,10 @@ const userController = {
 			if (!user)
 				return res.status(400).json({ message: "User not found" });
 
-			if (firstname) user.firstname = firstname.trim();
-			if (lastname) user.lastname = lastname.trim();
+			if (fullname) {
+				user.fullname = fullname;
+			}
+
 			if (address) {
 				const newAddress = await addressController.create(
 					JSON.parse(address)
@@ -104,14 +106,14 @@ const userController = {
 
 	getAllUser: async (req, res) => {
 		try {
-			const { status, name, phone, email, sort = "desc" } = req.query;
+			const { status, fullname, phone, email, sort = "desc" } = req.query;
 			const query = {
 				role: {
 					$ne: "admin",
 				},
 			};
 			if (status && status !== "all") query.status = status;
-			if (name) query.lastname = { $regex: name, $options: "i" };
+			if (fullname) query.fullname = { $regex: fullname, $options: "i" };
 			if (phone) query.phone = { $regex: phone, $options: "i" };
 			if (email) query.email = { $regex: email, $options: "i" };
 
@@ -133,26 +135,6 @@ const userController = {
 			const user = await User.findById(userId);
 			if (!user) {
 				return res.status(400).json({ message: "User not found" });
-			}
-			if (status === "blocked") {
-				const { retailer } = await RetailerControl.instanceUpdateStatus(
-					user.pendingRetailer.retailer,
-					"blocked"
-				);
-				user.pendingRetailer = {
-					retailer: retailer._id,
-					status: "blocked",
-				};
-			}
-			if (status === "normal") {
-				const { retailer } = await RetailerControl.instanceUpdateStatus(
-					user.pendingRetailer.retailer,
-					"approved"
-				);
-				user.pendingRetailer = {
-					retailer: retailer._id,
-					status: "approved",
-				};
 			}
 			user.status = status;
 			await user.save();

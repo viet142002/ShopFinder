@@ -14,8 +14,7 @@ const orderController = {
 		const {
 			status = "pending",
 			phone,
-			firstname,
-			lastname,
+			fullname,
 			orderItems,
 			address,
 			location,
@@ -64,7 +63,7 @@ const orderController = {
 				distributor: distributor,
 				totalPrice,
 				phone,
-				fullName: `${lastname} ${firstname}`,
+				fullname,
 				orderItems: newOrderItems.map(item => item._id),
 				shippingAddress,
 				location,
@@ -316,7 +315,9 @@ const orderController = {
 					target: order._id,
 					message: `Đơn hàng của bạn tại ${
 						order.distributor.name
-					} ngày ${formatDate(order.createdAt)} đang được vận chuyển`,
+					} ngày ${moment(order.createdAt).format(
+						"dd/MM/YYYY"
+					)} đang được vận chuyển`,
 				});
 			}
 

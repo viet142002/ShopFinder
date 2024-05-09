@@ -48,9 +48,9 @@ function StoreProfile() {
                             </div>
                         </div>
                     </section>
-                    <div className="mt-4 block md:hidden">
+                    <div className="mb-2 block space-y-2 md:hidden">
                         <div className="space-y-2">
-                            <div className="flex justify-center md:p-sideBarMark">
+                            <div className="flex justify-center px-2 md:p-sideBarMark">
                                 <RateTotal locationId={store._id} />
                             </div>
                             <Rating />

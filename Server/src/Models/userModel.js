@@ -10,11 +10,15 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	firstname: {
-		type: String,
-		default: "",
-	},
-	lastname: {
+	// firstname: {
+	// 	type: String,
+	// 	default: "",
+	// },
+	// lastname: {
+	// 	type: String,
+	// 	default: "",
+	// },
+	fullname: {
 		type: String,
 		default: "",
 	},
@@ -28,23 +32,6 @@ const userSchema = new mongoose.Schema({
 		enum: ["normal", "blocked"],
 		default: "normal",
 	},
-	// pendingRetailer: {
-	//     retailer: {
-	//         type: mongoose.Schema.Types.ObjectId,
-	//         ref: 'Retailer',
-	//     },
-	//     status: {
-	//         type: String,
-	//         enum: [
-	//             'not-register',
-	//             'pending',
-	//             'rejected',
-	//             'approved',
-	//             'blocked',
-	//         ],
-	//         default: 'not-register',
-	//     },
-	// },
 	address: {
 		type: mongoose.Schema.Types.ObjectId,
 		ref: "Address",

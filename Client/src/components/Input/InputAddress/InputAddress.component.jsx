@@ -51,7 +51,9 @@ function InputAddress({ hiddenLabel = false, address = {} }) {
                             }
                             optionFilterProp="children"
                             filterOption={(input, option) =>
-                                (option?.value ?? '').includes(input)
+                                (option?.value ?? '')
+                                    .toLowerCase()
+                                    .includes(input.toLowerCase())
                             }
                             filterSort={(optionA, optionB) =>
                                 (optionA?.value ?? '')

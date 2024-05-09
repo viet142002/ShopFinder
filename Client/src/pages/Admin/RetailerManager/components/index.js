@@ -1,1 +1,1 @@
-export * from './FilterRequest';
+export * from './FilterRetailer';

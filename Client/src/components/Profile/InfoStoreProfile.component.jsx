@@ -76,6 +76,7 @@ function InfoStoreProfile({ store, isShowButtonEdit = true, isUser = false }) {
 
                 <Link
                     to={`/stores/${store._id}/products`}
+                    state={{ type: store.location.informationType }}
                     className="mr-4 block text-right"
                 >
                     Xem sản phẩm

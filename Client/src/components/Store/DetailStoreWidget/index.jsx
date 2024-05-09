@@ -39,14 +39,16 @@ function DetailStoreWidget({
                             store={data}
                             isShowButtonEdit={false}
                         />
-                        <div className="flex justify-center">
-                            <ActionStore
-                                storeId={data._id}
-                                setStores={setStores}
-                                stores={stores}
-                                type={type}
-                            />
-                        </div>
+                        {stores && (
+                            <div className="flex justify-center">
+                                <ActionStore
+                                    storeId={data._id}
+                                    setStores={setStores}
+                                    stores={stores}
+                                    type={type}
+                                />
+                            </div>
+                        )}
                     </>
                 )}
             </Drawer>

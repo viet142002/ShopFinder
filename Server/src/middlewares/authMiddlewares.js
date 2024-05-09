@@ -17,7 +17,6 @@ const authMiddlewares = {
 		try {
 			// check if token is valid
 			const data = jwt.verify(token, process.env.JWT_SECRET);
-			console.log("🚀 ~ authorization: ~ data:", data);
 
 			if (!data) {
 				return res.status(401).json({
