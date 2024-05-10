@@ -63,18 +63,17 @@ function App() {
     useEffect(() => {
         dispatch(setFirstLocation());
         socket.on('connect', () => {});
-        socket.on('disconnect', () => {});
 
-        if (user) {
+        if (user?.fullname) {
+            console.log('join socket');
             socket.emit('join', user);
         }
 
         return () => {
             socket.off('connect');
-            socket.off('disconnect');
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [user]);
 
     return (
         <BrowserRouter>

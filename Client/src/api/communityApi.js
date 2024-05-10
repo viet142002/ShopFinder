@@ -16,6 +16,10 @@ export const updateStore = async (id, data) => {
     });
 };
 
+export const deleteStore = async (id) => {
+    return api.delete(`/community/stores/${id}`);
+};
+
 export const getStore = async (id) => {
     return api.get(`/community/store/${id}`);
 };

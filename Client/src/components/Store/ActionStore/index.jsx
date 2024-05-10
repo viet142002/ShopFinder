@@ -8,8 +8,16 @@ import {
 import { updateStatus } from '@api/communityApi';
 import { useState } from 'react';
 
+/**
+ * ActionStore component
+ * @param {Object} props
+ * @param {String} props.storeId store id
+ * @param {Function} props.setStores set stores
+ * @param {Array} props.stores stores
+ * @param {String} [props.type='retailer'] type
+ * @return {JSX.Element}
+ */
 function ActionStore({ storeId, setStores, stores, type = 'retailer' }) {
-    console.log('🚀 ~ ActionStore ~ type:', type);
     const [loading, setLoading] = useState(false);
     const [result, setResult] = useState(
         stores?.find((store) => store?._id === storeId)?.status || ''

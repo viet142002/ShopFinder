@@ -46,6 +46,7 @@ function NotificationPage() {
                                 }
                             >
                                 <Avatar
+                                    className="flex-shrink-0"
                                     size="large"
                                     src={
                                         notification.fromType === 'User'
@@ -61,14 +62,13 @@ function NotificationPage() {
                                     <p>
                                         {notification.fromType === 'User' ? (
                                             <strong>
-                                                {notification.from.fullname}
+                                                {notification.from.fullname}{' '}
                                             </strong>
                                         ) : (
                                             <strong>
                                                 {notification.from.name}{' '}
                                             </strong>
                                         )}
-
                                         {notification.message}
                                     </p>
                                     <p>{formatTime(notification.createdAt)}</p>

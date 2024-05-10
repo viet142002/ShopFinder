@@ -13,7 +13,8 @@ import { useSelector } from 'react-redux';
 function ManageOrderDetail() {
     const { orderId } = useParams();
     const [order, setOrder] = useState();
-    const { logo } = useSelector((state) => state.retailer.data);
+    const { logo } = useSelector((state) => state.retailer.data.retailer);
+
     const printRef = useRef();
 
     useEffect(() => {

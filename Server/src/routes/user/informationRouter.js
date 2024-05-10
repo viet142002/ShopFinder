@@ -18,5 +18,6 @@ router.put(
 );
 router.get("/store/:id", InformationController.get);
 router.get("/stores", InformationController.getAll);
+router.delete("/stores/:id", authorization, InformationController.delete);
 
 module.exports = router;

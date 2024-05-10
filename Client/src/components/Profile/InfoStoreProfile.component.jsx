@@ -1,12 +1,33 @@
-import { Avatar, Tag } from 'antd';
-import { Link } from 'react-router-dom';
+import { Avatar, Button, Tag } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
 
 import HTMLRenderer from '../HTMLRenderer/HTMLRenderer.component';
 import RenderAddress from '@components/RenderAddress';
 
-import { typeLocations, formatTime } from '@utils/index';
+import { typeLocations, formatTime, handleFetch } from '@utils/index';
 
-function InfoStoreProfile({ store, isShowButtonEdit = true, isUser = false }) {
+import { deleteStore } from '@api/communityApi';
+/**
+ * InfoStoreProfile component for admin
+ * @param {Object} store object data
+ * @param {Boolean} [isShowButtonEdit=true] whether show button edit
+ * @param {Boolean} [isRetailer=true] is retailer
+ * @return {JSX.Element}
+ */
+function InfoStoreProfile({
+    store,
+    isShowButtonEdit = true,
+    isRetailer = true
+}) {
+    const navigate = useNavigate();
+    const handleRemove = async () => {
+        const data = await handleFetch(() => deleteStore(store._id));
+
+        if (data) {
+            navigate(-1);
+        }
+    };
+
     return (
         <div className="overflow-hidden rounded-lg p-2 md:bg-white">
             <h2 className="text-lg font-medium">Thông tin cửa hàng</h2>
@@ -74,13 +95,15 @@ function InfoStoreProfile({ store, isShowButtonEdit = true, isUser = false }) {
                     </span>
                 </p>
 
-                <Link
-                    to={`/stores/${store._id}/products`}
-                    state={{ type: store.location.informationType }}
-                    className="mr-4 block text-right"
-                >
-                    Xem sản phẩm
-                </Link>
+                <div className="flex justify-end">
+                    <Link
+                        to={`/stores/${store._id}/products`}
+                        state={{ type: store.location.informationType }}
+                        className="mr-4 block text-right"
+                    >
+                        Xem sản phẩm
+                    </Link>
+                </div>
 
                 <p>Mô tả cửa hàng:</p>
                 <HTMLRenderer
@@ -89,13 +112,27 @@ function InfoStoreProfile({ store, isShowButtonEdit = true, isUser = false }) {
                 />
                 {isShowButtonEdit && (
                     <div className="mt-4 flex justify-center">
+                        {store.location.informationType === 'Information' && (
+                            <Button
+                                onClick={handleRemove}
+                                type="primary"
+                                danger
+                            >
+                                Xoá thông tin
+                            </Button>
+                        )}
                         <Link
                             to={
-                                isUser
+                                !isRetailer
                                     ? `/edit-store/${store._id}`
                                     : '../edit-retailer'
                             }
-                            className=" px-4 py-2"
+                            state={{
+                                type:
+                                    store.location.informationType ||
+                                    'Information'
+                            }}
+                            className="px-4 py-2"
                         >
                             Chỉnh sửa thông tin
                         </Link>

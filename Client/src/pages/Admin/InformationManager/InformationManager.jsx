@@ -88,6 +88,7 @@ function InformationManager() {
                 setStores={setStores}
                 stores={stores}
                 type="information"
+                showButtonEdit={true}
             />
         </>
     );

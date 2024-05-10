@@ -12,6 +12,7 @@ import { handleFetch } from '@utils/expression';
 import InputLocation from '@components/Input/InputLocation/InputLocation.component';
 import { useLocalStorage } from '@hooks/index';
 import { Show } from '@components/common';
+import { useNavigate } from 'react-router-dom';
 
 const FormatForm = (values, images, isRegisterRetailer) => {
     const formData = new FormData();
@@ -33,6 +34,7 @@ const FormatForm = (values, images, isRegisterRetailer) => {
 
 function CreateStorePage({ isRegisterRetailer }) {
     const [newImages, setNewImages] = useState([]);
+    const navigate = useNavigate();
     const [, setDeleteImages] = useState([]);
     const [register, setRegister] = useLocalStorage('register', false);
 
@@ -47,10 +49,10 @@ function CreateStorePage({ isRegisterRetailer }) {
         });
     };
 
-    const onFinish = (values) => {
+    const onFinish = async (values) => {
         if (isRegisterRetailer) {
             const formData = FormatForm(values, newImages, true);
-            const data = handleFetch(() => registerRetailerApi(formData));
+            const data = await handleFetch(() => registerRetailerApi(formData));
             if (data) {
                 setRegister({
                     ...data
@@ -58,7 +60,10 @@ function CreateStorePage({ isRegisterRetailer }) {
             }
         } else {
             const formData = FormatForm(values, newImages);
-            handleFetch(() => shareStore(formData));
+            const data = await handleFetch(() => shareStore(formData));
+            if (data) {
+                navigate(-1);
+            }
         }
     };
 

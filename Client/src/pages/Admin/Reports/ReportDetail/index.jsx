@@ -1,5 +1,5 @@
-import { Avatar, Button, Tag } from 'antd';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Avatar, Button, Tag, message } from 'antd';
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import { getReportApi, updateReportApi } from '@api/reportApi';
@@ -15,7 +15,6 @@ import { updateStatusByAdminApi } from '@api/productApi';
 import DetailStoreWidget from '@components/Store/DetailStoreWidget';
 
 function ReportDetail() {
-    const navigate = useNavigate();
     const { reportId } = useParams();
     const [report, setReport] = useState(null);
     const [isShowModal, setIsShowModal] = useState(false);
@@ -29,6 +28,7 @@ function ReportDetail() {
     };
 
     const fetchStore = () => {
+        if (!report.to) return message.info('Cửa hàng không tồn tại');
         getStoreById(report.to._id).then((res) => {
             setStore(res.data.store);
             setOpenWidgetStore(true);
@@ -78,14 +78,14 @@ function ReportDetail() {
                 setIsShowModal(true);
                 break;
             case 'product':
-                navigate(`/stores/${report.to._id}/products/${report.to._id}`);
+                window.open(
+                    `/stores/${report.to._id}/products/${report.to._id}`
+                );
                 break;
             case 'retailer':
-                // navigate(`/stores/${report.to._id}`);
                 fetchStore();
                 break;
             case 'information':
-                // navigate(`/stores/${report.to._id}`);
                 fetchStore();
                 break;
             default:
@@ -189,22 +189,22 @@ function ReportDetail() {
                                     )}
                                     {
                                         <>
-                                            {report?.from?.status ===
-                                            'blocked' ? (
-                                                <Button disabled>
-                                                    Người dùng đã bị cấm
-                                                </Button>
-                                            ) : (
-                                                <Button
-                                                    onClick={() =>
-                                                        handleBlock({
-                                                            isBlockUser: true
-                                                        })
-                                                    }
-                                                >
-                                                    Cấm người báo cáo
-                                                </Button>
-                                            )}
+                                            <Button
+                                                onClick={() =>
+                                                    handleBlock({
+                                                        isBlockUser: true
+                                                    })
+                                                }
+                                                disabled={
+                                                    report?.from?.status ===
+                                                    'blocked'
+                                                }
+                                            >
+                                                {report?.from?.status ===
+                                                'blocked'
+                                                    ? 'Đã chặn'
+                                                    : 'Chặn người báo cáo'}
+                                            </Button>
                                         </>
                                     }
                                     {report?.toType === 'Rate' && (
@@ -294,9 +294,16 @@ function ReportDetail() {
                                                 Xem thông tin
                                             </Button>
                                             <Button
-                                                onClick={() => handleBlock()}
+                                                onClick={() => handleBlock({})}
+                                                disabled={
+                                                    report?.to?.status ===
+                                                    'blocked'
+                                                }
                                             >
-                                                Cấm thông tin
+                                                {report?.to?.status ===
+                                                'blocked'
+                                                    ? 'Đã ẩn'
+                                                    : 'Ẩn thông tin'}
                                             </Button>
                                             <DetailStoreWidget
                                                 open={openWidgetStore}
@@ -304,6 +311,8 @@ function ReportDetail() {
                                                     setOpenWidgetStore(false);
                                                 }}
                                                 data={store}
+                                                type="information"
+                                                showButtonEdit
                                             />
                                         </>
                                     )}

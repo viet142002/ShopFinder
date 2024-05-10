@@ -216,7 +216,7 @@ const InformationController = {
 
 			res.status(200).json({
 				information,
-				message: "Information deleted successfully",
+				message: "Deleted successfully",
 			});
 		} catch (error) {
 			res.status(500).json({ message: error.message });
@@ -238,8 +238,8 @@ const InformationController = {
 			if (type) {
 				query.type = type === "all" ? { $ne: null } : type;
 			}
-			if (status) {
-				query.status = status === "all" ? { $ne: null } : status;
+			if (status && status !== "all") {
+				query.status = status;
 			}
 			if (name) {
 				query.name = { $regex: name, $options: "i" };

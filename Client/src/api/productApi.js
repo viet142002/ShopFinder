@@ -41,6 +41,9 @@ export const deleteProductByIdApi = async (id) => {
 export const createProductByUserApi = async (data) => {
     return api.post('products', data);
 };
+export const deleteProductByUserApi = async (id) => {
+    return api.delete(`products/${id}`);
+};
 export const updateProductByUserApi = async (id, data) => {
     return api.put(`products/${id}`, data);
 };

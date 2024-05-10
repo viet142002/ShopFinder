@@ -1,18 +1,31 @@
 import { Drawer } from 'antd';
 import { memo } from 'react';
 
-import InfoRetailerProfile from '@components/Profile/InfoStoreProfile.component';
+import InfoStoreProfile from '@components/Profile/InfoStoreProfile.component';
 import MyCarousel from '@components/Carousel/Carousel.component';
 import ActionStore from '@components/Store/ActionStore';
 import MiniMap from '@components/Map/MiniMap';
 
+/**
+ * DetailStoreWidget component admin
+ * @param {Object} props
+ * @param {Boolean} props.open open
+ * @param {Function} props.onClose close
+ * @param {Object} [props.data={}] data
+ * @param {Function} props.setStores set stores
+ * @param {Array} props.stores stores
+ * @param {String} [props.type='retailer'] type
+ * @param {Boolean} [props.showButtonEdit=false] show button edit
+ * @return {JSX.Element}
+ */
 function DetailStoreWidget({
     open,
     onClose,
     data = {},
     setStores,
     stores,
-    type = 'retailer'
+    type = 'retailer',
+    showButtonEdit = false
 }) {
     return (
         <>
@@ -35,9 +48,10 @@ function DetailStoreWidget({
                             />
                         </div>
                         <MyCarousel images={data.images} />
-                        <InfoRetailerProfile
+                        <InfoStoreProfile
+                            isRetailer={type === 'retailer'}
                             store={data}
-                            isShowButtonEdit={false}
+                            isShowButtonEdit={showButtonEdit}
                         />
                         {stores && (
                             <div className="flex justify-center">

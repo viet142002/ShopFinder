@@ -15,6 +15,7 @@ const productController = {
 				status,
 				userCreated,
 				distributor,
+				includes = [],
 			} = req.query;
 			const query = {};
 			if (distributor) {
@@ -27,10 +28,17 @@ const productController = {
 				query.userCreate = userCreated;
 			}
 			if (status && status !== "all") {
-				query.status = status;
+				query.status = {
+					$in: [status],
+				};
 			} else {
 				query.status = {
 					$ne: "blocked",
+				};
+			}
+			if (includes.includes("blocked") && status !== "all") {
+				query.status = {
+					$in: ["blocked", status],
 				};
 			}
 
@@ -479,8 +487,6 @@ const productController = {
 			await imageController.deleteImages(
 				product.images.map(image => image._id)
 			);
-
-			await product.remove();
 
 			return res.status(200).json({
 				message: "Product deleted successfully",
