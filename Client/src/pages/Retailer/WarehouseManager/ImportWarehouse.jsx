@@ -11,15 +11,15 @@ import EditorFormat from '@components/EditorFormat/EditorFormat';
 function ImportWarehouse() {
     const [resultSearch, setResultSearch] = useState([]);
     const [inOutProducts, setInOutProducts] = useState([]);
-
-    const navigate = useNavigate();
-
     const [search, setSearch] = useState('');
     const [infoWarehouse, setInfoWarehouse] = useState({
         createdAt: '',
         note: ''
     });
     const { idImport, id: idRetailer } = useParams();
+
+    const navigate = useNavigate();
+
     const isAddMode = !idImport;
 
     const handleAdd = (record) => {
@@ -82,6 +82,7 @@ function ImportWarehouse() {
                     src={'http://localhost:3001' + images[0].path}
                     alt="product"
                     width={100}
+                    loading="lazy"
                 />
             )
         },
@@ -128,6 +129,7 @@ function ImportWarehouse() {
                     src={'http://localhost:3001' + images[0].path}
                     alt="product"
                     width={100}
+                    loading="lazy"
                 />
             )
         },
@@ -208,6 +210,7 @@ function ImportWarehouse() {
                     src={returnUrl(images[0].path)}
                     alt="product"
                     width={100}
+                    loading="lazy"
                 />
             )
         },

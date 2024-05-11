@@ -1,429 +1,416 @@
-const Retailer = require('../Models/retailerModel');
-const User = require('../Models/userModel');
-const Location = require('../Models/locationModel');
+const bcrypt = require("bcrypt");
 
-const imageController = require('./imageController');
-const addressController = require('./addressController');
-const locationController = require('./locationController');
+const Retailer = require("../Models/retailerModel");
+const User = require("../Models/userModel");
+const Location = require("../Models/locationModel");
+
+const imageController = require("./imageController");
+const addressController = require("./addressController");
+const locationController = require("./locationController");
+const { sendMail } = require("../helper/SendMail");
 
 const retailerController = {
-    register: async (req, res) => {
-        try {
-            const {
-                location,
-                name,
-                phone,
-                type,
-                description,
-                mode,
-                address,
-                email: retailerEmail,
-            } = req.body;
-            const { email } = req.user;
-            const images = req.files;
+	register: async (req, res) => {
+		try {
+			const {
+				location,
+				name,
+				phone,
+				type,
+				description,
+				mode,
+				address,
+				email,
+			} = req.body;
+			const images = req.files;
 
-            if (
-                [
-                    location,
-                    name,
-                    phone,
-                    type,
-                    description,
-                    mode,
-                    address,
-                    retailerEmail,
-                ].includes(undefined)
-            ) {
-                return res.status(400).json({
-                    message: 'Missing required fields',
-                });
-            }
+			if (
+				[
+					location,
+					name,
+					phone,
+					type,
+					description,
+					mode,
+					address,
+					email,
+				].includes(undefined)
+			) {
+				return res.status(400).json({
+					message: "Missing required fields",
+				});
+			}
 
-            if (!images || images.length === 0) {
-                return res.status(400).json({
-                    message: 'Missing images',
-                });
-            }
+			if (!images || images.length === 0) {
+				return res.status(400).json({
+					message: "Missing images",
+				});
+			}
 
-            const user = await User.findOne({ email });
-            if (!user) {
-                return res.status(400).json({
-                    message: 'Cant find user',
-                });
-            }
+			const newImages = await imageController.createImage(images);
+			const newAddress = await addressController.create(
+				JSON.parse(address)
+			);
 
-            user.pendingRetailer = {
-                status: 'pending',
-            };
+			const newRetailer = new Retailer({
+				name,
+				phone,
+				type,
+				mode,
+				description,
+				email,
+				images: newImages || [],
+			});
 
-            const newImages = await imageController.createImage(images);
-            const newAddress = await addressController.create(
-                JSON.parse(address)
-            );
+			const { lat, lng } = JSON.parse(location);
+			const newLocation = await locationController.create({
+				lat,
+				lng,
+				address: newAddress._id,
+				type: type,
+				information: newRetailer,
+				informationType: "Retailer",
+			});
 
-            const newRetailer = new Retailer({
-                owner: user._id,
-                name,
-                phone,
-                type,
-                mode,
-                description,
-                email: retailerEmail,
-                images: newImages || [],
-            });
+			newRetailer.location = newLocation._id;
 
-            const { lat, lng } = JSON.parse(location);
-            const newLocation = await locationController.create({
-                lat,
-                lng,
-                address: newAddress._id,
-                type: type,
-                information: newRetailer,
-                informationType: 'Retailer',
-            });
+			await newRetailer.save();
 
-            newRetailer.location = newLocation._id;
-            user.pendingRetailer.retailer = newRetailer._id;
+			return res.status(200).json({
+				newRetailer,
+				message: "Register retailer successfully",
+			});
+		} catch (error) {
+			return res.status(500).json({
+				message: error.message,
+			});
+		}
+	},
+	update: async (req, res) => {
+		try {
+			const {
+				location,
+				name,
+				phone,
+				description,
+				address,
+				deleteImages,
+				email,
+			} = req.body;
+			const id = req.user.retailer;
+			const images = req.files;
 
-            await user.save();
-            await newRetailer.save();
+			if (
+				[location, name, phone, description, address, email].includes(
+					undefined
+				)
+			) {
+				return res.status(400).json({
+					message: "Missing required fields",
+				});
+			}
 
-            return res.status(200).json({
-                newRetailer,
-                message: 'Register retailer successfully',
-            });
-        } catch (error) {
-            return res.status(500).json({
-                message: error.message,
-            });
-        }
-    },
+			const retailer = await Retailer.findById(id).populate({
+				path: "location",
+				populate: {
+					path: "address",
+				},
+			});
 
-    update: async (req, res) => {
-        try {
-            const {
-                location,
-                name,
-                phone,
-                description,
-                address,
-                deleteImages,
-                email,
-            } = req.body;
+			if (!retailer) {
+				return res.status(400).json({
+					message: "Cant find retailer",
+				});
+			}
+			if (deleteImages) {
+				let needRemoveIds = [];
+				if (typeof deleteImages[0] === "string") {
+					needRemoveIds = deleteImages;
+				} else {
+					needRemoveIds = deleteImages.map(image => image._id);
+				}
+				await imageController.deleteImages(deleteImages);
+				retailer.images = retailer.images.filter(
+					image => !needRemoveIds.includes(image._id.toString())
+				);
+			}
+			if (images) {
+				const newImages = await imageController.createImage(images);
+				retailer.images = [...retailer.images, ...newImages];
+			}
+			if (name) {
+				retailer.name = name;
+			}
+			if (email) {
+				retailer.email = email;
+			}
+			if (phone) {
+				retailer.phone = phone;
+			}
+			if (
+				address.province !== retailer.location.address.province ||
+				address.district !== retailer.location.address.district ||
+				address.ward !== retailer.location.address.ward ||
+				address.more !== retailer.location.address.more
+			) {
+				await addressController.update(retailer.location.address._id, {
+					...address,
+				});
+			}
 
-            const images = req.files;
+			if (description) {
+				retailer.description = description;
+			}
 
-            if (
-                [location, name, phone, description, address, email].includes(
-                    undefined
-                )
-            ) {
-                return res.status(400).json({
-                    message: 'Missing required fields',
-                });
-            }
+			const { lat, lng } = location;
+			if (
+				lat !== retailer.location.loc.coordinates[1] ||
+				lng !== retailer.location.loc.coordinates[0]
+			) {
+				await locationController.update(retailer.location._id, {
+					lat,
+					lng,
+				});
+			}
 
-            const retailer = await Retailer.findOne({
-                owner: req.user._id,
-            }).populate({
-                path: 'location',
-                populate: {
-                    path: 'address',
-                },
-            });
+			await retailer.save();
 
-            if (!retailer) {
-                return res.status(400).json({
-                    message: 'Cant find retailer',
-                });
-            }
-            if (deleteImages) {
-                let needRemoveIds = [];
-                if (typeof deleteImages[0] === 'string') {
-                    needRemoveIds = deleteImages;
-                } else {
-                    needRemoveIds = deleteImages.map(image => image._id);
-                }
-                await imageController.deleteImages(deleteImages);
-                retailer.images = retailer.images.filter(
-                    image => !needRemoveIds.includes(image._id.toString())
-                );
-            }
-            if (images) {
-                const newImages = await imageController.createImage(images);
-                retailer.images = [...retailer.images, ...newImages];
-            }
-            if (name) {
-                retailer.name = name;
-            }
-            if (email) {
-                retailer.email = email;
-            }
-            if (phone) {
-                retailer.phone = phone;
-            }
-            if (
-                address.province !== retailer.location.address.province ||
-                address.district !== retailer.location.address.district ||
-                address.ward !== retailer.location.address.ward ||
-                address.more !== retailer.location.address.more
-            ) {
-                await addressController.update(retailer.location.address._id, {
-                    ...address,
-                });
-            }
+			return res.status(200).json({
+				retailer,
+				message: "Update retailer successfully",
+			});
+		} catch (error) {
+			return res.status(500).json({
+				message: error.message,
+			});
+		}
+	},
+	infoMyRetailer: async (req, res) => {
+		try {
+			const retailer = await Retailer.findById(req.user.retailer)
+				.populate({
+					path: "location",
+					populate: {
+						path: "address",
+					},
+				})
+				.populate("images logo");
 
-            if (description) {
-                retailer.description = description;
-            }
+			if (!retailer) {
+				return res.status(400).json({
+					message: "Cant find retailer",
+				});
+			}
 
-            const { lat, lng } = location;
-            if (
-                lat !== retailer.location.loc.coordinates[1] ||
-                lng !== retailer.location.loc.coordinates[0]
-            ) {
-                await locationController.update(retailer.location._id, {
-                    lat,
-                    lng,
-                });
-            }
+			return res.status(200).json({
+				retailer,
+				message: "Get info retailer successfully",
+			});
+		} catch (error) {
+			return res.status(500).json({
+				message: error.message,
+			});
+		}
+	},
+	getRetailerDetailRetailer: async (req, res) => {
+		try {
+			const retailer = await Retailer.findById(req.params.id);
+			if (!retailer) {
+				return res.status(400).json({
+					message: "Cant find retailer",
+				});
+			}
 
-            await retailer.save();
+			return res.status(200).json({
+				retailer,
+				message: "Get retailers successfully",
+			});
+		} catch (error) {
+			return res.status(500).json({
+				message: error.message,
+			});
+		}
+	},
+	// Gets all pending requests
+	getRequestsRetailer: async (req, res) => {
+		try {
+			const { status, name, phone, email } = req.query;
+			let query = {};
 
-            return res.status(200).json({
-                retailer,
-                message: 'Update retailer successfully',
-            });
-        } catch (error) {
-            return res.status(500).json({
-                message: error.message,
-            });
-        }
-    },
+			if (status && status !== "all") {
+				query.status = status;
+			}
+			if (name) {
+				query.name = { $regex: name, $options: "i" };
+			}
+			if (phone) {
+				query.phone = { $regex: phone, $options: "i" };
+			}
+			if (email) {
+				query.email = { $regex: email, $options: "i" };
+			}
+			console.log("🚀 ~ getRequestsRetailer: ~ query:", query);
 
-    infoMyRetailer: async (req, res) => {
-        try {
-            const retailer = await Retailer.findOne({
-                owner: req.user._id,
-            })
-                .populate({
-                    path: 'location',
-                    populate: {
-                        path: 'address',
-                    },
-                })
-                .populate('images logo');
+			const requests = await Retailer.find(query)
+				.populate({
+					path: "location",
+					populate: {
+						path: "address",
+					},
+				})
+				.populate("images logo");
+			console.log("🚀 ~ getRequestsRetailer: ~ requests:", requests);
 
-            if (!retailer) {
-                return res.status(400).json({
-                    message: 'Cant find retailer',
-                });
-            }
+			if (!requests) {
+				return res.status(400).json({
+					message: "Cant find requests",
+				});
+			}
+			return res.status(200).json({
+				requests,
+				message: "Get requests successfully",
+			});
+		} catch (error) {
+			return res.status(500).json({
+				message: error.message,
+			});
+		}
+	},
+	// Approve a request
+	acceptRequestRetailer: async (req, res) => {
+		try {
+			const oldRetailer = await Retailer.findById(req.params.id);
+			const { retailer } = await retailerController.instanceUpdateStatus(
+				req.params.id,
+				"approved"
+			);
+			if (!retailer) {
+				return res.status(400).json({
+					message: "Cant find retailer",
+				});
+			}
 
-            return res.status(200).json({
-                retailer,
-                message: 'Get info retailer successfully',
-            });
-        } catch (error) {
-            return res.status(500).json({
-                message: error.message,
-            });
-        }
-    },
+			if (oldRetailer.status === "pendding") {
+				// generate random password
+				const password = Math.random().toString(36).slice(-8);
+				const hashPassword = await bcrypt.hash(password, 10);
+				await Retailer.findByIdAndUpdate(retailer._id, {
+					password: hashPassword,
+				});
+				sendMail({
+					to: retailer.email,
+					subject: "Retailer registration",
+					text: `<h1>Đơn xét duyệt của bạn đã được chấp thuận</h1>`,
+					html: `
+                    <h1>
+                        Đơn xét duyệt của bạn đã được phê duyệt
+                    </h1>
+                    <h4>
+                        Thông tin đăng nhập của bạn:
+                    </h4>
+                        <p>Email: ${retailer.email}</p>
+                        <p>Password: ${password}</p>
+                    <h5>
+                        Vui lòng <a href="http://localhost:3000/login-retailer">đăng nhập tại đây</a> và thay đổi mật khẩu của bạn
+                    </h5>`,
+				});
+			}
+			return res.status(200).json({
+				retailer,
+				message: "Successfully",
+			});
+		} catch (error) {
+			return res.status(500).json({
+				message: error.message,
+			});
+		}
+	},
+	// Reject a request
+	rejectRequestRetailer: async (req, res) => {
+		try {
+			const { retailer } = await this.instanceUpdateStatus(
+				req.params.id,
+				"rejected"
+			);
+			if (!retailer) {
+				return res.status(400).json({
+					message: "Cant find retailer",
+				});
+			}
+			return res.status(200).json({
+				retailer,
+				message: "Rejected request successfully",
+			});
+		} catch (error) {
+			return res.status(500).json({
+				message: error.message,
+			});
+		}
+	},
+	instanceUpdateStatus: async (retailerId, status) => {
+		try {
+			const retailer = await Retailer.findById(retailerId);
+			if (!retailer) {
+				return {
+					retailer: null,
+				};
+			}
 
-    getRetailerDetailRetailer: async (req, res) => {
-        try {
-            const retailer = await Retailer.findById(req.params.id);
-            if (!retailer) {
-                return res.status(400).json({
-                    message: 'Cant find retailer',
-                });
-            }
+			const location = await Location.findById(retailer.location);
+			if (status === "blocked") {
+				location.status = "blocked";
+				retailer.status = "blocked";
+			}
+			if (status === "approved") {
+				location.status = "normal";
+				retailer.status = "approved";
+			}
+			if (status === "rejected") {
+				retailer.status = "rejected";
+				location.status = "blocked";
+			}
+			await location.save();
+			await retailer.save();
 
-            return res.status(200).json({
-                retailer,
-                message: 'Get retailers successfully',
-            });
-        } catch (error) {
-            return res.status(500).json({
-                message: error.message,
-            });
-        }
-    },
-
-    // Gets all pending requests
-    getRequestsRetailer: async (req, res) => {
-        try {
-            let { status = 'all', sort = 'asc' } = req.query;
-            if (status === 'all') {
-                status = ['pending', 'approved', 'rejected', 'blocked'];
-            } else {
-                status = [status];
-            }
-
-            const requests = await Retailer.find({
-                status: { $in: status },
-            })
-                .populate({
-                    path: 'location',
-                    populate: {
-                        path: 'address',
-                    },
-                })
-                .populate('images logo')
-                .populate('owner', '-password')
-                .sort({ createdAt: sort });
-
-            if (!requests) {
-                return res.status(400).json({
-                    message: 'Cant find requests',
-                });
-            }
-            return res.status(200).json({
-                requests,
-                message: 'Get requests successfully',
-            });
-        } catch (error) {
-            return res.status(500).json({
-                message: error.message,
-            });
-        }
-    },
-
-    // Approve a request
-    acceptRequestRetailer: async (req, res) => {
-        try {
-            const { retailer } = await this.instanceUpdateStatus(
-                req.params.id,
-                'approved'
-            );
-            if (!retailer) {
-                return res.status(400).json({
-                    message: 'Cant find retailer',
-                });
-            }
-            const user = await User.findById(retailer.owner);
-            if (!user) {
-                return res.status(400).json({
-                    message: 'Cant find user',
-                });
-            }
-            user.role = 'retailer';
-            user.pendingRetailer = {
-                retailer: retailer._id,
-                status: 'approved',
-            };
-            await user.save();
-
-            return res.status(200).json({
-                retailer,
-                message: 'Successfully',
-            });
-        } catch (error) {
-            return res.status(500).json({
-                message: error.message,
-            });
-        }
-    },
-    // Reject a request
-    rejectRequestRetailer: async (req, res) => {
-        try {
-            const { retailer } = await this.instanceUpdateStatus(
-                req.params.id,
-                'rejected'
-            );
-            if (!retailer) {
-                return res.status(400).json({
-                    message: 'Cant find retailer',
-                });
-            }
-            const user = await User.findById(retailer.owner);
-            user.pendingRetailer = {
-                retailer: retailer._id,
-                status: 'rejected',
-            };
-            await user.save();
-
-            return res.status(200).json({
-                retailer,
-                message: 'Rejected request successfully',
-            });
-        } catch (error) {
-            return res.status(500).json({
-                message: error.message,
-            });
-        }
-    },
-    instanceUpdateStatus: async (retailerId, status) => {
-        try {
-            const retailer = await Retailer.findById(retailerId);
-            if (!retailer) {
-                return {
-                    retailer: null,
-                };
-            }
-
-            const location = await Location.findById(retailer.location);
-            if (status === 'blocked') {
-                location.status = 'blocked';
-                retailer.status = 'blocked';
-            }
-            if (status === 'approved') {
-                location.status = 'normal';
-                retailer.status = 'approved';
-            }
-            if (status === 'rejected') {
-                retailer.status = 'rejected';
-                location.status = 'blocked';
-            }
-            await location.save();
-            await retailer.save();
-
-            return {
-                retailer,
-                message: 'Successfully',
-            };
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    },
-    // Block a retailer
-    blockRetailer: async (req, res) => {
-        try {
-            const { retailer } = await this.instanceUpdateStatus(
-                req.params.id,
-                'blocked'
-            );
-            const user = await User.findById(retailer.owner);
-            user.pendingRetailer = {
-                retailer: retailer._id,
-                status: 'blocked',
-            };
-            await user.save();
-            return res.status(200).json({
-                retailer,
-                message: 'Successfully',
-            });
-        } catch (error) {
-            return res.status(500).json({
-                message: error.message,
-            });
-        }
-    },
-    // check block status
-    checkBlockRetailer: async retailerId => {
-        try {
-            const retailer = await Retailer.findById(retailerId);
-            if (!retailer) {
-                return res.status(400).json({
-                    message: 'Cant find retailer',
-                });
-            }
-            return retailer.status === 'blocked';
-        } catch (error) {
-            throw new Error(error.message);
-        }
-    },
+			return {
+				retailer,
+				message: "Successfully",
+			};
+		} catch (error) {
+			throw new Error(error.message);
+		}
+	},
+	// Block a retailer
+	blockRetailer: async (req, res) => {
+		try {
+			const { retailer } = await retailerController.instanceUpdateStatus(
+				req.params.id,
+				"blocked"
+			);
+			return res.status(200).json({
+				retailer,
+				message: "Successfully",
+			});
+		} catch (error) {
+			return res.status(500).json({
+				message: error.message,
+			});
+		}
+	},
+	// check block status
+	checkBlockRetailer: async retailerId => {
+		try {
+			const retailer = await Retailer.findById(retailerId);
+			if (!retailer) {
+				return res.status(400).json({
+					message: "Cant find retailer",
+				});
+			}
+			return retailer.status === "blocked";
+		} catch (error) {
+			throw new Error(error.message);
+		}
+	},
 };
 
 module.exports = retailerController;

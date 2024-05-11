@@ -12,6 +12,7 @@ export function MiniCardCartItem({ item, className }) {
                         import.meta.env.VITE_APP_API_URL +
                         item.product.images[0].path
                     }
+                    loading="lazy"
                 />
                 <div className="ml-2 flex flex-col justify-between">
                     <h3 className="line-clamp-1 text-lg font-medium">

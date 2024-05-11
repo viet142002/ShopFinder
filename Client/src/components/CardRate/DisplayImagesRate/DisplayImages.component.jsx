@@ -16,6 +16,7 @@ function DisplayImagesRate({ images }) {
                             alt={item.name}
                             className="aspect-square object-cover"
                             style={{ height: '100%' }}
+                            loading="lazy"
                         />
                     </div>
                 ))}
@@ -30,6 +31,7 @@ function DisplayImagesRate({ images }) {
                         alt={item.name}
                         className="aspect-square object-cover"
                         style={{ height: '100%' }}
+                        loading="lazy"
                     />
                 </div>
             ))}
@@ -62,6 +64,7 @@ function DisplayImagesRate({ images }) {
                             alt={item.name}
                             className="aspect-square object-cover"
                             style={{ height: '100%' }}
+                            loading="lazy"
                         />
                     </div>
                 ))

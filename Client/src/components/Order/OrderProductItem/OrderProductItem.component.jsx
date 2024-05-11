@@ -16,6 +16,7 @@ function OrderProductItem({ product, discount, price, quantity }) {
                                 import.meta.env.VITE_APP_API_URL +
                                 product.images[0].path
                             }
+                            loading="lazy"
                         />
                         {discount > 0 && (
                             <div className="absolute left-0 top-2 bg-gray-50 opacity-60">

@@ -53,6 +53,8 @@ const translateSuccess = (msg) => {
             return 'Cập nhật thông tin cửa hàng thành công';
         case 'Report created successfully':
             return 'Tạo báo cáo thành công';
+        case 'Deleted successfully':
+            return 'Xóa thành công';
         default:
             return 'Thành công';
     }

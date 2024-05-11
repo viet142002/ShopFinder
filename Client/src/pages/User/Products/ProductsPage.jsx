@@ -5,15 +5,14 @@ import {
     Link,
     useSearchParams
 } from 'react-router-dom';
-import { Button } from 'antd';
+import { Button, Input } from 'antd';
 
 import { getProducts } from '@api/productApi';
 import { CardProduct } from '@components/Card';
 import { PaginationPage } from '@components/common/Pagination';
 
 function ProductsPage() {
-    const [searchParams] = useSearchParams();
-    const page = searchParams.get('page') || 1;
+    const [searchParams, setSearchParams] = useSearchParams();
     const { state } = useLocation();
     const { storeId } = useParams();
     const [data, setData] = useState({
@@ -23,8 +22,19 @@ function ProductsPage() {
         isLoading: true
     });
 
+    const onSearch = (value) => {
+        setSearchParams((prev) => {
+            prev.set('name', value);
+            return prev;
+        });
+    };
+
     useEffect(() => {
-        getProducts({ distributor: storeId, page })
+        getProducts({
+            distributor: storeId,
+            page: searchParams.get('page'),
+            name: searchParams.get('name')
+        })
             .then((res) => {
                 setData({
                     products: res.data.products,
@@ -38,7 +48,7 @@ function ProductsPage() {
                     isLoading: false
                 }));
             });
-    }, [storeId, page]);
+    }, [storeId, searchParams]);
 
     return (
         <section className="flex h-full flex-col justify-between py-4">
@@ -49,6 +59,14 @@ function ProductsPage() {
                     </h1>
                 </div>
 
+                <div className="mx-auto mb-4 w-fit">
+                    <Input.Search
+                        allowClear
+                        placeholder="Tìm kiếm sản phẩm"
+                        onSearch={onSearch}
+                        className="max-w-64"
+                    />
+                </div>
                 {state?.type === 'Information' && (
                     <div className="flex justify-center p-4">
                         <Link to={`/stores/${storeId}/add-product`}>
@@ -80,9 +98,11 @@ function ProductsPage() {
                 )}
             </div>
 
-            <div className="mt-4 flex justify-center">
-                <PaginationPage current={data.page} total={data.total} />
-            </div>
+            {data.products.length > 0 && (
+                <div className="mt-4 flex justify-center">
+                    <PaginationPage current={data.page} total={data.total} />
+                </div>
+            )}
         </section>
     );
 }

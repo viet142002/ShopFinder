@@ -27,6 +27,7 @@ const Inner = memo(function Inner({ info }) {
                                     image.path
                                 }
                                 alt=""
+                                loading="lazy"
                             />
                         </div>
                     ))}

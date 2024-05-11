@@ -1,4 +1,4 @@
 module.exports = {
-    ...require('./SendMail'),
-    ...require('./generateToken'),
+	...require("./SendMail"),
+	...require("./generateToken"),
 };

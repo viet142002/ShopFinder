@@ -43,7 +43,7 @@ function OrderDetailItem({ order, children }) {
                         <p>
                             <span>Người nhận: </span>
                             <span className="text-lg font-[400]">
-                                {order.fullName}
+                                {order.fullname}
                             </span>
                         </p>
                         <p>

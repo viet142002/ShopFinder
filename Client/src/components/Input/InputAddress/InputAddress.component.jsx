@@ -13,18 +13,18 @@ function InputAddress({ hiddenLabel = false, address = {} }) {
     const handleChange = (values, field = '') => {
         if (field === 'province') {
             getDistricts(values.key).then((data) => {
-                setDistricts(data.districts);
+                setDistricts(data);
             });
         } else {
             getWards(values.key).then((data) => {
-                setWards(data.wards);
+                setWards(data);
             });
         }
     };
 
     useEffect(() => {
         getProvinces().then((data) => {
-            setProvinces(data.results);
+            setProvinces(data);
         });
     }, []);
 
@@ -43,10 +43,24 @@ function InputAddress({ hiddenLabel = false, address = {} }) {
                         }}
                     >
                         <Select
+                            showSearch
                             placeholder={
                                 address.province
                                     ? address.province
                                     : 'Tỉnh / Thành'
+                            }
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                                (option?.value ?? '')
+                                    .toLowerCase()
+                                    .includes(input.toLowerCase())
+                            }
+                            filterSort={(optionA, optionB) =>
+                                (optionA?.value ?? '')
+                                    .toLowerCase()
+                                    .localeCompare(
+                                        (optionB?.value ?? '').toLowerCase()
+                                    )
                             }
                             onChange={(_, values) =>
                                 handleChange(values, 'province')
@@ -54,7 +68,7 @@ function InputAddress({ hiddenLabel = false, address = {} }) {
                         >
                             {provinces.map((province) => (
                                 <Select.Option
-                                    key={province.id}
+                                    key={province.idProvince}
                                     value={province.name}
                                 >
                                     {province.name}
@@ -75,16 +89,28 @@ function InputAddress({ hiddenLabel = false, address = {} }) {
                         }}
                     >
                         <Select
+                            showSearch
                             placeholder={
                                 address.district
                                     ? address.district
                                     : 'Quận / Huyện'
                             }
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                                (option?.value ?? '').includes(input)
+                            }
+                            filterSort={(optionA, optionB) =>
+                                (optionA?.value ?? '')
+                                    .toLowerCase()
+                                    .localeCompare(
+                                        (optionB?.value ?? '').toLowerCase()
+                                    )
+                            }
                             onChange={(_, values) => handleChange(values)}
                         >
                             {districts.map((district) => (
                                 <Select.Option
-                                    key={district.id}
+                                    key={district.idDistrict}
                                     value={district.name}
                                 >
                                     {district.name}
@@ -105,12 +131,27 @@ function InputAddress({ hiddenLabel = false, address = {} }) {
                         }}
                     >
                         <Select
+                            showSearch
                             placeholder={
                                 address.ward ? address.ward : 'Xã / Phường'
                             }
+                            optionFilterProp="children"
+                            filterOption={(input, option) =>
+                                (option?.value ?? '').includes(input)
+                            }
+                            filterSort={(optionA, optionB) =>
+                                (optionA?.value ?? '')
+                                    .toLowerCase()
+                                    .localeCompare(
+                                        (optionB?.value ?? '').toLowerCase()
+                                    )
+                            }
                         >
                             {wards.map((ward) => (
-                                <Select.Option key={ward.id} value={ward.name}>
+                                <Select.Option
+                                    key={ward.idCommune}
+                                    value={ward.name}
+                                >
                                     {ward.name}
                                 </Select.Option>
                             ))}

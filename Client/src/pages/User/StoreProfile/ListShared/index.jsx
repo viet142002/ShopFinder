@@ -33,7 +33,12 @@ function ListShared() {
             });
         }
         if (category === 'product') {
-            getProducts({ userCreated: user._id, name, page }).then((res) => {
+            getProducts({
+                userCreated: user._id,
+                name,
+                page,
+                includes: ['blocked']
+            }).then((res) => {
                 setData({
                     data: res.data.products,
                     page: res.data.page,

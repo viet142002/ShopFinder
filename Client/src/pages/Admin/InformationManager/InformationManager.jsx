@@ -87,6 +87,8 @@ function InformationManager() {
                 data={stores.find((store) => store._id === open.target)}
                 setStores={setStores}
                 stores={stores}
+                type="information"
+                showButtonEdit={true}
             />
         </>
     );

@@ -1,28 +1,37 @@
-// TODO: BLOCKED USER, RATE, RETAILER, PRODUCT, INFORMATION
-
-import { Avatar, Button, Tag } from 'antd';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Avatar, Button, Tag, message } from 'antd';
+import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
 import { getReportApi, updateReportApi } from '@api/reportApi';
 import { updateStatusUser } from '@api/userApi';
 import { updateRateApi } from '@api/RateApi';
+import { getStoreById } from '@api/storeApi';
 
 import { returnUrl, formatTime, typeReport } from '@utils/index';
 import ModalDisplayRate from './components/ModalDisplayRate';
 import { blockedRetailerApi } from '@api/retailerApi';
 import { updateStatus } from '@api/communityApi';
 import { updateStatusByAdminApi } from '@api/productApi';
+import DetailStoreWidget from '@components/Store/DetailStoreWidget';
 
 function ReportDetail() {
-    const navigate = useNavigate();
     const { reportId } = useParams();
     const [report, setReport] = useState(null);
     const [isShowModal, setIsShowModal] = useState(false);
+    const [openWidgetStore, setOpenWidgetStore] = useState(false);
+    const [store, setStore] = useState(null);
 
     const handleConfirm = () => {
         updateReportApi(reportId, { status: 'processed' }).then(() => {
             setReport({ ...report, status: 'processed' });
+        });
+    };
+
+    const fetchStore = () => {
+        if (!report.to) return message.info('Cửa hàng không tồn tại');
+        getStoreById(report.to._id).then((res) => {
+            setStore(res.data.store);
+            setOpenWidgetStore(true);
         });
     };
     // block retailer and information
@@ -69,13 +78,15 @@ function ReportDetail() {
                 setIsShowModal(true);
                 break;
             case 'product':
-                navigate(`/stores/${report.to._id}/products/${report.to._id}`);
+                window.open(
+                    `/stores/${report.to._id}/products/${report.to._id}`
+                );
                 break;
             case 'retailer':
-                navigate(`/stores/${report.to._id}`);
+                fetchStore();
                 break;
             case 'information':
-                navigate(`/stores/${report.to._id}`);
+                fetchStore();
                 break;
             default:
                 break;
@@ -111,10 +122,7 @@ function ReportDetail() {
                                         <span className="block min-w-32 text-base font-medium">
                                             Người báo cáo:
                                         </span>
-                                        <span>
-                                            {report?.from?.firstname}{' '}
-                                            {report?.from?.lastname}
-                                        </span>
+                                        <span>{report?.from?.fullname}</span>
                                     </div>
                                     <div className="flex">
                                         <span className="block min-w-32 text-base font-medium">
@@ -157,9 +165,17 @@ function ReportDetail() {
                                             Trạng thái:
                                         </span>
                                         <span>
-                                            {report?.status === 'pending'
-                                                ? 'Chờ duyệt'
-                                                : 'Đã duyệt'}
+                                            <Tag
+                                                color={
+                                                    report.status === 'pending'
+                                                        ? 'orange'
+                                                        : 'blue'
+                                                }
+                                            >
+                                                {report.status === 'pending'
+                                                    ? 'Chờ duyệt'
+                                                    : 'Đã duyệt'}
+                                            </Tag>
                                         </span>
                                     </div>
                                 </div>
@@ -173,22 +189,22 @@ function ReportDetail() {
                                     )}
                                     {
                                         <>
-                                            {report?.from?.status ===
-                                            'blocked' ? (
-                                                <Button disabled>
-                                                    Người dùng đã bị cấm
-                                                </Button>
-                                            ) : (
-                                                <Button
-                                                    onClick={() =>
-                                                        handleBlock({
-                                                            isBlockUser: true
-                                                        })
-                                                    }
-                                                >
-                                                    Cấm người báo cáo
-                                                </Button>
-                                            )}
+                                            <Button
+                                                onClick={() =>
+                                                    handleBlock({
+                                                        isBlockUser: true
+                                                    })
+                                                }
+                                                disabled={
+                                                    report?.from?.status ===
+                                                    'blocked'
+                                                }
+                                            >
+                                                {report?.from?.status ===
+                                                'blocked'
+                                                    ? 'Đã chặn'
+                                                    : 'Chặn người báo cáo'}
+                                            </Button>
                                         </>
                                     }
                                     {report?.toType === 'Rate' && (
@@ -235,6 +251,13 @@ function ReportDetail() {
                                             >
                                                 Cấm cửa hàng
                                             </Button>
+                                            <DetailStoreWidget
+                                                open={openWidgetStore}
+                                                onClose={() => {
+                                                    setOpenWidgetStore(false);
+                                                }}
+                                                data={store}
+                                            />
                                         </>
                                     )}
                                     {report?.toType === 'Product' && (
@@ -271,10 +294,26 @@ function ReportDetail() {
                                                 Xem thông tin
                                             </Button>
                                             <Button
-                                                onClick={() => handleBlock()}
+                                                onClick={() => handleBlock({})}
+                                                disabled={
+                                                    report?.to?.status ===
+                                                    'blocked'
+                                                }
                                             >
-                                                Cấm thông tin
+                                                {report?.to?.status ===
+                                                'blocked'
+                                                    ? 'Đã ẩn'
+                                                    : 'Ẩn thông tin'}
                                             </Button>
+                                            <DetailStoreWidget
+                                                open={openWidgetStore}
+                                                onClose={() => {
+                                                    setOpenWidgetStore(false);
+                                                }}
+                                                data={store}
+                                                type="information"
+                                                showButtonEdit
+                                            />
                                         </>
                                     )}
                                 </div>
@@ -285,7 +324,7 @@ function ReportDetail() {
                             <h3 className="text-lg font-semibold">
                                 Các báo cáo liên quan
                             </h3>
-                            <ul className="ml-3 mt-2 space-y-2">
+                            <ul className="mt-2 space-y-2">
                                 {report?.relatedReports?.length === 0 && (
                                     <p>Không có báo cáo liên quan</p>
                                 )}
@@ -313,24 +352,18 @@ const CardReportRelated = ({ report }) => {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <Avatar src={returnUrl(report.from.avatar.path)} />
-                    <p>
-                        {report.from.firstname} {report.from.lastname}
-                    </p>
+                    <p>{report.from.fullname}</p>
                 </div>
-                <Tag
-                    color={
-                        report.status === 'pending'
-                            ? 'orange'
-                            : report.status === 'approved'
-                              ? 'green'
-                              : 'red'
-                    }
-                >
-                    {report.status}
+                <Tag color={report.status === 'pending' ? 'orange' : 'blue'}>
+                    {report.status === 'pending' ? 'Chờ duyệt' : 'Đã duyệt'}
                 </Tag>
             </div>
             <div className="ml-4 mt-1">
-                <p>{report.reason}</p>
+                <p>
+                    Lý do:{' '}
+                    {typeReport.find((i) => i.value === report?.reason).label}
+                </p>
+                <p>{report.description}</p>
             </div>
             <p className="text-right">{formatTime(report.createdAt)}</p>
         </div>

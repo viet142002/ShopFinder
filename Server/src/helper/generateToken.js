@@ -1,24 +1,21 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 
-const generateToken = (user, exp = '1d') => {
-    const token = jwt.sign(
-        {
-            _id: user._id,
-            role: user.role,
-            email: user.email,
-            status: user.status,
-            retailer:
-                user?.pendingRetailer.status === 'approved'
-                    ? user?.pendingRetailer?.retailer
-                    : '',
-        },
-        process.env.JWT_SECRET,
-        {
-            expiresIn: exp,
-        }
-    );
+const generateToken = (data, exp = "1d") => {
+	const token = jwt.sign(
+		{
+			_id: data._id,
+			role: data.role,
+			email: data.email,
+			status: data.status,
+			retailer: data._id,
+		},
+		process.env.JWT_SECRET,
+		{
+			expiresIn: exp,
+		}
+	);
 
-    return token;
+	return token;
 };
 
 exports.generateToken = generateToken;

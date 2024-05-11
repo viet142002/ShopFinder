@@ -1,4 +1,4 @@
-import { Button, Form, Input, Space } from 'antd';
+import { Button, Form, Input, Select, Space } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -15,7 +15,7 @@ function ForgotPassword() {
 
     const sendMail = (values) => {
         setStatus('loading');
-        forgotPassword({ email: values.email })
+        forgotPassword({ email: values.email, typeAccount: values.typeAccount })
             .then(() => {
                 setStatus('success');
             })
@@ -49,6 +49,7 @@ function ForgotPassword() {
                     layout="vertical"
                     requiredMark={false}
                     variant="filled"
+                    initialValues={{ typeAccount: 'user' }}
                 >
                     <Form.Item
                         name="email"
@@ -65,6 +66,19 @@ function ForgotPassword() {
                         label="Email"
                     >
                         <Input type="email" placeholder="abc@gmail.com" />
+                    </Form.Item>
+                    <Form.Item name="typeAccount" label="Loại tài khoản">
+                        <Select
+                            placeholder="Chọn loại tài khoản"
+                            className="w-full"
+                        >
+                            <Select.Option value="user">
+                                Người dùng
+                            </Select.Option>
+                            <Select.Option value="retailer">
+                                Cửa hàng
+                            </Select.Option>
+                        </Select>
                     </Form.Item>
                     <Form.Item>
                         <Space className="w-full justify-center">

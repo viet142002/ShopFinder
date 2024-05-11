@@ -10,32 +10,18 @@ export function FormCheckout({ address, onFill }) {
 
     return (
         <>
-            <div className="mt-4 flex justify-between gap-4">
-                <Form.Item
-                    name="lastname"
-                    className="flex-1"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Vui lòng nhập họ!'
-                        }
-                    ]}
-                >
-                    <Input placeholder="Họ" />
-                </Form.Item>
-                <Form.Item
-                    name="firstname"
-                    className="flex-1"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Vui lòng nhập tên!'
-                        }
-                    ]}
-                >
-                    <Input placeholder="Tên" />
-                </Form.Item>
-            </div>
+            <Form.Item
+                name="fullname"
+                label="Họ và tên"
+                rules={[
+                    {
+                        required: true,
+                        message: 'Vui lòng nhập họ và tên!'
+                    }
+                ]}
+            >
+                <Input placeholder="Họ" />
+            </Form.Item>
             <Form.Item
                 name="phone"
                 label="Số điện thoại"

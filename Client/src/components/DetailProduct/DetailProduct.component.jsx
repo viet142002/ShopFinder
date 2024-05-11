@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Carousel, Image, Button, InputNumber, Dropdown, Space } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
-import { getProductByIdApi } from '@api/productApi';
+import { getProductByIdApi, deleteProductByUserApi } from '@api/productApi';
 import { addToCartApi } from '@api/cartApi';
 import { handleFetch } from '@utils/expression';
 
@@ -29,6 +29,9 @@ function DetailProduct() {
             case '2':
                 navigate(`/stores/${storeId}/edit-product/${productId}`);
                 break;
+            case '3':
+                handleDeleteProduct();
+                break;
             default:
                 break;
         }
@@ -42,6 +45,10 @@ function DetailProduct() {
         isMyProduct && {
             label: 'Chỉnh sửa sản phẩm',
             key: '2'
+        },
+        isMyProduct && {
+            label: 'Xóa sản phẩm',
+            key: '3'
         }
     ];
 
@@ -61,6 +68,13 @@ function DetailProduct() {
         };
 
         handleFetch(() => addToCartApi(data));
+    };
+
+    const handleDeleteProduct = async () => {
+        const data = await handleFetch(() => deleteProductByUserApi(productId));
+        if (data) {
+            navigate(-1);
+        }
     };
 
     useEffect(() => {
@@ -99,6 +113,7 @@ function DetailProduct() {
                                             import.meta.env.VITE_APP_API_URL
                                         }${image.path}`}
                                         alt=""
+                                        loading="lazy"
                                     />
                                 </div>
                             ))}

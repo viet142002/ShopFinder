@@ -3,10 +3,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { HiOutlineViewfinderCircle } from 'react-icons/hi2';
-import {
-    MdOutlineNotifications,
-    MdOutlineStoreMallDirectory
-} from 'react-icons/md';
+import { MdOutlineNotifications } from 'react-icons/md';
 import {
     LoginOutlined,
     ShareAltOutlined,
@@ -76,14 +73,6 @@ function SideBar({ ...props }) {
             key: 'share-store',
             icon: <ShareAltOutlined />,
             label: 'Chia sẻ cửa hàng'
-        },
-        {
-            key: 'retailer-manager',
-            icon: <MdOutlineStoreMallDirectory />,
-            label:
-                data.role === 'retailer'
-                    ? 'Quản lý cửa hàng'
-                    : 'Đăng ký cửa hàng'
         }
     ];
 
@@ -104,30 +93,6 @@ function SideBar({ ...props }) {
                 break;
             case 'share-store':
                 navigate('/share-store');
-                break;
-            case 'retailer-manager':
-                if (!data?.pendingRetailer?.status) {
-                    navigate('/register-retailer');
-                    break;
-                }
-                if (data.pendingRetailer.status === 'pending') {
-                    navigate('/register-retailer-pending');
-                    break;
-                }
-                if (data.pendingRetailer.status === 'rejected') {
-                    navigate(`/register-retailer-pending`);
-                    break;
-                }
-                if (
-                    data.role === 'retailer' &&
-                    data.pendingRetailer.status === 'approved'
-                ) {
-                    navigate(
-                        `/retailer/${data.pendingRetailer.retailer}/dashboard`
-                    );
-                    break;
-                }
-                navigate('/register-retailer');
                 break;
             case 'cart':
                 navigate('/cart');
@@ -150,7 +115,7 @@ function SideBar({ ...props }) {
             dispatch(setNotifications(res.data));
         });
         socket.on('notification', (data) => {
-            const { avatar, firstname, lastname, logo } = data.from;
+            const { avatar, fullname, logo } = data.from;
             if (data.type === 'ORDER') {
                 notification({
                     icon: logo,
@@ -160,7 +125,7 @@ function SideBar({ ...props }) {
             } else {
                 notification({
                     icon: avatar,
-                    body: `${firstname} ${lastname} ${data.message}`,
+                    body: `${fullname} ${data.message}`,
                     title: 'Thông báo mới'
                 });
             }

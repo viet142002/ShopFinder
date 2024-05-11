@@ -19,3 +19,7 @@ export const registerApi = ({ firstname, lastname, email, password }) => {
 export const loginWithGoogleApi = (data) => {
     return api.post('/auth/signin-google', data);
 };
+
+export const loginRetailerApi = (data) => {
+    return api.post('/auth/signin-retailer', data);
+};

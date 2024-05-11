@@ -68,8 +68,7 @@ function ModalRating({ title, to, toType }) {
                                 ...data.rateUpdate,
                                 from: {
                                     _id: user._id,
-                                    firstname: user.firstname,
-                                    lastname: user.lastname,
+                                    fullname: user.fullname,
                                     avatar: user.avatar
                                 }
                             })
@@ -84,8 +83,7 @@ function ModalRating({ title, to, toType }) {
                                 ...data.newRate,
                                 from: {
                                     _id: user._id,
-                                    firstname: user.firstname,
-                                    lastname: user.lastname,
+                                    fullname: user.fullname,
                                     avatar: user.avatar
                                 }
                             })
@@ -159,9 +157,7 @@ function ModalRating({ title, to, toType }) {
                 <section className="my-4">
                     <div>
                         <Avatar src={returnUrl(user.avatar.path)} />
-                        <span className="ml-2">
-                            {user.firstname} {user.lastname}
-                        </span>
+                        <span className="ml-2">{user.fullname}</span>
                     </div>
 
                     <Form variant="filled" form={form}>

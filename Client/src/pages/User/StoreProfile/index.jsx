@@ -10,6 +10,10 @@ import ModalRating from '@components/Modal/ModalRating/ModalRating.component';
 import RateTotal from '@components/Rate/RateTotal/RateTotal.component';
 import Rating from '@components/Rate/Rating/Rating.component';
 
+/**
+ * StoreProfile component for user and show button edit if user is owner of store
+ * @return {JSX.Element}
+ */
 function StoreProfile() {
     const [store, setStore] = useState(null);
     const { storeId } = useParams();
@@ -32,7 +36,7 @@ function StoreProfile() {
                             <InfoStoreProfile
                                 store={store}
                                 isShowButtonEdit={user._id === store.user}
-                                isUser={true}
+                                isRetailer={false}
                             />
                         </div>
                         <div className="-order-1 space-y-4 overflow-hidden md:order-1 md:col-span-2">
@@ -48,9 +52,9 @@ function StoreProfile() {
                             </div>
                         </div>
                     </section>
-                    <div className="mt-4 block md:hidden">
+                    <div className="mb-2 block space-y-2 md:hidden">
                         <div className="space-y-2">
-                            <div className="flex justify-center md:p-sideBarMark">
+                            <div className="flex justify-center px-2 md:p-sideBarMark">
                                 <RateTotal locationId={store._id} />
                             </div>
                             <Rating />

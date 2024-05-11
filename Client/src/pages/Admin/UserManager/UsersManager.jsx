@@ -42,12 +42,10 @@ function UsersManager() {
             </div>
             <Table dataSource={users} rowKey="_id">
                 <Table.Column
-                    title="Tên"
-                    dataIndex="lastname"
-                    key="lastname"
-                    render={(_, record) =>
-                        `${record?.lastname} ${record?.firstname}`
-                    }
+                    title="Họ tên"
+                    dataIndex="fullname"
+                    key="fullname"
+                    render={(_, record) => `${record?.fullname}`}
                 />
                 <Table.Column title="Email" dataIndex="email" key="email" />
                 <Table.Column

@@ -1,5 +1,7 @@
 const Location = require("../Models/locationModel");
 
+const AddressControl = require("./addressController");
+
 const locationController = {
 	create: async ({
 		lat,
@@ -122,6 +124,17 @@ const locationController = {
 			});
 		} catch (error) {
 			return res.status(500).json({ message: error.message });
+		}
+	},
+	delete: async locationId => {
+		try {
+			const location = await Location.findByIdAndDelete(locationId);
+			if (location) {
+				await AddressControl.delete(location.address);
+			}
+			return true;
+		} catch (error) {
+			throw error;
 		}
 	},
 };

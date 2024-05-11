@@ -70,11 +70,7 @@ function CardRate(rate) {
                 <div className="flex items-center gap-2">
                     <Avatar size={38} src={returnUrl(rate.from.avatar.path)} />
                     <div>
-                        <h3>
-                            {isMyRate
-                                ? 'Bạn'
-                                : `${rate.from?.lastname} ${rate.from?.firstname}`}
-                        </h3>
+                        <h3>{isMyRate ? 'Bạn' : `${rate.from?.fullname}`}</h3>
                         <div>
                             <Rate
                                 value={rate.rate}

@@ -33,9 +33,10 @@ function CheckoutPage() {
                             (1 - prod.product.discount / 100)
                     };
                 }),
-                shippingPrice: priceSipping.find(
-                    (p) => p.retailer._id === item.distributor._id
-                ).price
+                shippingPrice:
+                    priceSipping.find(
+                        (p) => p.retailer._id === item.distributor._id
+                    )?.price || 0
             };
         });
 
@@ -47,7 +48,7 @@ function CheckoutPage() {
             createOrderWithVNPay({
                 ...values,
                 orderItems: items,
-                amount: state.totalPrice + priceSipping[0].price
+                amount: state.totalPrice + priceSipping[0]?.price || 0
             }).then((res) => {
                 window.location.href = res.data.vnpUrl;
             });
@@ -99,8 +100,7 @@ function CheckoutPage() {
                 }
             }}
             initialValues={{
-                lastname: user?.lastname,
-                firstname: user?.firstname,
+                fullname: user?.fullname,
                 phone: user?.phone,
                 address: user?.address,
                 paymentMethod: 'COD'

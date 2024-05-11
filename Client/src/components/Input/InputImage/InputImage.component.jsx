@@ -84,6 +84,7 @@ function InputImage({
                                 className="!h-64 object-cover"
                                 src={image.path}
                                 alt=""
+                                loading="lazy"
                             />
                             <button
                                 type="button"

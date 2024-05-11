@@ -8,7 +8,7 @@ import { Button } from 'antd';
 import { memo } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { likeRateApi, dislikeRateApi } from '../../../api/RateApi';
+import { likeRateApi, dislikeRateApi } from '@api/RateApi';
 
 import socket from '../../../socket';
 import { useAuth } from '@hooks';
@@ -21,7 +21,7 @@ const ActionCardRate = memo(function ActionCardRate({
 }) {
     const dispatch = useDispatch();
     const {
-        data: { firstname, lastname, avatar }
+        data: { fullname, avatar }
     } = useAuth();
 
     const handleLike = () => {
@@ -35,8 +35,7 @@ const ActionCardRate = memo(function ActionCardRate({
                     fromType: 'User',
                     from: {
                         avatar: avatar,
-                        firstname: firstname,
-                        lastname: lastname
+                        fullname: fullname
                     },
                     createdAt: new Date()
                 });

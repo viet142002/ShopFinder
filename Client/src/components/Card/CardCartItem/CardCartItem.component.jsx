@@ -113,6 +113,7 @@ export function CardCartItem({ item, setCart, setChecked }) {
                                             import.meta.env.VITE_APP_API_URL +
                                             prod.product.images[0].path
                                         }
+                                        loading='lazy'
                                     />
                                     {prod.product.discount > 0 && (
                                         <div className="absolute left-0 top-2 bg-gray-50 opacity-60">
