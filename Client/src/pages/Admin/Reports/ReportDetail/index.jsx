@@ -1,4 +1,5 @@
-import { Avatar, Button, Tag, message } from 'antd';
+import { Avatar, Button, Tag } from 'antd';
+import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -28,7 +29,7 @@ function ReportDetail() {
     };
 
     const fetchStore = () => {
-        if (!report.to) return message.info('Cửa hàng không tồn tại');
+        if (!report.to) return toast.info('Cửa hàng không tồn tại');
         getStoreById(report.to._id).then((res) => {
             setStore(res.data.store);
             setOpenWidgetStore(true);

@@ -1,4 +1,5 @@
-import { Button, Form, Input, message } from 'antd';
+import { Button, Form, Input } from 'antd';
+import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -13,7 +14,7 @@ function NewPassword() {
     const onSubmit = (values) => {
         resetPassword({ data: values, token: searchParams.get('token') })
             .then(() => {
-                message.success('Đổi mật khẩu thành công!');
+                toast.success('Đổi mật khẩu thành công!');
                 if (searchParams.get('typeAccount') === 'user') {
                     navigate('/login');
                 }
@@ -24,24 +25,24 @@ function NewPassword() {
             .catch((err) => {
                 switch (err.response?.data?.message) {
                     case 'Password not match':
-                        message.error('Mật khẩu không khớp!');
+                        toast.error('Mật khẩu không khớp!');
                         break;
                     case 'Password must contain at least 8 characters, including uppercase, lowercase and number':
-                        message.error(
+                        toast.error(
                             'Mật khẩu phải chứa ít nhất 8 ký tự, bao gồm chữ hoa, chữ thường và số!'
                         );
                         break;
                     case 'User not found':
-                        message.error('Người dùng không tồn tại!');
+                        toast.error('Người dùng không tồn tại!');
                         break;
                     case 'Invalid email':
-                        message.error('Email không hợp lệ!');
+                        toast.error('Email không hợp lệ!');
                         break;
                     case 'User is blocked':
-                        message.error('Bạn đã bị chặn!');
+                        toast.error('Bạn đã bị chặn!');
                         break;
                     default:
-                        message.error('Đường dẫn đã hết hạng!');
+                        toast.error('Đường dẫn đã hết hạng!');
                         break;
                 }
             });

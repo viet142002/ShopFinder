@@ -1,16 +1,17 @@
-import { message } from 'antd';
+// import { message } from 'antd';
+import { toast } from 'react-toastify';
 /**
  * @param {String} content
  */
 const success = (content) => {
-    message.success(content);
+    toast.success(content);
 };
 /**
  *
  * @param {String} content
  */
 const error = (content) => {
-    message.error(content);
+    toast.error(content);
 };
 
 /**

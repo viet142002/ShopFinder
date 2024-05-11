@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Form, message } from 'antd';
+import { Form } from 'antd';
+import { toast } from 'react-toastify';
 
 import { FormCheckout } from '@components/Form';
 import CardTotal from '@components/Checkout/CardTotal.component';
@@ -42,7 +43,7 @@ function CheckoutPage() {
 
         if (values.paymentMethod === 'VNPay') {
             if (items.length > 1) {
-                message.error('Chỉ hỗ trợ thanh toán online với 1 cửa hàng');
+                toast.error('Chỉ hỗ trợ thanh toán online với 1 cửa hàng');
                 return;
             }
             createOrderWithVNPay({

@@ -1,6 +1,9 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useEffect, Suspense, lazy } from 'react';
+import { ToastContainer } from 'react-toastify';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 import { setFirstLocation } from './redux/routingSlice';
 import socket from './socket';
@@ -76,276 +79,295 @@ function App() {
     }, [user]);
 
     return (
-        <BrowserRouter>
-            <Routes>
-                <Route
-                    path="/login"
-                    element={
-                        <Suspense fallback={<Loading />}>
-                            <Login />
-                        </Suspense>
-                    }
-                />
-                <Route
-                    path="/login-retailer"
-                    element={
-                        <Suspense fallback={<Loading />}>
-                            <Login isLoginRetailer={true} />
-                        </Suspense>
-                    }
-                />
-                <Route
-                    path="/register"
-                    element={
-                        <Suspense fallback={<Loading />}>
-                            <Register />
-                        </Suspense>
-                    }
-                />
-                <Route
-                    path="/register-retailer"
-                    element={
-                        <Suspense fallback={<Loading />}>
-                            <CreateStore isRegisterRetailer />
-                        </Suspense>
-                    }
-                />
-
-                <Route
-                    path="/"
-                    element={
-                        <Suspense fallback={<Loading />}>
-                            <DefaultLayout />
-                        </Suspense>
-                    }
-                >
+        <>
+            <ToastContainer />
+            <BrowserRouter>
+                <Routes>
                     <Route
-                        index
+                        path="/login"
                         element={
                             <Suspense fallback={<Loading />}>
-                                <HomePage />
+                                <Login />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="/login-retailer"
+                        element={
+                            <Suspense fallback={<Loading />}>
+                                <Login isLoginRetailer={true} />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="/register"
+                        element={
+                            <Suspense fallback={<Loading />}>
+                                <Register />
+                            </Suspense>
+                        }
+                    />
+                    <Route
+                        path="/register-retailer"
+                        element={
+                            <Suspense fallback={<Loading />}>
+                                <CreateStore isRegisterRetailer />
                             </Suspense>
                         }
                     />
 
                     <Route
-                        path="/forgot-password"
+                        path="/"
                         element={
                             <Suspense fallback={<Loading />}>
-                                <ForgotPassword />
+                                <DefaultLayout />
                             </Suspense>
                         }
-                    />
-                    <Route
-                        path="/new-password"
-                        element={
-                            <Suspense fallback={<Loading />}>
-                                <NewPassword />
-                            </Suspense>
-                        }
-                    />
-                    <Route path="/list-shared" element={<ListShared />} />
-                    <Route
-                        path="/cart"
-                        element={
-                            <ProtectRoute>
-                                <CartPage />
-                            </ProtectRoute>
-                        }
-                    />
-                    <Route
-                        path="/edit-store/:id"
-                        element={
-                            <ProtectRoute>
+                    >
+                        <Route
+                            index
+                            element={
                                 <Suspense fallback={<Loading />}>
-                                    <EditStore />
+                                    <HomePage />
                                 </Suspense>
-                            </ProtectRoute>
-                        }
-                    />
-                    <Route
-                        path="/order"
-                        element={
-                            <ProtectRoute>
-                                <OrderPage />
-                            </ProtectRoute>
-                        }
-                    />
-                    <Route
-                        path="/order/:orderId"
-                        element={
-                            <ProtectRoute>
-                                <OrderDetailPage />
-                            </ProtectRoute>
-                        }
-                    />
-                    <Route
-                        path="/order/vnp-return"
-                        element={
-                            <ProtectRoute>
-                                <Suspense fallback={<Loading />}>
-                                    <VNPayReturn />
-                                </Suspense>
-                            </ProtectRoute>
-                        }
-                    />
-                    <Route
-                        path="/order/payment-fail"
-                        element={
-                            <ProtectRoute>
-                                <Suspense fallback={<Loading />}>
-                                    <PaymentFail />
-                                </Suspense>
-                            </ProtectRoute>
-                        }
-                    />
-                    <Route
-                        path="/share-store"
-                        element={
-                            <ProtectRoute>
-                                <Suspense fallback={<Loading />}>
-                                    <CreateStore />
-                                </Suspense>
-                            </ProtectRoute>
-                        }
-                    />
-                    <Route
-                        path="/checkout"
-                        element={
-                            <ProtectRoute>
-                                <CheckoutPage />
-                            </ProtectRoute>
-                        }
-                    />
-                    <Route
-                        path="/notification"
-                        element={
-                            <ProtectRoute>
-                                <NotificationPage />
-                            </ProtectRoute>
-                        }
-                    />
-                    <Route
-                        path="/profile"
-                        element={
-                            <ProtectRoute>
-                                <Profile />
-                            </ProtectRoute>
-                        }
-                    />
-                    <Route
-                        path="/profile/edit"
-                        element={
-                            <ProtectRoute>
-                                <EditProfile />
-                            </ProtectRoute>
-                        }
-                    />
-                    <Route path="/stores/:storeId" element={<StoreProfile />} />
-                    <Route
-                        path="/stores/:storeId/products"
-                        element={<ProductsPage />}
-                    />
-                    <Route
-                        path="/stores/:storeId/edit-product/:productId"
-                        element={
-                            <ProtectRoute>
-                                <Suspense fallback={<Loading />}>
-                                    <AddAndEditProductByUser />
-                                </Suspense>
-                            </ProtectRoute>
-                        }
-                    />
-                    <Route
-                        path="/stores/:storeId/add-product"
-                        element={
-                            <ProtectRoute>
-                                <Suspense fallback={<Loading />}>
-                                    <AddAndEditProductByUser />
-                                </Suspense>
-                            </ProtectRoute>
-                        }
-                    />
-                    <Route
-                        path="/stores/:storeId/products/:productId"
-                        element={<ProductPage />}
-                    />
-                </Route>
-                <Route
-                    path="/admin"
-                    element={
-                        <ProtectRoute access="admin">
-                            <Suspense fallback={<Loading />}>
-                                <ManageLayout role="admin" />
-                            </Suspense>
-                        </ProtectRoute>
-                    }
-                >
-                    <Route index path="dashboard" element={<DashboardPage />} />
-                    <Route path="retailer" element={<RequestRetailerPage />} />
-                    <Route path="reports" element={<ReportPage />} />
-                    <Route
-                        path="reports/:reportId"
-                        element={<ReportDetail />}
-                    />
-                    <Route path="users" element={<UsersManager />} />
-                    <Route
-                        path="information"
-                        element={<InformationManager />}
-                    />
-                </Route>
-                <Route
-                    path="/retailer/:id"
-                    element={
-                        <ProtectRoute access="retailer">
-                            <Suspense fallback={<Loading />}>
-                                <ManageLayout role="retailer" />
-                            </Suspense>
-                        </ProtectRoute>
-                    }
-                >
-                    <Route
-                        index
-                        path="dashboard"
-                        element={<DashboardRetailer />}
-                    />
-                    <Route path="analyst/:title" element={<AnalystRevenue />} />
-                    <Route path="product" element={<ManageProduct />} />
-                    <Route
-                        path="import-product"
-                        element={<WarehouseManager isImport />}
-                    />
-                    <Route path="order" element={<ManageOrder />} />
-                    <Route
-                        path="order/:orderId"
-                        element={<ManageOrderDetail />}
-                    />
+                            }
+                        />
 
-                    <Route path="profile" element={<ManageRetailerProfile />} />
+                        <Route
+                            path="/forgot-password"
+                            element={
+                                <Suspense fallback={<Loading />}>
+                                    <ForgotPassword />
+                                </Suspense>
+                            }
+                        />
+                        <Route
+                            path="/new-password"
+                            element={
+                                <Suspense fallback={<Loading />}>
+                                    <NewPassword />
+                                </Suspense>
+                            }
+                        />
+                        <Route path="/list-shared" element={<ListShared />} />
+                        <Route
+                            path="/cart"
+                            element={
+                                <ProtectRoute>
+                                    <CartPage />
+                                </ProtectRoute>
+                            }
+                        />
+                        <Route
+                            path="/edit-store/:id"
+                            element={
+                                <ProtectRoute>
+                                    <Suspense fallback={<Loading />}>
+                                        <EditStore />
+                                    </Suspense>
+                                </ProtectRoute>
+                            }
+                        />
+                        <Route
+                            path="/order"
+                            element={
+                                <ProtectRoute>
+                                    <OrderPage />
+                                </ProtectRoute>
+                            }
+                        />
+                        <Route
+                            path="/order/:orderId"
+                            element={
+                                <ProtectRoute>
+                                    <OrderDetailPage />
+                                </ProtectRoute>
+                            }
+                        />
+                        <Route
+                            path="/order/vnp-return"
+                            element={
+                                <ProtectRoute>
+                                    <Suspense fallback={<Loading />}>
+                                        <VNPayReturn />
+                                    </Suspense>
+                                </ProtectRoute>
+                            }
+                        />
+                        <Route
+                            path="/order/payment-fail"
+                            element={
+                                <ProtectRoute>
+                                    <Suspense fallback={<Loading />}>
+                                        <PaymentFail />
+                                    </Suspense>
+                                </ProtectRoute>
+                            }
+                        />
+                        <Route
+                            path="/share-store"
+                            element={
+                                <ProtectRoute>
+                                    <Suspense fallback={<Loading />}>
+                                        <CreateStore />
+                                    </Suspense>
+                                </ProtectRoute>
+                            }
+                        />
+                        <Route
+                            path="/checkout"
+                            element={
+                                <ProtectRoute>
+                                    <CheckoutPage />
+                                </ProtectRoute>
+                            }
+                        />
+                        <Route
+                            path="/notification"
+                            element={
+                                <ProtectRoute>
+                                    <NotificationPage />
+                                </ProtectRoute>
+                            }
+                        />
+                        <Route
+                            path="/profile"
+                            element={
+                                <ProtectRoute>
+                                    <Profile />
+                                </ProtectRoute>
+                            }
+                        />
+                        <Route
+                            path="/profile/edit"
+                            element={
+                                <ProtectRoute>
+                                    <EditProfile />
+                                </ProtectRoute>
+                            }
+                        />
+                        <Route
+                            path="/stores/:storeId"
+                            element={<StoreProfile />}
+                        />
+                        <Route
+                            path="/stores/:storeId/products"
+                            element={<ProductsPage />}
+                        />
+                        <Route
+                            path="/stores/:storeId/edit-product/:productId"
+                            element={
+                                <ProtectRoute>
+                                    <Suspense fallback={<Loading />}>
+                                        <AddAndEditProductByUser />
+                                    </Suspense>
+                                </ProtectRoute>
+                            }
+                        />
+                        <Route
+                            path="/stores/:storeId/add-product"
+                            element={
+                                <ProtectRoute>
+                                    <Suspense fallback={<Loading />}>
+                                        <AddAndEditProductByUser />
+                                    </Suspense>
+                                </ProtectRoute>
+                            }
+                        />
+                        <Route
+                            path="/stores/:storeId/products/:productId"
+                            element={<ProductPage />}
+                        />
+                    </Route>
                     <Route
-                        path="product/add-product"
-                        element={<AddAndEditProduct />}
-                    />
+                        path="/admin"
+                        element={
+                            <ProtectRoute access="admin">
+                                <Suspense fallback={<Loading />}>
+                                    <ManageLayout role="admin" />
+                                </Suspense>
+                            </ProtectRoute>
+                        }
+                    >
+                        <Route
+                            index
+                            path="dashboard"
+                            element={<DashboardPage />}
+                        />
+                        <Route
+                            path="retailer"
+                            element={<RequestRetailerPage />}
+                        />
+                        <Route path="reports" element={<ReportPage />} />
+                        <Route
+                            path="reports/:reportId"
+                            element={<ReportDetail />}
+                        />
+                        <Route path="users" element={<UsersManager />} />
+                        <Route
+                            path="information"
+                            element={<InformationManager />}
+                        />
+                    </Route>
                     <Route
-                        path="product/edit-product/:productId"
-                        element={<AddAndEditProduct />}
-                    />
-                    <Route
-                        path="product/detail/:productId"
-                        element={<ManagerProductDetail />}
-                    />
-                    <Route
-                        path="import-product/add-warehouse"
-                        element={<ImportWarehouse />}
-                    />
-                    <Route
-                        path="import-product/:idImport"
-                        element={<ImportWarehouse />}
-                    />
-                    <Route path="edit-retailer" element={<EditStore />} />
-                </Route>
-            </Routes>
-        </BrowserRouter>
+                        path="/retailer/:id"
+                        element={
+                            <ProtectRoute access="retailer">
+                                <Suspense fallback={<Loading />}>
+                                    <ManageLayout role="retailer" />
+                                </Suspense>
+                            </ProtectRoute>
+                        }
+                    >
+                        <Route
+                            index
+                            path="dashboard"
+                            element={<DashboardRetailer />}
+                        />
+                        <Route
+                            path="analyst/:title"
+                            element={<AnalystRevenue />}
+                        />
+                        <Route path="product" element={<ManageProduct />} />
+                        <Route
+                            path="import-product"
+                            element={<WarehouseManager isImport />}
+                        />
+                        <Route path="order" element={<ManageOrder />} />
+                        <Route
+                            path="order/:orderId"
+                            element={<ManageOrderDetail />}
+                        />
+
+                        <Route
+                            path="profile"
+                            element={<ManageRetailerProfile />}
+                        />
+                        <Route
+                            path="product/add-product"
+                            element={<AddAndEditProduct />}
+                        />
+                        <Route
+                            path="product/edit-product/:productId"
+                            element={<AddAndEditProduct />}
+                        />
+                        <Route
+                            path="product/detail/:productId"
+                            element={<ManagerProductDetail />}
+                        />
+                        <Route
+                            path="import-product/add-warehouse"
+                            element={<ImportWarehouse />}
+                        />
+                        <Route
+                            path="import-product/:idImport"
+                            element={<ImportWarehouse />}
+                        />
+                        <Route path="edit-retailer" element={<EditStore />} />
+                    </Route>
+                </Routes>
+            </BrowserRouter>
+        </>
     );
 }
 
