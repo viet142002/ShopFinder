@@ -2,7 +2,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { Spin } from 'antd';
 
-import { addDetailPayment } from '@api/orderApi';
+import { addDetailPayment } from '~/api/orderApi';
 
 const update = async (id, data) => {
     await addDetailPayment(id, data);

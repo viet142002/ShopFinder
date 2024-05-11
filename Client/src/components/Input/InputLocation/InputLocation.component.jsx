@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { MdOutlineHdrAuto } from 'react-icons/md';
 
-import MiniMap from '@components/Map/MiniMap';
+import MiniMap from '~/components/Map/MiniMap';
 import { useMapEvent } from 'react-leaflet';
 
 function InputLocation({ label, onFill }) {

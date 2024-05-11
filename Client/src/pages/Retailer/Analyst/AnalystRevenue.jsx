@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import { Select, Space, DatePicker } from 'antd';
 
-import { formatPrice } from '@utils/formatPrice';
+import { formatPrice } from '~/utils/formatPrice';
 import {
     getPriceImportByRetailer,
     getRevenueByRetailer,
     getTopProductByRetailer
-} from '@api/analystApi';
-import { BarVer, LineChart, ProductBarVer } from '@components/Dashboard';
+} from '~/api/analystApi';
+import { BarVer, LineChart, ProductBarVer } from '~/components/Dashboard';
 
 function AnalystRevenue() {
     const [data, setData] = useState();

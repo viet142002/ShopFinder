@@ -3,13 +3,13 @@ import {
     getTopProductByRetailer,
     getRevenueByRetailer,
     getPriceImportByRetailer
-} from '@api/analystApi';
+} from '~/api/analystApi';
 import {
     BarVer,
     CardAnalyst,
     LineChart,
     ProductBarVer
-} from '@components/Dashboard';
+} from '~/components/Dashboard';
 import { useEffect, useState } from 'react';
 import { FaStar, FaChartSimple, FaCartShopping } from 'react-icons/fa6';
 import { Link } from 'react-router-dom';

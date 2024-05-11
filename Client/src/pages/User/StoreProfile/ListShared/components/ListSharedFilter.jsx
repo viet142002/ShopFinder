@@ -1,8 +1,8 @@
 import { Button, Form, Input, Radio, Select } from 'antd';
 import { useSearchParams } from 'react-router-dom';
 import { SearchOutlined } from '@ant-design/icons';
-import { useMobile } from '@hooks/useMobile';
-import { Show } from '@components/common';
+import { useMobile } from '~/hooks/useMobile';
+import { Show } from '~/components/common';
 
 function ListShared() {
     const [searchParams, setSearchParams] = useSearchParams();

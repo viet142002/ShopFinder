@@ -1,6 +1,6 @@
 import Sheet from 'react-modal-sheet';
 import { useDispatch, useSelector } from 'react-redux';
-import { setShowRouting } from '@redux/routingSlice';
+import { setShowRouting } from '~/redux/routingSlice';
 import { useEffect, useRef, memo } from 'react';
 
 function SiderMarkSelectForMobile({ isCollapsed, setIsCollapsed, children }) {

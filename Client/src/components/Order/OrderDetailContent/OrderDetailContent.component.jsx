@@ -1,10 +1,11 @@
 import { Tag } from 'antd';
 
 import OrderProductItem from '../OrderProductItem/OrderProductItem.component';
-import RenderAddress from '@components/RenderAddress';
-import MiniMap from '@components/Map/MiniMap';
+import RenderAddress from '~/components/RenderAddress';
+import MiniMap from '~/components/Map/MiniMap';
 
-import { typeOrderStatus, formatDate, formatPrice } from '@utils/index';
+import { formatDate, formatPrice } from '~/utils/index';
+import { STATUS } from '~/constants';
 
 function OrderDetailItem({ order, children }) {
     return (
@@ -140,20 +141,8 @@ function OrderDetailItem({ order, children }) {
                         <p>
                             <span>Trạng thái: </span>
                             <span>
-                                <Tag
-                                    color={
-                                        typeOrderStatus.find(
-                                            (status) =>
-                                                status.value === order.status
-                                        ).color
-                                    }
-                                >
-                                    {
-                                        typeOrderStatus.find(
-                                            (status) =>
-                                                status.value === order.status
-                                        ).label
-                                    }
+                                <Tag color={STATUS[order.status].COLOR}>
+                                    {STATUS[order.status].LABEL}
                                 </Tag>
                             </span>
                         </p>

@@ -9,7 +9,7 @@ import {
 } from 'chart.js';
 import { memo } from 'react';
 
-import { daysInMonth } from '@utils/daysInMonth';
+import { daysInMonth } from '~/utils/daysInMonth';
 
 ChartJS.register(
     CategoryScale,

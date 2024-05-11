@@ -1,8 +1,8 @@
 import { Modal } from 'antd';
 import { useEffect, useState } from 'react';
 
-import { getRateByIdApi } from '@api/RateApi';
-import CardRate from '@components/CardRate/CardRate.component';
+import { getRateByIdApi } from '~/api/RateApi';
+import CardRate from '~/components/CardRate/CardRate.component';
 
 function ModalDisplayRate({ rateId, isOpen, onClose }) {
     const [rate, setRate] = useState(null);

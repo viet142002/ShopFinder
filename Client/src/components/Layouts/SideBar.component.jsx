@@ -11,15 +11,15 @@ import {
 } from '@ant-design/icons';
 import { useLocation } from 'react-router-dom';
 
-import { unsetUser } from '@redux/userSlice';
-import { setNotifications, setOneNotify } from '@redux/notificationSlice';
-import { getNotifications } from '@api/notificationApi';
+import { unsetUser } from '~/redux/userSlice';
+import { setNotifications, setOneNotify } from '~/redux/notificationSlice';
+import { getNotifications } from '~/api/notificationApi';
 
-import { notification, returnUrl } from '@utils/index';
+import { notification, returnUrl } from '~/utils/index';
 
 import socket from '../../socket';
 import SidebarContainer from './SideBarContainer';
-import { useAuth } from '@hooks/useAuth';
+import { useAuth } from '~/hooks/useAuth';
 
 function getItem(label, key, icon, children, type) {
     return {

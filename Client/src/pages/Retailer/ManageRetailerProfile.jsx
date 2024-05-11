@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 
-import MyCarousel from '@components/Carousel/Carousel.component';
-import { getInfoMyRetailerApi } from '@api/retailerApi';
-import InfoStoreProfile from '@components/Profile/InfoStoreProfile.component';
-import PriceShip from '@components/Profile/PriceShip.component';
+import MyCarousel from '~/components/Carousel/Carousel.component';
+import { getInfoMyRetailerApi } from '~/api/retailerApi';
+import InfoStoreProfile from '~/components/Profile/InfoStoreProfile.component';
+import PriceShip from '~/components/Profile/PriceShip.component';
 
 function ManageRetailerProfile() {
     const [retailer, setRetailer] = useState();

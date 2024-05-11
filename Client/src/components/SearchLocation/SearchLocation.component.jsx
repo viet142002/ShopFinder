@@ -1,8 +1,8 @@
 import { Input, Space, Form, Select, InputNumber } from 'antd';
-
-import { typeLocations } from '../../utils/typeConstraint.js';
 import { useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
+
+import { TYPE } from '~/constants';
 
 function SearchLocation() {
     const [form] = Form.useForm();
@@ -90,10 +90,13 @@ function SearchLocation() {
                         }}
                     >
                         <Select.Option value="all">Tất cả</Select.Option>
-                        {typeLocations.map((item, index) => {
+                        {Object.keys(TYPE.LOCATION).map((key, index) => {
                             return (
-                                <Select.Option value={item.value} key={index}>
-                                    {item.label}
+                                <Select.Option
+                                    value={TYPE.LOCATION[key].VALUE}
+                                    key={index}
+                                >
+                                    {TYPE.LOCATION[key].LABEL}
                                 </Select.Option>
                             );
                         })}

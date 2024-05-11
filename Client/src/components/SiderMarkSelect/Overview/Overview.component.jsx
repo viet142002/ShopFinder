@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import Actions from './Actions/Actions';
 import ShippingPrice from './ShippingPrice';
-import RenderAddress from '@components/RenderAddress';
+import RenderAddress from '~/components/RenderAddress';
 
 function OverviewInfo({ info }) {
     const p = useSelector((state) => state.routing.markSelected);
@@ -12,7 +12,7 @@ function OverviewInfo({ info }) {
         <>
             <Actions info={info} />
 
-            <div className="overview-info md:px-sideBarMark space-y-2 px-4">
+            <div className="overview-info space-y-2 px-4 md:px-sideBarMark">
                 <div className="flex items-center gap-x-2">
                     <MdOutlineLocationOn size={30} className="text-blue-500" />
                     <RenderAddress address={info.address} />
@@ -28,7 +28,7 @@ function OverviewInfo({ info }) {
                 </div>
             </div>
             <Divider className="my-[16px]" />
-            <div className="md:px-sideBarMark px-4">
+            <div className="px-4 md:px-sideBarMark">
                 <ShippingPrice retailerId={info._id} />
             </div>
         </>

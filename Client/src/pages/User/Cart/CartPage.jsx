@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-import { getCartApi } from '@api/cartApi';
+import { getCartApi } from '~/api/cartApi';
 
-import { CardCartItem, CardCartTotal } from '@components/Card';
+import { CardCartItem, CardCartTotal } from '~/components/Card';
 
 function CartPage() {
     const [cart, setCart] = useState([]);

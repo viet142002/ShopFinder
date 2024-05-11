@@ -2,11 +2,11 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Form, Input, InputNumber, Button, Image, Row, Col, Table } from 'antd';
 
-import { getProducts } from '@api/productApi';
-import { createWarehouseApi, getWarehouseApi } from '@api/warehouseApi';
+import { getProducts } from '~/api/productApi';
+import { createWarehouseApi, getWarehouseApi } from '~/api/warehouseApi';
 
-import { handleFetch, returnUrl } from '@utils/index';
-import EditorFormat from '@components/EditorFormat/EditorFormat';
+import { handleFetch, returnUrl } from '~/utils/index';
+import EditorFormat from '~/components/EditorFormat/EditorFormat';
 
 function ImportWarehouse() {
     const [resultSearch, setResultSearch] = useState([]);

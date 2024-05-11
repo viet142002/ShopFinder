@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { getStoreById } from '@api/storeApi';
+import { getStoreById } from '~/api/storeApi';
 
-import InfoStoreProfile from '@components/Profile/InfoStoreProfile.component';
-import MyCarousel from '@components/Carousel/Carousel.component';
-import DisplayRates from '@components/DisplayRate/DisplayRate.component';
-import { useAuth } from '@hooks/useAuth';
-import ModalRating from '@components/Modal/ModalRating/ModalRating.component';
-import RateTotal from '@components/Rate/RateTotal/RateTotal.component';
-import Rating from '@components/Rate/Rating/Rating.component';
+import InfoStoreProfile from '~/components/Profile/InfoStoreProfile.component';
+import MyCarousel from '~/components/Carousel/Carousel.component';
+import DisplayRates from '~/components/DisplayRate/DisplayRate.component';
+import { useAuth } from '~/hooks/useAuth';
+import ModalRating from '~/components/Modal/ModalRating/ModalRating.component';
+import RateTotal from '~/components/Rate/RateTotal/RateTotal.component';
+import Rating from '~/components/Rate/Rating/Rating.component';
 
 /**
  * StoreProfile component for user and show button edit if user is owner of store

@@ -6,58 +6,58 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { setFirstLocation } from './redux/routingSlice';
-import socket from './socket';
+import socket from '~/socket';
 import { useAuth } from './hooks';
 
-import Loading from '@components/Loading';
+import Loading from '~/components/Loading';
 import ProtectRoute from './routes/ProtectRoute';
 const DefaultLayout = lazy(() => import('./layouts/DefaultLayout'));
 const ManageLayout = lazy(() => import('./layouts/ManageLayout'));
 
-import ListShared from '@pages/User/StoreProfile/ListShared';
-import EditProfile from '@pages/User/Profile/EditProfile';
-import StoreProfile from '@pages/User/StoreProfile';
+import ListShared from '~/pages/User/StoreProfile/ListShared';
+import EditProfile from '~/pages/User/Profile/EditProfile';
+import StoreProfile from '~/pages/User/StoreProfile';
 const NewPassword = lazy(
-    () => import('@pages/User/ForgotPassword/NewPassword')
+    () => import('~/pages/User/ForgotPassword/NewPassword')
 );
-const ForgotPassword = lazy(() => import('@pages/User/ForgotPassword'));
-const VNPayReturn = lazy(() => import('@pages/User/Checkout/VNPayReturn'));
-const PaymentFail = lazy(() => import('@pages/User/Checkout/PaymentFail'));
-import Profile from '@pages/User/Profile';
+const ForgotPassword = lazy(() => import('~/pages/User/ForgotPassword'));
+const VNPayReturn = lazy(() => import('~/pages/User/Checkout/VNPayReturn'));
+const PaymentFail = lazy(() => import('~/pages/User/Checkout/PaymentFail'));
+import Profile from '~/pages/User/Profile';
 
-const HomePage = lazy(async () => import('@pages/User/Home/HomePage'));
-import ProductsPage from '@pages/User/Products/ProductsPage';
-import ProductPage from '@pages/User/Product/ProductPage';
-import CartPage from '@pages/User/Cart/CartPage';
-import CheckoutPage from '@pages/User/Checkout/CheckoutPage';
-import NotificationPage from '@pages/User/Notification/NotificationPage';
-import OrderPage from '@pages/User/Orders/OrderPage';
-import OrderDetailPage from '@pages/User/Orders/OrderDetailPage';
-const Login = lazy(() => import('@pages/Auth/Login/LoginPage'));
-const Register = lazy(() => import('@pages/Auth/Register/RegisterPage'));
-const CreateStore = lazy(() => import('@pages/User/CreateStore/CreateStore'));
+const HomePage = lazy(async () => import('~/pages/User/Home/HomePage'));
+import ProductsPage from '~/pages/User/Products/ProductsPage';
+import ProductPage from '~/pages/User/Product/ProductPage';
+import CartPage from '~/pages/User/Cart/CartPage';
+import CheckoutPage from '~/pages/User/Checkout/CheckoutPage';
+import NotificationPage from '~/pages/User/Notification/NotificationPage';
+import OrderPage from '~/pages/User/Orders/OrderPage';
+import OrderDetailPage from '~/pages/User/Orders/OrderDetailPage';
+const Login = lazy(() => import('~/pages/Auth/Login/LoginPage'));
+const Register = lazy(() => import('~/pages/Auth/Register/RegisterPage'));
+const CreateStore = lazy(() => import('~/pages/User/CreateStore/CreateStore'));
 const AddAndEditProductByUser = lazy(
-    () => import('@pages/User/Product/AddAndEditProductByUser')
+    () => import('~/pages/User/Product/AddAndEditProductByUser')
 );
-const EditStore = lazy(() => import('@pages/EditStore'));
+const EditStore = lazy(() => import('~/pages/EditStore'));
 
-import DashboardRetailer from '@pages/Retailer/DashboardRetailer';
-import AnalystRevenue from '@pages/Retailer/Analyst/AnalystRevenue';
-import ManageProduct from '@pages/Retailer/Product/ManageProduct';
-import ManageOrder from '@pages/Retailer/ManageOrder';
-import ManageOrderDetail from '@pages/Retailer/ManageOrderDetail';
-import ManageRetailerProfile from '@pages/Retailer/ManageRetailerProfile';
-import AddAndEditProduct from '@pages/Retailer/Product/AddAndEditProduct';
-import ManagerProductDetail from '@pages/Retailer/Product/ManagerProductDetail';
-import ImportWarehouse from '@pages/Retailer/WarehouseManager/ImportWarehouse';
-import WarehouseManager from '@pages/Retailer/WarehouseManager/WarehouseManager';
+import DashboardRetailer from '~/pages/Retailer/DashboardRetailer';
+import AnalystRevenue from '~/pages/Retailer/Analyst/AnalystRevenue';
+import ManageProduct from '~/pages/Retailer/Product/ManageProduct';
+import ManageOrder from '~/pages/Retailer/ManageOrder';
+import ManageOrderDetail from '~/pages/Retailer/ManageOrderDetail';
+import ManageRetailerProfile from '~/pages/Retailer/ManageRetailerProfile';
+import AddAndEditProduct from '~/pages/Retailer/Product/AddAndEditProduct';
+import ManagerProductDetail from '~/pages/Retailer/Product/ManagerProductDetail';
+import ImportWarehouse from '~/pages/Retailer/WarehouseManager/ImportWarehouse';
+import WarehouseManager from '~/pages/Retailer/WarehouseManager/WarehouseManager';
 
-import DashboardPage from '@pages/Admin/DashboardPage';
-import RequestRetailerPage from '@pages/Admin/RetailerManager';
-import ReportPage from '@pages/Admin/Reports';
-import ReportDetail from '@pages/Admin/Reports/ReportDetail';
-import UsersManager from '@pages/Admin/UserManager/UsersManager';
-import InformationManager from '@pages/Admin/InformationManager/InformationManager';
+import DashboardPage from '~/pages/Admin/DashboardPage';
+import RequestRetailerPage from '~/pages/Admin/RetailerManager';
+import ReportPage from '~/pages/Admin/Reports';
+import ReportDetail from '~/pages/Admin/Reports/ReportDetail';
+import UsersManager from '~/pages/Admin/UserManager/UsersManager';
+import InformationManager from '~/pages/Admin/InformationManager/InformationManager';
 
 function App() {
     const dispatch = useDispatch();

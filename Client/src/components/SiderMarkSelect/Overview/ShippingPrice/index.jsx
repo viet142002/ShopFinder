@@ -1,7 +1,7 @@
-import { formatPrice } from '@utils/index';
+import { formatPrice } from '~/utils/index';
 import { useEffect, useState, memo } from 'react';
 
-import { getPriceShipByRetailerId } from '@api/priceShippingApi';
+import { getPriceShipByRetailerId } from '~/api/priceShippingApi';
 
 const ShippingPrice = memo(function ShippingPrice({ retailerId }) {
     const [priceShip, setPriceShip] = useState([]);

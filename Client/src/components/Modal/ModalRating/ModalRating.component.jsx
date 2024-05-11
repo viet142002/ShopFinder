@@ -2,12 +2,12 @@ import { Button, Modal, Avatar, Form, Input, Rate } from 'antd';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setNewRate, updateRate } from '@redux/ratingSlice';
-import { addRateApi, updateRateApi } from '@api/RateApi';
-import { handleFetch, returnUrl } from '@utils/index';
+import { setNewRate, updateRate } from '~/redux/ratingSlice';
+import { addRateApi, updateRateApi } from '~/api/RateApi';
+import { handleFetch, returnUrl } from '~/utils/index';
 
-import UploadImage from '@components/UploadImage/UploadImage.component';
-import { useAuth } from '@hooks/useAuth';
+import UploadImage from '~/components/UploadImage/UploadImage.component';
+import { useAuth } from '~/hooks/useAuth';
 
 const formatForm = (values) => {
     const { rate, comment, images, to, toType, deleteImages } = values;

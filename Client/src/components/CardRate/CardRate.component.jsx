@@ -7,9 +7,9 @@ import ActionCardRate from './ActionCardRate/ActionCardRate.component';
 import DisplayImagesRate from './DisplayImagesRate/DisplayImages.component';
 import ModalReport from '../Modal/ModalReport/ModalReport.component';
 
-import { deleteRateApi } from '@api/RateApi';
-import { returnUrl, formatTime, handleFetch } from '@utils/index';
-import { useAuth } from '@hooks/useAuth';
+import { deleteRateApi } from '~/api/RateApi';
+import { returnUrl, formatTime, handleFetch } from '~/utils/index';
+import { useAuth } from '~/hooks/useAuth';
 
 const items1 = [
     {

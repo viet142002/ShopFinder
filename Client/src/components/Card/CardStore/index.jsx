@@ -1,7 +1,7 @@
 import { Card } from 'antd';
 import { Link } from 'react-router-dom';
 
-import { formatTime } from '@utils/index';
+import { formatTime } from '~/utils/index';
 
 export default function CardStore({ store }) {
     return (

@@ -2,16 +2,16 @@ import { Form, Input, Button, Col, Row, Select, Radio, Tooltip } from 'antd';
 import { useState } from 'react';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 
-import { typeLocations } from '@utils/typeConstraint';
-import EditorFormat from '@components/EditorFormat/EditorFormat';
-import InputAddress from '@components/Input/InputAddress/InputAddress.component';
-import InputImage from '@components/Input/InputImage/InputImage.component';
-import { shareStore } from '@api/communityApi';
-import { registerRetailerApi } from '@api/retailerApi';
-import { handleFetch } from '@utils/expression';
-import InputLocation from '@components/Input/InputLocation/InputLocation.component';
-import { useLocalStorage } from '@hooks/index';
-import { Show } from '@components/common';
+import { TYPE } from '~/constants';
+import EditorFormat from '~/components/EditorFormat/EditorFormat';
+import InputAddress from '~/components/Input/InputAddress/InputAddress.component';
+import InputImage from '~/components/Input/InputImage/InputImage.component';
+import { shareStore } from '~/api/communityApi';
+import { registerRetailerApi } from '~/api/retailerApi';
+import { handleFetch } from '~/utils/expression';
+import InputLocation from '~/components/Input/InputLocation/InputLocation.component';
+import { useLocalStorage } from '~/hooks/index';
+import { Show } from '~/components/common';
 import { useNavigate } from 'react-router-dom';
 
 const FormatForm = (values, images, isRegisterRetailer) => {
@@ -178,13 +178,28 @@ function CreateStorePage({ isRegisterRetailer }) {
                                             ]}
                                         >
                                             <Select>
-                                                {typeLocations.map((type) => (
-                                                    <Select.Option
-                                                        key={type.value}
-                                                    >
-                                                        {type.label}
-                                                    </Select.Option>
-                                                ))}
+                                                {Object.keys(TYPE.LOCATION).map(
+                                                    (key, index) => {
+                                                        return (
+                                                            <Select.Option
+                                                                value={
+                                                                    TYPE
+                                                                        .LOCATION[
+                                                                        key
+                                                                    ].VALUE
+                                                                }
+                                                                key={index}
+                                                            >
+                                                                {
+                                                                    TYPE
+                                                                        .LOCATION[
+                                                                        key
+                                                                    ].LABEL
+                                                                }
+                                                            </Select.Option>
+                                                        );
+                                                    }
+                                                )}
                                             </Select>
                                         </Form.Item>
                                     </div>

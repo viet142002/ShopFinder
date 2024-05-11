@@ -1,6 +1,7 @@
-import { typeReport } from '@utils/index';
 import { Radio, Select } from 'antd';
 import { useSearchParams } from 'react-router-dom';
+
+import { TYPE } from '~/constants';
 
 function FilterFollowStatus() {
     const [searchParams, setSearchParams] = useSearchParams();
@@ -35,9 +36,9 @@ function FilterFollowStatus() {
                 defaultValue="all"
             >
                 <Select.Option value="all">Tất cả</Select.Option>
-                {typeReport.map((item) => (
-                    <Select.Option key={item.value} value={item.value}>
-                        {item.label}
+                {Object.keys(TYPE.REPORT).map((key) => (
+                    <Select.Option key={key} value={key}>
+                        {TYPE.REPORT[key].LABEL}
                     </Select.Option>
                 ))}
             </Select>

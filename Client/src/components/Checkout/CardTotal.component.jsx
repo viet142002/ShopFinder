@@ -1,9 +1,9 @@
 import { Button } from 'antd';
 import { useEffect } from 'react';
 
-import { MiniCardCartItem } from '@components/Card';
-import { calculateDistance } from '@utils/calculateDistance';
-import { getPriceShipById } from '@api/priceShippingApi';
+import { MiniCardCartItem } from '~/components/Card';
+import { calculateDistance } from '~/utils/calculateDistance';
+import { getPriceShipById } from '~/api/priceShippingApi';
 
 function CardTotal({ state, location, priceSipping, setPriceShipping }) {
     useEffect(() => {

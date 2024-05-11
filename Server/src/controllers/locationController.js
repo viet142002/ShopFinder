@@ -59,10 +59,10 @@ const locationController = {
 			const { radius, lat, lng, type = "all", name = "" } = req.query;
 			console.log("🚀 ~ getLocations: ~ radius:", radius);
 			let typeArray = [
-				"electronics",
-				"furniture",
-				"clothes",
 				"food",
+				"furniture",
+				"clothing",
+				"electronics",
 				"beverage",
 				"other",
 			];

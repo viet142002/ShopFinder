@@ -3,13 +3,13 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Form } from 'antd';
 import { toast } from 'react-toastify';
 
-import { FormCheckout } from '@components/Form';
-import CardTotal from '@components/Checkout/CardTotal.component';
+import { FormCheckout } from '~/components/Form';
+import CardTotal from '~/components/Checkout/CardTotal.component';
 
-import { handleFetch } from '@utils/expression';
-import { createOrder, createOrderWithVNPay } from '@api/orderApi';
+import { handleFetch } from '~/utils/expression';
+import { createOrder, createOrderWithVNPay } from '~/api/orderApi';
 import socket from '../../../socket';
-import { useAuth } from '@hooks/useAuth';
+import { useAuth } from '~/hooks/useAuth';
 
 function CheckoutPage() {
     const navigate = useNavigate();

@@ -6,8 +6,8 @@ import L from 'leaflet';
 import { useSelector, useDispatch } from 'react-redux';
 import { useMap } from 'react-leaflet';
 import { useEffect, useRef } from 'react';
-import { setRoute } from '@redux/routingSlice';
-import { iconDefault } from '@utils/icon';
+import { setRoute } from '~/redux/routingSlice';
+import { iconDefault } from '~/utils/icon';
 
 const Routing = ({ start, destination }) => {
     const map = useMap();

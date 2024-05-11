@@ -3,9 +3,9 @@ import {
     acceptRequestApi,
     rejectRequestApi,
     blockedRetailerApi
-} from '@api/retailerApi.js';
+} from '~/api/retailerApi.js';
 
-import { updateStatus } from '@api/communityApi';
+import { updateStatus } from '~/api/communityApi';
 import { useState } from 'react';
 
 /**

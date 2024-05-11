@@ -7,10 +7,10 @@ import {
     createProductApi,
     updateProductByIdApi,
     getProductByIdApi
-} from '@api/productApi';
+} from '~/api/productApi';
 
-import { handleFetch } from '@utils/expression';
-import { FormProduct } from '@components/Form';
+import { handleFetch } from '~/utils/expression';
+import { FormProduct } from '~/components/Form';
 
 const formatForm = (values, images = [], deleteImages = []) => {
     const formData = new FormData();

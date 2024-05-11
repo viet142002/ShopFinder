@@ -2,12 +2,12 @@ import { Form, Input, Button, Col, Row } from 'antd';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
-import { handleFetch } from '@utils/expression';
-import { updateRetailerApi, getInfoMyRetailerApi } from '@api/retailerApi';
-import { updateStore, getStore } from '@api/communityApi';
+import { handleFetch } from '~/utils/expression';
+import { updateRetailerApi, getInfoMyRetailerApi } from '~/api/retailerApi';
+import { updateStore, getStore } from '~/api/communityApi';
 
-import { InputLocation, InputImage, InputAddress } from '@components/Input';
-import EditorFormat from '@components/EditorFormat/EditorFormat';
+import { InputLocation, InputImage, InputAddress } from '~/components/Input';
+import EditorFormat from '~/components/EditorFormat/EditorFormat';
 
 function EditStore() {
     const { id } = useParams();

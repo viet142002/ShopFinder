@@ -2,14 +2,14 @@ import { Form } from 'antd';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { handleFetch } from '@utils/expression';
+import { handleFetch } from '~/utils/expression';
 import {
     createProductByUserApi,
     getProductByIdApi,
     updateProductByUserApi
-} from '@api/productApi';
+} from '~/api/productApi';
 
-import { FormProduct } from '@components/Form';
+import { FormProduct } from '~/components/Form';
 
 const formatForm = (values, images = [], deleteImages = []) => {
     const formData = new FormData();

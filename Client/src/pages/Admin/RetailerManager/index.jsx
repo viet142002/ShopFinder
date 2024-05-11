@@ -2,12 +2,12 @@ import { useState, useEffect } from 'react';
 import { Table, Tag, Space, Button } from 'antd';
 import { useSearchParams } from 'react-router-dom';
 
-import { getRequestsRetailerApi } from '@api/retailerApi';
-import DetailStoreWidget from '@components/Store/DetailStoreWidget';
-import ActionStore from '@components/Store/ActionStore';
+import { getRequestsRetailerApi } from '~/api/retailerApi';
+import DetailStoreWidget from '~/components/Store/DetailStoreWidget';
+import ActionStore from '~/components/Store/ActionStore';
 import { FilterRetailer } from './components';
 
-import { formatTime } from '@utils/formatTime';
+import { formatTime } from '~/utils/formatTime';
 
 function RequestRetailerPage() {
     const [searchParams] = useSearchParams();

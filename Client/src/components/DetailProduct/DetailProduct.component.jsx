@@ -3,13 +3,13 @@ import { useEffect, useState, useRef } from 'react';
 import { Carousel, Image, Button, InputNumber, Dropdown, Space } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 
-import { getProductByIdApi, deleteProductByUserApi } from '@api/productApi';
-import { addToCartApi } from '@api/cartApi';
-import { handleFetch } from '@utils/expression';
+import { getProductByIdApi, deleteProductByUserApi } from '~/api/productApi';
+import { addToCartApi } from '~/api/cartApi';
+import { handleFetch } from '~/utils/expression';
 
-import HTMLRenderer from '@components/HTMLRenderer/HTMLRenderer.component';
-import ModalReport from '@components/Modal/ModalReport/ModalReport.component';
-import { useAuth } from '@hooks/useAuth';
+import HTMLRenderer from '~/components/HTMLRenderer/HTMLRenderer.component';
+import ModalReport from '~/components/Modal/ModalReport/ModalReport.component';
+import { useAuth } from '~/hooks/useAuth';
 
 function DetailProduct() {
     const { productId, storeId } = useParams();

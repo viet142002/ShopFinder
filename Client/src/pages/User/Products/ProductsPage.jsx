@@ -7,9 +7,9 @@ import {
 } from 'react-router-dom';
 import { Button, Input } from 'antd';
 
-import { getProducts } from '@api/productApi';
-import { CardProduct } from '@components/Card';
-import { PaginationPage } from '@components/common/Pagination';
+import { getProducts } from '~/api/productApi';
+import { CardProduct } from '~/components/Card';
+import { PaginationPage } from '~/components/common/Pagination';
 
 function ProductsPage() {
     const [searchParams, setSearchParams] = useSearchParams();

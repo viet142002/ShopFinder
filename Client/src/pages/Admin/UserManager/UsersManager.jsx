@@ -1,6 +1,6 @@
 import { Button, Table } from 'antd';
 
-import { getAllUser, updateStatusUser } from '@api/userApi';
+import { getAllUser, updateStatusUser } from '~/api/userApi';
 import { useEffect, useState } from 'react';
 
 import { FilterUser } from './components/FilterUser';

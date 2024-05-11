@@ -1,10 +1,10 @@
 import { Drawer } from 'antd';
 import { memo } from 'react';
 
-import InfoStoreProfile from '@components/Profile/InfoStoreProfile.component';
-import MyCarousel from '@components/Carousel/Carousel.component';
-import ActionStore from '@components/Store/ActionStore';
-import MiniMap from '@components/Map/MiniMap';
+import InfoStoreProfile from '~/components/Profile/InfoStoreProfile.component';
+import MyCarousel from '~/components/Carousel/Carousel.component';
+import ActionStore from '~/components/Store/ActionStore';
+import MiniMap from '~/components/Map/MiniMap';
 
 /**
  * DetailStoreWidget component admin

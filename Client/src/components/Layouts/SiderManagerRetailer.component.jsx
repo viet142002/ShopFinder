@@ -9,9 +9,9 @@ import { BsBox } from 'react-icons/bs';
 import { VscGitPullRequestGoToChanges } from 'react-icons/vsc';
 import { CiImport } from 'react-icons/ci';
 
-import { unsetUser } from '@redux/userSlice';
+import { unsetUser } from '~/redux/userSlice';
 import socket from '../../socket';
-import { notification } from '@utils/notification';
+import { notification } from '~/utils/notification';
 import SidebarContainer from './SideBarContainer';
 
 const items = [

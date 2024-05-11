@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { Button, Space, Tag } from 'antd';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { getProductByIdApi } from '@api/productApi';
-import { typeStatus } from '@utils/typeConstraint';
-import MyCarousel from '@components/Carousel/Carousel.component';
-import DisplayRates from '@components/DisplayRate/DisplayRate.component';
+import { getProductByIdApi } from '~/api/productApi';
+import { STATUS } from '~/constants';
+
+import MyCarousel from '~/components/Carousel/Carousel.component';
+import DisplayRates from '~/components/DisplayRate/DisplayRate.component';
 
 function ManagerProductDetail() {
     const { productId, id: retailerId } = useParams();
@@ -70,22 +71,8 @@ function ManagerProductDetail() {
                                 <p></p>
                                 <span>Trạng thái: </span>
                                 <span className="font-semibold">
-                                    <Tag
-                                        color={
-                                            typeStatus.find(
-                                                (status) =>
-                                                    status.value ===
-                                                    product?.status
-                                            )?.color
-                                        }
-                                    >
-                                        {
-                                            typeStatus.find(
-                                                (status) =>
-                                                    status.value ===
-                                                    product?.status
-                                            )?.label
-                                        }
+                                    <Tag color={STATUS[product?.status].COLOR}>
+                                        {STATUS[product?.status].LABEL}
                                     </Tag>
                                 </span>
                                 <p>

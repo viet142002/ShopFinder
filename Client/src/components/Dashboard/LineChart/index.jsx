@@ -1,4 +1,4 @@
-import { daysInMonth } from '@utils/daysInMonth';
+import { daysInMonth } from '~/utils/daysInMonth';
 import {
     Chart as ChartJS,
     CategoryScale,

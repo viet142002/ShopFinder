@@ -10,9 +10,9 @@ import { MdOutlineDirections, MdOutlineShoppingBag } from 'react-icons/md';
 import clsx from 'clsx';
 import { useNavigate } from 'react-router-dom';
 
-import { unsetMarkSelect, setShowRouting } from '@redux/routingSlice';
-import ModalReport from '@components/Modal/ModalReport/ModalReport.component';
-import { useAuth } from '@hooks/useAuth';
+import { unsetMarkSelect, setShowRouting } from '~/redux/routingSlice';
+import ModalReport from '~/components/Modal/ModalReport/ModalReport.component';
+import { useAuth } from '~/hooks/useAuth';
 
 function Actions({ info }) {
     const dispatch = useDispatch();

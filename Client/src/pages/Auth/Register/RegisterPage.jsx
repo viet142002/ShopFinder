@@ -5,9 +5,9 @@ import clsx from 'clsx';
 
 import style from '../style.module.scss';
 import registerSchema from './validate';
-import { registerApi } from '@api/authApi';
-import { setUser } from '@redux/userSlice';
-import { handleFetch } from '@utils/expression';
+import { registerApi } from '~/api/authApi';
+import { setUser } from '~/redux/userSlice';
+import { handleFetch } from '~/utils/expression';
 
 function RegisterPage() {
     const dispatch = useDispatch();

@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import { useAuth } from '@hooks/useAuth';
+import { useAuth } from '~/hooks/useAuth';
 
 function Rating() {
     const navigate = useNavigate();

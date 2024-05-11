@@ -10,7 +10,7 @@ import {
 } from 'react-icons/md';
 import { VscGitPullRequestGoToChanges } from 'react-icons/vsc';
 
-import { unsetUser } from '@redux/userSlice';
+import { unsetUser } from '~/redux/userSlice';
 import SidebarContainer from './SideBarContainer';
 
 function SiderManage() {

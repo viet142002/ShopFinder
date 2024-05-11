@@ -8,12 +8,12 @@ import { Button } from 'antd';
 
 import style from '../style.module.scss';
 import loginSchema from './validate';
-import { loginApi, loginRetailerApi } from '@api/authApi';
-import { setUser } from '@redux/userSlice';
-import { handleFetch } from '@utils/expression';
-import { ButtonLoginWithGG } from '@components/Button';
-import { setRetailer } from '@redux/retailerSlice';
-import { Show } from '@components/common';
+import { loginApi, loginRetailerApi } from '~/api/authApi';
+import { setUser } from '~/redux/userSlice';
+import { handleFetch } from '~/utils/expression';
+import { ButtonLoginWithGG } from '~/components/Button';
+import { setRetailer } from '~/redux/retailerSlice';
+import { Show } from '~/components/common';
 
 function LoginPage({ isLoginRetailer = false }) {
     const dispatch = useDispatch();

@@ -3,8 +3,8 @@ import { Layout } from 'antd';
 import 'leaflet/dist/leaflet.css';
 
 import SideBar from '../components/Layouts/SideBar.component';
-import HeaderLayout from '@components/Layouts/Header.component';
-import { useMobile } from '@hooks/useMobile';
+import HeaderLayout from '~/components/Layouts/Header.component';
+import { useMobile } from '~/hooks/useMobile';
 import { useSelector } from 'react-redux';
 
 const { Content } = Layout;

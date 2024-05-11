@@ -3,8 +3,8 @@ import { Layout } from 'antd';
 
 import SiderManage from '../components/Layouts/SiderManage.component';
 import SiderManageRetailer from '../components/Layouts/SiderManagerRetailer.component';
-import { useMobile } from '@hooks/useMobile';
-import HeaderLayout from '@components/Layouts/Header.component';
+import { useMobile } from '~/hooks/useMobile';
+import HeaderLayout from '~/components/Layouts/Header.component';
 import { useSelector } from 'react-redux';
 
 const { Content } = Layout;

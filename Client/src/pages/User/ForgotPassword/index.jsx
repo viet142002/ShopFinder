@@ -2,7 +2,7 @@ import { Button, Form, Input, Select, Space } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { forgotPassword } from '@api/userApi';
+import { forgotPassword } from '~/api/userApi';
 
 function ForgotPassword() {
     const navigate = useNavigate();

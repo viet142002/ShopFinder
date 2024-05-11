@@ -18,10 +18,10 @@ import {
 } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
 
-import { CardProduct } from '@components/Card';
+import { CardProduct } from '~/components/Card';
 
-import { getProducts } from '@api/productApi';
-import { typeStatus } from '@utils/typeConstraint';
+import { getProducts } from '~/api/productApi';
+import { STATUS } from '~/constants';
 
 const columns = [
     {
@@ -63,14 +63,7 @@ const columns = [
         key: 'status',
         render: (status) => {
             return (
-                <Tag
-                    color={
-                        typeStatus.find((item) => item.value === status)
-                            ?.color || 'red'
-                    }
-                >
-                    {typeStatus.find((item) => item.value === status).label}
-                </Tag>
+                <Tag color={STATUS[status].COLOR}>{STATUS[status].LABEL}</Tag>
             );
         }
     }

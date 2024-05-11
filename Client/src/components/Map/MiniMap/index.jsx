@@ -1,9 +1,9 @@
 import { MapContainer, TileLayer, Marker } from 'react-leaflet';
 import { memo, useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
-import Routing from '@components/Routing/Routing.component';
+import Routing from '~/components/Routing/Routing.component';
 import { useDispatch } from 'react-redux';
-import { setShowRouting } from '@redux/routingSlice';
+import { setShowRouting } from '~/redux/routingSlice';
 
 function MiniMap({ coordinates, destination, children }) {
     const dispatch = useDispatch();

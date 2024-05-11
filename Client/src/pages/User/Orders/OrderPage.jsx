@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Spin } from 'antd';
 
-import { getOrders } from '@api/orderApi';
+import { getOrders } from '~/api/orderApi';
 
-import OrderItem from '@components/Order/OrderItem.Component';
-import FilterOrder from '@components/Order/FilterOrder/FilterOrder.component';
-import { PaginationPage } from '@components/common/Pagination';
+import OrderItem from '~/components/Order/OrderItem.Component';
+import FilterOrder from '~/components/Order/FilterOrder/FilterOrder.component';
+import { PaginationPage } from '~/components/common/Pagination';
 
 function OrderPage() {
     const [data, setData] = useState({

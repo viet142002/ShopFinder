@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { MenuOutlined } from '@ant-design/icons';
 
 const { Header } = Layout;
-import { setCollapsed } from '@redux/sidebarSlice';
+import { setCollapsed } from '~/redux/sidebarSlice';
 
 function HeaderLayout() {
     const dispatch = useDispatch();

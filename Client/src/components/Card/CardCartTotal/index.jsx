@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import { Button } from 'antd';
 
-import { calculatePrice } from '@/utils/calculatePrice';
+import { calculatePrice } from '~/utils';
 
 export function CardCartTotal({ cart, checked }) {
     const totalPrice = useMemo(() => calculatePrice(cart), [cart]);

@@ -3,15 +3,15 @@ import { useDispatch } from 'react-redux';
 import { Form, Input, Button, Tooltip } from 'antd';
 
 import { MdCameraAlt } from 'react-icons/md';
-import { returnUrl, handleFetch } from '@utils/index';
+import { returnUrl, handleFetch } from '~/utils/index';
 
 import './profileStyle.scss';
 
-import InputAddress from '@components/Input/InputAddress/InputAddress.component';
-import RenderAddress from '@components/RenderAddress';
+import InputAddress from '~/components/Input/InputAddress/InputAddress.component';
+import RenderAddress from '~/components/RenderAddress';
 
-import { updateUser } from '@api/userApi';
-import { useAuth } from '@hooks/useAuth';
+import { updateUser } from '~/api/userApi';
+import { useAuth } from '~/hooks/useAuth';
 
 const formData = (values) => {
     const data = new FormData();

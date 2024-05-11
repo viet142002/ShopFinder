@@ -2,12 +2,13 @@ import { Table, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 
-import { getOrdersByDistributor } from '@api/orderApi';
+import { getOrdersByDistributor } from '~/api/orderApi';
 
-import { formatTime, typeOrderStatus, formatPrice } from '@utils/index';
-import FilterOrder from '@components/Order/FilterOrder/FilterOrder.component';
+import { formatTime, formatPrice } from '~/utils/index';
+import { STATUS } from '~/constants';
+import FilterOrder from '~/components/Order/FilterOrder/FilterOrder.component';
 
-import socket from '../../socket';
+import socket from '~/socket';
 
 const columns = [
     {
@@ -26,12 +27,8 @@ const columns = [
         dataIndex: 'status',
         key: 'status',
         render: (status) => (
-            <Tag
-                color={
-                    typeOrderStatus.find((item) => item.value === status).color
-                }
-            >
-                {typeOrderStatus.find((item) => item.value === status).label}
+            <Tag color={STATUS.ORDER[status].COLOR}>
+                {STATUS.ORDER[status].LABEL}
             </Tag>
         )
     },

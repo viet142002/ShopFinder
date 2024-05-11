@@ -124,12 +124,12 @@ const InformationController = {
 					.status(404)
 					.json({ message: "Information not found" });
 			}
-
-			if (
-				information.user.toString() !== userId.toString() ||
-				role !== "admin"
-			) {
-				return res.status(403).json({ message: "Permission denied" });
+			if (role !== "admin") {
+				if (information.user.toString() !== userId.toString()) {
+					return res
+						.status(403)
+						.json({ message: "Permission denied" });
+				}
 			}
 
 			if (

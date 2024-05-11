@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 
 import OrderProductItem from './OrderProductItem/OrderProductItem.component';
 
-import { formatPrice, typeOrderStatus } from '@utils/index';
-import { updateStatusOrder } from '@api/orderApi';
+import { formatPrice } from '~/utils/index';
+import { STATUS } from '~/constants';
+import { updateStatusOrder } from '~/api/orderApi';
 
 function OrderItem({ order }) {
     const [statusOrder, setStatusOrder] = useState(order.status);
@@ -45,18 +46,8 @@ function OrderItem({ order }) {
                     </p>
                 </Link>
                 <div className="mt-4 flex items-center justify-between">
-                    <Tag
-                        color={
-                            typeOrderStatus.find(
-                                (status) => status.value === statusOrder
-                            ).color
-                        }
-                    >
-                        {
-                            typeOrderStatus.find(
-                                (status) => status.value === statusOrder
-                            ).label
-                        }
+                    <Tag color={STATUS[statusOrder].COLOR}>
+                        {STATUS[statusOrder].LABEL}
                     </Tag>
                     {statusOrder === 'pending' && (
                         <Button

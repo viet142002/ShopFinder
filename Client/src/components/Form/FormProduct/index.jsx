@@ -1,7 +1,7 @@
 import { Button, Form, Input, InputNumber, Select } from 'antd';
-import InputImage from '@components/Input/InputImage/InputImage.component';
-import EditorFormat from '@components/EditorFormat/EditorFormat';
-import { typeStatus } from '@utils/typeConstraint';
+import InputImage from '~/components/Input/InputImage/InputImage.component';
+import EditorFormat from '~/components/EditorFormat/EditorFormat';
+import { STATUS } from '~/constants';
 
 export function FormProduct({
     isAddMode,
@@ -71,14 +71,22 @@ export function FormProduct({
                                         </label>
                                         <Form.Item id="status" name="status">
                                             <Select>
-                                                {typeStatus.map((status) => (
-                                                    <Select.Option
-                                                        key={status.value}
-                                                        value={status.value}
-                                                    >
-                                                        {status.label}
-                                                    </Select.Option>
-                                                ))}
+                                                {Object.keys(STATUS).map(
+                                                    (key) => (
+                                                        <Select.Option
+                                                            key={
+                                                                STATUS[key]
+                                                                    .VALUE
+                                                            }
+                                                            value={
+                                                                STATUS[key]
+                                                                    .VALUE
+                                                            }
+                                                        >
+                                                            {STATUS[key].LABEL}
+                                                        </Select.Option>
+                                                    )
+                                                )}
                                             </Select>
                                         </Form.Item>
                                     </div>

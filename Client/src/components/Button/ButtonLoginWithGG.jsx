@@ -4,7 +4,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-import { loginWithGoogleApi } from '@api/authApi';
+import { loginWithGoogleApi } from '~/api/authApi';
 
 export function ButtonLoginWithGG({ setData }) {
     const [user, setUser] = useState(null);

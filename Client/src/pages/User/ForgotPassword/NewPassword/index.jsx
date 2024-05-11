@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { resetPassword } from '@api/userApi';
+import { resetPassword } from '~/api/userApi';
 
 function NewPassword() {
     const [searchParams] = useSearchParams();

@@ -3,7 +3,7 @@ import { Modal } from 'antd';
 import { ExclamationCircleFilled } from '@ant-design/icons';
 
 import { getToken } from '../redux/storage';
-import { useAuth } from '@hooks/useAuth';
+import { useAuth } from '~/hooks/useAuth';
 import { useSelector } from 'react-redux';
 
 function ProtectRoute({ access = 'customer', children }) {

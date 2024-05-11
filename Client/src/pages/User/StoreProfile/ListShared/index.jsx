@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 
-import { getMySharedStore } from '@api/communityApi';
-import { Show } from '@components/common';
-import { useAuth } from '@hooks/useAuth';
+import { getMySharedStore } from '~/api/communityApi';
+import { Show } from '~/components/common';
+import { useAuth } from '~/hooks/useAuth';
 
 import { ListSharedFilter } from './components';
 import { useSearchParams } from 'react-router-dom';
-import { CardStore, CardProduct } from '@components/Card';
-import { getProducts } from '@api/productApi';
-import { PaginationPage } from '@components/common/Pagination';
+import { CardStore, CardProduct } from '~/components/Card';
+import { getProducts } from '~/api/productApi';
+import { PaginationPage } from '~/components/common/Pagination';
 
 function ListShared() {
     const [searchParams] = useSearchParams();

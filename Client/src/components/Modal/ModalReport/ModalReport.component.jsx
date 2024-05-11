@@ -1,7 +1,8 @@
 import { Modal, Form, Input, Button, Space, Select } from 'antd';
 
-import { createReportApi } from '@api/reportApi';
-import { handleFetch, typeReport } from '@utils/index';
+import { createReportApi } from '~/api/reportApi';
+import { handleFetch } from '~/utils/index';
+import { TYPE } from '~/constants';
 
 const ModalReport = ({ open, handleCancel, toId, toType }) => {
     const [form] = Form.useForm();
@@ -44,9 +45,9 @@ const ModalReport = ({ open, handleCancel, toId, toType }) => {
                     ]}
                 >
                     <Select allowClear>
-                        {typeReport.map((item, index) => (
-                            <Select.Option key={index} value={item.value}>
-                                {item.label}
+                        {Object.keys(TYPE.REPORT).map((key) => (
+                            <Select.Option key={key} value={key}>
+                                {TYPE.REPORT[key].label}
                             </Select.Option>
                         ))}
                     </Select>

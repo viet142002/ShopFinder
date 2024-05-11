@@ -3,9 +3,9 @@ import { useEffect, useState, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useReactToPrint } from 'react-to-print';
 
-import OrderDetailContent from '@components/Order/OrderDetailContent/OrderDetailContent.component';
-import { getOrderById, updateStatusOrder } from '@api/orderApi';
-import PrintBill from '@components/PrintBill';
+import OrderDetailContent from '~/components/Order/OrderDetailContent/OrderDetailContent.component';
+import { getOrderById, updateStatusOrder } from '~/api/orderApi';
+import PrintBill from '~/components/PrintBill';
 
 import socket from '../../socket';
 import { useSelector } from 'react-redux';

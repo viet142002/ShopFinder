@@ -8,10 +8,10 @@ import { Button } from 'antd';
 import { memo } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { likeRateApi, dislikeRateApi } from '@api/RateApi';
+import { likeRateApi, dislikeRateApi } from '~/api/RateApi';
 
 import socket from '../../../socket';
-import { useAuth } from '@hooks';
+import { useAuth } from '~/hooks';
 
 const ActionCardRate = memo(function ActionCardRate({
     likes,

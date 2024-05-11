@@ -1,9 +1,9 @@
 import { Layout } from 'antd';
 
-import { useMobile, useClickOutside } from '@hooks/index';
+import { useMobile, useClickOutside } from '~/hooks/index';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setCollapsed } from '@redux/sidebarSlice';
+import { setCollapsed } from '~/redux/sidebarSlice';
 import { memo, useRef } from 'react';
 
 const SidebarContainer = memo(function SidebarContainer({

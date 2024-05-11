@@ -11,7 +11,7 @@ const SiderMartSelectForMobile = lazy(
 );
 import Inner from './Inner.component';
 
-import { useMobile } from '@hooks/useMobile';
+import { useMobile } from '~/hooks/useMobile';
 
 function SiderMarkSelect({ markSelected }) {
     const [isCollapsed, setIsCollapsed] = useState(true);

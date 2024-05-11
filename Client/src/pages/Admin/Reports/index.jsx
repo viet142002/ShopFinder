@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Table, Tag } from 'antd';
 
-import { getReportsApi } from '@api/reportApi';
+import { getReportsApi } from '~/api/reportApi';
 import { Link, useSearchParams } from 'react-router-dom';
 import FilterReport from './components/FilterReport';
 

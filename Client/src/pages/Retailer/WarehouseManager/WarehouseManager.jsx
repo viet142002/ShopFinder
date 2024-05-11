@@ -2,9 +2,9 @@ import { Table, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 
-import ActionImportExportProducts from '@components/ActionImportExportProducts/ActionImportExportProducts.component';
+import ActionImportExportProducts from '~/components/ActionImportExportProducts/ActionImportExportProducts.component';
 
-import { getWarehousesApi } from '@api/warehouseApi';
+import { getWarehousesApi } from '~/api/warehouseApi';
 
 const cols = [
     {

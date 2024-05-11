@@ -1,10 +1,10 @@
 import { Button, Table, Tag } from 'antd';
 
-import { getAllStore } from '@api/communityApi';
+import { getAllStore } from '~/api/communityApi';
 import { useEffect, useState } from 'react';
-import RenderAddress from '@components/RenderAddress';
+import RenderAddress from '~/components/RenderAddress';
 import { FilterInformation } from './components/FilterInformation';
-import DetailStoreWidget from '@components/Store/DetailStoreWidget';
+import DetailStoreWidget from '~/components/Store/DetailStoreWidget';
 import { useSearchParams } from 'react-router-dom';
 
 function InformationManager() {

@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from 'antd';
 
-import { getOrderById, updateStatusOrder } from '@api/orderApi';
+import { getOrderById, updateStatusOrder } from '~/api/orderApi';
 
-import OrderDetailContent from '@components/Order/OrderDetailContent/OrderDetailContent.component';
+import OrderDetailContent from '~/components/Order/OrderDetailContent/OrderDetailContent.component';
 
 function OrderDetailPage() {
     const { orderId } = useParams();

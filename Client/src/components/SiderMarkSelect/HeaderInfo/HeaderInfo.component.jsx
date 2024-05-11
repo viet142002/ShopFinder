@@ -1,9 +1,10 @@
 import { Tag } from 'antd';
-import { typeLocations } from '../../../utils/typeConstraint';
+
+import { TYPE } from '~/constants';
 
 function HeaderInfo({ name, rate, type, informationType }) {
     return (
-        <div className="md:px-sideBarMark px-3 pt-[5px]">
+        <div className="px-3 pt-[5px] md:px-sideBarMark">
             <h2 className="text-lg font-medium">
                 {name}{' '}
                 {informationType === 'Information' && (
@@ -13,7 +14,7 @@ function HeaderInfo({ name, rate, type, informationType }) {
                 )}
             </h2>
             <p>{rate}</p>
-            <p>{typeLocations.find((item) => item.value === type)?.label}</p>
+            <p>{TYPE.LOCATION[type].LABEL}</p>
         </div>
     );
 }

@@ -3,17 +3,18 @@ import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
-import { getReportApi, updateReportApi } from '@api/reportApi';
-import { updateStatusUser } from '@api/userApi';
-import { updateRateApi } from '@api/RateApi';
-import { getStoreById } from '@api/storeApi';
+import { getReportApi, updateReportApi } from '~/api/reportApi';
+import { updateStatusUser } from '~/api/userApi';
+import { updateRateApi } from '~/api/RateApi';
+import { getStoreById } from '~/api/storeApi';
+import { returnUrl, formatTime } from '~/utils/index';
+import { TYPE } from '~/constants';
+import { blockedRetailerApi } from '~/api/retailerApi';
+import { updateStatus } from '~/api/communityApi';
 
-import { returnUrl, formatTime, typeReport } from '@utils/index';
 import ModalDisplayRate from './components/ModalDisplayRate';
-import { blockedRetailerApi } from '@api/retailerApi';
-import { updateStatus } from '@api/communityApi';
-import { updateStatusByAdminApi } from '@api/productApi';
-import DetailStoreWidget from '@components/Store/DetailStoreWidget';
+import { updateStatusByAdminApi } from '~/api/productApi';
+import DetailStoreWidget from '~/components/Store/DetailStoreWidget';
 
 function ReportDetail() {
     const { reportId } = useParams();
@@ -140,13 +141,7 @@ function ReportDetail() {
                                             Lý do:
                                         </span>
                                         <span>
-                                            {
-                                                typeReport.find(
-                                                    (i) =>
-                                                        i.value ===
-                                                        report?.reason
-                                                ).label
-                                            }
+                                            {TYPE.REPORT[report?.reason].LABEL}
                                         </span>
                                     </div>
                                     <div className="flex">
@@ -360,10 +355,7 @@ const CardReportRelated = ({ report }) => {
                 </Tag>
             </div>
             <div className="ml-4 mt-1">
-                <p>
-                    Lý do:{' '}
-                    {typeReport.find((i) => i.value === report?.reason).label}
-                </p>
+                <p>Lý do: {TYPE.REPORT[report?.reason].LABEL}</p>
                 <p>{report.description}</p>
             </div>
             <p className="text-right">{formatTime(report.createdAt)}</p>

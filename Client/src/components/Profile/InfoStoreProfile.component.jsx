@@ -2,11 +2,12 @@ import { Avatar, Button, Tag } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 
 import HTMLRenderer from '../HTMLRenderer/HTMLRenderer.component';
-import RenderAddress from '@components/RenderAddress';
+import RenderAddress from '~/components/RenderAddress';
 
-import { typeLocations, formatTime, handleFetch } from '@utils/index';
+import { formatTime, handleFetch } from '~/utils/index';
+import { TYPE } from '~/constants';
 
-import { deleteStore } from '@api/communityApi';
+import { deleteStore } from '~/api/communityApi';
 /**
  * InfoStoreProfile component for admin
  * @param {Object} store object data
@@ -64,13 +65,7 @@ function InfoStoreProfile({
                 </p>
                 <p>
                     <span>Loại cửa hàng: </span>
-                    <span>
-                        {
-                            typeLocations.find(
-                                (item) => item.value === store.type
-                            ).label
-                        }
-                    </span>
+                    <span>{TYPE.LOCATION[store.type].LABEL}</span>
                 </p>
                 <p>
                     <span>Chế độ: </span>
@@ -86,12 +81,13 @@ function InfoStoreProfile({
                 <p>
                     <span>Trạng thái: </span>
                     <span>
-                        {store.status === 'normal' ||
-                        store.status === 'approved' ? (
-                            <Tag color="success">Hoạt động</Tag>
-                        ) : (
-                            <Tag color="error">Chưa duyệt / Cấm</Tag>
-                        )}
+                        {
+                            <Tag color="success">
+                                {store.status === 'normal'
+                                    ? 'Hoạt động'
+                                    : 'Chưa duyệt / Cấm'}
+                            </Tag>
+                        }
                     </span>
                 </p>
 

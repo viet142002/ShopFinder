@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { formatPrice, formatDate } from '@utils/index';
+import { formatPrice, formatDate } from '~/utils/index';
 
 const PrintBill = React.forwardRef(function PrintBill({ bill, products }, ref) {
     const { more, ward, district, province } =
