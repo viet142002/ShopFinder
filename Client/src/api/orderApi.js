@@ -38,18 +38,8 @@ export const addDetailPayment = async (orderId, data) => {
     return api.post(`/orders/add-detail-payment/${orderId}`, data);
 };
 
-export const getOrdersByDistributor = async ({
-    page = 1,
-    limit = 10,
-    sort = '-createdAt',
-    status = 'all'
-}) => {
+export const getOrdersByDistributor = async (params) => {
     return api.get('/retailer/orders', {
-        params: {
-            page: page,
-            limit: limit,
-            sort: sort,
-            status: status
-        }
+        params
     });
 };

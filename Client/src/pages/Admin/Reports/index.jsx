@@ -27,7 +27,7 @@ function ReportPage() {
                     title="Người dùng"
                     dataIndex="from"
                     key="from"
-                    render={(from) => `${from?.fullname}`}
+                    render={(from) => `${from?.fullname || from?.name}`}
                 />
                 <Table.Column
                     title="Đến"

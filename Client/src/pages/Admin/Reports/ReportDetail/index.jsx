@@ -1,4 +1,3 @@
-import { Avatar, Button, Tag } from 'antd';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -7,14 +6,12 @@ import { getReportApi, updateReportApi } from '~/api/reportApi';
 import { updateStatusUser } from '~/api/userApi';
 import { updateRateApi } from '~/api/RateApi';
 import { getStoreById } from '~/api/storeApi';
-import { returnUrl, formatTime } from '~/utils/index';
-import { TYPE } from '~/constants';
 import { blockedRetailerApi } from '~/api/retailerApi';
 import { updateStatus } from '~/api/communityApi';
 
-import ModalDisplayRate from './components/ModalDisplayRate';
+import { Detail, CardReportRelated } from './components';
 import { updateStatusByAdminApi } from '~/api/productApi';
-import DetailStoreWidget from '~/components/Store/DetailStoreWidget';
+import { Show } from '~/components/common';
 
 function ReportDetail() {
     const { reportId } = useParams();
@@ -30,7 +27,10 @@ function ReportDetail() {
     };
 
     const fetchStore = () => {
-        if (!report.to) return toast.info('Cửa hàng không tồn tại');
+        if (!report.to && report.toType === 'Retailer')
+            return toast.info('Cửa hàng không tồn tại');
+        if (!report.to && report.toType === 'Information')
+            return toast.info('Thông tin không tồn tại');
         getStoreById(report.to._id).then((res) => {
             setStore(res.data.store);
             setOpenWidgetStore(true);
@@ -52,7 +52,16 @@ function ReportDetail() {
             return;
         }
         const type = report.toType.toLowerCase();
-        const id = report.to._id;
+        const id = report.to?._id;
+
+        if (!id) {
+            if (type === 'retailer')
+                return toast.info('Cửa hàng không tồn tại');
+            if (type === 'information')
+                return toast.info('Thông tin không tồn tại');
+            if (type === 'product') return toast.info('Sản phẩm không tồn tại');
+            if (type === 'rate') return toast.info('Đánh giá đã bị ẩn');
+        }
         let res = null;
         if (type === 'retailer') {
             res = await blockedRetailerApi(id);
@@ -94,12 +103,12 @@ function ReportDetail() {
                 break;
         }
     };
-
     useEffect(() => {
         getReportApi(reportId).then((res) => {
             setReport(res.data.report);
         });
     }, [reportId]);
+
     return (
         <>
             <section className="mx-auto w-[95%] md:w-[80%]">
@@ -108,259 +117,52 @@ function ReportDetail() {
                         Chi tiết báo cáo
                     </h1>
                 </div>
-                {!report ? (
-                    <div>
-                        <p>Đang tải...</p>
-                    </div>
-                ) : (
-                    <div className="grid grid-cols-[repeat(auto-fit,minmax(400px,1fr))] gap-4">
-                        <div className="space-y-2">
-                            <h3 className="text-lg font-semibold">
-                                Thông tin báo cáo
-                            </h3>
-                            <div className="rounded-lg p-2 shadow-card">
-                                <div className="ml-3 mt-2">
-                                    <div className="flex">
-                                        <span className="block min-w-32 text-base font-medium">
-                                            Người báo cáo:
-                                        </span>
-                                        <span>{report?.from?.fullname}</span>
-                                    </div>
-                                    <div className="flex">
-                                        <span className="block min-w-32 text-base font-medium">
-                                            Đến:
-                                        </span>
-                                        <span>
-                                            {report.to
-                                                ? report.to.name
-                                                : 'Bình luận đã xoá'}
-                                        </span>
-                                    </div>
-                                    <div className="flex">
-                                        <span className="block min-w-32 text-base font-medium">
-                                            Lý do:
-                                        </span>
-                                        <span>
-                                            {TYPE.REPORT[report?.reason].LABEL}
-                                        </span>
-                                    </div>
-                                    <div className="flex">
-                                        <span className="block min-w-32 text-base font-medium">
-                                            Mô tả:
-                                        </span>
-                                        <span>{report?.description}</span>
-                                    </div>
-                                    <div className="flex">
-                                        <span className="block min-w-32 text-base font-medium">
-                                            Loại:
-                                        </span>
-                                        <span>{report?.toType}</span>
-                                    </div>
-                                    <div className="flex">
-                                        <span className="block min-w-32 text-base font-medium">
-                                            Trạng thái:
-                                        </span>
-                                        <span>
-                                            <Tag
-                                                color={
-                                                    report.status === 'pending'
-                                                        ? 'orange'
-                                                        : 'blue'
-                                                }
-                                            >
-                                                {report.status === 'pending'
-                                                    ? 'Chờ duyệt'
-                                                    : 'Đã duyệt'}
-                                            </Tag>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="mb-2 mt-4 flex justify-between">
-                                    {report?.status === 'processed' ? (
-                                        <Button disabled>Đã xử lý</Button>
-                                    ) : (
-                                        <Button onClick={handleConfirm}>
-                                            Xác nhận
-                                        </Button>
+                <Show>
+                    <Show.Then
+                        isTrue={report && Object.keys(report).length > 0}
+                    >
+                        <div className="grid grid-cols-[repeat(auto-fit,minmax(400px,1fr))] gap-4">
+                            <Detail
+                                report={report}
+                                handleConfirm={handleConfirm}
+                                handleBlock={handleBlock}
+                                handleWatch={handleWatch}
+                                isShowModal={isShowModal}
+                                setIsShowModal={setIsShowModal}
+                                openWidgetStore={openWidgetStore}
+                                setOpenWidgetStore={setOpenWidgetStore}
+                                store={store}
+                            />
+                            <div>
+                                <h3 className="text-lg font-semibold">
+                                    Các báo cáo liên quan
+                                </h3>
+                                <ul className="mt-2 space-y-2">
+                                    {report?.relatedReports?.length === 0 && (
+                                        <p>Không có báo cáo liên quan</p>
                                     )}
-                                    {
-                                        <>
-                                            <Button
-                                                onClick={() =>
-                                                    handleBlock({
-                                                        isBlockUser: true
-                                                    })
-                                                }
-                                                disabled={
-                                                    report?.from?.status ===
-                                                    'blocked'
-                                                }
-                                            >
-                                                {report?.from?.status ===
-                                                'blocked'
-                                                    ? 'Đã chặn'
-                                                    : 'Chặn người báo cáo'}
-                                            </Button>
-                                        </>
-                                    }
-                                    {report?.toType === 'Rate' && (
-                                        <>
-                                            <ModalDisplayRate
-                                                rateId={report?.to?._id}
-                                                isOpen={isShowModal}
-                                                onClose={() =>
-                                                    setIsShowModal(false)
-                                                }
-                                            />
-                                            <Button
-                                                onClick={() =>
-                                                    handleWatch('rate')
-                                                }
-                                            >
-                                                Xem đánh giá
-                                            </Button>
-                                            <Button
-                                                onClick={() => handleBlock({})}
-                                                disabled={
-                                                    report?.to?.status ===
-                                                    'blocked'
-                                                }
-                                            >
-                                                {report?.to?.status ===
-                                                'blocked'
-                                                    ? 'Đã ẩn'
-                                                    : 'Ẩn đánh giá'}
-                                            </Button>
-                                        </>
+                                    {report?.relatedReports?.map(
+                                        (relatedReport) => (
+                                            <li key={relatedReport._id}>
+                                                <CardReportRelated
+                                                    report={relatedReport}
+                                                />
+                                            </li>
+                                        )
                                     )}
-                                    {report?.toType === 'Retailer' && (
-                                        <>
-                                            <Button
-                                                onClick={() =>
-                                                    handleWatch('retailer')
-                                                }
-                                            >
-                                                Xem cửa hàng
-                                            </Button>
-                                            <Button
-                                                onClick={() => handleBlock({})}
-                                            >
-                                                Cấm cửa hàng
-                                            </Button>
-                                            <DetailStoreWidget
-                                                open={openWidgetStore}
-                                                onClose={() => {
-                                                    setOpenWidgetStore(false);
-                                                }}
-                                                data={store}
-                                            />
-                                        </>
-                                    )}
-                                    {report?.toType === 'Product' && (
-                                        <>
-                                            <Button
-                                                onClick={() =>
-                                                    handleWatch('product')
-                                                }
-                                            >
-                                                Xem sản phẩm
-                                            </Button>
-
-                                            <Button
-                                                onClick={() => handleBlock({})}
-                                                disabled={
-                                                    report?.to?.status ===
-                                                    'blocked'
-                                                }
-                                            >
-                                                {report?.to?.status ===
-                                                'blocked'
-                                                    ? 'Đã ẩn'
-                                                    : 'Ẩn sản phẩm'}
-                                            </Button>
-                                        </>
-                                    )}
-                                    {report?.toType === 'Information' && (
-                                        <>
-                                            <Button
-                                                onClick={() =>
-                                                    handleWatch('information')
-                                                }
-                                            >
-                                                Xem thông tin
-                                            </Button>
-                                            <Button
-                                                onClick={() => handleBlock({})}
-                                                disabled={
-                                                    report?.to?.status ===
-                                                    'blocked'
-                                                }
-                                            >
-                                                {report?.to?.status ===
-                                                'blocked'
-                                                    ? 'Đã ẩn'
-                                                    : 'Ẩn thông tin'}
-                                            </Button>
-                                            <DetailStoreWidget
-                                                open={openWidgetStore}
-                                                onClose={() => {
-                                                    setOpenWidgetStore(false);
-                                                }}
-                                                data={store}
-                                                type="information"
-                                                showButtonEdit
-                                            />
-                                        </>
-                                    )}
-                                </div>
+                                </ul>
                             </div>
                         </div>
-
+                    </Show.Then>
+                    <Show.Else>
                         <div>
-                            <h3 className="text-lg font-semibold">
-                                Các báo cáo liên quan
-                            </h3>
-                            <ul className="mt-2 space-y-2">
-                                {report?.relatedReports?.length === 0 && (
-                                    <p>Không có báo cáo liên quan</p>
-                                )}
-                                {report?.relatedReports?.map(
-                                    (relatedReport) => (
-                                        <li key={relatedReport._id}>
-                                            <CardReportRelated
-                                                report={relatedReport}
-                                            />
-                                        </li>
-                                    )
-                                )}
-                            </ul>
+                            <p>Đang tải...</p>
                         </div>
-                    </div>
-                )}
+                    </Show.Else>
+                </Show>
             </section>
         </>
     );
 }
-
-const CardReportRelated = ({ report }) => {
-    return (
-        <div className="rounded-lg p-2 shadow-card">
-            <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                    <Avatar src={returnUrl(report.from.avatar.path)} />
-                    <p>{report.from.fullname}</p>
-                </div>
-                <Tag color={report.status === 'pending' ? 'orange' : 'blue'}>
-                    {report.status === 'pending' ? 'Chờ duyệt' : 'Đã duyệt'}
-                </Tag>
-            </div>
-            <div className="ml-4 mt-1">
-                <p>Lý do: {TYPE.REPORT[report?.reason].LABEL}</p>
-                <p>{report.description}</p>
-            </div>
-            <p className="text-right">{formatTime(report.createdAt)}</p>
-        </div>
-    );
-};
 
 export default ReportDetail;

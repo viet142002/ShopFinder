@@ -2,11 +2,12 @@ import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { useAuth } from '~/hooks/useAuth';
+import { setShowModal } from '~/redux/ratingSlice';
 
-function Rating() {
+function Rating({ to, toType }) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { isAuth } = useAuth();
+    const { isAuth, data: user } = useAuth();
     const { myRate } = useSelector((state) => state.rating);
 
     const handleOpenModal = () => {
@@ -14,7 +15,15 @@ function Rating() {
             navigate('/login');
             return;
         }
-        dispatch({ type: 'rating/setShowModal', payload: { isShow: true } });
+        dispatch(
+            setShowModal({
+                to,
+                toType,
+                fromType: 'User',
+                from: user,
+                isShow: true
+            })
+        );
     };
 
     return (

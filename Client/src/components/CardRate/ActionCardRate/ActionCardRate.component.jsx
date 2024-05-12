@@ -9,23 +9,25 @@ import { memo } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { likeRateApi, dislikeRateApi } from '~/api/RateApi';
+import socket from '~/socket';
+import { useAuth, useRetailer } from '~/hooks';
+import { emotionalRate, setShowModal } from '~/redux/ratingSlice';
 
-import socket from '../../../socket';
-import { useAuth } from '~/hooks';
+import ModalRating from '~/components/Modal/ModalRating/ModalRating.component';
 
 const ActionCardRate = memo(function ActionCardRate({
     likes,
     dislikes,
-    _id,
-    userId
+    _id: rateId
 }) {
     const dispatch = useDispatch();
     const {
-        data: { fullname, avatar }
+        data: { fullname, avatar, _id: userId }
     } = useAuth();
+    const { data: retailer } = useRetailer();
 
     const handleLike = () => {
-        likeRateApi(_id).then((data) => {
+        likeRateApi(rateId).then((data) => {
             if (data.messageSocket) {
                 socket.emit('notification', {
                     receiverId: data.rate.from._id,
@@ -40,61 +42,89 @@ const ActionCardRate = memo(function ActionCardRate({
                     createdAt: new Date()
                 });
             }
-            dispatch({
-                type: 'rating/emotionalRate',
-                payload: {
-                    _id: _id,
+            dispatch(
+                emotionalRate({
+                    _id: rateId,
                     likes: data.rate.likes,
                     dislikes: data.rate.dislikes
-                }
-            });
+                })
+            );
         });
     };
     const handleDislike = () => {
-        dislikeRateApi(_id).then((data) => {
+        dislikeRateApi(rateId).then((data) => {
             dispatch({
                 type: 'rating/emotionalRate',
                 payload: {
-                    _id: _id,
+                    _id: rateId,
                     likes: data.likes,
                     dislikes: data.dislikes
                 }
             });
         });
     };
+    const handleReply = () => {
+        dispatch(
+            setShowModal({
+                title: 'Trả lời đánh giá',
+                to: rateId,
+                toType: 'Rate',
+                from: retailer,
+                fromType: 'Retailer'
+            })
+        );
+    };
+
     return (
         <>
             <div className="flex gap-2">
-                <div className="flex items-center">
-                    <Button
-                        icon={
-                            likes.includes(userId) ? (
-                                <LikeFilled />
-                            ) : (
-                                <LikeOutlined />
-                            )
-                        }
-                        shape="circle"
-                        onClick={handleLike}
-                        className="border-none"
-                    />
-                    <span>{likes?.length}</span>
-                </div>
-                <div className="flex items-center">
-                    <Button
-                        icon={
-                            dislikes.includes(userId) ? (
-                                <DislikeFilled />
-                            ) : (
-                                <DislikeOutlined />
-                            )
-                        }
-                        shape="circle"
-                        className="border-none"
-                        onClick={handleDislike}
-                    />
-                    <span>{dislikes?.length}</span>
-                </div>
+                {fullname && (
+                    <>
+                        <div className="flex items-center">
+                            <Button
+                                icon={
+                                    likes.includes(userId) ? (
+                                        <LikeFilled />
+                                    ) : (
+                                        <LikeOutlined />
+                                    )
+                                }
+                                shape="circle"
+                                onClick={handleLike}
+                                className="border-none"
+                            />
+                            <span>{likes?.length}</span>
+                        </div>
+                        <div className="flex items-center">
+                            <Button
+                                icon={
+                                    dislikes.includes(userId) ? (
+                                        <DislikeFilled />
+                                    ) : (
+                                        <DislikeOutlined />
+                                    )
+                                }
+                                shape="circle"
+                                className="border-none"
+                                onClick={handleDislike}
+                            />
+                            <span>{dislikes?.length}</span>
+                        </div>
+                    </>
+                )}
+
+                {!fullname && (
+                    <>
+                        <Button
+                            type="text"
+                            onClick={handleReply}
+                            className="border-none"
+                        >
+                            Trả lời
+                        </Button>
+                        <ModalRating />
+                    </>
+                )}
             </div>
         </>
     );

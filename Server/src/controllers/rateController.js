@@ -36,7 +36,17 @@ const rateController = {
 						path: "avatar",
 					},
 				})
-				.populate("images reply")
+				.populate("images")
+				.populate({
+					path: "reply",
+					populate: {
+						path: "from",
+						select: "name logo",
+						populate: {
+							path: "logo",
+						},
+					},
+				})
 				.limit(parseInt(limit))
 				.skip(parseInt(skip))
 				.sort({ createdAt: -1 });
@@ -56,12 +66,22 @@ const rateController = {
 		try {
 			const { id } = req.params;
 			const rate = await Rate.findById(id)
-				.populate("images reply")
+				.populate("images")
 				.populate({
 					path: "from",
 					select: "fullname avatar",
 					populate: {
 						path: "avatar",
+					},
+				})
+				.populate({
+					path: "reply",
+					populate: {
+						path: "from",
+						select: "name logo",
+						populate: {
+							path: "logo",
+						},
 					},
 				});
 
@@ -83,13 +103,13 @@ const rateController = {
 	},
 	addRate: async (req, res) => {
 		try {
-			const { to, toType, rate, comment = "" } = req.body;
-			const from = req.user._id;
+			const { to, toType, from, fromType, rate, comment = "" } = req.body;
 
 			const files = req.files;
 
 			const newRate = new Rate({
 				from,
+				fromType,
 				to,
 				toType,
 				rate,
@@ -102,6 +122,12 @@ const rateController = {
 			}
 
 			await newRate.save();
+
+			if (toType === "Rate") {
+				const rate = await Rate.findById(to);
+				rate.reply.push(newRate._id);
+				await rate.save();
+			}
 
 			return res.status(200).json({
 				newRate,
@@ -133,7 +159,16 @@ const rateController = {
 				});
 			}
 
-			const rateUpdate = await Rate.findById(id);
+			const rateUpdate = await Rate.findById(id).populate({
+				path: "reply",
+				populate: {
+					path: "from",
+					select: "name logo",
+					populate: {
+						path: "logo",
+					},
+				},
+			});
 			if (!rateUpdate) {
 				return res.status(404).json({
 					message: "Rating not found",
@@ -182,6 +217,7 @@ const rateController = {
 		try {
 			const { id } = req.params;
 			const rate = await Rate.findByIdAndDelete(id);
+			console.log("🚀 ~ deleteRate: ~ rate:", rate);
 
 			if (!rate) {
 				return res.status(404).json({

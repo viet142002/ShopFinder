@@ -89,6 +89,7 @@ function InformationManager() {
                 stores={stores}
                 type="information"
                 showButtonEdit={true}
+                role="admin"
             />
         </>
     );

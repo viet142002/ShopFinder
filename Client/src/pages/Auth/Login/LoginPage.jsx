@@ -60,7 +60,7 @@ function LoginPage({ isLoginRetailer = false }) {
                 return navigate(redirect);
             }
 
-            if (data.user.role === 'admin') return navigate('/admin/dashboard');
+            if (data.user.role === 'admin') return navigate('/admin/retailer');
             return navigate('/');
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

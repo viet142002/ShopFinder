@@ -2,21 +2,27 @@ import { Button, Modal, Avatar, Form, Input, Rate } from 'antd';
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setNewRate, updateRate } from '~/redux/ratingSlice';
+import {
+    replyRate,
+    setCloseModal,
+    setNewRate,
+    updateRate
+} from '~/redux/ratingSlice';
 import { addRateApi, updateRateApi } from '~/api/RateApi';
 import { handleFetch, returnUrl } from '~/utils/index';
 
 import UploadImage from '~/components/UploadImage/UploadImage.component';
-import { useAuth } from '~/hooks/useAuth';
 
 const formatForm = (values) => {
-    const { rate, comment, images, to, toType, deleteImages } = values;
+    const { rate, comment, images, to, toType, deleteImages, from, fromType } =
+        values;
     const formData = new FormData();
-
-    formData.append('rate', rate);
+    if (rate) formData.append('rate', rate);
     formData.append('comment', comment);
     formData.append('to', to);
     formData.append('toType', toType);
+    formData.append('from', from);
+    formData.append('fromType', fromType);
     images.forEach((image) => {
         if (image.originFileObj) formData.append('images', image.originFileObj);
     });
@@ -24,10 +30,9 @@ const formatForm = (values) => {
     return formData;
 };
 
-function ModalRating({ title, to, toType }) {
+function ModalRating() {
     const dispatch = useDispatch();
     const [form] = Form.useForm();
-    const { data: user } = useAuth();
     const { showModal, myRate } = useSelector((state) => state.rating);
     const [confirmLoading, setConfirmLoading] = useState(false);
     const [fileList, setFileList] = useState([]);
@@ -37,7 +42,7 @@ function ModalRating({ title, to, toType }) {
         form.validateFields()
             .then(async (values) => {
                 let deleteImages = [];
-                if (myRate?.images) {
+                if (showModal?.images) {
                     // get images  from rate.images not in fileList
                     deleteImages = myRate.images
                         .filter(
@@ -46,19 +51,21 @@ function ModalRating({ title, to, toType }) {
                         )
                         .map((image) => image._id);
                 }
-                const formData = formatForm({
+                const form = formatForm({
                     ...values,
                     images: fileList,
-                    to: to,
-                    toType: toType,
-                    deleteImages: deleteImages
+                    deleteImages,
+                    to: showModal.to,
+                    toType: showModal.toType,
+                    from: showModal.from._id,
+                    fromType: showModal.fromType
                 });
 
                 if (showModal.isEdit) {
                     const data = await handleFetch(() =>
                         updateRateApi({
-                            id: myRate._id,
-                            values: formData
+                            id: showModal.rateId,
+                            values: form
                         })
                     );
 
@@ -67,36 +74,39 @@ function ModalRating({ title, to, toType }) {
                             updateRate({
                                 ...data.rateUpdate,
                                 from: {
-                                    _id: user._id,
-                                    fullname: user.fullname,
-                                    avatar: user.avatar
+                                    _id: showModal?.from?._id,
+                                    fullname:
+                                        showModal?.from?.fullname ||
+                                        showModal?.from?.name,
+                                    avatar:
+                                        showModal?.from?.avatar ||
+                                        showModal?.from?.logo
                                 }
                             })
                         );
                     }
                 } else {
-                    const data = await handleFetch(() => addRateApi(formData));
-
-                    if (data) {
+                    const data = await handleFetch(() => addRateApi(form));
+                    if (data && data.newRate.fromType === 'User') {
                         dispatch(
                             setNewRate({
                                 ...data.newRate,
-                                from: {
-                                    _id: user._id,
-                                    fullname: user.fullname,
-                                    avatar: user.avatar
-                                }
+                                from: showModal?.from
+                            })
+                        );
+                    }
+                    if (data && data.newRate.fromType === 'Retailer') {
+                        dispatch(
+                            replyRate({
+                                ...data.newRate,
+                                from: showModal?.from
                             })
                         );
                     }
                 }
-                form.resetFields();
                 setFileList([]);
                 setConfirmLoading(false);
-                dispatch({
-                    type: 'rating/setShowModal',
-                    payload: { isShow: false, rate: null }
-                });
+                dispatch(setCloseModal());
             })
             .catch(() => {
                 setConfirmLoading(false);
@@ -107,20 +117,18 @@ function ModalRating({ title, to, toType }) {
         setConfirmLoading(false);
         form.resetFields();
         setFileList([]);
-        dispatch({
-            type: 'rating/setShowModal',
-            payload: { isShow: false, isEdit: false }
-        });
+        dispatch(setCloseModal());
     };
 
     useEffect(() => {
-        if (myRate && showModal.isShow) {
+        if (showModal.isShow && showModal.isEdit) {
             form.setFieldsValue({
-                rate: myRate.rate,
-                comment: myRate.comment
+                rate: showModal.rate,
+                comment: showModal.comment
             });
+
             setFileList(
-                myRate.images.map((item) => ({
+                showModal?.images?.map((item) => ({
                     _id: item._id,
                     uid: item._id,
                     name: item.name,
@@ -134,7 +142,7 @@ function ModalRating({ title, to, toType }) {
     return (
         <>
             <Modal
-                title={title}
+                title={showModal.title || 'Bình luận'}
                 centered
                 open={showModal.isShow}
                 onOk={handleOk}
@@ -156,24 +164,33 @@ function ModalRating({ title, to, toType }) {
             >
                 <section className="my-4">
                     <div>
-                        <Avatar src={returnUrl(user.avatar.path)} />
-                        <span className="ml-2">{user.fullname}</span>
+                        <Avatar
+                            src={returnUrl(
+                                showModal?.from?.avatar?.path ||
+                                    showModal?.from?.logo?.path
+                            )}
+                        />
+                        <span className="ml-2">
+                            {showModal?.from?.fullname || showModal?.from?.name}
+                        </span>
                     </div>
 
                     <Form variant="filled" form={form}>
-                        <div className="flex justify-center">
-                            <Form.Item
-                                name="rate"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Vui lòng nhập đánh giá!'
-                                    }
-                                ]}
-                            >
-                                <Rate className="text-xl md:text-3xl" />
-                            </Form.Item>
-                        </div>
+                        {showModal?.fromType === 'User' && (
+                            <div className="flex justify-center">
+                                <Form.Item
+                                    name="rate"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Vui lòng nhập đánh giá!'
+                                        }
+                                    ]}
+                                >
+                                    <Rate className="text-xl md:text-3xl" />
+                                </Form.Item>
+                            </div>
+                        )}
                         <Form.Item
                             name="comment"
                             rules={[

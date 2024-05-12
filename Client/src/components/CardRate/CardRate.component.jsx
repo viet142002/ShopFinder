@@ -10,6 +10,8 @@ import ModalReport from '../Modal/ModalReport/ModalReport.component';
 import { deleteRateApi } from '~/api/RateApi';
 import { returnUrl, formatTime, handleFetch } from '~/utils/index';
 import { useAuth } from '~/hooks/useAuth';
+import { setShowModal } from '~/redux/ratingSlice';
+import { useRetailer } from '~/hooks';
 
 const items1 = [
     {
@@ -29,19 +31,24 @@ const items2 = [
     }
 ];
 
-function CardRate(rate) {
+function CardRate({ showReply, ...rate }) {
     const dispatch = useDispatch();
     const { data: user } = useAuth();
+    const { data: retailer } = useRetailer();
     const isMyRate = user._id === rate?.from?._id;
     const [confirmDelete, setConfirmDelete] = useState(false);
     const [openReport, setOpenReport] = useState(false);
 
-    const handleClick = ({ key }) => {
+    const handleClick = ({ key }, value) => {
         if (key === 'edit') {
-            dispatch({
-                type: 'rating/setShowModal',
-                payload: { isShow: true, isEdit: true }
-            });
+            dispatch(
+                setShowModal({
+                    ...value,
+                    isShow: true,
+                    isEdit: true,
+                    title: 'Chỉnh sửa'
+                })
+            );
             return;
         }
         if (key === 'delete') {
@@ -83,7 +90,7 @@ function CardRate(rate) {
                         <Dropdown
                             menu={{
                                 items: isMyRate ? items1 : items2,
-                                onClick: handleClick
+                                onClick: (props) => handleClick(props, rate)
                             }}
                             trigger={['click']}
                         >
@@ -106,11 +113,64 @@ function CardRate(rate) {
                     dislikes={rate.dislikes}
                     _id={rate._id}
                     userId={user._id}
+                    showReply={showReply}
                 />
                 <span className="ml-auto text-sm">
                     {formatTime(rate.createdAt)}
                 </span>
             </div>
+
+            {rate?.reply?.length > 0 && (
+                <div className="px-4 md:px-sideBarMark">
+                    <div className="flex flex-col space-y-2 border-l pl-2">
+                        {rate.reply.map((item) => (
+                            <div key={item._id} className="flex space-x-2">
+                                <Avatar
+                                    className="flex-shrink-0"
+                                    size={32}
+                                    src={returnUrl(
+                                        item.from?.logo?.path ||
+                                            item.from?.avatar?.path
+                                    )}
+                                />
+
+                                <div className="w-full">
+                                    <div className="flex justify-between">
+                                        <h3>
+                                            {item?.from?.fullname ||
+                                                item?.from?.name}
+                                        </h3>
+                                        {!user && (
+                                            <div className="ml-auto">
+                                                <Dropdown
+                                                    menu={{
+                                                        items: items1,
+                                                        onClick: (props) =>
+                                                            handleClick(
+                                                                props,
+                                                                item
+                                                            )
+                                                    }}
+                                                    trigger={['click']}
+                                                >
+                                                    <a
+                                                        onClick={(e) =>
+                                                            e.preventDefault()
+                                                        }
+                                                    >
+                                                        <MoreOutlined />
+                                                    </a>
+                                                </Dropdown>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <p>{item.comment}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            )}
 
             <Modal
                 title="Xác nhận"
@@ -140,6 +200,8 @@ function CardRate(rate) {
             </Modal>
 
             <ModalReport
+                from={user?._id || retailer?._id}
+                fromType={user?._id ? 'User' : 'Retailer'}
                 toId={rate._id}
                 toType="Rate"
                 open={openReport}

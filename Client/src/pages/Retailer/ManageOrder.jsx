@@ -12,9 +12,9 @@ import socket from '~/socket';
 
 const columns = [
     {
-        title: 'Order ID',
-        dataIndex: '_id',
-        key: '_id'
+        title: 'Tên khách hàng',
+        dataIndex: 'fullname',
+        key: 'fullname'
     },
     {
         title: 'Date',
@@ -60,7 +60,8 @@ function ManageOrder() {
 
     useEffect(() => {
         getOrdersByDistributor({
-            status: searchParams.get('status') || 'all'
+            status: searchParams.get('status') || 'all',
+            fullname: searchParams.get('fullname') || ''
         }).then((response) => {
             setOrders(response.data);
         });
@@ -83,11 +84,11 @@ function ManageOrder() {
     }, []);
 
     return (
-        <>
-            <div className="overflow-auto md:mt-10 md:flex md:justify-center">
+        <div className="m-4 mx-auto max-w-[1200px]">
+            <div className="my-5 overflow-auto md:my-10 md:flex md:justify-center">
                 <FilterOrder />
             </div>
-            <section className="p-5">
+            <section className="overflow-auto">
                 <Table
                     columns={columns}
                     dataSource={orders}
@@ -97,7 +98,7 @@ function ManageOrder() {
                     }}
                 />
             </section>
-        </>
+        </div>
     );
 }
 

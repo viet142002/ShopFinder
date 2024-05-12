@@ -141,8 +141,8 @@ function OrderDetailItem({ order, children }) {
                         <p>
                             <span>Trạng thái: </span>
                             <span>
-                                <Tag color={STATUS[order.status].COLOR}>
-                                    {STATUS[order.status].LABEL}
+                                <Tag color={STATUS.ORDER[order.status].COLOR}>
+                                    {STATUS.ORDER[order.status].LABEL}
                                 </Tag>
                             </span>
                         </p>

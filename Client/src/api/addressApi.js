@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const baseURL = 'https://vnprovinces.pythonanywhere.com/';
-const baseURL = 'https://toinh-api-tinh-thanh.onrender.com';
+const baseURL = 'http://localhost:8000';
 
 export const getProvinces = async () => {
     try {

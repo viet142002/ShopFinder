@@ -46,8 +46,8 @@ function OrderItem({ order }) {
                     </p>
                 </Link>
                 <div className="mt-4 flex items-center justify-between">
-                    <Tag color={STATUS[statusOrder].COLOR}>
-                        {STATUS[statusOrder].LABEL}
+                    <Tag color={STATUS.ORDER[statusOrder].COLOR}>
+                        {STATUS.ORDER[statusOrder].LABEL}
                     </Tag>
                     {statusOrder === 'pending' && (
                         <Button

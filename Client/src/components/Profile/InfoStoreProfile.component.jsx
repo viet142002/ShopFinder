@@ -12,13 +12,13 @@ import { deleteStore } from '~/api/communityApi';
  * InfoStoreProfile component for admin
  * @param {Object} store object data
  * @param {Boolean} [isShowButtonEdit=true] whether show button edit
- * @param {Boolean} [isRetailer=true] is retailer
+ * @param {String} [role='retailer'] is retailer
  * @return {JSX.Element}
  */
 function InfoStoreProfile({
     store,
     isShowButtonEdit = true,
-    isRetailer = true
+    role = 'retailer'
 }) {
     const navigate = useNavigate();
     const handleRemove = async () => {
@@ -119,9 +119,11 @@ function InfoStoreProfile({
                         )}
                         <Link
                             to={
-                                !isRetailer
-                                    ? `/edit-store/${store._id}`
-                                    : '../edit-retailer'
+                                role === 'retailer'
+                                    ? '../edit-retailer'
+                                    : role === 'admin'
+                                      ? `/admin/edit-store/${store._id}`
+                                      : `/edit-store/${store._id}`
                             }
                             state={{
                                 type:

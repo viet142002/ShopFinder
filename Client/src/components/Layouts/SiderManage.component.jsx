@@ -1,13 +1,7 @@
 import { Menu } from 'antd';
-// import { UserOutlined } from '@ant-design/icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-// import { MdOutlineNotifications } from 'react-icons/md';
-import {
-    MdOutlineReport,
-    MdOutlineDashboard,
-    MdOutlineLogout
-} from 'react-icons/md';
+import { MdOutlineReport, MdOutlineLogout } from 'react-icons/md';
 import { VscGitPullRequestGoToChanges } from 'react-icons/vsc';
 
 import { unsetUser } from '~/redux/userSlice';
@@ -20,9 +14,6 @@ function SiderManage() {
 
     const handleClick = (item) => {
         switch (item.key) {
-            case 'dashboard':
-                navigate('/admin/dashboard');
-                break;
             case 'retailer':
                 navigate('/admin/retailer');
                 break;
@@ -45,12 +36,6 @@ function SiderManage() {
     };
 
     const items = [
-        {
-            key: 'dashboard',
-            icon: <MdOutlineDashboard size={18} />,
-            label: 'Tổng quan',
-            name: 'dashboard'
-        },
         {
             key: 'retailer',
             icon: <VscGitPullRequestGoToChanges size={18} />,
@@ -99,11 +84,6 @@ function SiderManage() {
             onClick={(e) => handleClick(e)}
             selectable={false}
             items={[
-                // {
-                //     key: '5',
-                //     icon: <UserOutlined />,
-                //     label: 'Tài khoản'
-                // },
                 {
                     key: '6',
                     icon: <MdOutlineLogout size={18} />,

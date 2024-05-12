@@ -45,8 +45,7 @@ const productController = {
 			const products = await Product.find(query)
 				.populate("images")
 				.limit(parseInt(limit))
-				.skip(parseInt(limit) * (parseInt(page) - 1))
-				.select("name price images status _id quantity discount");
+				.skip(parseInt(limit) * (parseInt(page) - 1));
 
 			const total = await Product.countDocuments(query);
 			return res.status(200).json({

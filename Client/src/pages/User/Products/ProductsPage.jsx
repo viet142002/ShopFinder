@@ -83,11 +83,7 @@ function ProductsPage() {
                     <>
                         <div className="mx-auto grid w-[calc(100%-30px)] grid-cols-2 gap-[15px] md:grid-cols-5 md:gap-8">
                             {data.products.map((product, index) => (
-                                <CardProduct
-                                    product={product}
-                                    storeId={storeId}
-                                    key={index}
-                                />
+                                <CardProduct product={product} key={index} />
                             ))}
                         </div>
                     </>

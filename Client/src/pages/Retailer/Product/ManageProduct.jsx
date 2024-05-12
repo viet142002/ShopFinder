@@ -10,18 +10,14 @@ import {
     Space
 } from 'antd';
 import { DownloadOutlined } from '@ant-design/icons';
-import {
-    useNavigate,
-    Link,
-    useParams,
-    useSearchParams
-} from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { MdAdd } from 'react-icons/md';
 
 import { CardProduct } from '~/components/Card';
 
 import { getProducts } from '~/api/productApi';
 import { STATUS } from '~/constants';
+import { useRetailer } from '~/hooks';
 
 const columns = [
     {
@@ -44,7 +40,11 @@ const columns = [
         dataIndex: 'name',
         key: 'name',
         render: (_, record) => {
-            return <Link to={`./detail/${record._id}`}>{record.name}</Link>;
+            return (
+                <Link to={`/retailer/product/detail/${record._id}`}>
+                    {record.name}
+                </Link>
+            );
         }
     },
     {
@@ -63,7 +63,9 @@ const columns = [
         key: 'status',
         render: (status) => {
             return (
-                <Tag color={STATUS[status].COLOR}>{STATUS[status].LABEL}</Tag>
+                <Tag color={STATUS.PRODUCT[status].COLOR}>
+                    {STATUS.PRODUCT[status].LABEL}
+                </Tag>
             );
         }
     }
@@ -76,7 +78,9 @@ function ManageProduct() {
         page: 1
     });
     const [searchParams, setSearchParams] = useSearchParams();
-    const { id } = useParams();
+    const {
+        data: { _id: id }
+    } = useRetailer();
     const navigate = useNavigate();
 
     const handleChange = (item, value) => {
@@ -95,8 +99,8 @@ function ManageProduct() {
     }, [id, searchParams]);
 
     return (
-        <section className="space-y-2 p-5">
-            <Layout.Header className="flex items-center justify-between space-x-2 bg-transparent p-0">
+        <section className="mx-4 max-w-[1200px] space-y-2 lg:mx-auto">
+            <div className="flex items-center justify-between space-x-2 bg-transparent py-8">
                 <Tooltip title="Thêm sản phẩm">
                     <div className="hidden items-center md:flex">
                         <Button
@@ -149,8 +153,8 @@ function ManageProduct() {
                         }}
                     />
                 </Space.Compact>
-            </Layout.Header>
-            <Layout.Content>
+            </div>
+            <div>
                 <Table
                     className="hidden md:block"
                     columns={columns}
@@ -163,7 +167,7 @@ function ManageProduct() {
                         <CardProduct product={product} key={index} />
                     ))}
                 </div>
-            </Layout.Content>
+            </div>
             <Layout.Footer className="flex justify-end">
                 <Button
                     type="primary"

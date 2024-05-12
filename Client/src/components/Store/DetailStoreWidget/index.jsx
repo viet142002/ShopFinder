@@ -25,7 +25,8 @@ function DetailStoreWidget({
     setStores,
     stores,
     type = 'retailer',
-    showButtonEdit = false
+    showButtonEdit = false,
+    role = 'retailer'
 }) {
     return (
         <>
@@ -49,7 +50,7 @@ function DetailStoreWidget({
                         </div>
                         <MyCarousel images={data.images} />
                         <InfoStoreProfile
-                            isRetailer={type === 'retailer'}
+                            role={role}
                             store={data}
                             isShowButtonEdit={showButtonEdit}
                         />

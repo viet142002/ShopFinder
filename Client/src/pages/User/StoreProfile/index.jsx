@@ -36,7 +36,6 @@ function StoreProfile() {
                             <InfoStoreProfile
                                 store={store}
                                 isShowButtonEdit={user._id === store.user}
-                                isRetailer={false}
                             />
                         </div>
                         <div className="-order-1 space-y-4 overflow-hidden md:order-1 md:col-span-2">
@@ -46,7 +45,10 @@ function StoreProfile() {
                                     <div className="flex justify-center md:px-10 md:py-5">
                                         <RateTotal locationId={store._id} />
                                     </div>
-                                    <Rating />
+                                    <Rating
+                                        to={store._id}
+                                        toType={store.informationType}
+                                    />
                                 </div>
                                 <DisplayRates id={storeId} />
                             </div>
@@ -57,16 +59,15 @@ function StoreProfile() {
                             <div className="flex justify-center px-2 md:p-sideBarMark">
                                 <RateTotal locationId={store._id} />
                             </div>
-                            <Rating />
+                            <Rating
+                                to={store._id}
+                                toType={store.informationType}
+                            />
                         </div>
                         <DisplayRates id={storeId} />
                     </div>
 
-                    <ModalRating
-                        title={store.name}
-                        to={store._id}
-                        toType={store.informationType}
-                    />
+                    <ModalRating />
                 </>
             )}
         </div>

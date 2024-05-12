@@ -1,11 +1,11 @@
 import { Card } from 'antd';
 import { Link } from 'react-router-dom';
 
-import { formatPrice } from '../../../utils/formatPrice';
+import { formatPrice } from '~/utils/formatPrice';
 
-export function CardProduct({ product, storeId }) {
+export function CardProduct({ product }) {
     return (
-        <Link to={`/stores/${storeId}/products/${product._id}`}>
+        <Link to={`/stores/${product.distributor}/products/${product._id}`}>
             <Card
                 hoverable
                 className="h-full w-full"

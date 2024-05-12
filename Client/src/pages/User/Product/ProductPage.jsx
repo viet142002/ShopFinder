@@ -19,7 +19,7 @@ function ProductPage() {
                     <div className="flex">
                         <RateTotal productId={productId} />
                     </div>
-                    <Rating />
+                    <Rating to={productId} toType="Product" />
                     <div className="space-y-2">
                         <h2 className="text-lg font-medium">
                             Bình luận sản phẩm
@@ -29,7 +29,7 @@ function ProductPage() {
                 </div>
             </div>
 
-            <ModalRating title={'Đánh giá'} to={productId} toType="Product" />
+            <ModalRating />
         </>
     );
 }

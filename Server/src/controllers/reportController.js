@@ -43,11 +43,9 @@ const reportController = {
 			}
 
 			const reports = await Report.find(query)
-				.populate("from", "fullname avatar email")
+				.populate("from", "fullname name logo avatar email")
 				.populate("to")
 				.sort({ createdAt: -1 });
-			// .limit(parseInt(limit, 10))
-			// .skip(parseInt(skip, 10))
 
 			const length = reports.length;
 
@@ -75,18 +73,38 @@ const reportController = {
 				});
 			}
 
-			const relatedReports = await Report.find({
-				_id: { $ne: report._id },
-				to: report.to,
-				toType: report.toType,
-			}).populate({
-				path: "from",
-				select: "fullname avatar email status",
-				populate: {
-					path: "avatar",
-					select: "path",
-				},
-			});
+			let relatedReports = [];
+			relatedReports.push(
+				...(await Report.find({
+					_id: { $ne: report._id },
+					to: report.to,
+					fromType: "Retailer",
+				}).populate({
+					path: "from",
+					select: "name logo email status",
+					populate: {
+						path: "logo",
+						select: "path",
+					},
+				}))
+			);
+			console.log("🚀 ~ getReport: ~ relatedReports:", relatedReports);
+			relatedReports.push(
+				...(await Report.find({
+					_id: { $ne: report._id },
+					to: report.to,
+					fromType: "User",
+				}).populate({
+					path: "from",
+					select: "fullname avatar email status",
+					populate: {
+						path: "avatar",
+						select: "path",
+					},
+				}))
+			);
+
+			relatedReports.sort((a, b) => b.createdAt - a.createdAt);
 
 			return res.status(200).json({
 				report: {
@@ -104,9 +122,11 @@ const reportController = {
 
 	createReport: async (req, res) => {
 		try {
-			const { to, toType, reason, description } = req.body;
+			const { to, toType, reason, description, from, fromType } =
+				req.body;
 			const report = new Report({
-				from: req.user._id,
+				from,
+				fromType,
 				to,
 				toType,
 				reason,

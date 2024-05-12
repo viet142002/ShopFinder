@@ -214,7 +214,6 @@ const orderController = {
 		try {
 			const user = req.user;
 			const { status, page = 1, limit = 20 } = req.query;
-			console.table(req.query);
 
 			let query = { user: user._id };
 			if (status && status !== "all") {
@@ -348,12 +347,22 @@ const orderController = {
 	},
 	getByRetailer: async (req, res) => {
 		try {
-			const user = req.user;
-			const { status = "all" } = req.query;
-			const orders = await Order.find({
-				distributor: user.retailer,
-				status: status !== "all" ? status : { $ne: "" },
-			}).sort({ createdAt: -1 });
+			const { retailer } = req.user;
+			const { status = "all", fullname } = req.query;
+
+			let query = {
+				distributor: retailer,
+			};
+
+			if (status !== "all") {
+				query.status = status;
+			}
+			if (fullname) {
+				query.fullname = { $regex: fullname, $options: "i" };
+			}
+			console.log(query);
+			const orders = await Order.find(query).sort({ createdAt: -1 });
+			console.log("🚀 ~ getByRetailer: ~ orders:", orders);
 
 			return res.status(200).json(orders);
 		} catch (error) {

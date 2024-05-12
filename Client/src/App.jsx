@@ -52,7 +52,6 @@ import ManagerProductDetail from '~/pages/Retailer/Product/ManagerProductDetail'
 import ImportWarehouse from '~/pages/Retailer/WarehouseManager/ImportWarehouse';
 import WarehouseManager from '~/pages/Retailer/WarehouseManager/WarehouseManager';
 
-import DashboardPage from '~/pages/Admin/DashboardPage';
 import RequestRetailerPage from '~/pages/Admin/RetailerManager';
 import ReportPage from '~/pages/Admin/Reports';
 import ReportDetail from '~/pages/Admin/Reports/ReportDetail';
@@ -279,6 +278,7 @@ function App() {
                             element={<ProductPage />}
                         />
                     </Route>
+                    {/* admin router */}
                     <Route
                         path="/admin"
                         element={
@@ -291,10 +291,6 @@ function App() {
                     >
                         <Route
                             index
-                            path="dashboard"
-                            element={<DashboardPage />}
-                        />
-                        <Route
                             path="retailer"
                             element={<RequestRetailerPage />}
                         />
@@ -303,14 +299,25 @@ function App() {
                             path="reports/:reportId"
                             element={<ReportDetail />}
                         />
+                        <Route
+                            path="edit-store/:id"
+                            element={
+                                <ProtectRoute>
+                                    <Suspense fallback={<Loading />}>
+                                        <EditStore />
+                                    </Suspense>
+                                </ProtectRoute>
+                            }
+                        />
                         <Route path="users" element={<UsersManager />} />
                         <Route
                             path="information"
                             element={<InformationManager />}
                         />
                     </Route>
+                    {/* Retailer router */}
                     <Route
-                        path="/retailer/:id"
+                        path="/retailer"
                         element={
                             <ProtectRoute access="retailer">
                                 <Suspense fallback={<Loading />}>

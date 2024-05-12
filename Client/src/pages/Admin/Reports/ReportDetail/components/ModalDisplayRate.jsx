@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { getRateByIdApi } from '~/api/RateApi';
 import CardRate from '~/components/CardRate/CardRate.component';
 
-function ModalDisplayRate({ rateId, isOpen, onClose }) {
+export function ModalDisplayRate({ rateId, isOpen, onClose }) {
     const [rate, setRate] = useState(null);
 
     useEffect(() => {

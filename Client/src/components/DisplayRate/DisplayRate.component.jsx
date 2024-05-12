@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo } from 'react';
 import { Divider } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -8,7 +8,11 @@ import { setNewRates } from '~/redux/ratingSlice';
 import CardRate from '../CardRate/CardRate.component';
 import { useAuth } from '~/hooks/useAuth';
 
-function DisplayRates({ id: locationId, productId }) {
+const DisplayRates = memo(function DisplayRates({
+    id: locationId,
+    productId,
+    showReply = false
+}) {
     const dispatch = useDispatch();
     const {
         data: { _id }
@@ -74,7 +78,10 @@ function DisplayRates({ id: locationId, productId }) {
                                               }}
                                           />
                                       )}
-                                      <CardRate {...rate} />
+                                      <CardRate
+                                          {...rate}
+                                          showReply={showReply}
+                                      />
                                   </div>
                               ))
                             : !myRate && (
@@ -89,6 +96,6 @@ function DisplayRates({ id: locationId, productId }) {
             </div>
         </section>
     );
-}
+});
 
 export default DisplayRates;

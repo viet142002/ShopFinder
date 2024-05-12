@@ -12,7 +12,6 @@ import EditorFormat from '~/components/EditorFormat/EditorFormat';
 function EditStore() {
     const { id } = useParams();
     const { state } = useLocation();
-    console.log('🚀 ~ EditStore ~ state:', state);
     const [newImages, setNewImages] = useState([]);
     const [deleteImages, setDeleteImages] = useState([]);
     const [data, setData] = useState({});

@@ -7,6 +7,7 @@ import { createWarehouseApi, getWarehouseApi } from '~/api/warehouseApi';
 
 import { handleFetch, returnUrl } from '~/utils/index';
 import EditorFormat from '~/components/EditorFormat/EditorFormat';
+import { useRetailer } from '~/hooks';
 
 function ImportWarehouse() {
     const [resultSearch, setResultSearch] = useState([]);
@@ -16,7 +17,10 @@ function ImportWarehouse() {
         createdAt: '',
         note: ''
     });
-    const { idImport, id: idRetailer } = useParams();
+    const { idImport } = useParams();
+    const {
+        data: { _id: retailerId }
+    } = useRetailer();
 
     const navigate = useNavigate();
 
@@ -256,7 +260,7 @@ function ImportWarehouse() {
         if (isAddMode) {
             getProducts({
                 name: search,
-                distributor: idRetailer,
+                distributor: retailerId,
                 status: 'all'
             }).then((res) => {
                 setResultSearch(res.data.products);
@@ -278,7 +282,7 @@ function ImportWarehouse() {
                 );
             });
         }
-    }, [isAddMode, idImport, search, idRetailer]);
+    }, [isAddMode, idImport, search, retailerId]);
 
     return (
         <section className="space-y-2 px-4 py-2">

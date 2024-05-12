@@ -10,14 +10,6 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	// firstname: {
-	// 	type: String,
-	// 	default: "",
-	// },
-	// lastname: {
-	// 	type: String,
-	// 	default: "",
-	// },
 	fullname: {
 		type: String,
 		default: "",
