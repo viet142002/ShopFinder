@@ -31,6 +31,7 @@ function ProductsPage() {
 
     useEffect(() => {
         getProducts({
+            status: 'available',
             distributor: storeId,
             page: searchParams.get('page'),
             name: searchParams.get('name')

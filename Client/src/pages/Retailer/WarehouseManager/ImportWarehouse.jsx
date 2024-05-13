@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Form, Input, InputNumber, Button, Image, Row, Col, Table } from 'antd';
 
@@ -10,6 +10,7 @@ import EditorFormat from '~/components/EditorFormat/EditorFormat';
 import { useRetailer } from '~/hooks';
 
 function ImportWarehouse() {
+    const [searchParams, setSearchParams] = useSearchParams();
     const [resultSearch, setResultSearch] = useState([]);
     const [inOutProducts, setInOutProducts] = useState([]);
     const [search, setSearch] = useState('');
@@ -261,9 +262,12 @@ function ImportWarehouse() {
             getProducts({
                 name: search,
                 distributor: retailerId,
-                status: 'all'
+                status: 'all',
+                page: searchParams.get('page') || 1,
+                limit: 5
             }).then((res) => {
-                setResultSearch(res.data.products);
+                // setResultSearch(res.data.products);
+                setResultSearch(res.data);
             });
         } else {
             getWarehouseApi(idImport).then((res) => {
@@ -282,7 +286,7 @@ function ImportWarehouse() {
                 );
             });
         }
-    }, [isAddMode, idImport, search, retailerId]);
+    }, [isAddMode, idImport, search, retailerId, searchParams]);
 
     return (
         <section className="space-y-2 px-4 py-2">
@@ -304,86 +308,98 @@ function ImportWarehouse() {
                         />
 
                         <Table
-                            dataSource={resultSearch}
+                            dataSource={resultSearch?.products || []}
                             rowKey={'_id'}
                             columns={colsImport}
+                            pagination={{
+                                pageSize: 5,
+                                total: resultSearch?.total || 0,
+                                current: resultSearch?.page || 1,
+                                showSizeChanger: false
+                            }}
+                            onChange={(pagination) => {
+                                setSearchParams((prev) => {
+                                    prev.set('page', pagination.current);
+                                    return prev;
+                                });
+                            }}
                         />
                     </Col>
-                    <Col
-                        md={isAddMode ? 12 : 24}
-                        span={24}
-                        className="bg-white"
-                    >
-                        <h2 className="p-2 text-center text-lg font-semibold">
-                            Sản phẩm được nhập
-                        </h2>
-                        <Form layout="vertical" onFinish={handleSave}>
-                            <Table
-                                dataSource={inOutProducts}
-                                rowKey={'_id'}
-                                columns={isAddMode ? colsImport2 : colsImport3}
-                                pagination={false}
-                            />
-                            <div className="p-2">
-                                <p>
-                                    Tổng tiền:{' '}
-                                    <span className="font-medium">
-                                        {inOutProducts
-                                            .reduce(
-                                                (total, item) =>
-                                                    total +
-                                                    item.price_import *
-                                                        item.amount,
-                                                0
-                                            )
-                                            .toLocaleString('it-IT', {
-                                                style: 'currency',
-                                                currency: 'VND'
-                                            })}
-                                    </span>
-                                </p>
-                            </div>
-                            <Form.Item
-                                label="Ghi chú"
-                                name="note"
-                                className="p-2"
-                            >
-                                {isAddMode ? (
-                                    <EditorFormat />
-                                ) : (
-                                    <div
-                                        className="border bg-gray-50 p-2"
-                                        dangerouslySetInnerHTML={{
-                                            __html:
-                                                infoWarehouse.note ||
-                                                'Không có ghi chú'
-                                        }}
-                                    />
-                                )}
-                            </Form.Item>
-                            {isAddMode ? (
-                                <Form.Item>
-                                    <Button
-                                        type="primary"
-                                        htmlType="submit"
-                                        className="bg-blue-500"
-                                    >
-                                        Xác nhận
-                                    </Button>
-                                </Form.Item>
-                            ) : (
+                    <Col md={isAddMode ? 12 : 24} span={24}>
+                        <div className="rounded-lg bg-white shadow-card">
+                            <h2 className="p-2 text-center text-lg font-semibold">
+                                Sản phẩm được nhập
+                            </h2>
+                            <Form layout="vertical" onFinish={handleSave}>
+                                <Table
+                                    dataSource={inOutProducts}
+                                    rowKey={'_id'}
+                                    columns={
+                                        isAddMode ? colsImport2 : colsImport3
+                                    }
+                                    pagination={false}
+                                />
                                 <div className="p-2">
                                     <p>
-                                        Ngày lặp phiếu:{' '}
+                                        Tổng tiền:{' '}
                                         <span className="font-medium">
-                                            {new Date(
-                                                infoWarehouse.createdAt
-                                            ).toLocaleDateString()}
+                                            {inOutProducts
+                                                .reduce(
+                                                    (total, item) =>
+                                                        total +
+                                                        item.price_import *
+                                                            item.amount,
+                                                    0
+                                                )
+                                                .toLocaleString('it-IT', {
+                                                    style: 'currency',
+                                                    currency: 'VND'
+                                                })}
                                         </span>
                                     </p>
                                 </div>
-                            )}
-                        </Form>
+                                <Form.Item
+                                    label="Ghi chú"
+                                    name="note"
+                                    className="p-2"
+                                >
+                                    {isAddMode ? (
+                                        <EditorFormat />
+                                    ) : (
+                                        <div
+                                            className="border bg-gray-50 p-2"
+                                            dangerouslySetInnerHTML={{
+                                                __html:
+                                                    infoWarehouse.note ||
+                                                    'Không có ghi chú'
+                                            }}
+                                        />
+                                    )}
+                                </Form.Item>
+                                {isAddMode ? (
+                                    <Form.Item className="flex justify-end p-4">
+                                        <Button
+                                            type="primary"
+                                            htmlType="submit"
+                                            className="bg-blue-500"
+                                        >
+                                            Xác nhận
+                                        </Button>
+                                    </Form.Item>
+                                ) : (
+                                    <div className="p-2">
+                                        <p>
+                                            Ngày lặp phiếu:{' '}
+                                            <span className="font-medium">
+                                                {new Date(
+                                                    infoWarehouse.createdAt
+                                                ).toLocaleDateString()}
+                                            </span>
+                                        </p>
+                                    </div>
+                                )}
+                            </Form>
+                        </div>
                     </Col>
                 </Row>
             </div>

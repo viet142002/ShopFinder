@@ -18,6 +18,7 @@ import { CardProduct } from '~/components/Card';
 import { getProducts } from '~/api/productApi';
 import { STATUS } from '~/constants';
 import { useRetailer } from '~/hooks';
+import { formatPrice } from '~/utils';
 
 const columns = [
     {
@@ -50,12 +51,14 @@ const columns = [
     {
         title: 'Giá',
         dataIndex: 'price',
-        key: 'price'
+        key: 'price',
+        render: (price) => formatPrice(price)
     },
     {
         title: 'Số lượng',
         dataIndex: 'quantity',
-        key: 'quantity'
+        key: 'quantity',
+        sorter: (a, b) => a.quantity - b.quantity
     },
     {
         title: 'Trạng thái',
@@ -94,7 +97,8 @@ function ManageProduct() {
         getProducts({
             distributor: id,
             status: searchParams.get('status') || 'all',
-            name: searchParams.get('search') || ''
+            name: searchParams.get('search') || '',
+            page: searchParams.get('page') || 1
         }).then((res) => setData(res.data));
     }, [id, searchParams]);
 
@@ -160,6 +164,14 @@ function ManageProduct() {
                     columns={columns}
                     dataSource={data.products}
                     rowKey="_id"
+                    pagination={{
+                        pageSize: 10,
+                        total: data.total,
+                        current: data.page
+                    }}
+                    onChange={(pagination) => {
+                        handleChange('page', pagination.current);
+                    }}
                 />
 
                 <div className="grid grid-cols-2 gap-2 md:hidden">

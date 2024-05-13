@@ -7,7 +7,7 @@ import OrderDetailContent from '~/components/Order/OrderDetailContent/OrderDetai
 import { getOrderById, updateStatusOrder } from '~/api/orderApi';
 import PrintBill from '~/components/PrintBill';
 
-import socket from '../../socket';
+import socket from '~/socket';
 import { useSelector } from 'react-redux';
 
 function ManageOrderDetail() {
@@ -37,6 +37,7 @@ function ManageOrderDetail() {
             type: 'ORDER',
             message: message,
             fromType: 'Retailer',
+            target: order._id,
             from: {
                 name: order.distributor.name,
                 logo: logo

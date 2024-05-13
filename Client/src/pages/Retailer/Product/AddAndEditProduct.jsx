@@ -1,6 +1,6 @@
 import { Form } from 'antd';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import {
@@ -46,15 +46,20 @@ function AddAndEditProduct() {
     });
     const [form] = Form.useForm();
     const { retailer } = useSelector((state) => state.retailer.data);
+    const navigate = useNavigate();
 
     const AddProduct = async (values) => {
         const formData = formatForm(values, newImages, deleteImages);
-        await handleFetch(() => createProductApi(formData));
+        const data = await handleFetch(() => createProductApi(formData));
+        if (data) navigate(-1);
     };
 
     const EditProduct = async (values) => {
         const formData = formatForm(values, newImages, deleteImages);
-        await handleFetch(() => updateProductByIdApi(productId, formData));
+        const data = await handleFetch(() =>
+            updateProductByIdApi(productId, formData)
+        );
+        if (data) navigate(-1);
     };
 
     const onFinish = async (values) => {

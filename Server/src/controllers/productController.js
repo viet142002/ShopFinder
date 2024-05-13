@@ -16,6 +16,9 @@ const productController = {
 				userCreated,
 				distributor,
 				includes = [],
+				order = {
+					createdAt: -1,
+				},
 			} = req.query;
 			const query = {};
 			if (distributor) {
@@ -45,7 +48,8 @@ const productController = {
 			const products = await Product.find(query)
 				.populate("images")
 				.limit(parseInt(limit))
-				.skip(parseInt(limit) * (parseInt(page) - 1));
+				.skip(parseInt(limit) * (parseInt(page) - 1))
+				.sort(order);
 
 			const total = await Product.countDocuments(query);
 			return res.status(200).json({
@@ -136,7 +140,7 @@ const productController = {
 			const files = req.files;
 			const { role } = req.user;
 
-			if (!["available", "stop"].includes(status)) {
+			if (!["available", "stop", "draft"].includes(status)) {
 				return res.status(400).json({
 					message: "Invalid status",
 				});
