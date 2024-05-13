@@ -163,6 +163,8 @@ function DetailProduct() {
                             </Dropdown>
                             <ModalReport
                                 open={openReport}
+                                from={user._id}
+                                fromType="User"
                                 toId={productId}
                                 toType="Product"
                                 handleCancel={() => setOpenReport(false)}

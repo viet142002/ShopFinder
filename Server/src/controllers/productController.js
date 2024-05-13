@@ -32,7 +32,7 @@ const productController = {
 			}
 			if (status && status !== "all") {
 				query.status = {
-					$in: [status],
+					$in: Array.isArray(status) ? status : [status],
 				};
 			} else {
 				query.status = {
@@ -41,15 +41,24 @@ const productController = {
 			}
 			if (includes.includes("blocked") && status !== "all") {
 				query.status = {
-					$in: ["blocked", status],
+					$in: Array.isArray(status)
+						? [...status, "blocked"]
+						: [status, "blocked"],
 				};
+			}
+
+			let sort = {};
+			if (order) {
+				sort = order?.createdAt
+					? { createdAt: parseInt(order.createdAt) }
+					: { quantity: parseInt(order.quantity) };
 			}
 
 			const products = await Product.find(query)
 				.populate("images")
 				.limit(parseInt(limit))
 				.skip(parseInt(limit) * (parseInt(page) - 1))
-				.sort(order);
+				.sort(sort);
 
 			const total = await Product.countDocuments(query);
 			return res.status(200).json({

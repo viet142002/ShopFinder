@@ -264,9 +264,8 @@ function ImportWarehouse() {
                 distributor: retailerId,
                 status: 'all',
                 page: searchParams.get('page') || 1,
-                limit: 5
+                limit: 10
             }).then((res) => {
-                // setResultSearch(res.data.products);
                 setResultSearch(res.data);
             });
         } else {
@@ -312,7 +311,7 @@ function ImportWarehouse() {
                             rowKey={'_id'}
                             columns={colsImport}
                             pagination={{
-                                pageSize: 5,
+                                pageSize: 10,
                                 total: resultSearch?.total || 0,
                                 current: resultSearch?.page || 1,
                                 showSizeChanger: false

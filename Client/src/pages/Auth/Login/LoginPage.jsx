@@ -46,7 +46,7 @@ function LoginPage({ isLoginRetailer = false }) {
                 );
                 localStorage.setItem('token', data.token);
                 if (redirect) return navigate(redirect);
-                return navigate(`/retailer/${data.retailer._id}/dashboard`);
+                return navigate(`/retailer/dashboard`);
             }
 
             dispatch(setUser({ user: data.user, token: data.token }));

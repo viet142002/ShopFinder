@@ -25,6 +25,7 @@ const ActionCardRate = memo(function ActionCardRate({
         data: { fullname, avatar, _id: userId }
     } = useAuth();
     const { data: retailer } = useRetailer();
+    console.log('🚀 ~ fullname:', fullname);
 
     const handleLike = () => {
         likeRateApi(rateId).then((data) => {

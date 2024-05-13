@@ -124,11 +124,10 @@ const translateError = (msg) => {
  */
 const handleFetch = async (callback) => {
     try {
+        console.log('callback', typeof callback);
         const res = await callback();
-
         if (res?.data?.message) success(translateSuccess(res.data.message));
-
-        return res.data;
+        return res?.data || res;
     } catch (err) {
         if (err?.response?.data?.message)
             error(translateError(err.response.data.message));

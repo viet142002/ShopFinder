@@ -7,8 +7,15 @@ const imageController = require("./imageController");
 const InformationController = {
 	async create(req, res) {
 		try {
-			const { name, location, address, type, phone, description } =
-				req.body;
+			const {
+				name,
+				location,
+				address,
+				email = "",
+				type,
+				phone,
+				description,
+			} = req.body;
 			const images = req.files;
 			const user = req.user._id;
 
@@ -47,6 +54,7 @@ const InformationController = {
 			const information = new Information({
 				name,
 				user,
+				email,
 				type,
 				phone,
 				description,
@@ -181,7 +189,7 @@ const InformationController = {
 			if (email) {
 				information.email = email;
 			}
-
+			console.log(email);
 			if (phone) {
 				information.phone = phone;
 			}
@@ -189,6 +197,7 @@ const InformationController = {
 			if (description) {
 				information.description = description;
 			}
+			console.log(information);
 
 			await information.save();
 

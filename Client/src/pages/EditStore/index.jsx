@@ -1,6 +1,6 @@
 import { Form, Input, Button, Col, Row } from 'antd';
 import { useEffect, useState } from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { handleFetch } from '~/utils/expression';
 import { updateRetailerApi, getInfoMyRetailerApi } from '~/api/retailerApi';
@@ -15,7 +15,7 @@ function EditStore() {
     const [newImages, setNewImages] = useState([]);
     const [deleteImages, setDeleteImages] = useState([]);
     const [data, setData] = useState({});
-
+    const navigate = useNavigate();
     const [form] = Form.useForm();
 
     const onFill = (p) => {
@@ -28,23 +28,28 @@ function EditStore() {
     };
 
     const onFinish = async (values) => {
-        state?.type === 'Information'
-            ? await handleFetch(() =>
-                  updateStore(id, {
-                      ...values,
-                      id: data._id,
-                      images: newImages,
-                      deleteImages: deleteImages
-                  })
-              )
-            : await handleFetch(() =>
-                  updateRetailerApi({
-                      ...values,
-                      id: data._id,
-                      images: newImages,
-                      deleteImages: deleteImages
-                  })
-              );
+        let res = null;
+        if (state?.type === 'Information') {
+            res = await handleFetch(() =>
+                updateStore(id, {
+                    ...values,
+                    id: data._id,
+                    images: newImages,
+                    deleteImages: deleteImages
+                })
+            );
+        } else {
+            res = await handleFetch(() =>
+                updateRetailerApi({
+                    ...values,
+                    id: data._id,
+                    images: newImages,
+                    deleteImages: deleteImages
+                })
+            );
+        }
+
+        if (res) navigate(-1);
     };
 
     useEffect(() => {

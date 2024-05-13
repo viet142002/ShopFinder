@@ -37,7 +37,8 @@ function ListShared() {
                 userCreated: user._id,
                 name,
                 page,
-                includes: ['blocked']
+                includes: ['blocked'],
+                status: ['only-display']
             }).then((res) => {
                 setData({
                     data: res.data.products,

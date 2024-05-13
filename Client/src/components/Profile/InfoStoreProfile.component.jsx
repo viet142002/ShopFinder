@@ -1,5 +1,5 @@
 import { Avatar, Button, Tag } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import HTMLRenderer from '../HTMLRenderer/HTMLRenderer.component';
 import RenderAddress from '~/components/RenderAddress';
@@ -20,13 +20,8 @@ function InfoStoreProfile({
     isShowButtonEdit = true,
     role = 'retailer'
 }) {
-    const navigate = useNavigate();
     const handleRemove = async () => {
-        const data = await handleFetch(() => deleteStore(store._id));
-
-        if (data) {
-            navigate(-1);
-        }
+        await handleFetch(() => deleteStore(store._id));
     };
 
     return (

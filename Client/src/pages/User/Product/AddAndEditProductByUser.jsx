@@ -1,6 +1,6 @@
 import { Form } from 'antd';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { handleFetch } from '~/utils/expression';
 import {
@@ -44,6 +44,7 @@ function AddAndEditProductByUser() {
         images: []
     });
     const [form] = Form.useForm();
+    const navigate = useNavigate();
 
     const AddProduct = async (values) => {
         const formData = formatForm(
@@ -54,12 +55,20 @@ function AddAndEditProductByUser() {
             newImages,
             deleteImages
         );
-        await handleFetch(() => createProductByUserApi(formData));
+        const data = await handleFetch(() => createProductByUserApi(formData));
+        if (data) {
+            navigate(-1);
+        }
     };
 
     const EditProduct = async (values) => {
         const formData = formatForm(values, newImages, deleteImages);
-        await handleFetch(() => updateProductByUserApi(productId, formData));
+        const data = await handleFetch(() =>
+            updateProductByUserApi(productId, formData)
+        );
+        if (data) {
+            navigate(-1);
+        }
     };
 
     const onFinish = async (values) => {

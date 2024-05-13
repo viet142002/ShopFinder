@@ -98,7 +98,10 @@ function ManageProduct() {
             distributor: id,
             status: searchParams.get('status') || 'all',
             name: searchParams.get('search') || '',
-            page: searchParams.get('page') || 1
+            page: searchParams.get('page') || 1,
+            order: {
+                quantity: searchParams.get('order') || -1
+            }
         }).then((res) => setData(res.data));
     }, [id, searchParams]);
 
@@ -169,8 +172,12 @@ function ManageProduct() {
                         total: data.total,
                         current: data.page
                     }}
-                    onChange={(pagination) => {
+                    onChange={(pagination, _, order) => {
                         handleChange('page', pagination.current);
+                        handleChange(
+                            'order',
+                            order.order === 'ascend' ? 1 : -1
+                        );
                     }}
                 />
 
