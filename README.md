@@ -38,15 +38,11 @@ This is a simple web application that allows users to search for shops in a give
 1. Clone the repository
 2. Install the dependencies
 
--   create a .env file in the root directory and add the following .env.example file
-
 ```bash
     npm install
 ```
 
 3. Start the server
-
--   create a .env file in the root directory and add the following .env.example file
 
 ```bash
     npm start
@@ -55,14 +51,14 @@ This is a simple web application that allows users to search for shops in a give
 4. Start the address server
 
 ```bash
-    cd address-server
     npm start
 ```
 
 5. Start the client
 
+-   create a .env file in the root directory and add the following .env.example file
+
 ```bash
-    cd client
     npm run dev
 ```
 
