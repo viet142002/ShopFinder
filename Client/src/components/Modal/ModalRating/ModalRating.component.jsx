@@ -6,7 +6,8 @@ import {
     replyRate,
     setCloseModal,
     setNewRate,
-    updateRate
+    updateRate,
+    updateReplyRate
 } from '~/redux/ratingSlice';
 import { addRateApi, updateRateApi } from '~/api/RateApi';
 import { handleFetch, returnUrl } from '~/utils/index';
@@ -42,7 +43,8 @@ function ModalRating() {
         form.validateFields()
             .then(async (values) => {
                 let deleteImages = [];
-                if (showModal?.images) {
+
+                if (showModal?.images?.length > 0) {
                     // get images  from rate.images not in fileList
                     deleteImages = myRate.images
                         .filter(
@@ -51,6 +53,7 @@ function ModalRating() {
                         )
                         .map((image) => image._id);
                 }
+                console.log(showModal.isEdit);
                 const form = formatForm({
                     ...values,
                     images: fileList,
@@ -69,9 +72,26 @@ function ModalRating() {
                         })
                     );
 
-                    if (data) {
+                    if (data && data.rateUpdate.fromType === 'User') {
                         dispatch(
                             updateRate({
+                                ...data.rateUpdate,
+                                from: {
+                                    _id: showModal?.from?._id,
+                                    fullname:
+                                        showModal?.from?.fullname ||
+                                        showModal?.from?.name,
+                                    avatar:
+                                        showModal?.from?.avatar ||
+                                        showModal?.from?.logo
+                                }
+                            })
+                        );
+                    }
+
+                    if (data && data.rateUpdate.fromType === 'Retailer') {
+                        dispatch(
+                            updateReplyRate({
                                 ...data.rateUpdate,
                                 from: {
                                     _id: showModal?.from?._id,

@@ -8,6 +8,7 @@ export function ModalDisplayRate({ rateId, isOpen, onClose }) {
     const [rate, setRate] = useState(null);
 
     useEffect(() => {
+        if (!rateId) return;
         getRateByIdApi(rateId).then((res) => {
             setRate(res.data.rate);
         });
@@ -21,7 +22,17 @@ export function ModalDisplayRate({ rateId, isOpen, onClose }) {
             onCancel={onClose}
             footer={null}
         >
-            {!rate ? <div>Loading...</div> : <CardRate {...rate} />}
+            {!rate ? (
+                <div>
+                    {!rateId ? (
+                        <div>Không có dữ liệu</div>
+                    ) : (
+                        <div>Đang tải...</div>
+                    )}
+                </div>
+            ) : (
+                <CardRate {...rate} />
+            )}
         </Modal>
     );
 }

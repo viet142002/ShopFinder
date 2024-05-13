@@ -60,7 +60,7 @@ function ReportDetail() {
             if (type === 'information')
                 return toast.info('Thông tin không tồn tại');
             if (type === 'product') return toast.info('Sản phẩm không tồn tại');
-            if (type === 'rate') return toast.info('Đánh giá đã bị ẩn');
+            if (type === 'rate') return toast.info('Đánh giá không tồn tại');
         }
         let res = null;
         if (type === 'retailer') {

@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 function NotificationPage() {
     const dispatch = useDispatch();
     const { notifications } = useSelector((state) => state.notification);
+    console.log('🚀 ~ NotificationPage ~ notifications:', notifications);
 
     useEffect(() => {
         return () => {

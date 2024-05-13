@@ -86,6 +86,25 @@ const ratingSlice = createSlice({
                 }
                 return rate;
             });
+        },
+        updateReplyRate: (state, action) => {
+            const index = state.rates.findIndex(
+                (rate) => rate._id === action.payload.to
+            );
+            state.rates[index].reply = state.rates[index].reply.map((reply) => {
+                if (reply._id === action.payload._id) {
+                    return action.payload;
+                }
+                return reply;
+            });
+        },
+        deleteReplyRate: (state, action) => {
+            const index = state.rates.findIndex(
+                (rate) => rate._id === action.payload.to
+            );
+            state.rates[index].reply = state.rates[index].reply.filter(
+                (reply) => reply._id !== action.payload._id
+            );
         }
     }
 });
@@ -93,6 +112,8 @@ const ratingSlice = createSlice({
 export default ratingSlice.reducer;
 
 export const {
+    deleteReplyRate,
+    updateReplyRate,
     replyRate,
     setNewRates,
     setShowModal,

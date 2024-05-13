@@ -12,12 +12,22 @@ const rateController = {
 					from: userId,
 					to: to,
 				})
-					.populate("images reply")
+					.populate("images")
 					.populate({
 						path: "from",
 						select: "fullname avatar",
 						populate: {
 							path: "avatar",
+						},
+					})
+					.populate({
+						path: "reply",
+						populate: {
+							path: "from",
+							select: "name logo",
+							populate: {
+								path: "logo",
+							},
 						},
 					});
 			}
@@ -231,13 +241,13 @@ const rateController = {
 				});
 			}
 
-			if (rate.images.length > 0)
+			if (rate?.images?.length > 0)
 				await imageController.deleteImages(rate.images);
 
 			if (rate.reply.length > 0) {
 				for (let i = 0; i < rate.reply.length; i++) {
 					const reply = await Rate.findByIdAndDelete(rate.reply[i]);
-					if (reply.images.length > 0)
+					if (reply?.images?.length > 0)
 						await imageController.deleteImages(reply.images);
 				}
 			}
@@ -338,16 +348,18 @@ const rateController = {
 					like => like?.toString() !== userId.toString()
 				);
 			} else {
-				message = `thích đánh giá của bạn tại ${
-					rate.toType === "Product" ? "sản phẩm" : "cửa hàng"
-				} ${rate.to.name}`;
-				await notificationController.createNotification({
-					toUser: rate.from,
-					from: userId,
-					type: "LIKE_RATE",
-					target: rate._id,
-					message: message,
-				});
+				if (rate.from.toString() !== userId.toString()) {
+					message = `thích đánh giá của bạn tại ${
+						rate.toType === "Product" ? "sản phẩm" : "cửa hàng"
+					} ${rate.to.name}`;
+					await notificationController.createNotification({
+						toUser: rate.from,
+						from: userId,
+						type: "LIKE_RATE",
+						target: rate._id,
+						message: message,
+					});
+				}
 
 				rate.likes.push(userId);
 				rate.dislikes = rate.dislikes.filter(

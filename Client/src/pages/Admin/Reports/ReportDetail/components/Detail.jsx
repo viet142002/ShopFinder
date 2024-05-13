@@ -37,21 +37,21 @@ export const Detail = ({
                         <span className="block min-w-32 text-base font-medium">
                             Người báo cáo:
                         </span>
-                        <span>{report?.from?.fullname}</span>
+                        <span>
+                            {report?.from?.fullname ||
+                                `Cửa hàng ${report?.from?.name}`}
+                        </span>
                     </div>
                     <div className="flex">
                         <span className="block min-w-32 text-base font-medium">
                             Đến:
                         </span>
                         <span>
-                            {report.to
-                                ? report.to.name
-                                : report.toType === 'Rate'
-                                  ? 'Bình luận đã xoá'
-                                  : 'Cửa hàng đã xoá'}
-                            {report?.to?.name || report.toType === 'Rate'
-                                ? 'Đánh giá'
-                                : 'Không có thông tin'}
+                            {!report?.to
+                                ? 'Đã xóa'
+                                : report?.toType === 'Rate'
+                                  ? 'Đánh giá'
+                                  : `Cửa hàng ${report.to.name}`}
                         </span>
                     </div>
                     <div className="flex">

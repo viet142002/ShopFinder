@@ -64,7 +64,7 @@ const reportController = {
 	getReport: async (req, res) => {
 		try {
 			const report = await Report.findById(req.params.id)
-				.populate("from", "fullname avatar email status")
+				.populate("from", "fullname name logo avatar email status")
 				.populate("to");
 
 			if (!report) {

@@ -5,7 +5,6 @@ import { handleFetch } from '~/utils/index';
 import { TYPE } from '~/constants';
 
 const ModalReport = ({ open, handleCancel, toId, toType, from, fromType }) => {
-    console.log(toId, toType, from, fromType);
     const [form] = Form.useForm();
     const onFinish = async (values) => {
         const data = handleFetch(

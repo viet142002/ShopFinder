@@ -10,7 +10,7 @@ import ModalReport from '../Modal/ModalReport/ModalReport.component';
 import { deleteRateApi } from '~/api/RateApi';
 import { returnUrl, formatTime, handleFetch } from '~/utils/index';
 import { useAuth } from '~/hooks/useAuth';
-import { setShowModal } from '~/redux/ratingSlice';
+import { deleteRate, deleteReplyRate, setShowModal } from '~/redux/ratingSlice';
 import { useRetailer } from '~/hooks';
 
 const items1 = [
@@ -36,7 +36,10 @@ function CardRate({ showReply, ...rate }) {
     const { data: user } = useAuth();
     const { data: retailer } = useRetailer();
     const isMyRate = user._id === rate?.from?._id;
-    const [confirmDelete, setConfirmDelete] = useState(false);
+    const [confirmDelete, setConfirmDelete] = useState({
+        open: false,
+        rate: null
+    });
     const [openReport, setOpenReport] = useState(false);
 
     const handleClick = ({ key }, value) => {
@@ -52,7 +55,10 @@ function CardRate({ showReply, ...rate }) {
             return;
         }
         if (key === 'delete') {
-            setConfirmDelete(true);
+            setConfirmDelete({
+                open: true,
+                rate: value
+            });
             return;
         }
         if (key === 'report') {
@@ -62,12 +68,19 @@ function CardRate({ showReply, ...rate }) {
     };
 
     const handleDelete = async () => {
-        const data = await handleFetch(() => deleteRateApi(rate._id));
+        const data = await handleFetch(() =>
+            deleteRateApi(confirmDelete.rate._id)
+        );
         if (data) {
-            dispatch({
-                type: 'rating/deleteRate'
+            if (showReply) {
+                dispatch(deleteReplyRate(confirmDelete.rate));
+            } else {
+                dispatch(deleteRate());
+            }
+            setConfirmDelete({
+                open: false,
+                id: null
             });
-            setConfirmDelete(false);
         }
     };
 
@@ -140,7 +153,7 @@ function CardRate({ showReply, ...rate }) {
                                             {item?.from?.fullname ||
                                                 item?.from?.name}
                                         </h3>
-                                        {!user && (
+                                        {showReply && (
                                             <div className="ml-auto">
                                                 <Dropdown
                                                     menu={{
@@ -174,13 +187,23 @@ function CardRate({ showReply, ...rate }) {
 
             <Modal
                 title="Xác nhận"
-                open={confirmDelete}
+                open={confirmDelete.open}
                 centered
-                onCancel={() => setConfirmDelete(false)}
+                onCancel={() =>
+                    setConfirmDelete({
+                        open: false,
+                        id: null
+                    })
+                }
                 footer={[
                     <Button
                         key="back"
-                        onClick={() => setConfirmDelete(false)}
+                        onClick={() =>
+                            setConfirmDelete({
+                                open: false,
+                                id: null
+                            })
+                        }
                         className="btn btn-secondary"
                     >
                         Hủy
