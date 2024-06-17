@@ -8,6 +8,7 @@ const imageController = require("./imageController");
 const addressController = require("./addressController");
 const locationController = require("./locationController");
 const { sendMail } = require("../helper/SendMail");
+const checkBadWord = require("../helper/checkBadWord");
 
 const retailerController = {
 	register: async (req, res) => {
@@ -38,6 +39,15 @@ const retailerController = {
 			) {
 				return res.status(400).json({
 					message: "Missing required fields",
+				});
+			}
+
+			if (checkBadWord(name) || checkBadWord(description)) {
+				images.forEach(image => {
+					imageController.deleteLocalImage(image.filename);
+				});
+				return res.status(400).json({
+					message: "Content contains bad words",
 				});
 			}
 
@@ -107,6 +117,15 @@ const retailerController = {
 			) {
 				return res.status(400).json({
 					message: "Missing required fields",
+				});
+			}
+
+			if (checkBadWord(name) || checkBadWord(description)) {
+				images.forEach(image => {
+					imageController.deleteLocalImage(image.filename);
+				});
+				return res.status(400).json({
+					message: "Content contains bad words",
 				});
 			}
 

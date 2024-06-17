@@ -46,12 +46,12 @@ const socketServer = socket => {
 		}
 	});
 
-	socket.on("notification-retailer", data => {
-		const user = userOnline.find(user => user.id === data.receiverId);
-		if (user) {
-			socket.to(user.socketId).emit("notification-retailer", data);
-		}
-	});
+	// socket.on("notification-retailer", data => {
+	// 	const user = userOnline.find(user => user.id === data.receiverId);
+	// 	if (user) {
+	// 		socket.to(user.socketId).emit("notification-retailer", data);
+	// 	}
+	// });
 
 	socket.on("connect_error", err => {
 		// the reason of the error, for example "xhr poll error"

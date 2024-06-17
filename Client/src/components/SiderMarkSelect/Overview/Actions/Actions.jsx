@@ -108,6 +108,8 @@ function Actions({ info }) {
                 handleCancel={() => setOpenReport(false)}
                 toId={info._id}
                 toType={info.informationType}
+                from={_id}
+                fromType="User"
             />
         </>
     );

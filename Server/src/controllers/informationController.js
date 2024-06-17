@@ -3,6 +3,7 @@ const Information = require("../Models/informationModel");
 const addressController = require("./addressController");
 const locationController = require("./locationController");
 const imageController = require("./imageController");
+const checkBadWord = require("../helper/checkBadWord");
 
 const InformationController = {
 	async create(req, res) {
@@ -27,6 +28,15 @@ const InformationController = {
 				return res
 					.status(400)
 					.json({ message: "Missing required fields" });
+			}
+
+			if (checkBadWord(name) || checkBadWord(description)) {
+				images.forEach(image => {
+					imageController.deleteLocalImage(image.filename);
+				});
+				return res.status(400).json({
+					message: "Content contains bad words",
+				});
 			}
 
 			const existInfo = await Information.findOne({ name });
@@ -119,6 +129,18 @@ const InformationController = {
 				deleteImages,
 			} = req.body;
 			const images = req.files;
+
+			if (name && checkBadWord(name)) {
+				return res.status(400).json({
+					message: "Content contains bad words",
+				});
+			}
+
+			if (description && checkBadWord(description)) {
+				return res.status(400).json({
+					message: "Content contains bad words",
+				});
+			}
 
 			const information = await Information.findById(id).populate({
 				path: "location",

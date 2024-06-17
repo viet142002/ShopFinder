@@ -2,6 +2,8 @@ const Rate = require("../Models/rateModel");
 const imageController = require("./imageController");
 const notificationController = require("./notificationController");
 
+const checkBadWord = require("../helper/checkBadWord");
+
 const rateController = {
 	getRates: async (req, res) => {
 		try {
@@ -117,6 +119,12 @@ const rateController = {
 
 			const files = req.files;
 
+			if (checkBadWord(comment)) {
+				return res.status(400).json({
+					message: "Content contains bad words",
+				});
+			}
+
 			const newRate = new Rate({
 				from,
 				fromType,
@@ -166,6 +174,13 @@ const rateController = {
 			) {
 				return res.status(400).json({
 					message: "No changes detected",
+				});
+			}
+
+			console.log("comment", comment, checkBadWord(comment));
+			if (comment && checkBadWord(comment)) {
+				return res.status(400).json({
+					message: "Content contains bad words",
 				});
 			}
 

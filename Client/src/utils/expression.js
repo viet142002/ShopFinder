@@ -107,6 +107,8 @@ const translateError = (msg) => {
             return 'Tài khoản đã bị khóa';
         case 'Retailer is blocked':
             return 'Cửa hàng đã bị khóa';
+        case 'Content contains bad words':
+            return 'Nội dung chứa từ không phù hợp';
         default:
             return 'Có lỗi xảy ra';
     }

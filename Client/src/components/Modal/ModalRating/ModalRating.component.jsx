@@ -53,7 +53,6 @@ function ModalRating() {
                         )
                         .map((image) => image._id);
                 }
-                console.log(showModal.isEdit);
                 const form = formatForm({
                     ...values,
                     images: fileList,
@@ -105,6 +104,8 @@ function ModalRating() {
                             })
                         );
                     }
+
+                    if (data) dispatch(setCloseModal());
                 } else {
                     const data = await handleFetch(() => addRateApi(form));
                     if (data && data.newRate.fromType === 'User') {
@@ -123,10 +124,10 @@ function ModalRating() {
                             })
                         );
                     }
+                    if (data) dispatch(setCloseModal());
                 }
                 setFileList([]);
                 setConfirmLoading(false);
-                dispatch(setCloseModal());
             })
             .catch(() => {
                 setConfirmLoading(false);
