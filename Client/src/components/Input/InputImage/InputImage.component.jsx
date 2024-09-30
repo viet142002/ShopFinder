@@ -35,9 +35,7 @@ function InputImage({
             setImagePreview((prev) =>
                 [...prev].concat(
                     images.map((image) => ({
-                        path: `${import.meta.env.VITE_APP_API_URL}${
-                            image.path
-                        }`,
+                        path: image.path,
                         name: image.name,
                         _id: image._id
                     }))

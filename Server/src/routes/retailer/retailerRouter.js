@@ -7,13 +7,13 @@ const { authentication } = require("../../middlewares/authMiddlewares");
 
 router.post(
 	"/register",
-	upload.array("images", 10),
+	upload.array("images[]", 10),
 	retailerController.register
 );
 router.put(
 	"/update-retailer",
 	authentication("retailer"),
-	upload.array("images", 10),
+	upload.array("images[]", 10),
 	retailerController.update
 );
 router.get(

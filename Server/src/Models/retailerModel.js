@@ -5,7 +5,6 @@ const retailerSchema = new mongoose.Schema(
 		name: {
 			type: String,
 			required: true,
-			unique: [true, "Retailer name already exists"],
 		},
 		password: {
 			type: String,

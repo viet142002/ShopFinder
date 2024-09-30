@@ -1,5 +1,5 @@
 const Image = require('../models/imageModel');
-const fs = require('fs');
+const cloudinary = require("cloudinary").v2;
 
 const imageController = {
     createImageWithPath: async ({ path, name }) => {
@@ -18,7 +18,7 @@ const imageController = {
     createSingle: async file => {
         try {
             const image = new Image({
-                path: file.path.replace(/\\/g, '/').slice(6),
+                path: file.path,
                 name: file.filename,
             });
 
@@ -43,8 +43,8 @@ const imageController = {
             let images = [];
             for (let i = 0; i < files.length; i++) {
                 const image = new Image({
-                    path: files[i].path.replace(/\\/g, '/').slice(6),
-                    name: files[i].filename,
+                    path: files[i].path,
+                    name: files[i].filename
                 });
 
                 await image.save();
@@ -83,20 +83,16 @@ const imageController = {
     },
 
     deleteLocalImage: async name => {
-        fs.unlink(`public/images/${name}`, err => {
-            if (err) {
-                throw err;
-            }
-        });
+      deleteLocalImage(name);
     },
 };
 
 const deleteLocalImage = async name => {
-    fs.unlink(`public/images/${name}`, err => {
-        if (err) {
-            throw err;
-        }
-    });
+  cloudinary.uploader.destroy(name, (error, result) => {
+    if (error) {
+      throw error;
+    }
+  });
 };
 
 module.exports = imageController;

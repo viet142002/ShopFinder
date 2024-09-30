@@ -15,17 +15,14 @@ const Inner = memo(function Inner({ info }) {
                     dotPosition="bottom"
                     className="relative h-[300px] w-full overflow-hidden"
                 >
-                    {info.images.map((image, index) => (
+                    {info?.images?.map((image, index) => (
                         <div
                             key={index}
                             className="!flex h-[300px] justify-center bg-gray-300"
                         >
                             <Image
                                 className="!h-full"
-                                src={
-                                    import.meta.env.VITE_APP_API_URL +
-                                    image.path
-                                }
+                                src={image.path}
                                 alt=""
                                 loading="lazy"
                             />

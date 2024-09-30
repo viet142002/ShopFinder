@@ -74,10 +74,7 @@ function MarkerCus() {
                         >
                             <Tooltip direction="top" opacity={1} className="">
                                 <div className="text-lg">
-                                    <h2>{location.information.name}</h2>
-                                    {/* <p>{location.information.address}</p>
-                                <p>{location.information.phone}</p>
-                                <p>{location.information.rate}</p> */}
+                                    <h2>{location?.information?.name}</h2>
                                 </div>
                             </Tooltip>
                         </Marker>

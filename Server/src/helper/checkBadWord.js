@@ -1,7 +1,5 @@
 const dataTest = [
-	"ngu",
-	"khốn nạn",
-	"hèn hạ",
+	"ngu", "khốn nạn", "hèn hạ",
 	"vô liêm sỉ",
 	"đồ khốn",
 	"đồ điên",
@@ -36,7 +34,7 @@ const dataTest = [
  * @returns {boolean}
  */
 function checkBadWord(str) {
-	return dataTest.some(item => str.toLowerCase().includes(item));
+	return dataTest.some(item => str.toLowerCase().includes(` ${item} `));
 }
 
 module.exports = checkBadWord;

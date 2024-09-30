@@ -12,10 +12,7 @@ function OrderProductItem({ product, discount, price, quantity }) {
                             width={100}
                             height={100}
                             className="object-cover"
-                            src={
-                                import.meta.env.VITE_APP_API_URL +
-                                product.images[0].path
-                            }
+                            src={product.images[0].path}
                             loading="lazy"
                         />
                         {discount > 0 && (

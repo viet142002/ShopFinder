@@ -1,5 +1,5 @@
 import { Avatar, Tag } from 'antd';
-import { returnUrl, formatTime } from '~/utils';
+import { formatTime } from '~/utils';
 
 import { TYPE } from '~/constants';
 
@@ -9,9 +9,7 @@ export const CardReportRelated = ({ report }) => {
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <Avatar
-                        src={returnUrl(
-                            report.from?.avatar?.path || report.from?.logo?.path
-                        )}
+                        src={report.from?.avatar?.path || report.from?.logo?.path}
                     />
                     <p>{report.from?.fullname || report.from?.name}</p>
                 </div>

@@ -15,7 +15,7 @@ import { unsetUser } from '~/redux/userSlice';
 import { setNotifications, setOneNotify } from '~/redux/notificationSlice';
 import { getNotifications } from '~/api/notificationApi';
 
-import { notification, returnUrl } from '~/utils/index';
+import { notification } from '~/utils/index';
 
 import socket from '../../socket';
 import SidebarContainer from './SideBarContainer';
@@ -160,7 +160,7 @@ function SideBar({ ...props }) {
                                       alt="avatar"
                                       className="flex-shrink-0 -translate-x-[calc(50%-10px)]"
                                       size={35}
-                                      src={returnUrl(data.avatar.path)}
+                                      src={data?.avatar?.path || '/avt-default.jpg'}
                                   />,
                                   [
                                       getItem('Thông tin cá nhân', 'profile'),

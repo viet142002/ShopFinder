@@ -268,7 +268,6 @@ const retailerController = {
 			if (email) {
 				query.email = { $regex: email, $options: "i" };
 			}
-			console.log("🚀 ~ getRequestsRetailer: ~ query:", query);
 
 			const requests = await Retailer.find(query)
 				.populate({
@@ -278,7 +277,6 @@ const retailerController = {
 					},
 				})
 				.populate("images logo");
-			console.log("🚀 ~ getRequestsRetailer: ~ requests:", requests);
 
 			if (!requests) {
 				return res.status(400).json({
@@ -308,32 +306,33 @@ const retailerController = {
 					message: "Cant find retailer",
 				});
 			}
+      console.log("accept retailer");
 
-			if (oldRetailer.status === "pendding") {
-				// generate random password
-				const password = Math.random().toString(36).slice(-8);
-				const hashPassword = await bcrypt.hash(password, 10);
-				await Retailer.findByIdAndUpdate(retailer._id, {
-					password: hashPassword,
-				});
-				sendMail({
-					to: retailer.email,
-					subject: "Retailer registration",
-					text: `<h1>Đơn xét duyệt của bạn đã được chấp thuận</h1>`,
-					html: `
-                    <h1>
-                        Đơn xét duyệt của bạn đã được phê duyệt
-                    </h1>
-                    <h4>
-                        Thông tin đăng nhập của bạn:
-                    </h4>
-                        <p>Email: ${retailer.email}</p>
-                        <p>Password: ${password}</p>
-                    <h5>
-                        Vui lòng <a href="http://localhost:3000/login-retailer">đăng nhập tại đây</a> và thay đổi mật khẩu của bạn
-                    </h5>`,
-				});
-			}
+			
+			// generate random password
+			const password = Math.random().toString(36).slice(-8);
+			const hashPassword = await bcrypt.hash(password, 10);
+			await Retailer.findByIdAndUpdate(retailer._id, {
+				password: hashPassword,
+			});
+			sendMail({
+				to: retailer.email,
+				subject: "Retailer registration",
+				text: `<h1>Đơn xét duyệt của bạn đã được chấp thuận</h1>`,
+				html: `
+                  <h1>
+                      Đơn xét duyệt của bạn đã được phê duyệt
+                  </h1>
+                  <h4>
+                      Thông tin đăng nhập của bạn:
+                  </h4>
+                      <p>Email: ${retailer.email}</p>
+                      <p>Password: ${password}</p>
+                  <h5>
+                      Vui lòng <a href="http://localhost:3000/login-retailer">đăng nhập tại đây</a> và thay đổi mật khẩu của bạn
+                  </h5>`,
+			});
+			
 			return res.status(200).json({
 				retailer,
 				message: "Successfully",

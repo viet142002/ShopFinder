@@ -11,7 +11,7 @@ function MyCarousel({ images }) {
                     >
                         <Image
                             className="!h-64 object-cover"
-                            src={import.meta.env.VITE_APP_API_URL + image.path}
+                            src={image.path}
                             alt=""
                             loading="lazy"
                         />

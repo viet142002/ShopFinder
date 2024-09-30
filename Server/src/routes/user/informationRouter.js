@@ -6,13 +6,13 @@ const InformationController = require("../../controllers/informationController")
 
 router.post(
 	"/share-store",
-	upload.array("images", 10),
+	upload.array("images[]", 10),
 	authorization,
 	InformationController.create
 );
 router.put(
 	"/update-store/:id",
-	upload.array("images", 10),
+	upload.array("images[]", 10),
 	authorization,
 	InformationController.update
 );

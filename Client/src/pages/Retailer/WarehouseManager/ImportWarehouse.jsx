@@ -5,7 +5,7 @@ import { Form, Input, InputNumber, Button, Image, Row, Col, Table } from 'antd';
 import { getProducts } from '~/api/productApi';
 import { createWarehouseApi, getWarehouseApi } from '~/api/warehouseApi';
 
-import { handleFetch, returnUrl } from '~/utils/index';
+import { handleFetch } from '~/utils/index';
 import EditorFormat from '~/components/EditorFormat/EditorFormat';
 import { useRetailer } from '~/hooks';
 
@@ -84,7 +84,7 @@ function ImportWarehouse() {
             render: (images) => (
                 <Image
                     className="rounded-md object-cover"
-                    src={'http://localhost:3001' + images[0].path}
+                    src={images[0].path}
                     alt="product"
                     width={100}
                     loading="lazy"
@@ -131,7 +131,7 @@ function ImportWarehouse() {
             render: (images) => (
                 <Image
                     className="rounded-md object-cover"
-                    src={'http://localhost:3001' + images[0].path}
+                    src={images[0].path}
                     alt="product"
                     width={100}
                     loading="lazy"
@@ -212,7 +212,7 @@ function ImportWarehouse() {
             render: (images) => (
                 <Image
                     className="rounded-md object-cover"
-                    src={returnUrl(images[0].path)}
+                    src={images[0].path}
                     alt="product"
                     width={100}
                     loading="lazy"

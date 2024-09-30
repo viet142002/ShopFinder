@@ -14,9 +14,7 @@ export function CardProduct({ product }) {
                         alt="example"
                         loading="lazy"
                         className="h-[200px] w-full object-cover md:h-[300px] "
-                        src={`${import.meta.env.VITE_APP_API_URL}${
-                            product.images[0].path
-                        }`}
+                        src={product.images[0].path}
                     />
                 }
             >

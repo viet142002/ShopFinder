@@ -30,7 +30,7 @@ const columns = [
             return (
                 <img
                     className="h-[110px] w-[150px] rounded-md object-cover"
-                    src={import.meta.env.VITE_APP_API_URL + images[0].path}
+                    src={images[0].path}
                     alt="product"
                 />
             );

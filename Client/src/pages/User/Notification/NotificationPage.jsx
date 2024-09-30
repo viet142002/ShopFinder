@@ -3,7 +3,7 @@ import { Avatar } from 'antd';
 import { useEffect } from 'react';
 
 import { setReadAll } from '~/redux/notificationSlice';
-import { formatTime, returnUrl } from '~/utils/index';
+import { formatTime } from '~/utils/index';
 import { readNotifications } from '~/api/notificationApi';
 import { Link } from 'react-router-dom';
 
@@ -51,12 +51,8 @@ function NotificationPage() {
                                     size="large"
                                     src={
                                         notification.fromType === 'User'
-                                            ? returnUrl(
-                                                  notification.from.avatar.path
-                                              )
-                                            : returnUrl(
-                                                  notification.from.logo.path
-                                              )
+                                            ? notification.from?.avatar?.path || '/avt-default.jpg'
+                                            : notification.from.logo.path
                                     }
                                 />
                                 <div>

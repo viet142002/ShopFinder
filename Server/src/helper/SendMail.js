@@ -1,6 +1,7 @@
 const nodemailer = require("nodemailer");
-const user = "vietb2014718@student.ctu.edu.vn";
-const pass = "svtkD!ux";
+
+const user = process.env.EMAIL_USER;
+const pass = process.env.EMAIL_PASS;
 
 // use gmail to send mail
 const transporter = nodemailer.createTransport({
@@ -13,6 +14,10 @@ const transporter = nodemailer.createTransport({
 
 // async..await is not allowed in global scope, must use a wrapper
 async function sendMail({ to, subject, text, html }) {
+  if (!user || !pass) {
+    console.error("Please provide email credentials in .env file");
+    return;
+  }
 	// send mail with defined transport object
 	const info = await transporter.sendMail({
 		from: `"ShopFinder 👻" <${user}>`, // sender address

@@ -14,7 +14,7 @@ import { useLocalStorage } from '~/hooks/index';
 import { Show } from '~/components/common';
 import { useNavigate } from 'react-router-dom';
 
-const FormatForm = (values, images, isRegisterRetailer) => {
+const FormatForm = (values, images = [], isRegisterRetailer) => {
     const formData = new FormData();
     if (isRegisterRetailer) {
         formData.append('mode', values.mode);

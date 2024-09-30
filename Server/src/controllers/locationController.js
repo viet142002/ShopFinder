@@ -57,7 +57,6 @@ const locationController = {
 	getLocations: async (req, res) => {
 		try {
 			const { radius, lat, lng, type = "all", name = "" } = req.query;
-			console.log("🚀 ~ getLocations: ~ radius:", radius);
 			let typeArray = [
 				"food",
 				"furniture",
@@ -107,13 +106,13 @@ const locationController = {
 					}
 					return (
 						location.information.name.match(regex) &&
-						location.information.status === "approved"
+						location.information?.status === "approved"
 					);
 				});
 			} else {
 				locations = locations.filter(location => {
 					if (location.informationType === "Information") return true;
-					return location.information.status === "approved";
+					return location.information?.status === "approved";
 				});
 			}
 			return res.status(200).json({
@@ -123,6 +122,7 @@ const locationController = {
 					: "Locations retrieved successfully",
 			});
 		} catch (error) {
+      console.error(error);
 			return res.status(500).json({ message: error.message });
 		}
 	},

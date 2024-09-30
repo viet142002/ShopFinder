@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Form, Input, Button, Tooltip } from 'antd';
 
 import { MdCameraAlt } from 'react-icons/md';
-import { returnUrl, handleFetch } from '~/utils/index';
+import { handleFetch } from '~/utils/index';
 
 import './profileStyle.scss';
 
@@ -70,7 +70,7 @@ function EditProfile() {
                                     src={
                                         newAvatar
                                             ? URL.createObjectURL(newAvatar)
-                                            : returnUrl(user.avatar.path)
+                                            : user?.avatar?.path || '/avt-default.jpg'
                                     }
                                     alt="avatar"
                                 />

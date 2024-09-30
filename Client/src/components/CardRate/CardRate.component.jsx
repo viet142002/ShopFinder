@@ -8,7 +8,7 @@ import DisplayImagesRate from './DisplayImagesRate/DisplayImages.component';
 import ModalReport from '../Modal/ModalReport/ModalReport.component';
 
 import { deleteRateApi } from '~/api/RateApi';
-import { returnUrl, formatTime, handleFetch } from '~/utils/index';
+import { formatTime, handleFetch } from '~/utils/index';
 import { useAuth } from '~/hooks/useAuth';
 import { deleteRate, deleteReplyRate, setShowModal } from '~/redux/ratingSlice';
 import { useRetailer } from '~/hooks';
@@ -88,7 +88,7 @@ function CardRate({ showReply, ...rate }) {
         <section className="card-rate space-y-2">
             <div className="px-4 md:px-sideBarMark">
                 <div className="flex items-center gap-2">
-                    <Avatar size={38} src={returnUrl(rate.from.avatar.path)} />
+                    <Avatar size={38} src={rate.from.avatar.path || '/avt-default.jpg'} />
                     <div>
                         <h3>{isMyRate ? 'Bạn' : `${rate.from?.fullname}`}</h3>
                         <div>
@@ -141,10 +141,7 @@ function CardRate({ showReply, ...rate }) {
                                 <Avatar
                                     className="flex-shrink-0"
                                     size={32}
-                                    src={returnUrl(
-                                        item.from?.logo?.path ||
-                                            item.from?.avatar?.path
-                                    )}
+                                    src={item.from?.logo?.path || item.from?.avatar?.path}
                                 />
 
                                 <div className="w-full">

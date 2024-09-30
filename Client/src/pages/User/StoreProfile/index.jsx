@@ -36,6 +36,7 @@ function StoreProfile() {
                             <InfoStoreProfile
                                 store={store}
                                 isShowButtonEdit={user._id === store.user}
+                                role={user.role}
                             />
                         </div>
                         <div className="-order-1 space-y-4 overflow-hidden md:order-1 md:col-span-2">

@@ -12,7 +12,7 @@ function DisplayImagesRate({ images }) {
                 {images.map((item, index) => (
                     <div key={index} className="w-1/2 flex-auto">
                         <Image
-                            src={import.meta.env.VITE_APP_API_URL + item?.path}
+                            src={item?.path}
                             alt={item.name}
                             className="aspect-square object-cover"
                             style={{ height: '100%' }}
@@ -27,7 +27,7 @@ function DisplayImagesRate({ images }) {
             {images.slice(0, 2).map((item, index) => (
                 <div key={index} className="w-1/2 flex-auto">
                     <Image
-                        src={import.meta.env.VITE_APP_API_URL + item?.path}
+                        src={item?.path}
                         alt={item.name}
                         className="aspect-square object-cover"
                         style={{ height: '100%' }}
@@ -60,7 +60,7 @@ function DisplayImagesRate({ images }) {
                 images.slice(3, images.length).map((item, index) => (
                     <div key={index} className="w-1/2 flex-auto">
                         <Image
-                            src={import.meta.env.VITE_APP_API_URL + item?.path}
+                            src={item?.path}
                             alt={item.name}
                             className="aspect-square object-cover"
                             style={{ height: '100%' }}

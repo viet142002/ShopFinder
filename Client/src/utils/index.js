@@ -5,5 +5,4 @@ export * from './formatDate';
 export * from './formatPrice';
 export * from './formatTime';
 export * from './notification';
-export * from './returnUrl';
 export * from './expression';

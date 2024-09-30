@@ -8,10 +8,7 @@ export function MiniCardCartItem({ item, className }) {
                     width={50}
                     height={'minmax(80px, 100%)'}
                     className="object-cover"
-                    src={
-                        import.meta.env.VITE_APP_API_URL +
-                        item.product.images[0].path
-                    }
+                    src={item.product.images[0].path}
                     loading="lazy"
                 />
                 <div className="ml-2 flex flex-col justify-between">

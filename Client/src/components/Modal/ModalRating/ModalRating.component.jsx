@@ -10,7 +10,7 @@ import {
     updateReplyRate
 } from '~/redux/ratingSlice';
 import { addRateApi, updateRateApi } from '~/api/RateApi';
-import { handleFetch, returnUrl } from '~/utils/index';
+import { handleFetch } from '~/utils/index';
 
 import UploadImage from '~/components/UploadImage/UploadImage.component';
 
@@ -186,10 +186,7 @@ function ModalRating() {
                 <section className="my-4">
                     <div>
                         <Avatar
-                            src={returnUrl(
-                                showModal?.from?.avatar?.path ||
-                                    showModal?.from?.logo?.path
-                            )}
+                            src={showModal?.from?.avatar?.path || showModal?.from?.logo?.path}
                         />
                         <span className="ml-2">
                             {showModal?.from?.fullname || showModal?.from?.name}

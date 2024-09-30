@@ -109,10 +109,7 @@ export function CardCartItem({ item, setCart, setChecked }) {
                                         width={'100%'}
                                         height={80}
                                         className="object-cover"
-                                        src={
-                                            import.meta.env.VITE_APP_API_URL +
-                                            prod.product.images[0].path
-                                        }
+                                        src={prod.product.images[0].path}
                                         loading='lazy'
                                     />
                                     {prod.product.discount > 0 && (

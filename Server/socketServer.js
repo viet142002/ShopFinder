@@ -10,19 +10,16 @@ let retailerOnline = [];
 
 const socketServer = socket => {
 	socket.on("join", user => {
-		console.log("🚀 ~ socketServer ~ user:", user.fullname);
 		!userOnline.some(u => u._id === user._id) &&
 			userOnline.push({ ...user, socketId: socket.id });
 	});
 
 	socket.on("join-retailer", data => {
-		console.log("🚀 ~ socketServer ~ retailer:", data.name);
 		!retailerOnline.some(re => re.retailerId === data.retailerId) &&
 			retailerOnline.push({ ...data, socketId: socket.id });
 	});
 
 	socket.on("disconnect", () => {
-		console.log("🚀 ~ socketServer ~ disconnect ~ socket.id:", socket.id);
 		userOnline = userOnline.filter(user => user.socketId !== socket.id);
 		retailerOnline = retailerOnline.filter(
 			user => user.socketId !== socket.id

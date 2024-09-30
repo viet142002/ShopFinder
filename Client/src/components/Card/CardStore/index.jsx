@@ -14,9 +14,7 @@ export default function CardStore({ store }) {
                         alt="example"
                         loading="lazy"
                         className="h-[300px] w-full object-cover"
-                        src={`${import.meta.env.VITE_APP_API_URL}${
-                            store.images[0].path
-                        }`}
+                        src={store.images[0].path}
                     />
                 }
             >
