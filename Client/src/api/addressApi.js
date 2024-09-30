@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-// const baseURL = 'https://vnprovinces.pythonanywhere.com/';
-const baseURL = 'http://localhost:8000';
+const baseURL = import.meta.env.VITE_APP_BASE_API_ADDRESS;
 
 export const getProvinces = async () => {
     try {
