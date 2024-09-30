@@ -1,7 +1,7 @@
-const Product = require("../Models/productModel");
-const Retailer = require("../Models/retailerModel");
-const Information = require("../Models/informationModel");
-const Rate = require("../Models/rateModel");
+const Product = require("../models/productModel");
+const Retailer = require("../models/retailerModel");
+const Information = require("../models/informationModel");
+const Rate = require("../models/rateModel");
 
 const imageController = require("./imageController");
 

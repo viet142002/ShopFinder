@@ -1,4 +1,4 @@
-const Report = require("../Models/reportModel");
+const Report = require("../models/reportModel");
 
 const reportController = {
 	getReports: async (req, res) => {

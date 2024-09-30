@@ -1,6 +1,6 @@
-const Cart = require('../Models/cartModel');
-const Product = require('../Models/productModel');
-const Location = require('../Models/locationModel');
+const Cart = require('../models/cartModel');
+const Product = require('../models/productModel');
+const Location = require('../models/locationModel');
 
 const RetailerController = require('./retailerController');
 

@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
-const User = require("../Models/userModel");
-const Retailer = require("../Models/retailerModel");
+const User = require("../models/userModel");
+const Retailer = require("../models/retailerModel");
 
 const RetailerControl = require("./retailerController");
 const imageController = require("./imageController");

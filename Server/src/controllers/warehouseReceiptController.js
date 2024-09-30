@@ -1,4 +1,4 @@
-const WarehouseReceipt = require("../Models/warehouseReceiptModel");
+const WarehouseReceipt = require("../models/warehouseReceiptModel");
 const productController = require("./productController");
 
 const warehouseReceiptController = {

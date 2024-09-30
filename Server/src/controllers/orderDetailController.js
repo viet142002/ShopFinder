@@ -1,5 +1,5 @@
-const OrderDetail = require('../Models/orderDetailModel');
-const Cart = require('../Models/cartModel');
+const OrderDetail = require('../models/orderDetailModel');
+const Cart = require('../models/cartModel');
 const productController = require('./productController');
 
 const orderDetailController = {

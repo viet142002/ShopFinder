@@ -1,4 +1,4 @@
-const Information = require("../Models/informationModel");
+const Information = require("../models/informationModel");
 
 const addressController = require("./addressController");
 const locationController = require("./locationController");

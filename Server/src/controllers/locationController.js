@@ -1,4 +1,4 @@
-const Location = require("../Models/locationModel");
+const Location = require("../models/locationModel");
 
 const AddressControl = require("./addressController");
 

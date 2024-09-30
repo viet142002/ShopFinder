@@ -1,5 +1,5 @@
-const Information = require("../Models/informationModel");
-const Retailer = require("../Models/retailerModel");
+const Information = require("../models/informationModel");
+const Retailer = require("../models/retailerModel");
 
 exports.getStore = async (req, res) => {
 	try {

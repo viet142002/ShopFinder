@@ -1,4 +1,4 @@
-const Rate = require("../Models/rateModel");
+const Rate = require("../models/rateModel");
 const imageController = require("./imageController");
 const notificationController = require("./notificationController");
 

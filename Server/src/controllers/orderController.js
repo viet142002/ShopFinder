@@ -1,6 +1,6 @@
 const moment = require("moment");
 
-const Order = require("../Models/orderModel");
+const Order = require("../models/orderModel");
 
 const orderDetailController = require("./orderDetailController");
 const addressController = require("./addressController");

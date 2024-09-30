@@ -1,8 +1,8 @@
 const ObjectId = require('mongoose').Types.ObjectId;
-const Order = require('../Models/orderModel');
-const Product = require('../Models/productModel');
-const Rate = require('../Models/rateModel');
-const WarehouseReceipt = require('../Models/warehouseReceiptModel');
+const Order = require('../models/orderModel');
+const Product = require('../models/productModel');
+const Rate = require('../models/rateModel');
+const WarehouseReceipt = require('../models/warehouseReceiptModel');
 
 const {
     startOfWeek,
